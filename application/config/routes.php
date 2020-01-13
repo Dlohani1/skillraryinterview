@@ -77,11 +77,15 @@ $route['addQuestion']['POST'] = 'questionBank/addQuestion';
 
 $route['enter-code'] = 'questionBank/enterCode';
 
+$route['read-instructions'] = 'questionBank/showInstructions';
+
 $route['checkCode']['POST'] = 'questionBank/checkCode';
 
 $route['addMcq']['POST'] = 'questionBank/addMcqCode';
 
-//$route['default_controller'] = 'welcome';
-$route['default_controller'] = 'createMCQ';
+$route['redirect-to-code'] = 'questionBank/redirectPage';
+
+$route['default_controller'] = 'welcome';
+//$route['default_controller'] = 'createMCQ';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

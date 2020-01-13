@@ -260,14 +260,14 @@
                     </div>
                 
                 </div><br/>
-                <div class="container">
+               <!--  <div class="container">
                     
                         <div align="center">
                            
                             <button class="submitBtn">Submit</button>
                         </div>
   
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -416,7 +416,7 @@ function saveNext() {
                 clearTimeout(tim);
                 $("#section3").click();
             } else {
-                window.location.href="user/login";
+                window.location.href="redirect-to-code";
             }
 
 
@@ -534,7 +534,9 @@ function clearResponse() {
                 clearTimeout(tim);
                 alert("Time Up");
                 if (document.getElementById("sectionId").value == 3) {
-                    window.location.href="user/login";
+
+
+                    window.location.href="redirect-to-code";
                 }
                                 EndExam();
               } else {

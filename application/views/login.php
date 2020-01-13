@@ -35,9 +35,9 @@
                                     <div class="form-group ">
                                         <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Login</button>
                                     </div>
-                                    <div class="login-register">
+                                    <!-- <div class="login-register">
                                         <a href="registration">Register</a>
-                                    </div>
+                                    </div> -->
                                 </form>
                             </div>
 

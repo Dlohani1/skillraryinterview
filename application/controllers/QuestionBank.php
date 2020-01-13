@@ -383,7 +383,7 @@ class QuestionBank extends CI_Controller {
                 } 
                 $this->session->set_userdata('id', 3); 
 
-                     
+                //redirect('read-instructions');   
 
                 redirect('enter-code', 'refresh');
                 }
@@ -642,7 +642,60 @@ class QuestionBank extends CI_Controller {
                 );
 
                 $this->db->insert_batch('mcq_test_question', $data);
-                redirect('mcq-question', 'refresh');
-                echo "ok";
+
+                $sql1 = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 1";
+                $sql2 = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 2";
+                $sql3 = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 3";
+
+
+                $result1 = $this->db->query($sql1);
+                $result2 = $this->db->query($sql2);
+                $result3 = $this->db->query($sql3);
+
+                $i = 0;
+
+                $data = array();
+
+                if($result1->num_rows() > 0)  {
+                    // output data of each row
+                    foreach ($result1->result() as $row)  {
+                       $data[$i]['section'] = "English";
+                       $data[$i]['total'] = $row->total;
+                    }
+
+                }
+
+                $i = 1;
+                 if($result1->num_rows() > 0)  {
+                    // output data of each row
+                    foreach ($result2->result() as $row)  {
+                       $data[$i]['section'] = "Reasoning";
+                       $data[$i]['total'] = $row->total;
+                    }
+
+                }
+
+                $i = 2;
+                if($result1->num_rows() > 0)  {
+                    // output data of each row
+                    foreach ($result1->result() as $row)  {
+                       $data[$i]['section'] = "Quantitative";
+                       $data[$i]['total'] = $row->total;
+                    }
+
+                }
+
+                $this->load->view('instructions', array("data"=>$data));
+                //redirect('read-instructions');
+                //redirect('mcq-question', 'refresh');
+                //echo "ok";
+        }
+
+        public function showInstructions() {
+            $this->load->view('instructions');
+        }
+
+        public function redirectPage() {
+            $this->load->view('redirecting-page');
         }
 }
