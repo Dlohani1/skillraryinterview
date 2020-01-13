@@ -389,6 +389,8 @@ $.ajax({
     data: {'mcqTestId': mcqTestId, 'sectionId': sectionId,  'subSectionId': subSectionId,  'levelId': levelId,  'totalQuestion': totalQuestion},
     success: function(data){
         // Parse the returned json data
+
+        alert('Added Question Successfully');
         console.log('data', data);
         // Use jQuery's each to iterate over the opts value
 

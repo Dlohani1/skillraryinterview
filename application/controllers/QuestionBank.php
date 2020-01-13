@@ -258,8 +258,29 @@ class QuestionBank extends CI_Controller {
                         'section_id' => $_POST['section_id'],
                         'mcq_test_id' => $_POST['mcq_id'],
                         'question_id' => $_POST['question_id'],
-                        'student_id' => $_POST['student_id']
+                        'student_id' => $_POST['student_id'],
+                        'correct_ans' => 0
                 );
+
+               $questionId = $_POST['question_id'];
+
+               $sql = "SELECT id FROM `answers` WHERE question_id = '$questionId' And is_correct=1";   
+
+               // echo $sql; die;
+                $ansId = $this->db->query($sql);
+
+                if($ansId->num_rows() > 0)  {
+
+                foreach ($ansId->result() as $row) {
+
+                        $ansId = $row->id;
+                }
+            }
+
+
+                if ($ansId == $_POST['answer_id']) {
+                        $data['correct_ans'] = 1;
+                }
 
                 $this->db->insert('student_answers', $data);
 
@@ -411,7 +432,7 @@ class QuestionBank extends CI_Controller {
 
                 $this->db->insert('mcq_code', $data);
 
-                die;
+                redirect('createMCQ', 'refresh');
 
                
         }
