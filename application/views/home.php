@@ -253,8 +253,10 @@ img{
                 <!-- <form class="form-inline"> -->
                     <!-- <button class="btn registerBtn" type="submit">REGISTER / LOGIN</button> -->
                 <!-- </form> -->
+		<div style="float:right">
                                 <a class="btn registerBtn" href="user/login">SIGNIN</a>
                                 <a class="btn registerBtn" href="user/registration">SIGNUP</a>
+		</div>
                             </nav>
         </div>
     <hr class="hrDesign"/>

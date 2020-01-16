@@ -148,23 +148,24 @@
                     <tr><th colSpan="3" style="text-align: center;background: #D0CFCF ;border: 1px solid black;">Cognitive - Digital Hiring</th></tr>
                     <tr>
                         <th class="thborder">Section</th>
-                        
+
                         <!-- <th class="thborder">Easy</th>
                         <th class="thborder">Moderate</th>
                         <th class="thborder">Difficult</th> -->
                         <th class="thborder">Total Question</th>
-                        <th class="thborder">Total Time (in sec)</th>
+                        <th class="thborder">Total Time</th>
                     </tr>
 
-                    <?php 
+                    <?php
                     for($i=0;$i<3;$i++) {
                         echo "<tr><td>".$data[$i]['section']."</td>
                         <td>".$data[$i]['total']."</td>
-                        <td>".$data[$i]['time']."</td>
+                        <td>".$data[$i]['time']." sec</td>
                         </tr>";
                     }
 
                     ?>
+		   <tr><td> Programming </td><td>2</td><td>10 min</td></tr>
                 </table>
             </div>
         </div><br/><br/>

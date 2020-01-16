@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once(APPPATH."controllers/MyController.php");
-class QuestionBank extends MyController {
+//require_once(APPPATH."controllers/MyController.php");
+class QuestionBank extends CI_Controller {
 
         public function __construct()
         {

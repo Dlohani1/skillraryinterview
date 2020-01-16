@@ -27,7 +27,7 @@
         .questionSection{
             min-height:calc(65vh - 60px);
         }
-        
+
         .footer{
             height:30px;
         }
@@ -129,6 +129,30 @@
             font-size: 20px;
             border-radius: 5px;
         }
+.box1{
+padding: 6px 10px;
+font-size: 22px;
+border-radius: 5px;
+background: #28A745;
+}
+.box2{
+padding: 6px 10px;
+font-size: 22px;
+border-radius: 5px;
+background: #DC3545;
+}
+.box3{
+padding: 6px 10px;
+font-size: 22px;
+border-radius: 5px;
+background: #6C757D;
+}
+.box4{
+padding: 6px 10px;
+font-size: 22px;
+border-radius: 5px;
+background: #17A2B8;
+}
     </style>
 </head>
 <body>
@@ -182,7 +206,7 @@
                     </div>
                 </div>
                 <hr>
-                
+
                 <input type="hidden" id="sectionId" value="1" />
                 <input type="hidden" id="totalQuestion" value="0" />
                 <input type="hidden" id="totalTime" />
@@ -196,8 +220,11 @@
                         <ul id="optionsList" class="optionList">
                         </ul>
                     </div>
+<div style="margin-top: 10%">
+<button class="saveBtn">Save & Next</button>
+</div>
                    <iframe id="myIframe" style="width:100%;height:100%; display: none"></iframe>
- 
+
                 </div>
 
                                 <div class="footer">
@@ -212,56 +239,56 @@
                                 </div>
                             </div> -->
                         </div>
-                        <div id="save-next" class="col-md-5 text-right">
+                       <!-- <div id="save-next" class="col-md-5 text-right">
                             <div class="row">
                                 <div class="col-md-12">
                                     <button class="saveBtn" onclick="saveNext()">Save & Next</button>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
             <div class="column1" id="questionPallate">
                 <div>
                     <div class="row" style="margin:0px;padding:0px;">
-                        <div class="col-md-6">
-                            <div>
-                                <p class="icon"><span class="badge badge-success">4</span></p>
-                                <p class="content">Answered</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div>
-                                <p class="icon"><span class="badge badge-danger">5</span></p>
-                                <p class="content">Not Answered</p>
-                            </div>
-                        </div>  
-                    </div><br/>
+<div class="col-md-6">
+<div>
+<p class="icon"><span class="box1"><span style="visibility: hidden;">5</span></span></p>
+<p class="content">Answered</p>
+</div>
+</div>
+<div class="col-md-6">
+<div>
+<p class="icon"><span class="box2"><span style="visibility: hidden;">5</span></span></p>
+<p class="content">Not Answered</p>
+</div>
+</div>
+</div><br/>
 
-                    <div class="row" style="margin:0px;padding:0px;">
-                        <div class="col-md-6">
-                            <div>
-                                <p class="icon"><span class="badge badge-secondary">5</span></p>
-                                <p class="content">Not Visited</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div>
-                                <p class="icon"><span class="badge badge-info">1</span></p>
-                                <p class="content">Marked For Review</p>
-                            </div>
-                        </div>  
-                    </div><br/>
+<div class="row" style="margin:0px;padding:0px;">
+<div class="col-md-6">
+<div>
+<p class="icon"><span class="box3"><span style="visibility: hidden;">5</span></span></p>
+<p class="content">Not Visited</p>
+</div>
+</div>
+<div class="col-md-6">
+<div>
+<p class="icon"><span class="box4"><span style="visibility: hidden;">5</span></span></p>
+<p class="content">Marked For Review</p>
+</div>
+</div>
+</div><br/>
 
-                    <div class="row" style="margin:0px;padding:0px;">
-                        <div class="col-md-12">
-                            <div>
-                                <p class="icon"><span class="badge badge-info">1</span><i class="fa fa-check" id="checkIcon" aria-hidden="true"></i></p>
-                                <p class="content">Answered & Marked for Review</p>
-                            </div>
-                        </div>
-                    </div>
+<div class="row" style="margin:0px;padding:0px;">
+<div class="col-md-12">
+<div>
+<!--<p class="icon"><span class="box4"><span style="visibility: hidden;">5</span></span></p><i class="fa fa-check" id="checkIcon" aria-hidden="true"></i></p>
+<p class="content1">Answered & Marked for Review</p>-->
+</div>
+</div>
+</div>
                 </div>
                 <hr>
                 <div class="row"  style="margin:0px;padding:0px;">
@@ -274,10 +301,9 @@
                         <p class="child" style="display:none"><span class="badge badge-secondary" id="iconAnswered">1</span></p>
 
                     </div>
-                
                 </div><br/>
                <!--  <div class="container">
-                    
+
                         <div align="center">
                            
                             <button class="submitBtn">Submit</button>
