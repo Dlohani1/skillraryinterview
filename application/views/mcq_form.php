@@ -147,14 +147,17 @@
                 <hr>
                 <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <button id="section1" class="bntbtn" onclick="getQuestion(1)">English</button>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <button id="section2" class="bntbtn" disabled onclick="getQuestion(2)">Reasoning</button>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <button id="section3" class="bntbtn" disabled onclick="getQuestion(3)">Quantitative</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="section4" class="bntbtn" disabled onclick="getQuestion(4)">Code Test</button>
                     </div>
                 </div>
                 </div><hr>
@@ -167,6 +170,16 @@
                 <hr>
                 <div class="row">
                     <div id="questionId" class="col-md-6"></div>
+                    <div id ="code-test" style="display:none">
+                      Select Language : 
+                      <select id="code-lang">
+                        <option value="0">Select </option>
+                        <option value="1">Java </option>
+                        <option value="2">Python</option>
+                    </select>
+
+                    <button onclick="loadIframe()">Start Test </button>
+                    </div>
                 </div>
                 <hr>
                 
@@ -183,8 +196,11 @@
                         <ul id="optionsList" class="optionList">
                         </ul>
                     </div>
+                   <iframe id="myIframe" style="width:100%;height:100%; display: none"></iframe>
+ 
                 </div>
-                <div class="footer">
+
+                                <div class="footer">
                     <div class="row" style="margin: 0px;padding: 0px;">
                         <div class="col-md-7">
                            <!--  <div class="row">
@@ -196,7 +212,7 @@
                                 </div>
                             </div> -->
                         </div>
-                        <div class="col-md-5 text-right">
+                        <div id="save-next" class="col-md-5 text-right">
                             <div class="row">
                                 <div class="col-md-12">
                                     <button class="saveBtn" onclick="saveNext()">Save & Next</button>
@@ -206,7 +222,7 @@
                     </div>
                 </div>
             </div>
-            <div class="column1">
+            <div class="column1" id="questionPallate">
                 <div>
                     <div class="row" style="margin:0px;padding:0px;">
                         <div class="col-md-6">
@@ -282,10 +298,45 @@ $( document ).ready(function() {
   getQuestion(1)
 });
 
+function loadIframe() {
+
+    var id = document.getElementById("code-lang").value;
+    var url = "https://code.skillrary.com/url_assessment/1003/"+id+"/9";
+    var win = window.open(url, "_self", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+    // document.getElementById('myIframe').src = "https://code.skillrary.com/url_assessment/1003/"+id+"/9";
+
+    // document.getElementById("myIframe").style.display = 'block';
+
+//     win.onunload = function() {
+//   if (window.opener && typeof(window.opener.onPopupClosed) == 'function') {
+//     window.opener.onPopupClosed();
+//   }
+// };
+
+// window.onPopupClosed = function() {
+//   alert("You closed the pop up!");
+// };
+win.onbeforeunload = function(){
+        console.log('unload test');
+    }
+}
+
 function getQuestion(sectionId) {
-    var mcqId = document.getElementById("mcqSessionId").value;
-    var student = document.getElementById("studentSessionId").value;
-    $.ajax({
+    if (sectionId == 4) {
+        document.getElementById("code-test").style.display = 'block';
+        document.getElementById("questionId").style.display = 'none';    
+        document.getElementById("questionData").style.display = 'none';
+        document.getElementById("optionsList").style.display = 'none';
+        document.getElementById("optionsList").style.display = 'none';
+        document.getElementById("questionMCQ").innerHTML="Code Test";
+        document.getElementById("showtime").style.display = 'none';
+        document.getElementById("questionPallate").style.display = 'none';        
+        document.getElementById("save-next").style.display = 'none';
+        
+    } else {
+        var mcqId = document.getElementById("mcqSessionId").value;
+        var student = document.getElementById("studentSessionId").value;
+        $.ajax({
             type: "POST",
             url: "getQuestion",
             data:{"id":student, "section_id":sectionId, "mcq_id":mcqId},
@@ -310,28 +361,31 @@ function getQuestion(sectionId) {
                     var k = i;
                     $('#question_no').append("<p class='child'><span class='badge badge-secondary iconAnswered' id='iconAnswered"+ ++k + "' onclick='fetchQuestion("+d+","+ ++j +")'>"+ ++i +"</span></p>");
                 });
+                console.log('a')
                 window.totalsec = document.getElementById("totalTime").value;
+                
                 starttime();
                 fetchQuestion(opts[0].questions[0], 1);
             }
         });
+    }
 }
 
 function fetchQuestion(id,no) {
+    document.getElementById("iconAnswered"+no).style.backgroundColor = "lightblue"; 
+    document.getElementById("questionId").innerHTML = "Question No. "+no;
+    //$( "#iconAnswered"+id ).toggleClass( "a", addOrRemove );
+    document.getElementById("questionIdSave").value = id;
+    var mcqId = document.getElementById("mcqSessionId").value;
+    var student = document.getElementById("studentSessionId").value;
 
-document.getElementById("questionId").innerHTML = "Question No. "+no;
-//$( "#iconAnswered"+id ).toggleClass( "a", addOrRemove );
-document.getElementById("questionIdSave").value = id;
-var mcqId = document.getElementById("mcqSessionId").value;
-var student = document.getElementById("studentSessionId").value;
-    console.log('test', id)
     $.ajax({
             type: "POST",
             url: "fetchQuestion",
             data:{"id":student, "section_id":1, "mcq_id": mcqId, "question_id":id},
             success: function(data){
                 var opts = $.parseJSON(data);
-                console.log('total', opts);
+                console.log('total', opts.userAnswer.id);
                 document.getElementById("questionData").innerHTML= opts.question;
                 // console.log('data', opts[0].questions);
                 // // Parse the returned json data
@@ -344,8 +398,16 @@ var student = document.getElementById("studentSessionId").value;
                 $('#optionsList').empty()
                 $.each(opts.options, function(i, d) { console.log('d',d);
                     // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
-                    $('#optionsList').append("<li> <input name='answer' type='radio' onclick='saveAns(this)' value="+ d.id +"> "+ d.option+" </li>");
+                    var sel = "";
+                    if (undefined !== opts.userAnswer.id) {
+                        if (d.id == opts.userAnswer.id) {
+                            sel = "checked";
+                        }
+                    }
+                    $('#optionsList').append("<li> <input  "+sel+" name='answer' type='radio' onclick='saveAns(this)' value="+ d.id +"> "+ d.option+" </li>");
                 });
+
+
             }
         });
 }
@@ -356,11 +418,19 @@ function saveAns(ans) {
     document.getElementById("saveAnsId").value = ans.value;
 }
 
-function saveNext() {  
+function saveNext() {
+    
+    
+
     var checkRadio = document.querySelector( 
         'input[name="answer"]:checked'); 
       
     if(checkRadio != null) {
+            var str = document.getElementById("questionId").innerHTML;
+    var res = str.split(".");
+    console.log('rr', "iconAnswered"+res[1].trim());
+
+    document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "green";  
         console.log('checked');
         var qno = document.getElementById("questionId").innerHTML;
 
@@ -380,22 +450,6 @@ function saveNext() {
 
             success: function(data){
                 console.log('ansr', data)
-                // var opts = $.parseJSON(data);
-                // console.log('total', opts);
-                // document.getElementById("questionData").innerHTML= opts.question;
-                // console.log('data', opts[0].questions);
-                // // Parse the returned json data
-                // // var opts = $.parseJSON(data);
-                // // // Use jQuery's each to iterate over the opts value
-                // // $.each(opts, function(i, d) { console.log('d',d);
-                // //     // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
-                // //     $('#section').append('<option value="' + d.id + '">' + d.name + '</option>');
-                // // });
-                // $('#optionsList').empty()
-                // $.each(opts.options, function(i, d) { console.log('d',d);
-                    // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
-                //     $('#optionsList').append("<li> <input name='answer' type='radio' value="+ d.id +"> "+ d.option+" </li>");
-                // });
             }
         });
 
@@ -415,6 +469,13 @@ function saveNext() {
                 document.getElementById("section3").disabled = false;
                 clearTimeout(tim);
                 $("#section3").click();
+            }  else if (document.getElementById("sectionId").value == 3) {
+                document.getElementById("sectionId").value = 4;
+                document.getElementById("section3").disabled = true;
+                document.getElementById("section4").disabled = false;
+                clearTimeout(tim);
+                $("#section4").click();
+
             } else {
                 window.location.href="redirect-to-code";
             }
@@ -441,17 +502,17 @@ function clearResponse() {
     var pos = 0,
       test, test_status, question, choice, choices, chA, chB, chC, correct = 0;
 
-    var questions = [
-      ["Which of the following a is not a keyword in Java ?", "class", "interface", "extends", "C"],
+    // var questions = [
+    //   ["Which of the following a is not a keyword in Java ?", "class", "interface", "extends", "C"],
 
-      ["Which of the following is an interface ?", "Thread", "Date", "Calender", "A"],
+    //   ["Which of the following is an interface ?", "Thread", "Date", "Calender", "A"],
 
-      ["Which company released Java Version 8 ?", "Sun", "Oracle", "Adobe", "A"],
+    //   ["Which company released Java Version 8 ?", "Sun", "Oracle", "Adobe", "A"],
 
-      ["What is the length of Java datatype int ?", "32 bit", "16 bit", "None", "C"],
+    //   ["What is the length of Java datatype int ?", "32 bit", "16 bit", "None", "C"],
 
-      ["What is the default value of Java datatype boolean?", "true", "false", "0", "A"]
-    ];
+    //   ["What is the default value of Java datatype boolean?", "true", "false", "0", "A"]
+    // ];
 
    
 
@@ -510,7 +571,7 @@ function clearResponse() {
     }
 
     function showtime() {
-        console.log('showtime', totalsec); 
+        console.log('showtime', totalsec);
         // first check if exam finished
         // if (pos >= questions.length) {
         //     console.log('end');
@@ -533,7 +594,7 @@ function clearResponse() {
               if (parseInt(min) == 0) {
                 clearTimeout(tim);
                 alert("Time Up");
-                if (document.getElementById("sectionId").value == 3) {
+                if (document.getElementById("sectionId").value == 4) {
 
 
                     window.location.href="redirect-to-code";

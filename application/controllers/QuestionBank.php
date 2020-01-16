@@ -1,12 +1,15 @@
 <?php
-class QuestionBank extends CI_Controller {
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+require_once(APPPATH."controllers/MyController.php");
+class QuestionBank extends MyController {
 
         public function __construct()
         {
                 parent::__construct();
                 $this->load->database();
-                $this->load->helper('url');
-                $this->load->library('session');
+                $this->load->helper(array('form', 'url'));
+                $this->load->library(array('session','form_validation'));
         }
 
         public function index()
@@ -156,11 +159,17 @@ class QuestionBank extends CI_Controller {
         }
 
         public function registration() {
-                $this->load->view('registration');      
+                // $this->load->view('registration');
+                $this->load->view('codheader');
+                 $this->load->view('coderegister');
+                 $this->load->view('codefooter');            
         }
 
         public function login() {
-                $this->load->view('login');      
+                // $this->load->view('login');
+                $this->load->view('codheader');      
+                $this->load->view('codelogin');
+                $this->load->view('codefooter');      
         }
 
         public function getQuestion() {
@@ -219,39 +228,68 @@ class QuestionBank extends CI_Controller {
                         $i++;
                 }
 
+                $questionData['userAnswer'] = array();
+
+                $sql = "SELECT answer_id FROM `student_answers` WHERE student_id='$studentId' AND question_id = '$questionId' AND mcq_test_id='$mcqId'";
+
+                $answer = $this->db->query($sql)->row();
+
+              if (null != $answer) {
+                 $questionData['userAnswer']['id'] = $answer->answer_id;
+             }
+
+
                 print_r(json_encode($questionData));
         }
 
+
+        public function logout() {
+
+            $this->session->sess_destroy();
+            redirect('user/login');
+        } 
+
         public function register() {
-              // print_r($_POST); die;
-
-
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[student_register.email]');
+               if ($this->form_validation->run() == FALSE)
+                {
+                        $this->registration();
+                }
+                else
+                {
                $data = array(
-                        'full_name' => $_POST['name'],
+                        'first_name' => $_POST['firstname'],
+                        'last_name' => $_POST['lastname'],
                         'email' => $_POST['email'],
                         'contact_no' => $_POST['cno'],
-                        'state' => $_POST['state'],
-                        'city' => $_POST['city'],
-                        'dob' => $_POST['dob'],
+                        // 'state' => $_POST['state'],
+                        // 'city' => $_POST['city'],
+                        // 'dob' => $_POST['dob'],
                         'gender' => $_POST['gender'],
-                        '10th_passing_year' => $_POST['10th_py'],
-                        '10th_percentage' => $_POST['10th_per'],
-                        '12th_passing_year' => $_POST['12th_py'],
-                        '12th_percentage' => $_POST['12th_per'],
-                        'degree' => $_POST['degree'],
-                        'degree_percentage' => $_POST['degree_per'],
-                        'degree_passing_year' => $_POST['degree_py'],
-                        'stream' => $_POST['stream'],
-                        'work_location' => $_POST['pwl'],
-                        'password' => $_POST['pwd'],
+                        // '10th_passing_year' => $_POST['10th_py'],
+                        // '10th_percentage' => $_POST['10th_per'],
+                        // '12th_passing_year' => $_POST['12th_py'],
+                        // '12th_percentage' => $_POST['12th_per'],
+                        // 'degree' => $_POST['degree'],
+                        // 'degree_percentage' => $_POST['degree_per'],
+                        // 'degree_passing_year' => $_POST['degree_py'],
+                        // 'stream' => $_POST['stream'],
+                        // 'work_location' => $_POST['pwl'],
+                        'password' => $_POST['password'],
                 );
 
                 $this->db->insert('student_register', $data);
-
-                $this->load->view('login');
+                $this->session->set_flashdata('success', 'Registration successfull. Please Login');
+                redirect('user/login', 'refresh');
+            }
+            
         }
 
         public function saveAnswer() {
+
+            $studentId = $_POST['student_id'];
+            $mcqId = $_POST['mcq_id'];
+            $questionId = $_POST['question_id'];
 
                $data = array(
                         'answer_id' => $_POST['answer_id'],
@@ -282,7 +320,20 @@ class QuestionBank extends CI_Controller {
                         $data['correct_ans'] = 1;
                 }
 
-                $this->db->insert('student_answers', $data);
+                $sql = "SELECT id FROM `student_answers` WHERE student_id='$studentId' AND mcq_test_id = '$mcqId' AND question_id='$questionId'";
+
+               $alreadyAnswer = $this->db->query($sql)->row();
+
+              if (null != $alreadyAnswer) {
+                $this->db->where('id', $alreadyAnswer->id);
+                $this->db->update('student_answers',$data);
+              } else {
+                 $this->db->insert('student_answers', $data);
+              }
+
+                           
+
+               
 
         }
 
@@ -351,10 +402,6 @@ class QuestionBank extends CI_Controller {
                 $subSectionId = $_POST['subSectionId'];
                 $levelId = $_POST['levelId'];
                 $totalQuestion = $_POST['totalQuestion'];
-
-
-
-
                 $data = array(
                         'mcq_test_id' => $mcqTestId,
                         'section_id' => $sectionId,
@@ -368,55 +415,307 @@ class QuestionBank extends CI_Controller {
         }
 
         public function signin() {
+
                $email = $_POST['email'];
                $pwd = $_POST['pwd'];
                $sql = "SELECT * FROM `student_register` WHERE email='$email' AND password = '$pwd'";
 
-               $query = $this->db->query($sql);
-               
-                if($query->num_rows() > 0)  {
-                        //$this->load->view('enter-code');
+               $user = $this->db->query($sql)->row();
 
-                foreach ($query->result() as $row) {
+              if (null != $user) {
+                $this->session->set_userdata('id', $user->id); 
 
-                        $id = $row->id;
-                } 
-                $this->session->set_userdata('id', 3); 
+                 if ($this->checkProfile()) {
+                    $this->session->set_flashdata('success', 'Complete your profile');
+                    return $this->showUserProfile();
+                } else {
+                    if (strlen(trim($_POST['enter-code'])) > 0) {
+                        $this->session->set_userdata('code', $_POST['enter-code']);
+                    }
+                    redirect('user/enter-code');
+                }
+
+
+            //     if (strlen(trim($_POST['enter-code'])) > 0) {
+            //         //check profile if empty
+
+            //         if ($this->checkProfile()) {
+            //             //redirect('user/profile', 'refresh');
+            //             $this->session->set_flashdata('success', 'Complete your profile');
+            //             return $this->showUserProfile();
+            //         } else {
+            //            $a = $this->checkCode($_POST['enter-code']);
+            //            echo $a; die;
+            //         }
+
+                    
+            //     } else {
+            //                     $userId = $this->session->id;
+
+            // $sql = "SELECT * FROM `student_register` Where id = '$userId'" ;
+
+            // $query = $this->db->query($sql);
+
+            // $isEmpty = 0;
+
+            // $userData = array();
+           
+            // if($query->num_rows() > 0)  {
+
+            //     foreach ($query->result() as $row) {
+                    
+            //         $userData['first_name'] = $row->first_name;
+            //         $userData['last_name'] = $row->last_name;
+            //         $userData['email'] = $row->email;
+            //         $userData['contact_no'] = $row->contact_no;
+            //         $userData['state'] = $row->state;
+            //         $userData['city'] = $row->city;
+            //         $userData['dob'] = $row->dob;
+            //         $userData['gender'] = $row->gender;
+            //         $userData['tenth_passing_year'] = $row->tenth_passing_year;
+            //         $userData['tenth_percentage'] = $row->tenth_percentage;
+            //         $userData['twelveth_passing_year'] = $row->twelveth_passing_year;
+            //         $userData['twelveth_percentage'] = $row->twelveth_percentage;
+            //         $userData['degree'] = $row->degree;
+            //         $userData['degree_passing_year'] = $row->degree_passing_year;
+            //         $userData['degree_percentage'] = $row->degree_percentage;
+            //         $userData['stream'] = $row->stream;
+            //         $userData['work_location'] = $row->work_location;
+            //     }
+            // }
+
+            //         $this->load->view('user-header');
+            //         $this->load->view('update-profile',array('userData' => $userData));
+            //         $this->load->view('codefooter');
+            //     }
+                   
+                // if($query->num_rows() > 0)  {
+                //         //$this->load->view('enter-code');
+
+                // foreach ($query->result() as $row) {
+
+                //         $id = $row->id;
+                // }
+
+                // $this->session->set_userdata('id', $id); 
+
 
                 //redirect('read-instructions');   
 
-                redirect('enter-code', 'refresh');
-                }
+               // redirect('enter-code', 'refresh');
+                // }
+              } else {
+                redirect('user/login', 'refresh');
+              }
+                
+                
 
+        }
+
+        public function userProfileUpdate() {
+            $userId = $this->session->id;
+
+            $userData = array();
+
+            $userData['first_name'] = $_POST['firstname'];
+            $userData['last_name'] = $_POST['lastname'];
+            $userData['email'] = $_POST['email'];
+            $userData['contact_no'] = $_POST['cno'];
+            $userData['gender'] = $_POST['gender'];
+            $userData['state'] = $_POST['state'];
+            $userData['city'] = $_POST['city'];
+            $userData['dob'] = $_POST['dob'];
+            $userData['tenth_passing_year'] = $_POST['tenth_py'];
+            $userData['tenth_percentage'] = $_POST['tenth_per'];
+            $userData['twelveth_passing_year'] = $_POST['twelveth_py'];
+            $userData['twelveth_percentage'] = $_POST['twelveth_per'];
+            $userData['degree'] = $_POST['degree'];
+            $userData['degree_passing_year'] = $_POST['degree_py'];
+            $userData['degree_percentage'] = $_POST['degree_per'];
+            $userData['stream'] = $_POST['stream'];
+            $userData['work_location'] = $_POST['pwl'];
+
+           
+            $this->db->where('id', $userId);
+            $this->db->update('student_register',$userData);
+
+            $this->session->set_flashdata('success', 'Updated successfully');
+            redirect('user/profile', 'refresh');
+
+        }  
+
+        public function showUserProfile() {
+
+            $userId = $this->session->id;
+
+            $sql = "SELECT * FROM `student_register` Where id = '$userId'" ;
+
+            $query = $this->db->query($sql);
+
+            $isEmpty = 0;
+
+            $userData = array();
+           
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+                    
+                    $userData['first_name'] = $row->first_name;
+                    $userData['last_name'] = $row->last_name;
+                    $userData['email'] = $row->email;
+                    $userData['contact_no'] = $row->contact_no;
+                    $userData['state'] = $row->state;
+                    $userData['city'] = $row->city;
+                    $userData['dob'] = $row->dob;
+                    $userData['gender'] = $row->gender;
+                    $userData['tenth_passing_year'] = $row->tenth_passing_year;
+                    $userData['tenth_percentage'] = $row->tenth_percentage;
+                    $userData['twelveth_passing_year'] = $row->twelveth_passing_year;
+                    $userData['twelveth_percentage'] = $row->twelveth_percentage;
+                    $userData['degree'] = $row->degree;
+                    $userData['degree_passing_year'] = $row->degree_passing_year;
+                    $userData['degree_percentage'] = $row->degree_percentage;
+                    $userData['stream'] = $row->stream;
+                    $userData['work_location'] = $row->work_location;
+                }
+            }
+
+            $this->load->view('user-header');
+            $this->load->view('update-profile', array('userData' => $userData));
+            $this->load->view('codefooter');
         }
 
         public function enterCode() {
-               $this->load->view('enter-code'); 
+
+            // if ($this->checkProfile()) {
+            //     redirect('user/profile', 'refresh');
+                    
+            // } else {
+                $this->load->view('user-header');
+                $this->load->view('enter-code');
+                $this->load->view('codefooter');
+           // }
+            
+            //$this->load->view('html/index.html'); 
         }
 
-        public function checkCode() {
-                $code = $_POST['code'];
+        public function checkProfile() {
+            $userId = $this->session->id;
 
-                $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
+            $sql = "SELECT * FROM `student_register` Where id = '$userId'" ;
 
-               $query = $this->db->query($sql);
-               
-                if($query->num_rows() > 0)  {
+           $query = $this->db->query($sql);
+
+           $isEmpty = 0;
+           
+            if($query->num_rows() > 0)  {
 
                 foreach ($query->result() as $row) {
+                   if (empty($row->first_name)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->last_name)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->email)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->contact_no)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->state)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->city)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->dob)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->gender)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->tenth_passing_year)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->tenth_percentage)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->twelveth_passing_year)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->twelveth_percentage)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->degree)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->degree_percentage)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->degree_passing_year)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->stream)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->work_location)) {
+                      $isEmpty = 1; 
+                    }
+                }
+            }
 
-                        $mcqId = $row->mcq_test_id;
-                }   
+            return $isEmpty;
+        }
 
-                $this->session->set_userdata('mcqId', $mcqId); 
+        // public function checkCode() {
+        //     $code = $_POST['code'];
+
+        //     $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
+
+        //    $query = $this->db->query($sql);
+           
+        //     if($query->num_rows() > 0)  {
+
+        //         foreach ($query->result() as $row) {
+
+        //                 $mcqId = $row->mcq_test_id;
+        //         }   
+
+        //         $this->session->set_userdata('mcqId', $mcqId); 
                 
 
-                $this->generateQuestion($code, $mcqId);
+        //         $this->generateQuestion($code, $mcqId);
 
-                }                        
+        //     }
+        // }
+        
+        public function checkCode($code = null) {
 
-                
+            if (isset($_POST['code'])) {
+                $code = trim($_POST['code']);
+            }
 
+            //echo var_dump($code); die;
+
+
+            $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
+
+            $query = $this->db->query($sql);
+
+            if($query->num_rows() > 0)  {
+
+            foreach ($query->result() as $row) {
+
+                    $mcqId = $row->mcq_test_id;
+            }   
+
+            $this->session->set_userdata('mcqId', $mcqId); 
+
+
+            $this->generateQuestion($code, $mcqId);
+
+            }
         }
 
         public function addMcqCode() {
@@ -684,11 +983,44 @@ class QuestionBank extends CI_Controller {
                     }
 
                 }
+//print_r($data); die;
+                $sql = "SELECT completion_time FROM `mcq_time` WHERE mcq_test_id='$mcqId' AND section_id = 1";
 
-                $this->load->view('instructions', array("data"=>$data));
-                //redirect('read-instructions');
+               //$query = $this->db->query($sql);
+
+               $totalTime = $this->db->query($sql)->row();
+
+               $data[0]['time'] = $totalTime->completion_time;
+
+                $sql = "SELECT completion_time FROM `mcq_time` WHERE mcq_test_id='$mcqId' AND section_id = 2";
+
+               //$query = $this->db->query($sql);
+
+               $totalTime = $this->db->query($sql)->row();
+
+               $data[1]['time'] = $totalTime->completion_time;
+
+                $sql = "SELECT completion_time FROM `mcq_time` WHERE mcq_test_id='$mcqId' AND section_id = 3";
+
+               //$query = $this->db->query($sql);
+
+               $totalTime = $this->db->query($sql)->row();
+
+               $data[2]['time'] = $totalTime->completion_time;
+
+                //$this->showInstructions($data);
+               $this->session->set_userdata('instructionData', $data); 
+                redirect('read-instructions');
                 //redirect('mcq-question', 'refresh');
                 //echo "ok";
+        }
+
+        // public function showInstructions($data) {
+        //     $this->load->view('instructions', array("data"=>$data));
+        // }
+
+        public function loadFrame() {
+            $this->load->view('loadiframe');
         }
 
         public function showInstructions() {

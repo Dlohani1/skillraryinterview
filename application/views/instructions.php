@@ -33,7 +33,7 @@
         .thborder{
             border: 1px solid black !important;
             text-align: center !important;
-            background: red;
+            background: #696868;
             color: white;
         }
         .listInstructions{
@@ -141,24 +141,26 @@
                 </table>
             </div>
         </div><br/><br/> -->
-
+<?php  $data = $_SESSION['instructionData'];?>
          <div class="row">
             <div class="col-md-10 offset-md-1">
                 <table class="table table-bordered">
-                    <tr><th colSpan="2" style="text-align: center;background: yellow;border: 1px solid black;">Cognitive - Digital Hiring</th></tr>
+                    <tr><th colSpan="3" style="text-align: center;background: #D0CFCF ;border: 1px solid black;">Cognitive - Digital Hiring</th></tr>
                     <tr>
                         <th class="thborder">Section</th>
                         
                         <!-- <th class="thborder">Easy</th>
                         <th class="thborder">Moderate</th>
                         <th class="thborder">Difficult</th> -->
-                        <th class="thborder">Total Quesion</th>
+                        <th class="thborder">Total Question</th>
+                        <th class="thborder">Total Time (in sec)</th>
                     </tr>
 
                     <?php 
                     for($i=0;$i<3;$i++) {
                         echo "<tr><td>".$data[$i]['section']."</td>
                         <td>".$data[$i]['total']."</td>
+                        <td>".$data[$i]['time']."</td>
                         </tr>";
                     }
 
@@ -203,7 +205,31 @@
         function enterCode() {
              var remember = document.getElementById("checkbox-1");
           if (remember.checked) {
-            window.location.href='mcq-question';
+            //window.location.href='mcq-question';
+            var win = window.open("mcq-question", "", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+win.onbeforeunload = function(){
+        console.log('unload');
+    }
+// win.onbeforeunload = function (event) {
+//     var message = 'Important: Please click on \'Save\' button to leave this page.';
+//     if (typeof event == 'undefined') {
+//         event = window.event;
+//     }
+//     if (event) {
+//         event.returnValue = message;
+//     }
+//     return message;
+// };
+//              win.onunload = function() {
+//   if (window.opener && typeof(window.opener.onPopupClosed) == 'function') {
+//     window.opener.onPopupClosed();
+//   }
+// };
+
+// window.onPopupClosed = function() {
+//   alert("You closed the pop up!");
+// };
+
           } else {
             alert("Please accept the instructions");
           }

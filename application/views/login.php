@@ -32,7 +32,14 @@
                                         </div>
                                     </div>
 
+                                    <p> Have a code ? <input type="checkbox" id="code" onchange="validate()" name="code" /> </p>
+
+                                    <input type="text" name="enter-code" id="enter-code" hidden /> 
+
+
                                     <div class="form-group ">
+                                        <br/>
+                                        <br/>
                                         <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Login</button>
                                     </div>
                                     <!-- <div class="login-register">
@@ -45,3 +52,16 @@
                     </div>
                 </div>
 </div>
+
+<script type=text/javascript>
+function validate(){
+if (document.getElementById('code').checked){
+         // alert("checked") ;
+
+          document.getElementById("enter-code").hidden = false;
+}else{
+//alert("You didn't check it! Let me check it for you.")
+document.getElementById("enter-code").hidden = true;
+}
+}
+</script>

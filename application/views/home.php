@@ -126,7 +126,7 @@ a {
     text-transform: uppercase;
     border: 0;
     outline: 0;
-    padding: 13px 21px;
+    /*padding: 13px 21px;*/
     font-size: 15px;
     font-weight: 400;
     letter-spacing: 1.25px;
@@ -253,7 +253,8 @@ img{
                 <!-- <form class="form-inline"> -->
                     <!-- <button class="btn registerBtn" type="submit">REGISTER / LOGIN</button> -->
                 <!-- </form> -->
-                                <a class="btn registerBtn" href="user/login">LOGIN</a>
+                                <a class="btn registerBtn" href="user/login">SIGNIN</a>
+                                <a class="btn registerBtn" href="user/registration">SIGNUP</a>
                             </nav>
         </div>
     <hr class="hrDesign"/>

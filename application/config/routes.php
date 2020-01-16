@@ -75,15 +75,26 @@ $route['addTestTime']['POST'] = 'questionBank/addTestTime';
 $route['addQuestion']['POST'] = 'questionBank/addQuestion';
 //$route['user/register']['POST'] = 'questionBank/register';
 
-$route['enter-code'] = 'questionBank/enterCode';
+$route['user/enter-code'] = 'questionBank/enterCode';
+
+$route['user/profile'] = 'questionBank/showUserProfile';
+
+$route['user/update-profile']['POST'] = 'questionBank/userProfileUpdate';
 
 $route['read-instructions'] = 'questionBank/showInstructions';
 
-$route['checkCode']['POST'] = 'questionBank/checkCode';
+$route['user/checkCode']['POST'] = 'questionBank/checkCode';
+
+$route['user/logout'] = 'questionBank/logout';
 
 $route['addMcq']['POST'] = 'questionBank/addMcqCode';
 
 $route['redirect-to-code'] = 'questionBank/redirectPage';
+
+
+$route['load-frame'] = 'questionBank/loadFrame';
+
+
 
 $route['default_controller'] = 'welcome';
 //$route['default_controller'] = 'createMCQ';
