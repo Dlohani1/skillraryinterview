@@ -87,6 +87,12 @@ $route['user/checkCode']['POST'] = 'questionBank/checkCode';
 
 $route['user/logout'] = 'questionBank/logout';
 
+$route['user/home'] = 'questionBank/userHome';
+
+
+$route['essay'] = 'welcome/showEssay';
+
+
 $route['addMcq']['POST'] = 'questionBank/addMcqCode';
 
 $route['redirect-to-code'] = 'questionBank/redirectPage';

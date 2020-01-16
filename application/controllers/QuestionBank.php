@@ -290,6 +290,7 @@ class QuestionBank extends CI_Controller {
             $studentId = $_POST['student_id'];
             $mcqId = $_POST['mcq_id'];
             $questionId = $_POST['question_id'];
+            $timeTaken = $_POST['time_taken'];
 
                $data = array(
                         'answer_id' => $_POST['answer_id'],
@@ -297,7 +298,8 @@ class QuestionBank extends CI_Controller {
                         'mcq_test_id' => $_POST['mcq_id'],
                         'question_id' => $_POST['question_id'],
                         'student_id' => $_POST['student_id'],
-                        'correct_ans' => 0
+                        'correct_ans' => 0,
+                        'time_taken' => $timeTaken
                 );
 
                $questionId = $_POST['question_id'];
@@ -335,6 +337,12 @@ class QuestionBank extends CI_Controller {
 
                
 
+        }
+
+        public function userHome() {
+            $this->load->view('user-header');
+            $this->load->view('user-home');
+            $this->load->view('codefooter');            
         }
 
         public function createMcq() {
@@ -425,14 +433,26 @@ class QuestionBank extends CI_Controller {
               if (null != $user) {
                 $this->session->set_userdata('id', $user->id); 
 
+                $this->session->set_userdata('email', $user->email); 
+
+                $this->session->set_userdata('contact', $user->contact_no);
+
+                $this->session->set_userdata('firstName', $user->first_name); 
+
+                $this->session->set_userdata('lastName', $user->last_name);
+                $this->session->set_userdata('userGender', $user->gender);
+
                  if ($this->checkProfile()) {
+                    //echo "aa"; die;
                     $this->session->set_flashdata('success', 'Complete your profile');
-                    return $this->showUserProfile();
+                    redirect('user/home');
+                    //return $this->showUserProfile();
                 } else {
                     if (strlen(trim($_POST['enter-code'])) > 0) {
                         $this->session->set_userdata('code', $_POST['enter-code']);
                     }
-                    redirect('user/enter-code');
+                    //redirect('user/enter-code');
+                    redirect('user/home');
                 }
 
 
@@ -691,6 +711,12 @@ class QuestionBank extends CI_Controller {
         // }
         
         public function checkCode($code = null) {
+
+            if ($this->checkProfile()) {
+                $this->session->set_flashdata('success', 'Update Profile to start test');
+
+                redirect('user/profile');
+            }
 
             if (isset($_POST['code'])) {
                 $code = trim($_POST['code']);

@@ -68,7 +68,7 @@ if ($userData['gender'] == "2") {
                     <div class="LoginBox">
                         <h4 style="text-align: center;">Update Profile</h4>
                         <hr/>
-                         <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?>
+                        <p style="color:red"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?> </p>
                         <form name="regform" method="post" action="update-profile">
                             <div class="row rowGap">
                                 <div class="col-md-6">
@@ -99,12 +99,12 @@ if ($userData['gender'] == "2") {
                            
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label>Date of Birth</label>
+                                    <label>Date of Birth<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="date" name="dob" value="<?php echo $userData['dob']; ?>"  class="form-control formControl"  autocomplete="off"><br/>
                                     <p id="errordob" class="errMessage"></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Gender</label>
+                                    <label>Gender<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <select name="gender" class="form-control formControl" autocomplete="off">
                                         <option value="0">Select gender</option>
                                         <option value="1" <?php if ($userData['gender']=="1") {
@@ -117,67 +117,67 @@ if ($userData['gender'] == "2") {
                             </div>
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label>10th Passing Year</label>
+                                    <label>10th Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="number" name="tenth_py" value="<?php echo $userData['tenth_passing_year']; ?>"  class="form-control"  autocomplete="off"><br/>
                                     <p id="errortenth_py" class="errMessage"></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>10th Percentage</label>
+                                    <label>10th Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="number" name="tenth_per" value="<?php echo $userData['tenth_percentage']; ?>"  class="form-control" autocomplete="off"><br/>
                                     <p id="errortenth_per" class="errMessage"></p>
                                 </div>
                             </div>
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label>12th Passing Year</label>
+                                    <label>12th Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="number" name="twelveth_py" value="<?php echo $userData['twelveth_passing_year']; ?>"  class="form-control"  autocomplete="off"><br/>
                                     <p id="errortwelveth_py" class="errMessage"></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>12th Percentage</label>
+                                    <label>12th Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="number" name="twelveth_per" value="<?php echo $userData['twelveth_percentage']; ?>"  class="form-control"  autocomplete="off"><br/>
                                     <p id="errortwelveth_per" class="errMessage"></p>
                                 </div>
                             </div>
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label>Degree</label>
+                                    <label>Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="text" name="degree" class="form-control" value="<?php echo $userData['degree']; ?>"  autocomplete="off"><br/>
                                     <p id="errordegree" class="errMessage"></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Degree Percentage</label>
+                                    <label>Degree Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="number" name="degree_per" value="<?php echo $userData['degree_percentage']; ?>"  class="form-control"  autocomplete="off"><br/>
                                     <p id="errordegree_per" class="errMessage"></p>
                                 </div>
                             </div>
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label>Degree Passing Year</label>
+                                    <label>Degree Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="number" name="degree_py" value="<?php echo $userData['degree_passing_year']; ?>"  class="form-control"  autocomplete="off"><br/>
                                     <p id="errordegree_py" class="errMessage"></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Stream</label>
+                                    <label>Stream<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="text" name="stream" value="<?php echo $userData['stream']; ?>"  class="form-control"  autocomplete="off"><br/>
                                     <p id="errorstream" class="errMessage"></p>
                                 </div>
                             </div>
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label>Residence State</label>
+                                    <label>Residence State<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="text" name="state" value="<?php echo $userData['state']; ?>"  class="form-control formControl"  autocomplete="off"><br/>
                                     <p id="errorstate" class="errMessage"></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Residence City</label>
+                                    <label>Residence City<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="text" name="city" value="<?php echo $userData['city']; ?>"  class="form-control formControl"  autocomplete="off"><br/>
                                     <p id="errorcity" class="errMessage"></p>
                                 </div>
                             </div>
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label>Preffered Work Location</label>
+                                    <label>Preffered Work Location<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="text" name="pwl" value="<?php echo $userData['work_location']; ?>"  class="form-control"   autocomplete="off">
                                     <p id="errorpwl" class="errMessageLast"></p>
                                 </div>

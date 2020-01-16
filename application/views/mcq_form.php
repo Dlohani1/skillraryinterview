@@ -43,7 +43,7 @@
             width: 20%;
             padding: 10px;
             border: 2px solid black;
-            margin-top: 8%;
+            /* margin-top: 8%;*/
             /* height: 85vh; */
         }
         .row:after {
@@ -153,6 +153,18 @@ font-size: 22px;
 border-radius: 5px;
 background: #17A2B8;
 }
+.firstbox{
+margin: 20px 0px;
+}
+.imgProfile{
+width: 100px;
+border-radius: 20px;
+}
+.username{
+padding-left: 20px;
+position: absolute;
+line-height: 30px;
+}
     </style>
 </head>
 <body>
@@ -214,6 +226,7 @@ background: #17A2B8;
                 <input type="hidden" id="saveAnsId" />
                 <input type="hidden" id="studentSessionId" value=<?php echo $_SESSION['id']; ?> />
                 <input type="hidden" id="mcqSessionId" value=<?php echo $_SESSION['mcqId']; ?> />
+                <input type="hidden" id = "countdown" />
                 <div class="questionSection">
                     <p id="questionData"></p>
                     <div>
@@ -221,7 +234,7 @@ background: #17A2B8;
                         </ul>
                     </div>
 <div style="margin-top: 10%">
-<button class="saveBtn">Save & Next</button>
+<button class="saveBtn" onclick="saveNext()">Save & Next</button>
 </div>
                    <iframe id="myIframe" style="width:100%;height:100%; display: none"></iframe>
 
@@ -249,7 +262,21 @@ background: #17A2B8;
                     </div>
                 </div>
             </div>
+                    <?php
+                    $img = "images/boy.png";
+if ($_SESSION['userGender'] == "2") {
+        $img = "images/girl.png";
+    } ?>
             <div class="column1" id="questionPallate">
+
+                <div class="firstbox">
+<span><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
+<span class="username">
+<span>Name: <?php echo $_SESSION['firstName']." ".$_SESSION['lastName'];?></span><br/>
+<span>Mobile: <?php echo $_SESSION['contact'];?></span><br/>
+<span>Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
+</span>
+</div>
                 <div>
                     <div class="row" style="margin:0px;padding:0px;">
 <div class="col-md-6">
@@ -344,10 +371,15 @@ function loadIframe() {
 // };
 win.onbeforeunload = function(){
         console.log('unload test');
+        window.location.href="user/home";
     }
 }
 
 function getQuestion(sectionId) {
+    if (sectionId == 1) {
+
+        setTime();
+    }
     if (sectionId == 4) {
         document.getElementById("code-test").style.display = 'block';
         document.getElementById("questionId").style.display = 'none';    
@@ -432,7 +464,11 @@ function fetchQuestion(id,no) {
                     }
                     $('#optionsList').append("<li> <input  "+sel+" name='answer' type='radio' onclick='saveAns(this)' value="+ d.id +"> "+ d.option+" </li>");
                 });
-
+                
+                if (document.getElementById("countdown").value > 0) {
+                    clearTime();
+                    setTime();
+                }
 
             }
         });
@@ -444,10 +480,14 @@ function saveAns(ans) {
     document.getElementById("saveAnsId").value = ans.value;
 }
 
+function clearTime(){
+     console.log('aadd', window.countdownTimer)
+      clearTimeout(countdownTimer);
+}
+
 function saveNext() {
     
-    
-
+                
     var checkRadio = document.querySelector( 
         'input[name="answer"]:checked'); 
       
@@ -469,10 +509,11 @@ function saveNext() {
         var ansId = document.getElementById("saveAnsId").value;
         var student = document.getElementById("studentSessionId").value;
         var mcqId = document.getElementById("mcqSessionId").value;
+        var timeTaken = document.getElementById("countdown").value;
         $.ajax({
             type: "POST",
             url: "saveAnswer",
-            data:{"student_id":student, "answer_id":ansId, "section_id": sectionId, "mcq_id":mcqId, "question_id":questionId},
+            data:{"student_id":student, "answer_id":ansId, "section_id": sectionId, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken},
 
             success: function(data){
                 console.log('ansr', data)
@@ -525,6 +566,18 @@ function clearResponse() {
 
 </script>
  <script>
+    var countdownTimer;
+
+    function setTime() {
+
+        var seconds = 0;
+        countdownTimer = setInterval(function() {
+            seconds++;
+
+            document.getElementById("countdown").value = seconds;
+        }, 1000);
+    }
+
     var pos = 0,
       test, test_status, question, choice, choices, chA, chB, chC, correct = 0;
 

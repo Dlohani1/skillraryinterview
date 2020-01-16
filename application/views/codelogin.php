@@ -1,4 +1,9 @@
-
+<style type="text/css">
+    .errMessage{
+        position: absolute;
+        font-size: 13px
+    }
+</style>
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
@@ -20,7 +25,7 @@
                                 <div class="col-md-6 offset-md-3">
                                     <label class="labelText">Password<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="password" name="pwd" id="email" class="form-control"  autocomplete="off">
-                                    <p id="errorpwdlogin" class="errMessageLast" style="color:red"></p>
+                                    <p id="errorpwdlogin" class="errMessage" style="color:red"></p>
                                     <br/>
                                 </div>
                             </div>
