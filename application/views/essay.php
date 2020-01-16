@@ -8,17 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
     <title>SkillRary | Essay</title>
-    <script type="text/javascript">
 
-        function tosubmit() {
-            var mytext = document.getElementById("mytext").value;
-
-            localStorage.setItem("mytext", mytext);
-
-            return true;
-        }
-
-    </script>
     <style>
         .completeContainer{
             margin-top: 5%;
@@ -64,6 +54,7 @@
 </head>
 
 <body>
+
     <div class="container-fluid completeContainer">
         <h3 class="essayHeading">Essay Writing Editor</h3>
    
@@ -123,7 +114,7 @@
         var input = document.getElementById('essay');
         var backspace = 0;
         var deleteCount = 0;
-        var totalsec = 30;
+        var totalsec = 1800;
         
 
         input.addEventListener('keydown', function (event) {
