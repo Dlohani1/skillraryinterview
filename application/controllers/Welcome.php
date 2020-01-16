@@ -25,6 +25,8 @@ class Welcome extends CI_Controller {
 	}
 
 	public function showEssay() {
+		//$this->load->view('codheader');
 		$this->load->view('essay');
+		//$this->load->view('codefooter');
 	}
 }
