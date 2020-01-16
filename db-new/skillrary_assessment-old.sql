@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 16, 2020 at 10:22 AM
+-- Generation Time: Jan 13, 2020 at 01:39 PM
 -- Server version: 5.7.28-0ubuntu0.18.04.4
 -- PHP Version: 7.2.24-0ubuntu0.18.04.1
 
@@ -130,12 +130,7 @@ CREATE TABLE `mcq_code` (
 
 INSERT INTO `mcq_code` (`id`, `mcq_test_id`, `code`, `is_active`) VALUES
 (1, 1, 'U%Nyr', 1),
-(2, 1, '1234', 1),
-(3, 2, 'xW*a5', 1),
-(4, 3, 'UGg%Z', 1),
-(5, 3, 'YCuU(', 1),
-(6, 4, '^qc$N', 1),
-(7, 5, 'HuW)K', 1);
+(2, 1, '1234', 1);
 
 -- --------------------------------------------------------
 
@@ -155,11 +150,7 @@ CREATE TABLE `mcq_test` (
 --
 
 INSERT INTO `mcq_test` (`id`, `title`, `type`, `is_active`) VALUES
-(1, 'abc', '2', 0),
-(2, 'tess1', '2', 0),
-(3, 'test2', '2', 0),
-(4, '3', '2', 0),
-(5, 'tt', '2', 0);
+(1, 'abc', '2', 0);
 
 -- --------------------------------------------------------
 
@@ -182,21 +173,9 @@ CREATE TABLE `mcq_test_pattern` (
 --
 
 INSERT INTO `mcq_test_pattern` (`id`, `mcq_test_id`, `section_id`, `sub_section_id`, `level_id`, `completion_time`, `total_question`) VALUES
-(1, 1, 1, 1, 1, NULL, 3),
+(1, 1, 1, 1, 1, NULL, 2),
 (2, 1, 2, 12, 1, NULL, 2),
-(3, 1, 3, 20, 1, NULL, 2),
-(4, 2, 1, 1, 1, NULL, 2),
-(5, 2, 2, 12, 1, NULL, 2),
-(6, 2, 3, 20, 1, NULL, 2),
-(7, 3, 1, 1, 1, NULL, 2),
-(8, 3, 2, 12, 1, NULL, 2),
-(9, 3, 3, 20, 1, NULL, 2),
-(10, 4, 2, 12, 1, NULL, 3),
-(11, 4, 1, 1, 1, NULL, 3),
-(12, 4, 3, 20, 1, NULL, 4),
-(13, 5, 1, 1, 1, NULL, 3),
-(14, 5, 2, 12, 1, NULL, 3),
-(15, 5, 3, 20, 1, NULL, 3);
+(3, 1, 3, 20, 1, NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -219,27 +198,21 @@ CREATE TABLE `mcq_test_question` (
 --
 
 INSERT INTO `mcq_test_question` (`id`, `student_id`, `mcq_test_id`, `mcq_code`, `section_id`, `questions`, `total_time`) VALUES
-(1, 2, 1, '1234', 1, '18,19,17', NULL),
-(2, 2, 1, '1234', 2, '12,13', NULL),
-(3, 2, 1, '1234', 3, '7,8', NULL),
-(4, NULL, 1, '1234', 1, '18,19,17', NULL),
-(5, NULL, 1, '1234', 2, '12,13', NULL),
-(6, NULL, 1, '1234', 3, '7,8', NULL),
-(7, 2, 1, '1234', 1, '19,17,18', NULL),
-(8, 2, 1, '1234', 2, '12,13', NULL),
-(9, 2, 1, '1234', 3, '8,7', NULL),
-(10, 2, 1, '1234', 1, '17,18,19', NULL),
-(11, 2, 1, '1234', 2, '12,13', NULL),
-(12, 2, 1, '1234', 3, '7,8', NULL),
-(13, 2, 1, '1234', 1, '17,18,19', NULL),
-(14, 2, 1, '1234', 2, '13,12', NULL),
-(15, 2, 1, '1234', 3, '7,8', NULL),
-(16, 2, 1, '1234', 1, '19,17,18', NULL),
-(17, 2, 1, '1234', 2, '13,12', NULL),
-(18, 2, 1, '1234', 3, '7,8', NULL),
-(19, 2, 1, '1234', 1, '19,17,18', NULL),
-(20, 2, 1, '1234', 2, '12,13', NULL),
-(21, 2, 1, '1234', 3, '7,8', NULL);
+(7, 3, 1, 'U%Nyr', 1, '18,17', NULL),
+(8, 3, 1, 'U%Nyr', 2, '13,12', NULL),
+(9, 3, 1, 'U%Nyr', 3, '7,8', NULL),
+(10, 3, 1, 'U%Nyr', 1, '17,18', NULL),
+(11, 3, 1, 'U%Nyr', 2, '13,12', NULL),
+(12, 3, 1, 'U%Nyr', 3, '7,8', NULL),
+(13, 3, 1, 'U%Nyr', 1, '18,17', NULL),
+(14, 3, 1, 'U%Nyr', 2, '12,13', NULL),
+(15, 3, 1, 'U%Nyr', 3, '7,8', NULL),
+(16, 3, 1, 'U%Nyr', 1, '18,17', NULL),
+(17, 3, 1, 'U%Nyr', 2, '12,13', NULL),
+(18, 3, 1, 'U%Nyr', 3, '8,7', NULL),
+(19, 3, 1, '1234', 1, '17,18', NULL),
+(20, 3, 1, '1234', 2, '13,12', NULL),
+(21, 3, 1, '1234', 3, '8,7', NULL);
 
 -- --------------------------------------------------------
 
@@ -261,19 +234,7 @@ CREATE TABLE `mcq_time` (
 INSERT INTO `mcq_time` (`id`, `mcq_test_id`, `section_id`, `completion_time`) VALUES
 (1, 1, 1, '120'),
 (2, 1, 2, '120'),
-(3, 1, 3, '120'),
-(4, 2, 1, '20'),
-(5, 2, 2, '20'),
-(6, 2, 3, '20'),
-(7, 3, 1, '30'),
-(8, 3, 2, '30'),
-(9, 3, 3, '30'),
-(10, 4, 1, '20'),
-(11, 4, 2, '20'),
-(12, 4, 3, '20'),
-(13, 5, 1, '20'),
-(14, 5, 2, '20'),
-(15, 5, 3, '20');
+(3, 1, 3, '120');
 
 -- --------------------------------------------------------
 
@@ -363,11 +324,28 @@ CREATE TABLE `student_answers` (
   `student_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
   `answer_id` int(11) NOT NULL,
-  `correct_ans` int(11) NOT NULL DEFAULT '0',
   `mcq_test_id` int(11) NOT NULL,
   `section_id` int(11) NOT NULL,
   `marked_review` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_answers`
+--
+
+INSERT INTO `student_answers` (`id`, `student_id`, `question_id`, `answer_id`, `mcq_test_id`, `section_id`, `marked_review`) VALUES
+(41, 1, 18, 61, 13, 1, 0),
+(42, 1, 17, 58, 13, 1, 0),
+(43, 1, 21, 73, 13, 1, 0),
+(44, 1, 12, 37, 13, 2, 0),
+(45, 1, 13, 42, 13, 2, 0),
+(46, 1, 14, 46, 13, 2, 0),
+(47, 1, 8, 22, 13, 3, 0),
+(48, 1, 7, 17, 13, 3, 0),
+(49, 1, 10, 30, 13, 3, 0),
+(50, 1, 9, 27, 13, 3, 0),
+(51, 3, 12, 37, 1, 2, 0),
+(52, 3, 8, 23, 1, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -377,18 +355,17 @@ CREATE TABLE `student_answers` (
 
 CREATE TABLE `student_register` (
   `id` int(11) NOT NULL,
-  `first_name` text NOT NULL,
-  `last_name` text NOT NULL,
+  `full_name` text NOT NULL,
   `email` text NOT NULL,
   `contact_no` text NOT NULL,
   `state` text NOT NULL,
   `city` text NOT NULL,
   `dob` text NOT NULL,
-  `gender` enum('1','2') NOT NULL COMMENT '1 => male, 2 => female',
-  `tenth_passing_year` text NOT NULL,
-  `tenth_percentage` text NOT NULL,
-  `twelveth_passing_year` text NOT NULL,
-  `twelveth_percentage` text NOT NULL,
+  `gender` text NOT NULL,
+  `10th_passing_year` text NOT NULL,
+  `10th_percentage` text NOT NULL,
+  `12th_passing_year` text NOT NULL,
+  `12th_percentage` text NOT NULL,
   `degree` text NOT NULL,
   `degree_percentage` text NOT NULL,
   `degree_passing_year` text NOT NULL,
@@ -402,13 +379,9 @@ CREATE TABLE `student_register` (
 -- Dumping data for table `student_register`
 --
 
-INSERT INTO `student_register` (`id`, `first_name`, `last_name`, `email`, `contact_no`, `state`, `city`, `dob`, `gender`, `tenth_passing_year`, `tenth_percentage`, `twelveth_passing_year`, `twelveth_percentage`, `degree`, `degree_percentage`, `degree_passing_year`, `stream`, `work_location`, `password`, `is_active`) VALUES
-(1, '', '', '', '', '', '', '', '1', '', '', '', '', '', '', '', '', '', '', 0),
-(2, 'c', 'c', 'a@a.com', '8878100065', 'a', 'a', '2020-01-14', '2', '2010', '60', '2012', '60', 'a', '50', '2017', 'a', 'a', 'a', 0),
-(3, 'd', 'l', 'd@d.com', '8878100065', '', '', '', '2', '', '', '', '', '', '', '', '', '', '123123', 0),
-(4, 'e', 'f', 'd@gmail.com', '8878100065', '', '', '', '1', '', '', '', '', '', '', '', '', '', '123123', 0),
-(6, 'Deepak', 'Lohani', 'dlohani@gmail.com', '8878100065', '', '', '', '1', '', '', '', '', '', '', '', '', '', '123', 0),
-(7, 'dee', 'll', 'dee@gmail.com', '8878100065', '', '', '', '2', '', '', '', '', '', '', '', '', '', '1', 0);
+INSERT INTO `student_register` (`id`, `full_name`, `email`, `contact_no`, `state`, `city`, `dob`, `gender`, `10th_passing_year`, `10th_percentage`, `12th_passing_year`, `12th_percentage`, `degree`, `degree_percentage`, `degree_passing_year`, `stream`, `work_location`, `password`, `is_active`) VALUES
+(1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0),
+(2, 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 0);
 
 -- --------------------------------------------------------
 
@@ -554,17 +527,17 @@ ALTER TABLE `answers`
 -- AUTO_INCREMENT for table `mcq_code`
 --
 ALTER TABLE `mcq_code`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `mcq_test`
 --
 ALTER TABLE `mcq_test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `mcq_test_pattern`
 --
 ALTER TABLE `mcq_test_pattern`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `mcq_test_question`
 --
@@ -574,7 +547,7 @@ ALTER TABLE `mcq_test_question`
 -- AUTO_INCREMENT for table `mcq_time`
 --
 ALTER TABLE `mcq_time`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `question_bank`
 --
@@ -594,12 +567,12 @@ ALTER TABLE `section`
 -- AUTO_INCREMENT for table `student_answers`
 --
 ALTER TABLE `student_answers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=235;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `student_register`
 --
 ALTER TABLE `student_register`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `sub_section`
 --
