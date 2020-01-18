@@ -14,11 +14,14 @@
 
                                     <div class="form-group">
                                         <label for="email" class="cols-sm-2 control-label"></label>
+                                        <p style="color:red"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'] ; }?> </p>
                                         <div class="cols-sm-10">
                                             <div class="input-group">
                                                <!--  <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span> -->
+                                               
+
                                                 <input type="text" 
-                                                value = "<?php if (isset($_SESSION['code'])) { echo $_SESSION['code'] ; }?> "
+                                                value = "<?php if (isset($_SESSION['code'])) { echo $_SESSION['code'] ; } else { echo set_value('code');}?> "
                                                 class="form-control" name="code" id="code" autocomplete="off"/>
                                             </div>
                                         </div>

@@ -710,6 +710,61 @@ class QuestionBank extends CI_Controller {
         //     }
         // }
         
+        public function viewResult() {
+
+            $mcqId = $this->session->mcqId;
+            $studentId = $this->session->id;
+
+            $sql = "SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=1 UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id = ".$studentId." and section_id=2 UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=3";
+
+           
+
+            $query = $this->db->query($sql);
+           
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+
+                    $result1[] = $row->time_taken;
+                }
+            }
+
+            $sql = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 1 UNION ALL 
+
+                SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 2
+                UNION ALL
+                SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 3";
+
+            $query = $this->db->query($sql);
+                
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+
+                    $resultQ[] = $row->total;
+                }
+            }
+
+
+            $sql = "SELECT completion_time FROM `mcq_time` where mcq_test_id =".$mcqId." and section_id = 1 union ALL SELECT completion_time FROM `mcq_time` where mcq_test_id =".$mcqId." and section_id = 2 UNION ALL SELECT completion_time FROM `mcq_time` where mcq_test_id =".$mcqId." and section_id = 3";
+           
+            $query = $this->db->query($sql);
+           
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+
+                    $result2[] = $row->completion_time;
+                }
+            }
+
+            $result = array ($resultQ, $result2, $result1);
+
+            $this->load->view('user-header');
+            $this->load->view('results', array("results"=>$result));
+            $this->load->view('codefooter');
+
+        }
         public function checkCode($code = null) {
 
             if ($this->checkProfile()) {
@@ -718,11 +773,16 @@ class QuestionBank extends CI_Controller {
                 redirect('user/profile');
             }
 
+            if ($this->isMcqTaken() > 0) {
+                $this->session->set_flashdata('success', 'Invalid Code');
+
+                redirect('user/enter-code');
+            }
+
             if (isset($_POST['code'])) {
                 $code = trim($_POST['code']);
             }
 
-            //echo var_dump($code); die;
 
 
             $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
@@ -1050,6 +1110,7 @@ class QuestionBank extends CI_Controller {
         }
 
         public function showInstructions() {
+            $this->load->view('user-header');
             $this->load->view('instructions');
         }
 

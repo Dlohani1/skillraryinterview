@@ -210,7 +210,7 @@
             var win = window.open("mcq-question", "", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
 win.onbeforeunload = function(){
         console.log('unload');
-        window.location.href="user/home";
+        window.location.href="user/view-results";
     }
 // win.onbeforeunload = function (event) {
 //     var message = 'Important: Please click on \'Save\' button to leave this page.';

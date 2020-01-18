@@ -233,7 +233,7 @@ line-height: 30px;
                         <ul id="optionsList" class="optionList">
                         </ul>
                     </div>
-<div style="margin-top: 10%">
+<div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
 </div>
                    <iframe id="myIframe" style="width:100%;height:100%; display: none"></iframe>
@@ -354,9 +354,11 @@ $( document ).ready(function() {
 function loadIframe() {
 
     var id = document.getElementById("code-lang").value;
-    var url = "https://code.skillrary.com/url_assessment/1003/"+id+"/9";
+    var mcqId = document.getElementById("mcqSessionId").value;
+    var userId  = document.getElementById("studentSessionId").value;
+    var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/8/"+mcqId;
     var win = window.open(url, "_self", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
-    // document.getElementById('myIframe').src = "https://code.skillrary.com/url_assessment/1003/"+id+"/9";
+    // document.getElementById('myIframe').src = "https://code.skillrary.com/url_assessm"+userId+"/"+id+"/9";
 
     // document.getElementById("myIframe").style.display = 'block';
 
@@ -492,11 +494,11 @@ function saveNext() {
         'input[name="answer"]:checked'); 
       
     if(checkRadio != null) {
-            var str = document.getElementById("questionId").innerHTML;
-    var res = str.split(".");
-    console.log('rr', "iconAnswered"+res[1].trim());
+        var str = document.getElementById("questionId").innerHTML;
+        var res = str.split(".");
+        console.log('rr', "iconAnswered"+res[1].trim());
 
-    document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "green";  
+        document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "green";  
         console.log('checked');
         var qno = document.getElementById("questionId").innerHTML;
 

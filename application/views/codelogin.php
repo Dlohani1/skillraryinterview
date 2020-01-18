@@ -11,7 +11,8 @@
                     <div class="LoginBox">
                         <h4 style="text-align: center;">Login</h4>
                         <hr/>
-                         <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?>
+                        <?php if (isset($_SESSION['success'])) { echo "<p style='color: green;
+    text-align: center;'>".$_SESSION['success']."</p>";} ?>
                         <form method="post" action="signin" name="logForm">
                             <div class="row">
                                 <div class="col-md-6 offset-md-3">

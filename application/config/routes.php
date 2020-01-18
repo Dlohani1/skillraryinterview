@@ -91,7 +91,7 @@ $route['user/home'] = 'questionBank/userHome';
 
 
 $route['essay'] = 'welcome/showEssay';
-
+$route['user/view-results'] = 'questionBank/viewResult';
 
 $route['addMcq']['POST'] = 'questionBank/addMcqCode';
 
