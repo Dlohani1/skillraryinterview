@@ -204,38 +204,26 @@
 
     <script>
         function enterCode() {
-             var remember = document.getElementById("checkbox-1");
-          if (remember.checked) {
-            //window.location.href='mcq-question';
-            var win = window.open("mcq-question", "", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
-win.onbeforeunload = function(){
-        console.log('unload');
-        window.location.href="user/view-results";
-    }
-// win.onbeforeunload = function (event) {
-//     var message = 'Important: Please click on \'Save\' button to leave this page.';
-//     if (typeof event == 'undefined') {
-//         event = window.event;
-//     }
-//     if (event) {
-//         event.returnValue = message;
-//     }
-//     return message;
-// };
-//              win.onunload = function() {
-//   if (window.opener && typeof(window.opener.onPopupClosed) == 'function') {
-//     window.opener.onPopupClosed();
-//   }
-// };
+            var isChrome = !!window.chrome; // "!!" converts the object to a boolean value
+            console.log(isChrome); // Just to visualize what's happening
 
-// window.onPopupClosed = function() {
-//   alert("You closed the pop up!");
-// };
+            /** Example: User uses Firefox, therefore isChrome is false; alert get's triggered */
+            if (isChrome !== true) { 
+              alert("Please use Google Chrome to access this site.\nSome key features do not work in browsers other than Chrome.");
+            } else {
 
-          } else {
-            alert("Please accept the instructions");
-          }
-            
+                var remember = document.getElementById("checkbox-1");
+                if (remember.checked) {
+                //window.location.href='mcq-question';
+                    var win = window.open("mcq-question", "", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+                    win.onbeforeunload = function(){
+                        console.log('unload');
+                        window.location.href="user/view-results";
+                    }  
+                } else {
+                    alert("Please accept the instructions");
+                }
+            }            
         }
     </script>
 </body>
