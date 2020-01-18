@@ -78,7 +78,7 @@ if ($userData['gender'] == "2") {
                                     </div>
                                     <div class="col-md-6">
                                         <label class="labelText">Last name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                        <input type="text" name="lastname" value="<?php echo $userData['first_name']; ?>"  class="form-control"  autocomplete="off"><br/>
+                                        <input type="text" name="lastname" value="<?php echo $userData['last_name']; ?>"  class="form-control"  autocomplete="off"><br/>
                                         <p id="errlstnm" class="errMessage"></p>
                                     </div>
                                 </div>
