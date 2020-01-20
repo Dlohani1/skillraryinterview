@@ -45,6 +45,11 @@ function validateUpdateProfile(){
         return false;
 }
 
+function Upload(){
+    var x = document.getElementById("resume_upload").naturalHeight;
+    alert(x,'height')
+}
+
 </script>
 
     <?php
@@ -59,7 +64,35 @@ if ($userData['gender'] == "2") {
                 <div class="col-md-4">
                     <div class="profileBox">
                         <div align="center">
-                            <img src=<?php echo base_url().$img;?> class="imgLogo"/>
+                        <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Edit</button>
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Your Profile</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <button class="resume_upload" type="button">
+                                                    <span class="btn_lbl">Browse</span>
+                                                    <span class="btn_colorlayer"></span>
+                                                    <input type="file" name="resume" id="resume_upload" />
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="subbtn" onclick="Upload();" >Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src=<?php echo base_url()."../".$img;?> class="imgLogo"/>
                         </div><br/>
                         <p align="center"></p>
                     </div>
@@ -72,12 +105,12 @@ if ($userData['gender'] == "2") {
                         <form name="regform" method="post" action="update-profile">
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                        <label class="labelText">First name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                        <label>First name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                         <input type="text" name="firstname" value="<?php echo $userData['first_name']; ?>" class="form-control"  autocomplete="off"><br/>
                                         <p id="errfstnm" class="errMessage" ></p>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="labelText">Last name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                        <label>Last name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                         <input type="text" name="lastname" value="<?php echo $userData['last_name']; ?>"  class="form-control"  autocomplete="off"><br/>
                                         <p id="errlstnm" class="errMessage"></p>
                                     </div>
@@ -85,12 +118,12 @@ if ($userData['gender'] == "2") {
                             
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label class="labelText">Mobile<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                    <label>Mobile<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="number" name="cno" value="<?php echo $userData['contact_no']; ?>"  class="form-control"  autocomplete="off"><br/>
                                     <p id="errcno" class="errMessage"></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="labelText">Email<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                    <label>Email<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="email" name="email" value="<?php echo $userData['email']; ?>"  id="emaillogin" class="form-control"  autocomplete="off"><br/>
                                     <p id="erremail" class="errMessage"></p>
                                 </div>

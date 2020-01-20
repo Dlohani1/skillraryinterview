@@ -86,7 +86,7 @@
     }
     .imgLogo{
         width: 130px;
-        border-radius: 100px;
+        /* border-radius: 100px; */
     }
     .dashboardList{
         list-style-type: none;
@@ -103,6 +103,102 @@
         margin-bottom: 10px;
         border-radius: 5px;
         cursor: pointer;
+    }
+    .editButton{
+        position: absolute;
+        left: 50%;
+        top: 17%;
+        transform: translate(-50%,-17%);
+        background: white;
+        border: 2px solid white;
+    }
+    .editButton:focus{
+        outline: none;
+    }
+    .modal-content {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        min-width: 600px;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: .3rem;
+        outline: 0;
+    }
+    .modal-header .close {
+        padding: 1rem 1rem;
+        margin: -1rem -1rem -1rem auto;
+        margin-top: -10% !important;
+    }
+    .modal-header {
+        display: inline-block !important;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: 1rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+    }
+    .modal-footer{
+        display: inline-block !important;
+        border-top: 1px solid transparent !important;
+    }
+    .resume_upload {
+        position: relative;
+        min-width: 141px;
+        height: 36px;
+        text-align: center;
+        color: #33a478;
+        line-height: 25px;
+        background: #fff;
+        border: solid 2px black;
+        font-weight: 600;
+    }
+        
+    a.resume_upload {
+        display: inline-block;
+    }
+        
+    .resume_upload .btn_lbl {
+        position: relative;
+        z-index: 2;
+        pointer-events: none;
+    }
+        
+    .resume_upload .btn_colorlayer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        z-index: 1;
+        pointer-events: none;
+    }
+        
+    .resume_upload input[type="file"] {
+        position: absolute;
+        top: 0px;
+        left: -90px;
+        font-weight: 600;
+        margin-left: 92%;
+        color: #33a478;
+        outline: none;                    
+    }
+    .subbtn{
+        background: #33A478;
+        padding: 5px 17px;
+        border: 2px solid #33A478;
+    }
+    .subbtn:focus{
+        outline: none;
     }
 </style>
 
@@ -123,3 +219,9 @@
                 </div>
             </nav>
         </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
+    
+</body>
+</html>
