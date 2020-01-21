@@ -60,8 +60,9 @@ function Upload() {
                       var height = this.height;
                       var width = this.width;
                       if (height > 180 || width > 180) {
-                        document.getElementById('demo').innerHTML = "Image height and width must not exceed 180px.";
-                          return false;
+                        // document.getElementById('demo').innerHTML = "Image height and width must not exceed 180px.";
+                        // e.preventDefault();
+                        return false;
                       } else if(height < 180 || width <  180){
                         document.getElementById('demo').innerHTML = "";
                         $("#exampleModalCenter").modal("hide");
@@ -75,8 +76,7 @@ function Upload() {
           document.getElementById('demo').innerHTML = "Please select a valid Image file.";
           return false;
       }
-
-     
+   
   }
   function closeButtonLogin(){
       document.getElementById('demo').innerHTML = "";
@@ -86,10 +86,16 @@ function Upload() {
 
     <?php
 
-        $img = "images/boy.png";
-if ($userData['gender'] == "2") {
-        $img = "images/girl.png";
-    } ?>
+        if (null !== $userData['profile-pic']) {
+            $img = $userData['profile-pic'];
+        } else {
+            $img = "images/boy.png";
+            if ($userData['gender'] == "2") {
+                $img = "images/girl.png";
+            }
+        }
+       
+        ?>
 
         <div class="container" id="contentBox">
             <div class="row">
@@ -107,24 +113,24 @@ if ($userData['gender'] == "2") {
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="#">
+                                        <form action="upload/do_upload" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <button class="resume_upload" type="button">
                                                     <span class="btn_lbl">Browse</span>
                                                     <span class="btn_colorlayer"></span>
-                                                    <input type="file" id="fileUpload" />
+                                                    <input type="file" name="profilePic" id="fileUpload" />
                                                 </button>
                                                 <p id="demo" class="errortag"></p>
                                             </div>
                                             <div>
-                                                <button type="button" value="Upload" class="subbtn" onclick="return Upload()">Submit</button>
+                                                <input type="submit" value="Upload" class="subbtn" >
                                             </div>
                                         </form>
                                     </div>
                                     </div>
                                 </div>
                             </div>
-                            <img src=<?php echo base_url()."../".$img;?> class="imgLogo"/>
+                            <img src=<?php echo base_url().$img;?> class="imgLogo"/>
                         </div><br/>
                         <p align="center"></p>
                     </div>

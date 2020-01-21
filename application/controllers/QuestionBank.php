@@ -597,6 +597,7 @@ class QuestionBank extends CI_Controller {
                     $userData['degree_percentage'] = $row->degree_percentage;
                     $userData['stream'] = $row->stream;
                     $userData['work_location'] = $row->work_location;
+                    $userData['profile-pic'] = $row->profile_image;
                 }
             }
 
@@ -1104,6 +1105,44 @@ class QuestionBank extends CI_Controller {
         // public function showInstructions($data) {
         //     $this->load->view('instructions', array("data"=>$data));
         // }
+
+        public function uploadProfileImage() {
+            $config['upload_path']          = './uploads/';
+            $config['allowed_types']        = 'gif|jpg|png';
+            $config['max_size']             = 100;
+            $config['max_width']            = 1024;
+            $config['max_height']           = 768;
+
+            $this->load->library('upload', $config);
+
+            if ( ! $this->upload->do_upload('profilePic'))
+            {
+                    $error = array('error' => $this->upload->display_errors());
+
+                    print_r($error); die;
+
+                    //$this->load->view('upload_form', $error);
+            }
+            else
+            {
+                // echo "dfafa"; die;
+                    // $data = array('upload_data' => $this->upload->data());
+
+                    // $this->load->view('upload_success', $data);
+                $userId = $this->session->id;
+
+            $userData = array();
+
+            $userData['profile_image'] = "uploads/".$_FILES['profilePic']['name'];
+
+           
+            $this->db->where('id', $userId);
+            $this->db->update('student_register',$userData);
+
+            $this->session->set_flashdata('success', 'Updated successfully');
+                redirect('user/profile', 'refresh');
+            }
+        }
 
         public function loadFrame() {
             $this->load->view('loadiframe');
