@@ -198,14 +198,14 @@ line-height: 30px;
                 </div>
                 </div><hr>
                 <div class="row">
-                    <div class="col-md-6" id="questionMCQ">Question Type : MCQ</div>
+                    <div class="col-md-8 offset-md-1" id="questionMCQ">Question Type : MCQ</div>
                     <div class="col-md-6 text-right" onload="starttime()">
                         <!-- Marks for Correct Answer | Negative Marks : 0.33 -->
                     </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <div id="questionId" class="col-md-6"></div>
+                    <div id="questionId" class="col-md-8 offset-md-1"></div>
                     <div id ="code-test" style="display:none">
                       Select Language : 
                       <select id="code-lang">
@@ -228,7 +228,9 @@ line-height: 30px;
                 <input type="hidden" id="mcqSessionId" value=<?php echo $_SESSION['mcqId']; ?> />
                 <input type="hidden" id = "countdown" />
                 <div class="questionSection">
-                    <p id="questionData"></p>
+                    <div class="row">
+                        <div class="col-md-8 offset-md-1">
+                            <p id="questionData"></p>
                     <div>
                         <ul id="optionsList" class="optionList">
                         </ul>
@@ -237,7 +239,8 @@ line-height: 30px;
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
 </div>
                    <iframe id="myIframe" style="width:100%;height:100%; display: none"></iframe>
-
+                        </div>
+                    </div>
                 </div>
 
                                 <div class="footer">
@@ -263,17 +266,24 @@ line-height: 30px;
                 </div>
             </div>
                     <?php
-                    $img = "images/boy.png";
-if ($_SESSION['userGender'] == "2") {
-        $img = "images/girl.png";
-    } ?>
+                    if (null !== $userData['profile-pic']) {
+            $img = $userData['profile-pic'];
+        } else {
+            $img = "images/boy.png";
+            if ($userData['gender'] == "2") {
+                $img = "images/girl.png";
+            }
+        }
+       
+
+     ?>
             <div class="column1" id="questionPallate">
 
                 <div class="firstbox">
 <span><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
 <span class="username">
-<span>Name: <?php echo $_SESSION['firstName']." ".$_SESSION['lastName'];?></span><br/>
-<span>Mobile: <?php echo $_SESSION['contact'];?></span><br/>
+<span>Name: <?php echo $userData['first_name']." ".$userData['last_name'] ; ?></span><br/>
+<span>Mobile: <?php echo $userData['contact_no']; ?></span><br/>
 <span>Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
 </span>
 </div>

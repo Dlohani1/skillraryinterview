@@ -91,6 +91,9 @@ $route['user/home'] = 'questionBank/userHome';
 
 $route['user/test'] = 'questionBank/codeTestResult';
 
+$route['user/upload/do_upload'] = 'questionBank/uploadProfileImage';
+
+
 $route['essay'] = 'welcome/showEssay';
 $route['user/view-results'] = 'questionBank/viewResult';
 

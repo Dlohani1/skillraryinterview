@@ -114,11 +114,15 @@
 </head>
 <body>
         <?php
-
-        $img = "images/boy.png";
-if ($_SESSION['userGender'] == "2") {
-        $img = "images/girl.png";
-    } ?>
+        if (null !== $userData['profile-pic']) {
+            $img = $userData['profile-pic'];
+        } else {
+            $img = "images/boy.png";
+            if ($userData['gender'] == "2") {
+                $img = "images/girl.png";
+            }
+        }
+       ?>
     <div class="container-fluid editorContainer">
 
         <div class="container">
@@ -131,14 +135,14 @@ if ($_SESSION['userGender'] == "2") {
                         </div>
                         <div>
                             <div class="bubbleCircle3 bubbleCircle33"></div>
-                            <p class="welcomeText">Welcome to Our Platform</p>
+                            <p class="welcomeText">Welcome <?php echo $userData['first_name']." ".$userData['last_name']; ?></p>
                         </div>
 
                         <div class="nameUser">
-                            <p><span class="label">Name : &nbsp;</span><span class="name"> <?php echo $_SESSION['firstName']." ".$_SESSION['lastName'];?></span></p><br/>
-                            <p><span class="label">Email : &nbsp;</span>
-                             <span class="name"> <?php echo $_SESSION['email'];?></span></p><br/>
-                            <p><span class="label">Mobile : &nbsp;</span><span class="name"> <?php echo $_SESSION['contact'];?></span></p>
+
+                            <p><span class="label">Email: &nbsp;</span>
+                            <span class="name"> <?php echo $userData['email']; ?></span></p><br/>
+                        <p><span class="label">Mobile: &nbsp;</span><span class="name"> <?php echo $userData['contact_no']; ?></span></p>
                             <!-- <p><span class="label">Gender</span> : <span class="name">ABCD</span></p> -->
                         </div>
 
