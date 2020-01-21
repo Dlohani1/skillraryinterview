@@ -44,12 +44,44 @@ function validateUpdateProfile(){
         }
         return false;
 }
+function Upload() {
+      
+      var fileUpload = document.getElementById("fileUpload");
+   
+      var regex = new RegExp("(.jpg|.png|.jpeg)$");
+      if (regex.test(fileUpload.value.toLowerCase())) {
+          if (typeof (fileUpload.files) != "undefined") {
+              var reader = new FileReader();
+              reader.readAsDataURL(fileUpload.files[0]);
+              reader.onload = function (e) {
+                  var image = new Image();
+                  image.src = e.target.result;
+                  image.onload = function () {
+                      var height = this.height;
+                      var width = this.width;
+                      if (height > 180 || width > 180) {
+                        document.getElementById('demo').innerHTML = "Image height and width must not exceed 180px.";
+                          return false;
+                      } else if(height < 180 || width <  180){
+                        document.getElementById('demo').innerHTML = "";
+                        $("#exampleModalCenter").modal("hide");
+                        document.getElementById("fileUpload").value = "";
+                          return false;
+                      }
+                  };
+              }
+          }
+      } else {
+          document.getElementById('demo').innerHTML = "Please select a valid Image file.";
+          return false;
+      }
 
-function Upload(){
-    var x = document.getElementById("resume_upload").naturalHeight;
-    alert(x,'height')
-}
-
+     
+  }
+  function closeButtonLogin(){
+      document.getElementById('demo').innerHTML = "";
+      document.getElementById("fileUpload").value = "";
+  }
 </script>
 
     <?php
@@ -64,11 +96,10 @@ if ($userData['gender'] == "2") {
                 <div class="col-md-4">
                     <div class="profileBox">
                         <div align="center">
-                        <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Edit</button>
+                         <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Edit</button>
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
-
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalCenterTitle">Update Your Profile</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
@@ -76,16 +107,17 @@ if ($userData['gender'] == "2") {
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
+                                        <form action="#">
                                             <div class="form-group">
                                                 <button class="resume_upload" type="button">
                                                     <span class="btn_lbl">Browse</span>
                                                     <span class="btn_colorlayer"></span>
-                                                    <input type="file" name="resume" id="resume_upload" />
+                                                    <input type="file" id="fileUpload" />
                                                 </button>
+                                                <p id="demo" class="errortag"></p>
                                             </div>
                                             <div>
-                                                <button type="button" class="subbtn" onclick="Upload();" >Submit</button>
+                                                <button type="button" value="Upload" class="subbtn" onclick="return Upload()">Submit</button>
                                             </div>
                                         </form>
                                     </div>
