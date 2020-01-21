@@ -135,10 +135,10 @@ if ($_SESSION['userGender'] == "2") {
                         </div>
 
                         <div class="nameUser">
-                            <p><span class="label">Name: </span><span class="name"> <?php echo $_SESSION['firstName']." ".$_SESSION['lastName'];?></span></p><br/>
-                            <p><span class="label">Email: </span>
+                            <p><span class="label">Name : &nbsp;</span><span class="name"> <?php echo $_SESSION['firstName']." ".$_SESSION['lastName'];?></span></p><br/>
+                            <p><span class="label">Email : &nbsp;</span>
                              <span class="name"> <?php echo $_SESSION['email'];?></span></p><br/>
-                            <p><span class="label">Mobile: </span><span class="name"> <?php echo $_SESSION['contact'];?></span></p>
+                            <p><span class="label">Mobile : &nbsp;</span><span class="name"> <?php echo $_SESSION['contact'];?></span></p>
                             <!-- <p><span class="label">Gender</span> : <span class="name">ABCD</span></p> -->
                         </div>
 

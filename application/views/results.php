@@ -59,7 +59,6 @@
 <body>
 
     <div class="container-fluid editorContainer">
-       
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -78,6 +77,7 @@
                             echo "<tr><td> English</td><td>".$results[0][0]."</td><td>".$results[1][0]."</td><td>".$results[2][0]."</td></tr>";
                             echo "<tr><td> Reasoning</td><td>".$results[0][1]."</td><td>".$results[1][1]."</td><td>".$results[2][1]."</td></tr>";
                             echo "<tr><td> Quantitative</td><td>".$results[0][2]."</td><td>".$results[1][2]."</td><td>".$results[2][2]."</td></tr>";
+                            echo "<tr><td> Code Test</td><td>".$results[3][1]."</td><td>".$results[3][2]."</td><td>".$results[3][3]."</td></tr>";
 
                             ?>
                         </table>

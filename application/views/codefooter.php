@@ -155,7 +155,8 @@
         }
         .skillraryLogo {
             width: 100%;
-            height: 110px;
+            /*height: 110px;*/
+            top:40px;
         }
         @media only screen and (max-width: 600px) {
             .list{

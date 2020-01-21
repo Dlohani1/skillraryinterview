@@ -342,6 +342,7 @@ class QuestionBank extends CI_Controller {
         public function userHome() {
             $this->load->view('user-header');
             $this->load->view('user-home');
+
             $this->load->view('codefooter');            
         }
 
@@ -449,7 +450,8 @@ class QuestionBank extends CI_Controller {
                     //return $this->showUserProfile();
                 } else {
                     if (strlen(trim($_POST['enter-code'])) > 0) {
-                        $this->session->set_userdata('code', $_POST['enter-code']);
+                        $this->session->set_userdata('code', trim($_POST['enter-code']));
+                        redirect('user/enter-code');
                     }
                     //redirect('user/enter-code');
                     redirect('user/home');
@@ -758,13 +760,48 @@ class QuestionBank extends CI_Controller {
                 }
             }
 
-            $result = array ($resultQ, $result2, $result1);
+            $codeResult = $this->codeTestResult();
+
+            $result = array ($resultQ, $result2, $result1, $codeResult);
 
             $this->load->view('user-header');
             $this->load->view('results', array("results"=>$result));
             $this->load->view('codefooter');
 
         }
+
+        public function codeTestResult() {
+
+            $id = $this->session->id;
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_URL,"https://code.skillrary.com/api/user-timings");
+            curl_setopt($ch, CURLOPT_POST, 1);
+            //curl_setopt($ch, CURLOPT_POSTFIELDS,"user_id=1");
+
+            // In real life you should use something like:
+             curl_setopt($ch, CURLOPT_POSTFIELDS, 
+                     http_build_query(array('user_id' => $id)));
+
+            // Receive server response ...
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $server_output = curl_exec($ch);
+
+
+            $result = json_decode($server_output);
+
+            curl_close ($ch);
+
+            
+            $codeResult = array ("Code Test", "2", "120", $result->result);
+            return $codeResult;
+
+            // Further processing ...
+            //if ($server_output == "OK") { ... } else { ... }
+
+        }
+
         public function checkCode($code = null) {
 
             if ($this->checkProfile()) {
@@ -773,35 +810,42 @@ class QuestionBank extends CI_Controller {
                 redirect('user/profile');
             }
 
+
             if ($this->isMcqTaken() > 0) {
                 $this->session->set_flashdata('success', 'Invalid Code');
 
                 redirect('user/enter-code');
-            }
+            } else {
 
-            if (isset($_POST['code'])) {
-                $code = trim($_POST['code']);
-            }
-
-
-
-            $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
-
-            $query = $this->db->query($sql);
-
-            if($query->num_rows() > 0)  {
-
-            foreach ($query->result() as $row) {
-
-                    $mcqId = $row->mcq_test_id;
-            }   
-
-            $this->session->set_userdata('mcqId', $mcqId); 
+                if (isset($_POST['code'])) {
+                    $code = trim($_POST['code']);
+                }
 
 
-            $this->generateQuestion($code, $mcqId);
 
-            }
+                $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
+
+                $query = $this->db->query($sql);
+
+                if($query->num_rows() > 0)  {
+
+                    foreach ($query->result() as $row) {
+
+                            $mcqId = $row->mcq_test_id;
+                    }   
+
+                    $this->session->set_userdata('mcqId', $mcqId);
+                    if ($this->isMcqTaken() > 0) {
+                        $this->session->set_flashdata('success', 'Invalid Code');
+
+                        redirect('user/enter-code');
+                    } else {
+
+
+                        $this->generateQuestion($code, $mcqId);
+                    }
+                }
+            }            
         }
 
         public function addMcqCode() {
