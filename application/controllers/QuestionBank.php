@@ -141,7 +141,9 @@ class QuestionBank extends CI_Controller {
                 if ($this->isMcqTaken() > 0) {
                         echo "MCQ test already taken";
                 } else {
-                 $this->load->view('mcq_form');      
+                    $userData = $this->showUserProfile(true);
+
+                 $this->load->view('mcq_form', array('userData'=>$userData));      
                 }
                 
         }
@@ -340,8 +342,9 @@ class QuestionBank extends CI_Controller {
         }
 
         public function userHome() {
+            $userData = $this->showUserProfile(true);
             $this->load->view('user-header');
-            $this->load->view('user-home');
+            $this->load->view('user-home' , array('userData' => $userData));
             $this->load->view('codefooter');            
         }
 
@@ -564,7 +567,7 @@ class QuestionBank extends CI_Controller {
 
         }  
 
-        public function showUserProfile() {
+        public function showUserProfile($user = false) {
 
             $userId = $this->session->id;
 
@@ -601,9 +604,18 @@ class QuestionBank extends CI_Controller {
                 }
             }
 
-            $this->load->view('user-header');
-            $this->load->view('update-profile', array('userData' => $userData));
-            $this->load->view('codefooter');
+            if ($user) {
+
+                return $userData;
+
+            } else {
+
+                $this->load->view('user-header');
+                $this->load->view('update-profile', array('userData' => $userData));
+                $this->load->view('codefooter');
+            }
+
+
         }
 
         public function enterCode() {
