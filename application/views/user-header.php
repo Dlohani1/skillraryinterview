@@ -86,7 +86,6 @@
     }
     .imgLogo{
         width: 130px;
-        /* border-radius: 100px; */
     }
     .dashboardList{
         list-style-type: none;
@@ -207,6 +206,11 @@
         color: red;
         left: 50%;
         transform: translateX(-50%);
+    }
+    .updatedText{
+        color: #33A478;
+        font-weight: 600;
+        font-size: 20px;
     }
 </style>
 
