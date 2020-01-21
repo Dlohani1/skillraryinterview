@@ -1,48 +1,111 @@
 <script>
 function validateUpdateProfile(){
+        
+        var error = true;
+
+        var emailpattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        var email = document.getElementById('emaillogin').value;
+
+        if(document.regform.firstname.value.length == '0'){
+            document.getElementById("errorFstName").innerHTML = "This field is required";
+            error = false;
+        }
+        if(document.regform.lastname.value.length == '0'){
+            document.getElementById("errlstnm").innerHTML = "This field is required";
+            error = false;
+        }
+        if(document.regform.cno.value.length == '0'){
+            document.getElementById("errcno").innerHTML = "This field is required";
+            error = false;
+        } else if(document.regform.cno.value.length > '10' || document.regform.cno.value.length < '10'){
+            document.getElementById("errcno").innerHTML = "Enter valid number";
+            error = false;
+        }
+    
+        if(document.regform.email.value.length == '0') { 
+            document.getElementById("erremail").innerHTML = "This field is required";
+            error = false;
+           
+        } else if(!emailpattern.test(email)) {
+            document.getElementById("erremail").innerHTML = "Please enter valid email";
+            error = false;
+        } 
         if(document.regform.dob.value.length == '0'){
             document.getElementById("errordob").innerHTML = "This field is required";
+            error = false;
         }
+
         if(document.regform.gender.selectedIndex == '0'){
             document.getElementById("errorgender").innerHTML = "This field is required";
+            error = false;
         }
+
         if(document.regform.tenth_py.value.length == '0'){
             document.getElementById("errortenth_py").innerHTML = "This field is required";
-        }
+            error = false;
+        } else  if(document.regform.tenth_py.value.length > '4'){
+            document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
+            error = false;
+        } 
+
         if(document.regform.tenth_per.value.length == '0'){
             document.getElementById("errortenth_per").innerHTML = "This field is required";
-        }
+            error = false;
+        } else if (document.regform.tenth_per.value.length > '2'){
+                document.getElementById("errortenth_per").innerHTML = "Please enter valid percentage";
+                error = false;
+        } 
+
         if(document.regform.twelveth_py.value.length == '0'){
             document.getElementById("errortwelveth_py").innerHTML = "This field is required";
-        }
+            error = false;
+        } else if(document.regform.twelveth_py.value.length > '4'){
+            document.getElementById("errortwelveth_py").innerHTML = "Please enter valid year";
+            error = false;
+        } 
+
         if(document.regform.twelveth_per.value.length == '0'){
             document.getElementById("errortwelveth_per").innerHTML = "This field is required";
-        }
-        if(document.regform.twelveth_per.value.length == '0'){
-            document.getElementById("errortwelveth_per").innerHTML = "This field is required";
-        }
+            error = false;
+        } else if(document.regform.twelveth_per.value.length > '2'){
+            document.getElementById("errortwelveth_per").innerHTML = "Please enter valid percentage";
+            error = false;
+        } 
+
         if(document.regform.degree.value.length == '0'){
             document.getElementById("errordegree").innerHTML = "This field is required";
+            error = false;
         }
         if(document.regform.degree_per.value.length == '0'){
             document.getElementById("errordegree_per").innerHTML = "This field is required";
-        }
+            error = false;
+        } else  if(document.regform.degree_per.value.length > '2'){
+            document.getElementById("errordegree_per").innerHTML = "Please enter valid percentage";
+            error = false;
+        } 
         if(document.regform.degree_py.value.length == '0'){
             document.getElementById("errordegree_py").innerHTML = "This field is required";
-        }
+        } else if(document.regform.degree_py.value.length > '4'){
+            document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
+            error = false;
+        } 
         if(document.regform.stream.value.length == '0'){
             document.getElementById("errorstream").innerHTML = "This field is required";
+            error = false;
         }
         if(document.regform.state.value.length == '0'){
             document.getElementById("errorstate").innerHTML = "This field is required";
+            error = false;
         }
         if(document.regform.city.value.length == '0'){
             document.getElementById("errorcity").innerHTML = "This field is required";
+            error = false;
         }
         if(document.regform.pwl.value.length == '0'){
             document.getElementById("errorpwl").innerHTML = "This field is required";
+            error = false;
         }
-        return false;
+        return error;
 }
 function Upload() {
       
@@ -109,7 +172,7 @@ function Upload() {
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalCenterTitle">Update Your Profile</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
-                                        <span aria-hidden="true">&times;</span>
+                                            <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
@@ -139,13 +202,13 @@ function Upload() {
                     <div class="LoginBox">
                         <h4 style="text-align: center;">Update Profile</h4>
                         <hr/>
-                        <p style="color:red"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?> </p>
-                        <form name="regform" method="post" action="update-profile">
+                        <p class="updatedText"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?> </p>
+                        <form name="regform" method="post" action="update-profile"  onsubmit="return validateUpdateProfile();" >
                             <div class="row rowGap">
-                                <div class="col-md-6">
+                                <div class="col-md-6"> 
                                         <label>First name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                         <input type="text" name="firstname" value="<?php echo $userData['first_name']; ?>" class="form-control"  autocomplete="off"><br/>
-                                        <p id="errfstnm" class="errMessage" ></p>
+                                        <p id="errorFstName" class="errMessage"></p>
                                     </div>
                                     <div class="col-md-6">
                                         <label>Last name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
@@ -167,7 +230,6 @@ function Upload() {
                                 </div>
                             </div>
 
-                           
                             <div class="row rowGap">
                                 <div class="col-md-6">
                                     <label>Date of Birth<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
@@ -255,7 +317,7 @@ function Upload() {
                             </div><br/>
                             <div align="center">
                                 <div>
-                                    <button type="submit" onclick="validateUpdateProfile();" class="subtn">Update Profile</button>
+                                    <button type="submit" class="subtn">Update Profile</button>
                                 </div>
                             </div>
                         </form>
