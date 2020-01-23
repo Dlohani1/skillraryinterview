@@ -1,8 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//require_once(APPPATH."controllers/MyController.php");
-class QuestionBank extends CI_Controller {
+require_once(APPPATH."controllers/MyController.php");
+
+class QuestionBank extends MyController {
 
         public function __construct()
         {
@@ -339,6 +340,10 @@ class QuestionBank extends CI_Controller {
 
                
 
+        }
+
+        public function loadTest() {
+            $this->load->view('mcq-test');
         }
 
         public function userHome() {

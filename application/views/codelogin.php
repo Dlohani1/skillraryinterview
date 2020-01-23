@@ -41,7 +41,7 @@
                                     </label>
                                     <input type="checkbox" id="code" onchange="validate()" name="code" /> 
 
-                                    <input type="text" name="enter-code" id="enter-code" hidden /> 
+                                    <input type="text" name="enter-code" id="enter-code" autocomplete="off" hidden /> 
                                     
                                 </div>
                             </div>
