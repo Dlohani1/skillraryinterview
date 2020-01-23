@@ -455,7 +455,7 @@ class QuestionBank extends MyController {
                  if ($this->checkProfile()) {
                     //echo "aa"; die;
                     $this->session->set_flashdata('success', 'Complete your profile');
-                    redirect('user/home');
+                    redirect('user/profile');
                     //return $this->showUserProfile();
                 } else {
                     if (strlen(trim($_POST['enter-code'])) > 0) {
