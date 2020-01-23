@@ -14,7 +14,7 @@ class MyController extends CI_Controller {
         // echo $urls; die;
         $u = 1;
 
-       if ($urls == 'registration' || $urls == 'login' || $urls == 'signin') {
+       if ($urls == 'registration' || $urls == 'login' || $urls == 'signin' || $urls == 'register') {
        		$u = 0;
        }
 
