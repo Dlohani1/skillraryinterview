@@ -78,7 +78,7 @@
             flex-wrap: wrap;
             height: 300px;
             overflow: hidden;
-            overflow-y: scroll;
+            overflow-y: auto;
         }
         .child {
             width: 25%;
@@ -165,14 +165,30 @@ padding-left: 20px;
 position: absolute;
 line-height: 30px;
 }
-    </style>
+.closeBtn{
+    background: #33A478;
+    border: 1px solid #33A478;
+    padding: 6px 20px;
+    border-radius: 5px;
+}
+.closeBtnRow{
+    margin-bottom: 0px;
+    float: right;
+}
+</style>
+    <script>
+        function closeBtn(){
+            console.log('unload test');
+            window.location.href="user/home";
+        }
+    </script>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="column">
                 <div class="row">
-                    <p></p>
+                    <p class="closeBtnRow"><button class="closeBtn" onclick="closeBtn()">Close</button></p>
                 </div><hr>
                 <div class="row">
                     <div class="col-md-12 text-right">
