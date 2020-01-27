@@ -385,6 +385,13 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 $mcqTestId = $url[2];
 $sectionIdValue = $url[3];
 
+$sectionName = "English";
+if ($sectionIdValue == 2) {
+    $sectionName = "Reasoning";
+} else if ($sectionIdValue = = 3) {
+    $sectionName = "Quantitative";
+}
+
 ?>
 <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
                 <div class="row" id="subSectionPart">
@@ -413,7 +420,7 @@ $sectionIdValue = $url[3];
                         </tr>
                         
                         <tr>
-                            <td rowspan="12" class="tdborder" style="vertical-align : middle">English Usage</td>
+                            <td rowspan="12" class="tdborder" style="vertical-align : middle"><?php echo $sectionName;?> Usage</td>
                             <!-- <td class="tdborder">Articles, Prepositions</td>
                             <td class="tdborder"></td>
                             <td class="tdborder">1</td>
@@ -449,78 +456,10 @@ $sectionIdValue = $url[3];
 
                        $i++; } ?>
 
-<!--                         <tr>
-                            <td class="tdborder">Tense, Gerund</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                        </tr>
 
-
-                        <tr>
-                            <td class="tdborder">Sentence Correction</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder">2</td>
-                            <td class="tdborder"></td>
-                        </tr>
-                        <tr>
-                            <td class="tdborder">Speech</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                        </tr>
-                        <tr>
-                            <td class="tdborder">Reading Comprehension</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">2</td>
-                            <td class="tdborder">2</td>
-                            <td class="tdborder">4</td>
-                            <td class="tdborder"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="tdborder">Synonyms & Antonyms</td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">2</td>
-                            <td class="tdborder"></td>
-                        </tr> -->
-
-                        <!-- <tr>
-                            <td class="tdborder">Vocabulary</td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder">2</td>
-                            <td class="tdborder"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="tdborder">Spelling</td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                        </tr>
-                        <tr>
-                            <td class="tdborder">Sequencing</td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder"></td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder">1</td>
-                            <td class="tdborder"></td>
-                        </tr> -->
                         
                         <tr>
-                            <th class="thborder" colspan="2">Total English Usage</th>
+                            <th class="thborder" colspan="2">Total <?php echo $sectionName;?> Usage</th>
                             <th class="thborder"><?php echo "<input type='text' style='background-color:grey;width:50px;text-align:center' id='easy'  disabled value='$easy' />";?></th>
                             <th class="thborder"><?php echo "<input type='text' style='background-color:grey;width:50px;text-align:center' id='moderate'  disabled value='$moderate'/>";?></th>
                             <th class="thborder"><?php echo "<input type='text' style='background-color:grey;width:50px;text-align:center' id='difficult'  disabled value='$difficult'/>";?></th>
