@@ -127,7 +127,7 @@ INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
 
 
   public function codeTest() {
-    print_r($_POST['code']);
+
 
     $url = "https://code.skillrary.com/api/get-assessment_id";
 
@@ -151,7 +151,7 @@ INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
     curl_close ($ch);
     print_r($result->result);
 
-    $data  = array ('mcq_test_id' => $_POST['mcqId'], 'code_id' => $_POST['code']);
+    $data  = array ('mcq_test_id' => $_POST['mcqId'], 'code_id' => $result->result);
 
     $this->db->insert('mcq-code-test', $data);
     die;

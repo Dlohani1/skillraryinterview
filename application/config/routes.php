@@ -63,6 +63,8 @@ $route['admin/save']['POST'] = 'AdminController/save';
 
 $route['mcq-question'] = 'questionBank/show';
 
+$route['code-test'] = 'questionBank/showCodeTest';
+
 $route['getQuestion'] = 'questionBank/getQuestion';
 $route['fetchQuestion'] = 'questionBank/fetchQuestion';
 
@@ -126,6 +128,7 @@ $route['load-frame'] = 'questionBank/loadFrame';
 $route['create/test'] = 'questionBank/loadTest';
 
 $route['mypdf'] = "welcome/generateXls";
+$route['download-pdf/:any/:any'] = "welcome/mypdf";
 
 $route['default_controller'] = 'welcome';
 //$route['default_controller'] = 'createMCQ';

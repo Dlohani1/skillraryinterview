@@ -138,15 +138,31 @@ class QuestionBank extends MyController {
                         $this->db->insert_batch('answers', $data);
         }
 
+        public function showCodeTest() {
+            echo "aa";die;
+        }
         public function show() {
                 if ($this->isMcqTaken() > 0) {
                         echo "MCQ test already taken";
                 } else {
                     $userData = $this->showUserProfile(true);
 
-                 $this->load->view('mcq_form', array('userData'=>$userData));      
+                    $codeId = $this->getCodeTest();
+
+                    $this->session->set_userdata('codeTestId', $codeId); 
+
+                    $this->load->view('mcq_form', array('userData'=>$userData,'codeId'=>$codeId));      
                 }
                 
+        }
+
+        public function getCodeTest() {
+            $mcqId = $this->session->mcqId;
+            $sql = "SELECT * FROM `mcq-code-test` WHERE mcq_test_id =".$mcqId;
+
+            $codeId = $this->db->query($sql)->row();
+
+            return $codeId->code_id;
         }
 
         private function isMcqTaken() {
@@ -772,8 +788,7 @@ class QuestionBank extends MyController {
                 }
             }
 
-            $sql = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 1 UNION ALL 
-
+            $sql = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 1 UNION ALL
                 SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 2
                 UNION ALL
                 SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 3";
@@ -852,11 +867,11 @@ class QuestionBank extends MyController {
             }
 
 
-            if ($this->isMcqTaken() > 0) {
-                $this->session->set_flashdata('success', 'Invalid Code');
+            // if ($this->isMcqTaken() > 0) {
+            //     $this->session->set_flashdata('success', 'Invalid Code');
 
-                redirect('user/enter-code');
-            } else {
+            //     redirect('user/enter-code');
+            // } else {
 
                 if (isset($_POST['code'])) {
                     $code = trim($_POST['code']);
@@ -886,7 +901,7 @@ class QuestionBank extends MyController {
                         $this->generateQuestion($code, $mcqId);
                     }
                 }
-            }            
+            // }            
         }
 
         public function addMcqCode() {
