@@ -379,36 +379,58 @@ class QuestionBank extends MyController {
 
         public function addTestTime() {
                 $mcqId = $_POST['mcqId'];
-                $time1= $_POST['time1'];
-                $time2= $_POST['time2'];
-                $time3= $_POST['time3'];
+                // $time1= $_POST['time1'];
+                // $time2= $_POST['time2'];
+                // $time3= $_POST['time3'];
 
                 // $params = json_decode($data, true);
                 // $title = $params['test-title'];
                 // $type = $params['test-type'];
 
+                $totalSection = $_POST['totalSection'];
+                $sectionIds = explode(",",$_POST['sectionIds']);
+                $totalQuestion = explode(",",$_POST['questionNos']);
+                $totalTime = explode(",",$_POST['sectionTime']);
 
-                $t1 = array (
+                $data = array();
+
+                for($i=0; $i < $totalSection; $i++) {
+                    $t = array (
                         'mcq_test_id' => $mcqId,
-                        'section_id' => 1,
-                        'completion_time' => $time1
-                );
+                        'section_id' => $sectionIds[$i],
+                        'completion_time' => $totalTime[$i],
+                        'total_question' => $totalQuestion[$i]
+                    );
 
-                $t2 = array (
-                        'mcq_test_id' => $mcqId,
-                        'section_id' => 2,
-                        'completion_time' => $time2
-                );
+                    $data[] = $t;
 
-                $t3 = array (
-                        'mcq_test_id' => $mcqId,
-                        'section_id' => 3,
-                        'completion_time' => $time3
-                );
+                }
 
-                $data = array(
-                        $t1, $t2, $t3
-                );
+
+                // $t1 = array (
+                //         'mcq_test_id' => $mcqId,
+                //         'section_id' => 1,
+                //         'completion_time' => $time1,
+                //         'total_question' =>
+                // );
+
+                // $t2 = array (
+                //         'mcq_test_id' => $mcqId,
+                //         'section_id' => 2,
+                //         'completion_time' => $time2,
+                //          'total_question' =>
+                // );
+
+                // $t3 = array (
+                //         'mcq_test_id' => $mcqId,
+                //         'section_id' => 3,
+                //         'completion_time' => $time3,
+                //         'total_question' =>
+                // );
+
+                // $data = array(
+                //         $t1, $t2, $t3
+                // );
 
                 $this->db->insert_batch('mcq_time', $data);
 

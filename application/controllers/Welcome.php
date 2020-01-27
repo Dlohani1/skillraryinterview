@@ -35,4 +35,69 @@ class Welcome extends CI_Controller {
 		$this->load->view('essay');
 		//$this->load->view('codefooter');
 	}
+
+	public function mypdf(){
+
+
+	// $this->load->library('pdf');
+
+
+ //  	$this->pdf->load_view('mypdf');
+ //  	$this->pdf->render();
+
+
+ //  	$this->pdf->stream("welcome.pdf");
+
+		 //load mPDF library
+ $this->load->library('m_pdf'); 
+ //now pass the data//
+ //$data['mobiledata'] = $this->pdf->mobileList();
+ $html=$this->load->view('admin/view-students'); //load the pdf.php by passing our data and get all data in $html varriable.
+ $pdfFilePath ="webpreparations-".time().".pdf"; 
+ //actually, you can pass mPDF parameter on this load() function
+ $pdf = $this->m_pdf->load();
+ //generate the PDF!
+ $stylesheet = '<style>'.file_get_contents('assets/css/bootstrap.min.css').'</style>';
+ // apply external css
+ $pdf->WriteHTML($stylesheet,1);
+ $pdf->WriteHTML($html,2);
+ //offer it to user via browser download! (The PDF won't be saved on your server HDD)
+ $pdf->Output($pdfFilePath, "D");
+ exit;
+   }
+
+
+
+       public function generateXls() {
+        // create file name
+        $fileName = 'data-'.time().'.xlsx';  
+        // load excel library
+        $this->load->library('excel');
+        //$listInfo = $this->export->exportList();
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        // set Header
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'First Name');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Last Name');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Email');
+        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'DOB');
+        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Contact_No');       
+        // set Row
+        $rowCount = 2;
+        // foreach ($listInfo as $list) {
+        //     $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $list->first_name);
+        //     $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $list->last_name);
+        //     $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $list->email);
+        //     $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $list->dob);
+        //     $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $list->contact_no);
+        //     $rowCount++;
+        // }
+        $filename = "tutsmake". date("Y-m-d-H-i-s").".csv";
+        header('Content-Type: application/vnd.ms-excel'); 
+        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Cache-Control: max-age=0'); 
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
+        $objWriter->save('php://output'); 
+ 
+    }
 }
