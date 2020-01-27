@@ -277,7 +277,7 @@ $( document ).ready(function() {
     //var carId = dropDown.options[dropDown.selectedIndex].value;
     $.ajax({
             type: "POST",
-            url: "/project/code-assessment/question/getSection",
+            url: "/question/getSection",
             success: function(data){
                 // Parse the returned json data
                 var opts = $.parseJSON(data);
@@ -300,7 +300,7 @@ $('#subsection').empty()
     //var carId = dropDown.options[dropDown.selectedIndex].value;
     $.ajax({
             type: "POST",
-            url: "/project/code-assessment/question/getSubSection",
+            url: "/question/getSubSection",
             data: { 'Id': document.getElementById("section").value  },
             success: function(data){ console.log('data', data);
                 // Parse the returned json data
@@ -353,7 +353,7 @@ $('#subsection').empty()
 
                 console.log('ll', window.location.host)
                 $.ajax({
-                    url: "/project/code-assessment/addTest",
+                    url: "/addTest",
                    
                     type: 'post',
                     
@@ -405,7 +405,7 @@ $('#subsection').empty()
                     document.getElementById("item_name_"+i).disabled = true;
                     document.getElementById("item_quantity_"+i).disabled = true;
                     document.getElementById("add_question_"+i).style.display="block";
-                    document.getElementById("add_question_link_"+i).href = "/project/code-assessment/add-question/"+mcqId+"/"+document.getElementById("item_unit_"+i).value;
+                    document.getElementById("add_question_link_"+i).href = "/add-question/"+mcqId+"/"+document.getElementById("item_unit_"+i).value;
 
                     if (i > 1) {
                         sectionId += ",";
@@ -421,7 +421,7 @@ $('#subsection').empty()
                 console.log('sect', sectionId, questionNos, sectionTime)
 
                 $.ajax({
-                    url: "/project/code-assessment/addTestTime",
+                    url: "/addTestTime",
                     type: 'post',
                     data: {'mcqId': mcqId, 'sectionIds': sectionId, 'totalSection':no, 'totalQuestion':questionNos, 'sectionTime': sectionTime},
                   
