@@ -385,11 +385,11 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 $mcqTestId = $url[2];
 $sectionIdValue = $url[3];
 
-$sectionName = "English";
+$secName = "English";
 if ($sectionIdValue == 2) {
-    $sectionName = "Reasoning";
+    $secName = "Reasoning";
 } else if ($sectionIdValue == 3) {
-    $sectionName = "Quantitative";
+    $secName = "Quantitative";
 }
 
 ?>
@@ -420,7 +420,7 @@ if ($sectionIdValue == 2) {
                         </tr>
                         
                         <tr>
-                            <td rowspan="12" class="tdborder" style="vertical-align : middle"><?php echo $sectionName;?> Usage</td>
+                            <td rowspan="12" class="tdborder" style="vertical-align : middle"><?php echo $secName;?> Usage</td>
                             <!-- <td class="tdborder">Articles, Prepositions</td>
                             <td class="tdborder"></td>
                             <td class="tdborder">1</td>
@@ -459,7 +459,7 @@ if ($sectionIdValue == 2) {
 
                         
                         <tr>
-                            <th class="thborder" colspan="2">Total <?php echo $sectionName;?> Usage</th>
+                            <th class="thborder" colspan="2">Total <?php echo $secName;?> Usage</th>
                             <th class="thborder"><?php echo "<input type='text' style='background-color:grey;width:50px;text-align:center' id='easy'  disabled value='$easy' />";?></th>
                             <th class="thborder"><?php echo "<input type='text' style='background-color:grey;width:50px;text-align:center' id='moderate'  disabled value='$moderate'/>";?></th>
                             <th class="thborder"><?php echo "<input type='text' style='background-color:grey;width:50px;text-align:center' id='difficult'  disabled value='$difficult'/>";?></th>
