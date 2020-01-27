@@ -399,7 +399,7 @@ if ($sectionIdValue == 2) {
                     <!-- <div class="col-md-10 offset-md-1"> -->
                         <h4 align="center">Enter Section Details</h4>
                     <br />
-                    <form method="post" action = <?php echo base_url().'/addPatern';?> />
+                    <form method="post" action = <?php echo base_url().'addPatern';?> />
 
                     <input type="hidden" id="mcqTestId" name="mcq" value='<?php echo $mcqTestId;?>'/>
                     <input type="hidden" id="sectionId" name="section" value='<?php echo $sectionIdValue;?>'/>
