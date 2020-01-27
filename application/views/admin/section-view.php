@@ -388,7 +388,7 @@ $sectionIdValue = $url[3];
 $sectionName = "English";
 if ($sectionIdValue == 2) {
     $sectionName = "Reasoning";
-} else if ($sectionIdValue = = 3) {
+} else if ($sectionIdValue == 3) {
     $sectionName = "Quantitative";
 }
 
