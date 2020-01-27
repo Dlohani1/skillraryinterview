@@ -143,8 +143,8 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="create-test">Create</a>
-                                    <a class="nav-link" href="view-mcq">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."/admin/create-test";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."/admin/view-mcq";?>>View</a>
                                 </nav>
                             </div>
                              <div class="sb-sidenav-menu-heading">Interface</div>
@@ -156,8 +156,8 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="add-question">Create</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
+                                     <!-- <a class="nav-link" href="layout-sidenav-light.html">View</a> -->
                                 </nav>
                             </div>
 
