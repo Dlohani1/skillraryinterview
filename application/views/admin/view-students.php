@@ -184,10 +184,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Create MCQs</h1>
+                        <h1 class="mt-4">Students</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Create MCQ</li>
+                            <li class="breadcrumb-item active">Students</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
