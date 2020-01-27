@@ -382,8 +382,8 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 //echo  "a", $url[count($url) - 2];
 
 //print_r($url); die;
-$mcqTestId = $url[4];
-$sectionIdValue = $url[5];
+$mcqTestId = $url[2];
+$sectionIdValue = $url[3];
 
 ?>
 <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
