@@ -169,7 +169,7 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsR" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="view-results">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."view-results";?>>View</a>
                                 </nav>
                             </div>
 
