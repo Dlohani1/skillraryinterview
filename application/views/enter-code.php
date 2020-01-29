@@ -3,7 +3,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 <br/><br/>
-<div class="container">
+<div class="container" style="padding: 90px 40px;">
 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
