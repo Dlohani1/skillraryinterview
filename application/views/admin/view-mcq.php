@@ -12,8 +12,7 @@
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-            <style>
+        <style>
         .firstSection{
             background: white;
             box-shadow: 2px 2px 10px 0px #aaa;
@@ -56,6 +55,21 @@
 
         .navbar {
             margin-bottom: 0px;
+        }
+        .searchBox{
+            border: 1px solid #aaaaaa;
+            padding: 10px;
+        }
+        .searchBtn{
+            background: black;
+            color: white;
+            padding: 6px 10px;
+            font-size: 18px;
+            border: 1px solid black;
+        }
+        .inputBox:focus{
+            box-shadow: initial;
+            border: 1px solid black;
         }
     </style>
     </head>
@@ -194,27 +208,42 @@
                                 <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
                                 <div class="container-fluid">
                                     <div class="container">
+                                    <div class="searchBox">
+                                        <div class="row">
+                                            <div class="col-md-3 offset-md-1">
+                                                <label>MCQ Name</label>
+                                                <input type="text" class="form-control inputBox">
+                                            </div>
+                                            <div class="col-md-3 offset-md-1">
+                                                <label>Total Questions</label>
+                                                <input type="text" class="form-control inputBox">
+                                            </div>
+                                            <div class="col-md-2 offset-md-1">
+                                                <label>Code</label>
+                                                <input type="text" class="form-control inputBox">
+                                            </div>
+                                        </div><br/>
+                                  
+                                        <div>
+                                            <div align="right">
+                                                <button class="searchBtn">Search</button>
+                                            </div>
+                                        </div>
+                                    </div><br/>
   <div class="row">
-    
-        
         <div class="col-md-12">
         <h4>MCQs</h4>
         <div class="table-responsive">
-
-                
               <table id="mytable" class="table table-bordred table-striped">
-                   
                    <thead>
-                   
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                   <th>MCQ Name</th>
-                    <th>MCQ Code</th>
-                     <th>Total Section</th>
-                     <th>Total Question</th>
-                     <th>view</th>
-                      <th>Edit</th>
-                      
-                       <th>Delete</th>
+                        <th>MCQ Name</th>
+                        <th>MCQ Code</th>
+                        <th>Total Section</th>
+                        <th>Total Question</th>
+                        <th>view</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                    </thead>
     <tbody>
 
