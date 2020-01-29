@@ -179,7 +179,7 @@ line-height: 30px;
     <script>
         function closeBtn(){
             console.log('unload test');
-            window.location.href="user/home";
+            window.location.href="user/view-results";
         }
     </script>
 </head>
@@ -188,7 +188,7 @@ line-height: 30px;
         <div class="row">
             <div class="column">
                 <div class="row">
-                    <p class="closeBtnRow"><button class="closeBtn" onclick="closeBtn()">Close</button></p>
+                    <p class="closeBtnRow"><button class="closeBtn" style="margin-left:10px" onclick="closeBtn()">Close</button></p>
                 </div><hr>
                 <div class="row">
                     <div class="col-md-12 text-right">
