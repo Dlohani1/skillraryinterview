@@ -217,8 +217,8 @@
 
 </head>
 <body>
-    <div class="container-fluid editorContainer">
-        <div class="container-fluid headContainer">
+    <div class="container-fluid editorContainer" style="margin:0px; padding: 0px;">
+        <div class="container-fluid headContainer" style="margin:0px; padding: 0px;">
             <nav class="navbar navbar-white bg-white">
                 <div class="container">
                     <img src="https://www.skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary Logo">
