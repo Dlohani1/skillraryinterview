@@ -179,7 +179,8 @@ line-height: 30px;
     <script>
         function closeBtn(){
             console.log('unload test');
-            window.location.href="user/view-results";
+            //window.location.href="user/view-results";
+            window.close();
         }
     </script>
 </head>
@@ -188,7 +189,10 @@ line-height: 30px;
         <div class="row">
             <div class="column">
                 <div class="row">
-                    <p class="closeBtnRow"><button class="closeBtn" style="margin-left:10px" onclick="closeBtn()">Close</button></p>
+                    <div class="col-md-12 text-right">
+                        <p class="closeBtnRow"><button class="closeBtn" style="margin-left:10px" onclick="closeBtn()">Close</button></p>
+                    </div>
+                   
                 </div><hr>
                 <div class="row">
                     <div class="col-md-12 text-right">
@@ -606,6 +610,10 @@ window.onload = function() {
     }, false);
     document.addEventListener("keydown", function(e) {
     //document.onkeydown = function(e) {
+    // F5 Key
+    if ((e.which || e.keyCode) == 116){
+        disabledEvent(e);
+    }
       // "I" key
       if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
         disabledEvent(e);
