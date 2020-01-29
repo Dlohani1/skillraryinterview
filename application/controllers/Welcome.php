@@ -37,7 +37,18 @@ class Welcome extends CI_Controller {
 		//$this->load->view('codefooter');
 	}
 
-	public function mypdf(){
+public function mypdf(){
+    $studentId = $this->uri->segment(3);
+    $sql = "SELECT * FROM `student_register` WHERE id=".$studentId;
+
+    $student = $this->db->query($sql)->row();
+
+
+
+    $this->load->view('admin/student-result', array('studentData' => $student));
+}
+
+	public function mypdf1(){
 
     $this->load->library('pdf');
 
