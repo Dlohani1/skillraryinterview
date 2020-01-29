@@ -109,6 +109,8 @@ $route['user/upload/do_upload'] = 'questionBank/uploadProfileImage';
 
 $route['admin/create-test'] = 'AdminController/createTest';
 $route['admin/view-mcq'] = 'AdminController/viewTest';
+$route['admin/view-questions'] = 'AdminController/viewQuestion';
+
 $route['admin/view-results'] = 'AdminController/viewResult';
 $route['admin/view-students/:any']= 'AdminController/showStudents';
 $route['admin/download-students/:any']= 'AdminController/downloadExcel';

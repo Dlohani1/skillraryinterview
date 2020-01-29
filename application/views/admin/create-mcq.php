@@ -139,11 +139,11 @@
                                 >
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 MCQs
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                <div class="sb-sidenav-collapse-arrow"><i id="mcq-link" class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="create-test">Create</a>
+                                    <a class="nav-link active" href="create-test">Create</a>
                                     <a class="nav-link" href="view-mcq">View</a>
                                 </nav>
                             </div>
@@ -199,6 +199,16 @@
             <div class="row">
                 <div class="col-md-8 offset-md-2 firstSection">
                     <form name="fstForm" action="#">
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                <label class="labelColor">Drive Details</label>
+                                <input type="date" name="drive-date" class="form-control" id="drive-date" placeholder="Enter Date">
+                                <br/><input type="time" name="drive-time" class="form-control" id="drive-time" placeholder="Enter time">
+                                <br/><input type="text" name="drive-place" class="form-control" id="drive-place" placeholder="Enter place">
+                                <br/>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-8 offset-md-2">
                                 <label class="labelColor">Title</label>
@@ -291,7 +301,9 @@
                     <br />
                     <table class="tableWidth" id="section_table">
                         <tr>
-                            <th colSpan="7" style="text-align: center;background: yellow;border: 1px solid black;">Enter No. of Questions</th>
+                            <th colSpan="7" style="text-align: center;background: yellow;border: 1px solid black;">
+                                Enter No. of Questions
+                            </th>
                         </tr>
                         <tr>
                             <th class="thborder">Section</th>
@@ -317,6 +329,7 @@
                         <div class="row">
                             <div class="col-md-8 offset-md-2">
                                 <label class="labelColor">Add Code Test</label>
+                                <input type="checkbox" id="add-code-test" />
                                 <a href="https://code.skillrary.com/admin/login" target="_blank"> Click here to create code test </a>
                                 <input type="text" name="code" class="form-control" id="code" placeholder="Enter Code" autocomplete="off">
                             </div>
@@ -361,6 +374,7 @@
 
 
         <script>
+            document.getElementById("mcq-link").click();
 
             function enterCode() {
                 var code = document.getElementById('code').value;
@@ -391,13 +405,15 @@
 
                 console.log('ll', window.location.host)
                 var baseUrl = document.getElementById("base_url").value;
-                $.ajax({
+
+                if (document.getElementById("title").value.trim().length > 0) {
+                    $.ajax({
                     url: baseUrl+"/addTest",
                    
                     type: 'post',
                     
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "test-title": $('#title').val(), "test-type": $('#type').val() } ,
+                    data: { "test-title": $('#title').val(), "test-type": $('#type').val(), "drive-date": $('#drive-date').val(), "drive-time": $('#drive-time').val(), "drive-place": $('#drive-place').val() } ,
                     success: function( data, textStatus, jQxhr ){
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
@@ -407,19 +423,23 @@
                     error: function( jqXhr, textStatus, errorThrown ){
                         console.log( errorThrown );
                     }
-                });
+                    });
 
-                document.getElementById("title").disabled = true;
-                document.getElementById("type").disabled = true;
-                document.getElementById("section").disabled = true;
-                var no =  document.getElementById("section").value;
+                    document.getElementById("title").disabled = true;
+                    document.getElementById("type").disabled = true;
+                    document.getElementById("section").disabled = true;
+                    var no =  document.getElementById("section").value;
 
 
-                for (var i=1;i<=no;i++){
-                    addNewSection(i);
+                    for (var i=1;i<=no;i++){
+                        addNewSection(i);
+                    }
+                    document.getElementById("secondPart").style.display = "block";
+                    //document.getElementById("code-test").style.display = "block";
+                } else {
+                    alert('MCQ Title cannot be empty');
                 }
-                document.getElementById("secondPart").style.display = "block";
-                document.getElementById("code-test").style.display = "block";
+
             }
 
             function secondFormSubmit() {

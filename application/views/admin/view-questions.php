@@ -160,6 +160,7 @@
                                     <!-- <a class="nav-link" href="layout-sidenav-light.html">View</a> -->
                                 </nav>
                             </div>
+
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
                                 >
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -183,10 +184,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">MCQs Results</h1>
+                        <h1 class="mt-4">Questions</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">MCQ Results</li>
+                            <li class="breadcrumb-item active">Questions</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
@@ -206,24 +207,41 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                   <th>MCQ Name</th>
-                    <th>Total Students</th>
-                     <!-- <th>Total Section</th>
-                     <th>Total Question</th> -->
-                     <th>view</th>
-                      <th>Download</th>
-                      
-                       <!-- <th>Delete</th> -->
+                    <th>Question</th>
+                    <th>Section</th>
+                    <th>Sub Section</th>
+                    <th>Difficulty Level</th>
+                    <th>view</th>
+                    <th>Edit</th>                      
+                    <th>Delete</th>
                    </thead>
     <tbody>
 
         <?php 
 
-        foreach($mcq as $key => $value) { 
-            echo '<tr><td>'.$value['title'].'</td><td>'.$value['students'].'</td> 
-      <td><a href="view-students/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
-      <td><a href="download-students/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td>
-   </tr>';
+        foreach($questionData as $key => $value) {
+
+            $question = $value->question; 
+            $section = $value->section_name;
+            $subSection = $value->sub_section_name;
+            $level = $value->level;
+
+
+            echo '<tr><td><span style="height: 18px;
+  width: 140px;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  margin: 0 5px 0 5px;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #000;">'.$question.'</span></td><td>'.$section.'</td> <td>'.$subSection.'</td>
+    <td>'.$level.'</td>
+      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-eye-open"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td></tr>';
         }
         ?>
     
