@@ -145,7 +145,8 @@
         <div class="row">
             <table class="tableWidth">
                 <tr>
-                    <td class="tdborder" rowspan="6" width="15%"><img src=<?php echo base_url().$studentData->profile_image;?> style="width: 130px;"></td>
+                    <td class="tdborder" rowspan="6" width="15%"><img src=<?php if (strlen($studentData->profile_image) > 0) {
+                        echo base_url().$studentData->profile_image;} else { if ($studentData->gender == 1) {echo base_url()."images/boy.png";} else {echo base_url()."images/girl.png";}}?> style="width: 130px;"></td>
                 </tr>
                 <!-- <tr>
                         <td class="tdborder"><b>Name</b></td>
