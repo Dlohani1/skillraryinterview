@@ -162,7 +162,7 @@
                             <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="add-question">Create</a>
-                                    <!-- <a class="nav-link" href="layout-sidenav-light.html">View</a> -->
+                                    <a class="nav-link" href="view-questions">View</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
@@ -208,6 +208,7 @@
 
             <div class="container">
   <h2>Question Bank</h2>
+  <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
   <form class="form-horizontal" method="post" action="save" enctype="multipart/form-data">
    <div class="form-group">
       <label class="control-label col-sm-2" for="section">Section:</label>
@@ -219,19 +220,31 @@
     <div class="form-group">
       <label class="control-label col-sm-2" for="sub-section">Sub Section:</label>
       <div class="col-md-8">
-        <select id="subsection" name="subsection" ><option>NA</option></select>
+        <select id="subsection" onclick="changeValue(this)"  name="subsection" ><option>NA</option></select>
       </div>
     </div>
 
-<div class="form-group">
+    <div class="form-group">
       <label class="control-label col-sm-2" for="sub-section">Difficulty Level:</label>
       <div class="col-md-8">
         <select id="level" name="levelId" >
-	<option value="0">Select level </option>
-<option value="1">Easy</option>
-<option value="2">Moderate</option>
-<option value="3">Difficult</option>
-	</select>
+            <option value="0">Select level </option>
+            <option value="1">Easy</option>
+            <option value="2">Moderate</option>
+            <option value="3">Difficult</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="sub-section">Question Type:</label>
+      <div class="col-md-8">
+        <select id="level" name="levelId" >
+            <!-- <option value="0" >Select </option> -->
+            <option value="1" selected>Single Ans</option>
+            <option value="2" disabled>Multiple Ans</option>
+            <option value="3" disabled>True/False</option>
+        </select>
       </div>
     </div>
 
@@ -240,6 +253,7 @@
       <div class="col-md-8">          
         <!-- <input type="text" class="form-control" id="question" placeholder="Enter Question" name="question"> -->
         <textarea id="question" name="question"></textarea>
+       <!--  <textarea id="reading" name="reading" ></textarea> -->
       </div>
     </div>
 
@@ -275,9 +289,11 @@ $( document ).ready(function() {
 //$('#section').empty()
     //var dropDown = document.getElementById("carId");
     //var carId = dropDown.options[dropDown.selectedIndex].value;
+    var baseUrl = document.getElementById("base-url").value;
+
     $.ajax({
             type: "POST",
-            url: "/question/getSection",
+            url: baseUrl+"/question/getSection",
             success: function(data){
                 // Parse the returned json data
                 var opts = $.parseJSON(data);
@@ -291,6 +307,22 @@ $( document ).ready(function() {
   
 });
 
+function changeValue(field) {
+
+    console.log('field', field.value)
+
+    // if (field.value == 7) {
+
+    //     document.getElementById("reading").style.display="none";
+    //     document.getElementsByClassName("tox-tinymce").style.display="block";
+        
+    // } else {
+    //     document.getElementById("reading").style.display="none";
+    // }
+
+}
+
+
 function getSubSection() {
 console.log('a', document.getElementById("section").value);
 if (document.getElementById("section").value != 0) {
@@ -298,9 +330,11 @@ if (document.getElementById("section").value != 0) {
 $('#subsection').empty()
     //var dropDown = document.getElementById("carId");
     //var carId = dropDown.options[dropDown.selectedIndex].value;
+    var baseUrl = document.getElementById("base-url").value;
+
     $.ajax({
             type: "POST",
-            url: "/question/getSubSection",
+            url: baseUrl+"/question/getSubSection",
             data: { 'Id': document.getElementById("section").value  },
             success: function(data){ console.log('data', data);
                 // Parse the returned json data

@@ -23,6 +23,7 @@ class Welcome extends CI_Controller {
     {
             parent::__construct();
             $this->load->helper('url');
+            $this->load->database();
     }
 	public function index()
 	{
@@ -38,8 +39,33 @@ class Welcome extends CI_Controller {
 
 	public function mypdf(){
 
+    $this->load->library('pdf');
 
-	// $this->load->library('pdf');
+
+    // $this->pdf->load_view('mypdf');
+    // $this->pdf->render();
+
+
+    // $this->pdf->stream("welcome.pdf");
+
+    // print_r($this->uri->segment(4)); die;
+
+    $studentId = $this->uri->segment(3);
+    $html_content = '<h3 align="center">SkillRary Assessment Report</h3>';
+            // $html_content .= $this->htmltopdf_model->fetch_single_details($customer_id);
+     $sql = "SELECT * FROM `student_register` WHERE id=".$studentId;
+
+    $student = $this->db->query($sql)->row();
+
+    $html_content .= $this->load->view('report',array("student"=>$student),true);
+    $this->pdf->loadHtml($html_content);
+    $this->pdf->render();
+    $this->pdf->stream(""."a".".pdf", array("Attachment"=>0));
+
+    die;
+//echo "aa"; die;
+
+	//$this->load->library('pdf');
 
 
  //  	$this->pdf->load_view('mypdf');
@@ -49,21 +75,21 @@ class Welcome extends CI_Controller {
  //  	$this->pdf->stream("welcome.pdf");
 
 		 //load mPDF library
- $this->load->library('m_pdf'); 
+ // $this->load->library('m_pdf'); 
  //now pass the data//
  //$data['mobiledata'] = $this->pdf->mobileList();
- $html=$this->load->view('admin/view-students'); //load the pdf.php by passing our data and get all data in $html varriable.
- $pdfFilePath ="webpreparations-".time().".pdf"; 
+ // $html=$this->load->view('admin/view-students'); //load the pdf.php by passing our data and get all data in $html varriable.
+ // $pdfFilePath ="webpreparations-".time().".pdf"; 
  //actually, you can pass mPDF parameter on this load() function
- $pdf = $this->m_pdf->load();
+ // $pdf = $this->m_pdf->load();
  //generate the PDF!
- $stylesheet = '<style>'.file_get_contents('assets/css/bootstrap.min.css').'</style>';
+ // $stylesheet = '<style>'.file_get_contents('assets/css/bootstrap.min.css').'</style>';
  // apply external css
- $pdf->WriteHTML($stylesheet,1);
- $pdf->WriteHTML($html,2);
+ // $pdf->WriteHTML($stylesheet,1);
+ // $pdf->WriteHTML($html,2);
  //offer it to user via browser download! (The PDF won't be saved on your server HDD)
- $pdf->Output($pdfFilePath, "D");
- exit;
+ // $pdf->Output($pdfFilePath, "D");
+ // exit;
    }
 
 

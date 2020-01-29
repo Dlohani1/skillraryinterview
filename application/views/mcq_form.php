@@ -241,6 +241,7 @@ line-height: 30px;
                 <input type="hidden" id="questionIdSave" />
                 <input type="hidden" id="saveAnsId" />
                 <input type="hidden" id="studentSessionId" value=<?php echo $_SESSION['id']; ?> />
+                <input type="hidden" id="codeTestId" value=<?php echo $_SESSION['codeTestId']; ?> />
                 <input type="hidden" id="mcqSessionId" value=<?php echo $_SESSION['mcqId']; ?> />
                 <input type="hidden" id = "countdown" />
                 <div class="questionSection">
@@ -382,7 +383,8 @@ function loadIframe() {
     var id = document.getElementById("code-lang").value;
     var mcqId = document.getElementById("mcqSessionId").value;
     var userId  = document.getElementById("studentSessionId").value;
-    var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/8/"+mcqId;
+    var codeId = document.getElementById("codeTestId").value;
+    var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/"+codeId+"/"+mcqId;
     var win = window.open(url, "_self", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
     // document.getElementById('myIframe').src = "https://code.skillrary.com/url_assessm"+userId+"/"+id+"/9";
 

@@ -153,12 +153,12 @@
                                 >
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 MCQs
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                <div class="sb-sidenav-collapse-arrow"><i id="mcq-link" class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="create-test">Create</a>
-                                    <a class="nav-link" href="view-mcq">View</a>
+                                    <a class="nav-link active" href="view-mcq">View</a>
                                 </nav>
                             </div>
                              <div class="sb-sidenav-menu-heading">Interface</div>
@@ -251,7 +251,7 @@
 
         foreach($mcq as $key => $value) {
             echo '<tr><td>'.$value['title'].'</td><td>'.$value['code'].'</td> <td>3</td>
-    <td>8</td>
+    <td>'.$value['question'].'</td>
       <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-eye-open"></span></button></p></td>
     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td></tr>';
@@ -423,7 +423,9 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="admin-css-js/js/scripts.js"></script>
 
-
+        <script>
+            document.getElementById("mcq-link").click();
+        </script>
       
 
     </body>

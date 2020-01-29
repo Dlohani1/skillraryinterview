@@ -381,17 +381,21 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 
 //echo  "a", $url[count($url) - 2];
 
-//print_r($url); die;
+
+// $mcqTestId = $url[4]; // change in deploy
+//$sectionIdValue = $url[5]; //change in deploy
+
 $mcqTestId = $url[2];
 $sectionIdValue = $url[3];
 
+//echo $sectionIdValue; die;
 $secName = "English";
 if ($sectionIdValue == 2) {
     $secName = "Reasoning";
 } else if ($sectionIdValue == 3) {
     $secName = "Quantitative";
 }
-
+//echo $secName; die;
 ?>
 <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
                 <div class="row" id="subSectionPart">

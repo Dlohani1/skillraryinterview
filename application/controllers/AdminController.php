@@ -18,9 +18,7 @@ class AdminController extends CI_Controller {
 
 
   public function showStudents() {
-    $mcqId = $this->uri->segment(3);
-
-    
+    $mcqId = $this->uri->segment(3);   
     $sql = "SELECT DISTINCT(student_id) FROM `student_answers` where mcq_test_id =".$mcqId;
 
     $query = $this->db->query($sql);
@@ -35,14 +33,14 @@ class AdminController extends CI_Controller {
           
     if($query->num_rows() > 0)  {
 
-        foreach ($query->result() as $row) {
-          $sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
+      foreach ($query->result() as $row) {
+        $sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
 
         $student = $this->db->query($sql)->row();
 
         $studentData[$i] = $student;
         $i++;
-        }
+      }
     }
     //echo "<pre>"; 
     //print_r($studentData);
@@ -84,12 +82,30 @@ class AdminController extends CI_Controller {
  }
   
 
+  public function viewQuestion() {
+
+    $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM `question_bank`
+      INNER JOIN section on section.id = question_bank.section_id
+      INNER JOIN question_levels on question_levels.id = question_bank.level_id
+      INNER JOIN sub_section on sub_section.id = question_bank.sub_section_id";
+
+    $query = $this->db->query($sql);
+
+
+    //print_r($query->result_object()); die;
+
+
+    $this->load->view('admin/view-questions', array("questionData" => $query->result_object()));
+  }
+
   public function viewTest() {
 
 
-    $sql = "SELECT mcq_test.id, mcq_test.title, mcq_code.code
-FROM mcq_test
-INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
+    $sql = "SELECT mcq_test.id, mcq_test.title, mcq_code.code, SUM(mcq_test_pattern.total_question) as totalQuestion
+            FROM mcq_test
+            INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
+            INNER JOIN mcq_test_pattern on mcq_test.id=mcq_test_pattern.mcq_test_id
+            GROUP by mcq_test.id, mcq_test.title, mcq_code.code";
 
     $query = $this->db->query($sql);
 
@@ -104,6 +120,7 @@ INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
             $mcq[$i]['id'] = $row->id;
             $mcq[$i]['title'] = $row->title;
             $mcq[$i]['code'] = $row->code;
+            $mcq[$i]['question'] = $row->totalQuestion;
             $i++;
         }
     }
@@ -127,7 +144,7 @@ INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
 
 
   public function codeTest() {
-    print_r($_POST['code']);
+
 
     $url = "https://code.skillrary.com/api/get-assessment_id";
 
@@ -151,7 +168,7 @@ INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
     curl_close ($ch);
     print_r($result->result);
 
-    $data  = array ('mcq_test_id' => $_POST['mcqId'], 'code_id' => $_POST['code']);
+    $data  = array ('mcq_test_id' => $_POST['mcqId'], 'code_id' => $result->result);
 
     $this->db->insert('mcq-code-test', $data);
     die;
@@ -159,6 +176,8 @@ INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
   }
 
    public function addTest() {
+
+              //echo var_dump(); die;
 
                 $title = $_POST['test-title'];
                 $type = $_POST['test-type'];
@@ -175,12 +194,24 @@ INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
 
                 $code = $this->getCode();
 
-                 $data = array(
+                $data = array(
                         'mcq_test_id' => $testId,
                         'code' => $code
                 );
 
                 $this->db->insert('mcq_code', $data);
+
+                if (strlen(trim($_POST['drive-date'])) > 0) {
+                  $data = array(
+                    'mcq_test_id' => $testId,
+                    'drive_date' =>trim($_POST['drive-date']),
+                    'drive_time' =>trim($_POST['drive-time']),
+                    'drive_place' =>trim($_POST['drive-place'])
+
+                  );
+
+                  $this->db->insert('drive-details', $data);                  
+                }
 
 
                 echo $testId;
@@ -620,6 +651,15 @@ INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id";
             $i++;
             }
         }
+
+        $sql = "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 1 and correct_ans = 1";
+
+        $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 2 and correct_ans = 1";
+
+
+        $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
+
+        
 
         $this->generateXls($studentData);
       }

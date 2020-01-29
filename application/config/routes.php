@@ -63,6 +63,8 @@ $route['admin/save']['POST'] = 'AdminController/save';
 
 $route['mcq-question'] = 'questionBank/show';
 
+$route['code-test'] = 'questionBank/showCodeTest';
+
 $route['getQuestion'] = 'questionBank/getQuestion';
 $route['fetchQuestion'] = 'questionBank/fetchQuestion';
 
@@ -107,6 +109,8 @@ $route['user/upload/do_upload'] = 'questionBank/uploadProfileImage';
 
 $route['admin/create-test'] = 'AdminController/createTest';
 $route['admin/view-mcq'] = 'AdminController/viewTest';
+$route['admin/view-questions'] = 'AdminController/viewQuestion';
+
 $route['admin/view-results'] = 'AdminController/viewResult';
 $route['admin/view-students/:any']= 'AdminController/showStudents';
 $route['admin/download-students/:any']= 'AdminController/downloadExcel';
@@ -126,6 +130,7 @@ $route['load-frame'] = 'questionBank/loadFrame';
 $route['create/test'] = 'questionBank/loadTest';
 
 $route['mypdf'] = "welcome/generateXls";
+$route['download-pdf/:any/:any'] = "welcome/mypdf";
 
 $route['default_controller'] = 'welcome';
 //$route['default_controller'] = 'createMCQ';
