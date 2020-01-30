@@ -574,6 +574,7 @@ class QuestionBank extends MyController {
                // redirect('enter-code', 'refresh');
                 // }
               } else {
+                $this->session->set_flashdata('error', 'Invalid Credentials');
                 redirect('user/login', 'refresh');
               }
                 

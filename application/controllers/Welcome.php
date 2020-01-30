@@ -24,11 +24,16 @@ class Welcome extends CI_Controller {
             parent::__construct();
             $this->load->helper('url');
             $this->load->database();
+            $this->load->library(array('session'));
     }
 	public function index()
 	{
 		//$this->load->view('welcome_message');
-		$this->load->view('home');
+        if (null !== $this->session->id) {          
+            redirect('user/home');
+        } else {
+            $this->load->view('home');   
+        }
 	}
 
 	public function showEssay() {
