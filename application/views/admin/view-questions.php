@@ -57,6 +57,21 @@
         .navbar {
             margin-bottom: 0px;
         }
+        .searchBox{
+            border: 1px solid #aaaaaa;
+            padding: 10px;
+        }
+        .searchBtn{
+            background: black;
+            color: white;
+            padding: 6px 10px;
+            font-size: 18px;
+            border: 1px solid black;
+        }
+        .inputBox:focus{
+            box-shadow: initial;
+            border: 1px solid black;
+        }
     </style>
     </head>
     <body>
@@ -199,6 +214,29 @@
         
         <div class="col-md-12">
         <h4>MCQs</h4>
+            <div class="container">
+                <div class="searchBox">
+                    <div class="row">
+                        <div class="col-md-3 offset-md-1">
+                            <label>Section</label>
+                            <input type="text" class="form-control inputBox">
+                        </div>
+                        <div class="col-md-3 offset-md-1">
+                            <label>Sub section</label>
+                            <input type="text" class="form-control inputBox">
+                        </div>
+                        <div class="col-md-2 offset-md-1">
+                            <label>Difficulty Level</label>
+                            <input type="text" class="form-control inputBox">
+                        </div>
+                    </div><br/>
+                    <div>
+                        <div align="right">
+                            <button class="searchBtn">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br/>
         <div class="table-responsive">
 
                 
@@ -239,7 +277,7 @@
   white-space: nowrap;
   color: #000;">'.$question.'</span></td><td>'.$section.'</td> <td>'.$subSection.'</td>
     <td>'.$level.'</td>
-      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-eye-open"></span></button></p></td>
+      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-eye-open"></span></button></p></td>
     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td></tr>';
         }

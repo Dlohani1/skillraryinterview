@@ -223,7 +223,6 @@
                                                 <input type="text" class="form-control inputBox">
                                             </div>
                                         </div><br/>
-                                  
                                         <div>
                                             <div align="right">
                                                 <button class="searchBtn">Search</button>
