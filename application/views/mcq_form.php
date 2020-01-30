@@ -100,25 +100,28 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
+            width: 240px;
         }
         .saveBtn1{
             background: purple;
-            border: 2px solid #a0a1a5;
+            border: 2px solid purple;
             padding: 6px 13px;
             border-radius: 5px;
             color: white;
             font-weight: 600;
             font-size: 18px;
+            width: 240px;
         }
 
         .clearBtn{
             background: grey;
-            border: 2px solid #a0a1a5;
+            border: 2px solid grey;
             padding: 6px 13px;
             border-radius: 5px;
             color: white;
             font-weight: 600;
             font-size: 18px;
+            width: 240px;
         }
 
         .submitBtn{
@@ -209,12 +212,12 @@ line-height: 30px;
     <div class="container-fluid">
         <div class="row">
             <div class="column">
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-12 text-right">
                         <p class="closeBtnRow"><button class="closeBtn" style="margin-left:10px" onclick="closeBtn()">Close</button></p>
                     </div>
                    
-                </div><hr>
+                </div><hr> -->
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <!-- Time Left: 20:00 -->
@@ -247,7 +250,7 @@ line-height: 30px;
                 <hr>
                 <div class="row">
                     <div id="questionId" class="col-md-8 offset-md-1"></div>
-                    <div id ="code-test" style="display:none">
+<!--                     <div id ="code-test" style="display:none">
                       Select Language : 
                       <select id="code-lang">
                         <option value="0">Select </option>
@@ -256,9 +259,29 @@ line-height: 30px;
                     </select>
 
                     <button onclick="loadIframe()">Start Test </button>
+                    </div> -->
+                     <div id="code-test" style="display:none" class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-4 offset-md-1"> Select Language : </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 offset-md-1">
+                                <select id="code-lang" class="form-control">
+                                    <option value="0">Select </option>
+                                    <option value="1">Java </option>
+                                    <option value="2">Python</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button onclick="loadIframe()" style="background: #33A478;padding: 7px 8px;
+                                    border: 1px solid #33A478;">
+                                    Start Test
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <hr>
+              <!--   <hr> -->
 
                 <input type="hidden" id="sectionId" value="1" />
                 <input type="hidden" id="totalQuestion" value="0" />
@@ -280,11 +303,11 @@ line-height: 30px;
 <!-- <div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
 </div> -->
-<div class="row">
-    <div class="col-md-4">
+<div class="row" style="margin-top:10%">
+    <div class="col-md-4"  id="mark-btn">
         <button class="saveBtn1" onclick="saveNext(1)">Mark for Review & Next</button>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4"  id="clear-btn">
         <button class="clearBtn" onclick="clearResponse()">Clear Response</button>
     </div>
     <div class="col-md-4" id="save-next" >
@@ -466,6 +489,8 @@ function getQuestion(sectionId) {
         document.getElementById("showtime").style.display = 'none';
         document.getElementById("questionPallate").style.display = 'none';        
         document.getElementById("save-next").style.display = 'none';
+        document.getElementById("clear-btn").style.display = 'none';
+        document.getElementById("mark-btn").style.display = 'none';
         
     } else {
         var mcqId = document.getElementById("mcqSessionId").value;
@@ -733,6 +758,24 @@ function saveNext(isMarked, timeUp = false) {
      
 }
 
+function lastSave() {
+     var sectionId = document.getElementById("sectionId").value;
+        var questionId = document.getElementById("questionIdSave").value;
+        var ansId = document.getElementById("saveAnsId").value;
+        var student = document.getElementById("studentSessionId").value;
+        var mcqId = document.getElementById("mcqSessionId").value;
+        var timeTaken = document.getElementById("countdown").value;
+        $.ajax({
+            type: "POST",
+            url: "saveAnswer",
+            data:{"student_id":student, "answer_id":ansId, "section_id": sectionId, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken},
+
+            success: function(data){
+                console.log('ansr', data)
+            }
+        });
+}
+
 function clearCount() {
     document.getElementById("ansCount").innerHTML = 0;
     document.getElementById("markedCount").innerHTML = 0;
@@ -815,7 +858,7 @@ window.onload = function() {
 
         var seconds = 0;
         countdownTimer = setInterval(function() {
-            seconds++;
+            ++seconds;
 
             document.getElementById("countdown").value = seconds;
         }, 1000);
@@ -875,7 +918,24 @@ window.onload = function() {
             document.getElementById("section2").disabled = true;
             document.getElementById("section3").disabled = false;
             $("#section3").click();
-        } else {
+        } else if (document.getElementById("sectionId").value == 3) {
+                document.getElementById("sectionId").value = 4;
+                document.getElementById("section3").disabled = true;
+                document.getElementById("section4").disabled = false;
+                clearTimeout(tim);
+                
+                // var yes = confirm("Please confirm to Submit. This will take you to next section");
+  
+                // if (yes){
+                //     //alert('yes');
+                //     clearCount();
+                //     $("#section4").click();
+                // }
+
+                clearCount();
+                $("#section4").click();
+
+            }else {
             $("#section1").click();
         }
         
@@ -914,17 +974,23 @@ window.onload = function() {
             if (parseInt(sec) == 0) {
               document.getElementById("showtime").innerHTML = "Your Left Time is :" + min + " Minutes :" + sec + " Seconds";
               if (parseInt(min) == 0) {
+                document.getElementById("countdown").value = parseInt(document.getElementById("countdown").value ) + 1;
+                lastSave();
                 clearTimeout(tim);
-                saveNext(2);
+                
                 clearCount();
-                alert("Time Up");
 
+                alert("Time Up");
+                //saveNext(2);
+                // lastSave();
+                
                 if (document.getElementById("sectionId").value == 4) {
 
 
                     window.location.href="redirect-to-code";
                 }
-                                EndExam();
+                                
+                EndExam();
               } else {
                 document.getElementById("showtime").innerHTML = "Your Left Time is :" + min + " Minutes :" + sec + " Seconds";
                 tim = setTimeout("showtime()", 1000);
