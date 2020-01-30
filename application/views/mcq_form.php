@@ -28,6 +28,10 @@
             min-height:calc(65vh - 60px);
         }
 
+        .countColor {
+            color:white;
+        }
+
         .footer{
             height:30px;
         }
@@ -89,16 +93,16 @@
             font-size: 24px;
         }
         .saveBtn{
-            background: #4d82e4;
-            border: 2px solid #4d82e4;
-            padding: 6px 13px;
+            background: #33A478;
+            border: 2px solid #33A478;
+            padding: 6px 5px;
             border-radius: 5px;
             color: white;
             font-weight: 600;
             font-size: 18px;
         }
         .saveBtn1{
-            background: yellowgreen;
+            background: purple;
             border: 2px solid #a0a1a5;
             padding: 6px 13px;
             border-radius: 5px;
@@ -106,6 +110,17 @@
             font-weight: 600;
             font-size: 18px;
         }
+
+        .clearBtn{
+            background: grey;
+            border: 2px solid #a0a1a5;
+            padding: 6px 13px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
         .submitBtn{
             background: #33A478;
             border: 2px solid #33A478;
@@ -151,7 +166,13 @@ background: #6C757D;
 padding: 6px 10px;
 font-size: 22px;
 border-radius: 5px;
-background: #17A2B8;
+background: purple;
+}
+.box5{
+ padding: 6px 10px;
+font-size: 22px;
+border-radius: 5px;
+background: skyblue;   
 }
 .firstbox{
 margin: 20px 0px;
@@ -256,8 +277,19 @@ line-height: 30px;
                         <ul id="optionsList" class="optionList">
                         </ul>
                     </div>
-<div id="save-next" style="margin-top: 10%">
+<!-- <div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
+</div> -->
+<div class="row">
+    <div class="col-md-4">
+        <button class="saveBtn1" onclick="saveNext(1)">Mark for Review & Next</button>
+    </div>
+    <div class="col-md-4">
+        <button class="clearBtn" onclick="clearResponse()">Clear Response</button>
+    </div>
+    <div class="col-md-4" id="save-next" >
+        <button class="saveBtn" onclick="saveNext(2)">Save & Next</button>
+    </div>
 </div>
                    <iframe id="myIframe" style="width:100%;height:100%; display: none"></iframe>
                         </div>
@@ -312,14 +344,18 @@ line-height: 30px;
                     <div class="row" style="margin:0px;padding:0px;">
 <div class="col-md-6">
 <div>
-<p class="icon"><span class="box1"><span style="visibility: hidden;">5</span></span></p>
+<p class="icon"><span class="box1"><span class="countColor" id="ansCount" style="visibility: hidden;">0</span></span></p>
 <p class="content">Answered</p>
 </div>
 </div>
 <div class="col-md-6">
 <div>
-<p class="icon"><span class="box2"><span style="visibility: hidden;">5</span></span></p>
+<!-- <p class="icon"><span class="box2"><span style="visibility: hidden;">5</span></span></p>
 <p class="content">Not Answered</p>
+ -->
+<p class="icon"><span class="box3"><span class="countColor" id="notViewed" style="visibility: hidden;">5</span></span></p>
+<p class="content">Not Viewed</p>
+
 </div>
 </div>
 </div><br/>
@@ -327,13 +363,14 @@ line-height: 30px;
 <div class="row" style="margin:0px;padding:0px;">
 <div class="col-md-6">
 <div>
-<p class="icon"><span class="box3"><span style="visibility: hidden;">5</span></span></p>
-<p class="content">Not Visited</p>
+<p class="icon"><span class="box5"><span class="countColor" id="viewedCount"style="visibility: hidden;">0</span></span></p>
+<!-- <p class="content">Not Visited</p> -->
+<p class="content">Viewed</p>
 </div>
 </div>
 <div class="col-md-6">
 <div>
-<p class="icon"><span class="box4"><span style="visibility: hidden;">5</span></span></p>
+<p class="icon"><span class="box4"><span class="countColor" id="markedCount" style="visibility: hidden;">0</span></span></p>
 <p class="content">Marked For Review</p>
 </div>
 </div>
@@ -385,7 +422,8 @@ $( document ).ready(function() {
 function loadIframe() {
 
     var id = document.getElementById("code-lang").value;
-    var mcqId = document.getElementById("mcqSessionId").value;
+    if (id > 0) {
+        var mcqId = document.getElementById("mcqSessionId").value;
     var userId  = document.getElementById("studentSessionId").value;
     var codeId = document.getElementById("codeTestId").value;
     var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/"+codeId+"/"+mcqId;
@@ -406,7 +444,11 @@ function loadIframe() {
 win.onbeforeunload = function(){
         console.log('unload test');
         window.location.href="user/home";
+    }    
+    } else {
+        alert('Please select a language to code')
     }
+    
 }
 
 function getQuestion(sectionId) {
@@ -438,7 +480,13 @@ function getQuestion(sectionId) {
                 console.log('data', opts[0].questions);
 
                 document.getElementById("totalQuestion").value = opts[0].total;
+                
+                document.getElementById("notViewed").innerHTML = parseInt(opts[0].total)-1;
+                document.getElementById("notViewed").style.visibility = "visible";
+                document.getElementById("viewedCount").style.visibility = "visible";
                 document.getElementById("totalTime").value = opts[0].time;
+                document.getElementById("markedCount").style.visibility = "visible";
+                document.getElementById("ansCount").style.visibility = "visible";
                 // Parse the returned json data
                 // var opts = $.parseJSON(data);
                 // // Use jQuery's each to iterate over the opts value
@@ -464,7 +512,22 @@ function getQuestion(sectionId) {
 }
 
 function fetchQuestion(id,no) {
-    document.getElementById("iconAnswered"+no).style.backgroundColor = "lightblue"; 
+    if (document.getElementById("iconAnswered"+no).style.backgroundColor != "purple" && document.getElementById("iconAnswered"+no).style.backgroundColor != "green" ) {
+         if (document.getElementById("iconAnswered"+no).style.backgroundColor != "lightblue") {
+              var val = document.getElementById("notViewed").innerHTML ;
+                if (no > 1 && val != 0) {               
+
+                document.getElementById("notViewed").innerHTML  =  parseInt(val) - 1;
+                }
+                document.getElementById("iconAnswered"+no).style.backgroundColor = "lightblue";
+                var viewedCount = document.getElementById("viewedCount").innerHTML;
+                document.getElementById("viewedCount").innerHTML = parseInt(viewedCount) + 1;       
+         }
+        
+       
+    }
+     
+    
     document.getElementById("questionId").innerHTML = "Question No. "+no;
     //$( "#iconAnswered"+id ).toggleClass( "a", addOrRemove );
     document.getElementById("questionIdSave").value = id;
@@ -519,18 +582,55 @@ function clearTime(){
       clearTimeout(countdownTimer);
 }
 
-function saveNext() {
+function saveNext(isMarked, timeUp = false) {
     
                 
     var checkRadio = document.querySelector( 
         'input[name="answer"]:checked'); 
       
-    if(checkRadio != null) {
+    if(checkRadio != null || (document.getElementById("countdown").value == window.totalsec)) {
         var str = document.getElementById("questionId").innerHTML;
         var res = str.split(".");
         console.log('rr', "iconAnswered"+res[1].trim());
 
-        document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "green";  
+        if (isMarked == 1) {
+                //alert('aa')
+            if (document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor != "purple") {
+
+                if (document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor == "green") {
+                    
+                    var ansCount = document.getElementById("ansCount").innerHTML;
+
+                    document.getElementById("ansCount").innerHTML = parseInt(ansCount) - 1;   
+                } 
+
+                document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "purple";
+                var markedCount = document.getElementById("markedCount").innerHTML;
+
+                document.getElementById("markedCount").innerHTML = parseInt(markedCount) + 1;  
+
+                
+            }              
+
+        } else {
+            if (document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor != "green") {
+
+                if (document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor == "purple") {
+                    
+                    var markedCount = document.getElementById("markedCount").innerHTML;
+
+                    document.getElementById("markedCount").innerHTML = parseInt(markedCount) - 1;   
+                }
+
+                var ansCount = document.getElementById("ansCount").innerHTML;
+
+                document.getElementById("ansCount").innerHTML = parseInt(ansCount) + 1;
+                document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "green";
+
+            }
+                
+        }
+        // document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "green";  
         console.log('checked');
         var qno = document.getElementById("questionId").innerHTML;
 
@@ -562,6 +662,16 @@ function saveNext() {
                 document.getElementById("sectionId").value = 2;
                 document.getElementById("section1").disabled = true;
                 document.getElementById("section2").disabled = false;
+                
+                // var yes = confirm("Please confirm to Submit. This will take you to next section");
+  
+                // if (yes){
+                //     //alert('yes');
+                    
+                //     clearCount();
+                //     $("#section2").click();
+                // }
+
                 clearTimeout(tim);
                 $("#section2").click();
             } else if (document.getElementById("sectionId").value == 2) {
@@ -569,12 +679,32 @@ function saveNext() {
                 document.getElementById("section2").disabled = true;
                 document.getElementById("section3").disabled = false;
                 clearTimeout(tim);
+                // var yes = confirm("Please confirm to Submit. This will take you to next section");
+  
+                // if (yes){
+                //     //alert('yes');
+                //     clearCount();
+                //     $("#section3").click();
+                // }
+
+                clearCount();
                 $("#section3").click();
+                
             }  else if (document.getElementById("sectionId").value == 3) {
                 document.getElementById("sectionId").value = 4;
                 document.getElementById("section3").disabled = true;
                 document.getElementById("section4").disabled = false;
                 clearTimeout(tim);
+                
+                // var yes = confirm("Please confirm to Submit. This will take you to next section");
+  
+                // if (yes){
+                //     //alert('yes');
+                //     clearCount();
+                //     $("#section4").click();
+                // }
+
+                clearCount();
                 $("#section4").click();
 
             } else {
@@ -584,14 +714,30 @@ function saveNext() {
 
             
         } else {
-            $("#iconAnswered"+b).click();    
+            $("#iconAnswered"+b).click();
+            // if (isMarked == 1) {
+            //     //alert('aa')
+            //     document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "darkblue";  
+
+            // }
+            //$("#iconAnswered"+b).click();    
         }
     } 
     else {
-        alert('Please check atleast one option');
+        if (!timeUp) {
+            alert('Please check atleast one option');    
+        }
+        
         console.log('No one selected');
     }
      
+}
+
+function clearCount() {
+    document.getElementById("ansCount").innerHTML = 0;
+    document.getElementById("markedCount").innerHTML = 0;
+    document.getElementById("viewedCount").innerHTML = 0;
+    document.getElementById("notViewed").innerHTML = 0;
 }
 
 function clearResponse() {
@@ -600,6 +746,18 @@ function clearResponse() {
 
 </script>
  <script>
+
+    function InitializeMap() 
+       {
+           document.onkeydown = function () {
+            if (122 == event.keyCode) {
+                event.keyCode = 0;
+                return false;
+       }
+      }
+}
+
+window.onload = InitializeMap;
 
 // function disableF5(e) { if ((e.which || e.keyCode) == 116 || 82) e.preventDefault(); };
 // $(document).on("keydown", disableF5);
@@ -757,7 +915,10 @@ window.onload = function() {
               document.getElementById("showtime").innerHTML = "Your Left Time is :" + min + " Minutes :" + sec + " Seconds";
               if (parseInt(min) == 0) {
                 clearTimeout(tim);
+                saveNext(2);
+                clearCount();
                 alert("Time Up");
+
                 if (document.getElementById("sectionId").value == 4) {
 
 

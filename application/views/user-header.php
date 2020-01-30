@@ -223,10 +223,10 @@
                 <div class="container">
                     <img src="https://www.skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary Logo">
                     <div style="float:right">
-                        <a class="btn registerBtn" href="home">Home</a>
-                        <a class="btn registerBtn" href="profile">Profile</a>
-                        <a class="btn registerBtn" href="enter-code">Take Test</a>
-                        <a class="btn registerBtn" href="logout">Logout</a>
+                        <a class="btn registerBtn" href=<?php echo base_url()."user/home";?>>Home</a>
+                        <a class="btn registerBtn" href=<?php echo base_url()."user/profile";?>>Profile</a>
+                        <a class="btn registerBtn" href=<?php echo base_url()."user/enter-code";?>>Take Test</a>
+                        <a class="btn registerBtn" href=<?php echo base_url()."user/logout";?>>Logout</a>
                     </div>
                 </div>
             </nav>
