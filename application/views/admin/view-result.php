@@ -13,7 +13,7 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-            <style>
+        <style>
         .firstSection{
             background: white;
             box-shadow: 2px 2px 10px 0px #aaa;
@@ -56,6 +56,21 @@
 
         .navbar {
             margin-bottom: 0px;
+        }
+        .searchBox{
+            border: 1px solid #aaaaaa;
+            padding: 10px;
+        }
+        .searchBtn{
+            background: black;
+            color: white;
+            padding: 6px 10px;
+            font-size: 18px;
+            border: 1px solid black;
+        }
+        .inputBox:focus{
+            box-shadow: initial;
+            border: 1px solid black;
         }
     </style>
     </head>
@@ -198,6 +213,29 @@
         
         <div class="col-md-12">
         <h4>MCQs</h4>
+        <div class="container">
+        <div class="searchBox">
+            <div class="row">
+                <div class="col-md-3 offset-md-1">
+                    <label>MCQ Name</label>
+                    <input type="text" class="form-control inputBox">
+                </div>
+                <div class="col-md-3 offset-md-1">
+                    <label>Total Questions</label>
+                    <input type="text" class="form-control inputBox">
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <label>Code</label>
+                    <input type="text" class="form-control inputBox">
+                </div>
+            </div><br/>
+            <div>
+                <div align="right">
+                    <button class="searchBtn">Search</button>
+                </div>
+            </div>
+        </div><br/>
+        </div>
         <div class="table-responsive">
 
                 
