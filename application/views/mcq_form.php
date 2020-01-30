@@ -100,25 +100,28 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
+            width: 240px;
         }
         .saveBtn1{
             background: purple;
-            border: 2px solid #a0a1a5;
+            border: 2px solid purple;
             padding: 6px 13px;
             border-radius: 5px;
             color: white;
             font-weight: 600;
             font-size: 18px;
+            width: 240px;
         }
 
         .clearBtn{
             background: grey;
-            border: 2px solid #a0a1a5;
+            border: 2px solid grey;
             padding: 6px 13px;
             border-radius: 5px;
             color: white;
             font-weight: 600;
             font-size: 18px;
+            width: 240px;
         }
 
         .submitBtn{
@@ -247,18 +250,32 @@ line-height: 30px;
                 <hr>
                 <div class="row">
                     <div id="questionId" class="col-md-8 offset-md-1"></div>
-                    <div id ="code-test" style="display:none">
-                      Select Language : 
-                      <select id="code-lang">
-                        <option value="0">Select </option>
-                        <option value="1">Java </option>
-                        <option value="2">Python</option>
-                    </select>
+                   <div id="code-test" style="display:none" class="container-fluid">
 
-                    <button onclick="loadIframe()">Start Test </button>
-                    </div>
+<div class="row"><div class="col-md-4 offset-md-1"> Select Language : </div></div>
+<div class="row">
+<div class="col-md-3 offset-md-1">
+<select id="code-lang" class="form-control">
+<option value="0">Select </option>
+<option value="1">Java </option>
+<option value="2">Python</option>
+</select>
+</div>
+<div class="col-md-3">
+
+
+<button onclick="loadIframe()" style="
+background: #33A478;
+padding: 7px 8px;
+border: 1px solid #33A478;
+">Start Test </button>
+</div>
+</div>
+</div>
+
+
                 </div>
-                <hr>
+                <!-- <hr>   -->
 
                 <input type="hidden" id="sectionId" value="1" />
                 <input type="hidden" id="totalQuestion" value="0" />
@@ -280,7 +297,7 @@ line-height: 30px;
 <!-- <div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
 </div> -->
-<div class="row">
+<div class="row" style="margin-top:10%">
     <div class="col-md-4">
         <button class="saveBtn1" onclick="saveNext(1)">Mark for Review & Next</button>
     </div>
@@ -762,51 +779,51 @@ window.onload = InitializeMap;
 // function disableF5(e) { if ((e.which || e.keyCode) == 116 || 82) e.preventDefault(); };
 // $(document).on("keydown", disableF5);
 
-window.onload = function() {
-    document.addEventListener("contextmenu", function(e){
-      e.preventDefault();
-    }, false);
-    document.addEventListener("keydown", function(e) {
-    //document.onkeydown = function(e) {
-    // F5 Key
-    if ((e.which || e.keyCode) == 116){
-        disabledEvent(e);
-    }
-      // "I" key
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-        disabledEvent(e);
-      }
-      // "J" key
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-        disabledEvent(e);
-      }
-       // "R" key
-       if (e.ctrlKey && e.shiftKey && e.keyCode == 82) {
-        disabledEvent(e);
-      }
-      // "S" key + macOS
-      if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-        disabledEvent(e);
-      }
-      // "U" key
-      if (e.ctrlKey && e.keyCode == 85) {
-        disabledEvent(e);
-      }
-      // "F12" key
-      if (event.keyCode == 123) {
-        disabledEvent(e);
-      }
-    }, false);
-    function disabledEvent(e){
-      if (e.stopPropagation){
-        e.stopPropagation();
-      } else if (window.event){
-        window.event.cancelBubble = true;
-      }
-      e.preventDefault();
-      return false;
-    }
-  };
+// window.onload = function() {
+//     document.addEventListener("contextmenu", function(e){
+//       e.preventDefault();
+//     }, false);
+//     document.addEventListener("keydown", function(e) {
+//     //document.onkeydown = function(e) {
+//     // F5 Key
+//     if ((e.which || e.keyCode) == 116){
+//         disabledEvent(e);
+//     }
+//       // "I" key
+//       if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+//         disabledEvent(e);
+//       }
+//       // "J" key
+//       if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+//         disabledEvent(e);
+//       }
+//        // "R" key
+//        if (e.ctrlKey && e.shiftKey && e.keyCode == 82) {
+//         disabledEvent(e);
+//       }
+//       // "S" key + macOS
+//       if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+//         disabledEvent(e);
+//       }
+//       // "U" key
+//       if (e.ctrlKey && e.keyCode == 85) {
+//         disabledEvent(e);
+//       }
+//       // "F12" key
+//       if (event.keyCode == 123) {
+//         disabledEvent(e);
+//       }
+//     }, false);
+//     function disabledEvent(e){
+//       if (e.stopPropagation){
+//         e.stopPropagation();
+//       } else if (window.event){
+//         window.event.cancelBubble = true;
+//       }
+//       e.preventDefault();
+//       return false;
+//     }
+//   };
 
 
     var countdownTimer;
