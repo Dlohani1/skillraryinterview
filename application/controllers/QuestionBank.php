@@ -142,9 +142,9 @@ class QuestionBank extends MyController {
             echo "aa";die;
         }
         public function show() {
-                if ($this->isMcqTaken() > 0) {
-                        echo "MCQ test already taken";
-                } else {
+                // if ($this->isMcqTaken() > 0) {
+                //         echo "MCQ test already taken";
+                // } else {
                     $userData = $this->showUserProfile(true);
 
                     $codeId = $this->getCodeTest();
@@ -152,7 +152,7 @@ class QuestionBank extends MyController {
                     $this->session->set_userdata('codeTestId', $codeId); 
 
                     $this->load->view('mcq_form', array('userData'=>$userData,'codeId'=>$codeId));      
-                }
+                // }
                 
         }
 
@@ -165,13 +165,28 @@ class QuestionBank extends MyController {
             return $codeId->code_id;
         }
 
-        private function isMcqTaken() {
+        private function isMcqTaken($attemptCheck = false, $attemptNo = 0) {
                 $studentId = $this->session->id;
                 $mcqId = $this->session->mcqId;
-                $sql = "SELECT * FROM `student_answers` WHERE student_id = '$studentId' AND mcq_test_id = '$mcqId'";
+                $sql = "SELECT test_attempt FROM `student_answers` WHERE student_id = '$studentId' AND mcq_test_id = '$mcqId' 
+                order by test_attempt desc";
 
-                $query = $this->db->query($sql);
-                return $query->num_rows();
+                if ($attemptCheck) {
+                    $sql = "SELECT * FROM `student_answers` WHERE student_id = '$studentId' AND mcq_test_id = '$mcqId' AND test_attempt =".$attemptNo;                    
+                }
+
+
+
+
+                 $isAttempted = $this->db->query($sql)->row();
+
+              if (null != $isAttempted) {
+                return $isAttempted->test_attempt;
+              } else {
+                return 0;
+              }
+                // $query = $this->db->query($sql);
+                // return $query->num_rows();
                  // if($query->num_rows() > 0)  {
 
                  // }
@@ -232,8 +247,8 @@ class QuestionBank extends MyController {
 
                 $sql = "SELECT question_bank.question, answers.*  FROM question_bank 
                 LEFT JOIN answers 
-                  ON answers.question_id = question_bank.id
-                WHERE question_bank.id = '$questionId'";
+                ON answers.question_id = question_bank.id
+                WHERE question_bank.id = '$questionId' ";
 
                 $query = $this->db->query($sql);
 
@@ -249,7 +264,9 @@ class QuestionBank extends MyController {
 
                 $questionData['userAnswer'] = array();
 
-                $sql = "SELECT answer_id FROM `student_answers` WHERE student_id='$studentId' AND question_id = '$questionId' AND mcq_test_id='$mcqId'";
+                $answerAttempt = $this->session->attempt;
+
+                $sql = "SELECT answer_id FROM `student_answers` WHERE student_id='$studentId' AND question_id = '$questionId' AND mcq_test_id='$mcqId' AND test_attempt = '$answerAttempt'";
 
                 $answer = $this->db->query($sql)->row();
 
@@ -318,7 +335,8 @@ class QuestionBank extends MyController {
                 'question_id' => $_POST['question_id'],
                 'student_id' => $_POST['student_id'],
                 'correct_ans' => 0,
-                'time_taken' => $timeTaken
+                'time_taken' => $timeTaken,
+                'test_attempt' => $this->session->attempt
             );
 
             $questionId = $_POST['question_id'];
@@ -341,7 +359,9 @@ class QuestionBank extends MyController {
                 $data['correct_ans'] = 1;
             }
 
-            $sql = "SELECT id FROM `student_answers` WHERE student_id='$studentId' AND mcq_test_id = '$mcqId' AND question_id='$questionId'";
+            $attempt = $this->session->attempt;
+
+            $sql = "SELECT id FROM `student_answers` WHERE student_id='$studentId' AND mcq_test_id = '$mcqId' AND question_id='$questionId' AND test_attempt = '$attempt'";
 
             $alreadyAnswer = $this->db->query($sql)->row();
 
@@ -799,7 +819,8 @@ class QuestionBank extends MyController {
                 }
             }
 
-             $sql = "SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=1 UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id = ".$studentId." and section_id=2 UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=3";
+            $attempt = $this->session->attempt;
+             $sql = "SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=1 and test_attempt='$attempt' UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id = ".$studentId." and section_id=2 and test_attempt='$attempt' UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=3 and test_attempt='$attempt'";
 
            
 
@@ -888,15 +909,29 @@ class QuestionBank extends MyController {
                     foreach ($query->result() as $row) {
 
                             $mcqId = $row->mcq_test_id;
-                    }   
+                            $attempt = $row->attempt;
+                    }
+
+
 
                     $this->session->set_userdata('mcqId', $mcqId);
-                    if ($this->isMcqTaken() > 0) {
-                        $this->session->set_flashdata('success', 'Invalid Code');
+                    
+                    if ($attempt > 0) {
+                        $attemptCount = $this->isMcqTaken(true,$attempt);
+                    } else {
+                        $attemptCount = $this->isMcqTaken();
+                    }
+
+                    if ($attemptCount == $attempt) {
+                        $this->session->set_flashdata('success', 'You have crossed the number of attempts to take test. Please contact admin');
 
                         redirect('user/enter-code');
                     } else {
+                           //++$attemptCount;
+//echo $this->isMcqTaken() ;die;
+                        $attemptCount = $this->isMcqTaken() + 1;
 
+                        $this->session->set_userdata('attempt', $attemptCount);
 
                         $this->generateQuestion($code, $mcqId);
                     }
@@ -1258,5 +1293,9 @@ class QuestionBank extends MyController {
 
         public function redirectPage() {
             $this->load->view('redirecting-page');
+        }
+
+        public function searchTest() {
+            echo "hello"; die;
         }
 }
