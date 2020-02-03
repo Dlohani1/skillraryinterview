@@ -311,51 +311,46 @@ class QuestionBank extends MyController {
             $questionId = $_POST['question_id'];
             $timeTaken = $_POST['time_taken'];
 
-               $data = array(
-                        'answer_id' => $_POST['answer_id'],
-                        'section_id' => $_POST['section_id'],
-                        'mcq_test_id' => $_POST['mcq_id'],
-                        'question_id' => $_POST['question_id'],
-                        'student_id' => $_POST['student_id'],
-                        'correct_ans' => 0,
-                        'time_taken' => $timeTaken
-                );
+            $data = array(
+                'answer_id' => $_POST['answer_id'],
+                'section_id' => $_POST['section_id'],
+                'mcq_test_id' => $_POST['mcq_id'],
+                'question_id' => $_POST['question_id'],
+                'student_id' => $_POST['student_id'],
+                'correct_ans' => 0,
+                'time_taken' => $timeTaken
+            );
 
-               $questionId = $_POST['question_id'];
+            $questionId = $_POST['question_id'];
 
-               $sql = "SELECT id FROM `answers` WHERE question_id = '$questionId' And is_correct=1";   
+            $sql = "SELECT id FROM `answers` WHERE question_id = '$questionId' And is_correct=1";   
 
-               // echo $sql; die;
-                $ansId = $this->db->query($sql);
+            // echo $sql; die;
+            $ansId = $this->db->query($sql);
 
-                if($ansId->num_rows() > 0)  {
+            if($ansId->num_rows() > 0)  {
 
                 foreach ($ansId->result() as $row) {
 
-                        $ansId = $row->id;
+                    $ansId = $row->id;
                 }
             }
 
 
-                if ($ansId == $_POST['answer_id']) {
-                        $data['correct_ans'] = 1;
-                }
+            if ($ansId == $_POST['answer_id']) {
+                $data['correct_ans'] = 1;
+            }
 
-                $sql = "SELECT id FROM `student_answers` WHERE student_id='$studentId' AND mcq_test_id = '$mcqId' AND question_id='$questionId'";
+            $sql = "SELECT id FROM `student_answers` WHERE student_id='$studentId' AND mcq_test_id = '$mcqId' AND question_id='$questionId'";
 
-               $alreadyAnswer = $this->db->query($sql)->row();
+            $alreadyAnswer = $this->db->query($sql)->row();
 
-              if (null != $alreadyAnswer) {
+            if (null != $alreadyAnswer) {
                 $this->db->where('id', $alreadyAnswer->id);
                 $this->db->update('student_answers',$data);
-              } else {
-                 $this->db->insert('student_answers', $data);
-              }
-
-                           
-
-               
-
+            } else {
+                $this->db->insert('student_answers', $data);
+            }
         }
 
         public function loadTest() {
@@ -473,7 +468,7 @@ class QuestionBank extends MyController {
         public function signin() {
 
                $email = $_POST['email'];
-               $pwd = $_POST['pwd'];
+               $pwd = md5(trim($_POST['pwd']));
                $sql = "SELECT * FROM `student_register` WHERE email='$email' AND password = '$pwd'";
 
                $user = $this->db->query($sql)->row();
@@ -618,7 +613,7 @@ class QuestionBank extends MyController {
 
             $userId = $this->session->id;
 
-            $sql = "SELECT * FROM `student_register` Where id = '$userId'" ;
+            $sql = "SELECT first_name,last_name,email,contact_no,state, city, dob, gender, tenth_passing_year, tenth_percentage, twelveth_passing_year, twelveth_percentage, degree, degree_passing_year, degree_percentage, stream, work_location, profile_image FROM `student_register` Where id = '$userId'" ;
 
             $query = $this->db->query($sql);
 
@@ -775,20 +770,7 @@ class QuestionBank extends MyController {
             $mcqId = $this->session->mcqId;
             $studentId = $this->session->id;
 
-            $sql = "SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=1 UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id = ".$studentId." and section_id=2 UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=3";
-
            
-
-            $query = $this->db->query($sql);
-           
-            if($query->num_rows() > 0)  {
-
-                foreach ($query->result() as $row) {
-
-                    $result1[] = $row->time_taken;
-                }
-            }
-
             $sql = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 1 UNION ALL
                 SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = 2
                 UNION ALL
@@ -817,9 +799,26 @@ class QuestionBank extends MyController {
                 }
             }
 
+             $sql = "SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=1 UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id = ".$studentId." and section_id=2 UNION ALL SELECT sum(time_taken) as time_taken FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=3";
+
+           
+
+            $query = $this->db->query($sql);
+           
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+
+                    $result1[] = $row->time_taken;
+                }
+            }
+
+
             $codeResult = $this->codeTestResult();
 
             $result = array ($resultQ, $result2, $result1, $codeResult);
+
+            //echo "<pre>"; print_r($result); die;
 
             $this->load->view('user-header');
             $this->load->view('results', array("results"=>$result));
@@ -901,6 +900,10 @@ class QuestionBank extends MyController {
 
                         $this->generateQuestion($code, $mcqId);
                     }
+                } else {
+                    $this->session->set_flashdata('success', 'Invalid Code');
+
+                        redirect('user/enter-code');
                 }
             // }            
         }
