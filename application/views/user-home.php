@@ -92,7 +92,7 @@
         .nameUser{
             line-height: 20px;
             margin-left: 25%;
-            margin-top: 3%;
+            margin-top: 6%;
         }
         .label{
             color: #33A478;
@@ -106,9 +106,26 @@
             float: left;
 
         }
+        .mobileWelcomeText{
+            font-size: 35px;
+        }
         .profileImage{
             width: 120px;
             border-radius: 100px;
+        }
+        .oneCard{
+            display: block;
+        }
+        .twoCard{
+            display: none;
+        }
+        @media only screen and (max-width: 600px){
+            .oneCard{
+                display: none;
+            }
+            .twoCard{
+                display: block;
+            }
         }
     </style>
 </head>
@@ -129,19 +146,18 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <div class="card welcomeBox">
+                    <div class="card welcomeBox oneCard">
                         <div align='center'>
                             <img src=<?php echo base_url().$img;?> class="profileImage">
                         </div>
                         <div>
                             <div class="bubbleCircle3 bubbleCircle33"></div>
                             <p class="welcomeText">Welcome <?php echo $userData['first_name']." ".$userData['last_name']; ?></p>
-                        </div>
-
+                        </div><br/>
                         <div class="nameUser">
 
                             <p><span class="label">Email: &nbsp;</span>
-                            <span class="name"> <?php echo $userData['email']; ?></span></p><br/>
+                            <span class="name"> <?php echo $userData['email']; ?></span></p><br/><br/>
                         <p><span class="label">Mobile: &nbsp;</span><span class="name"> <?php echo $userData['contact_no']; ?></span></p>
                             <!-- <p><span class="label">Gender</span> : <span class="name">ABCD</span></p> -->
                         </div>
@@ -149,9 +165,35 @@
                                                         <?php if (isset($_SESSION['success'])) { echo "<small style='color:red'>".$_SESSION['success']."<small>";} ?>
                         <!-- <div class="bubbleCircle4 bubbleCircle44"></div> -->
                         <div style="margin-top: 3%">
-                        <img src=<?php echo base_url()."images/cloud.png";?> width="100%" height="70px">
+                        <img src=<?php echo base_url()."images/cloud.png";?> width="100%" height="100px">
                         </div>
                     </div>
+
+
+                    <div class="card welcomeBox twoCard">
+                        <div align='center'>
+                            <img src=<?php echo base_url().$img;?> class="profileImage">
+                        </div>
+                        <div class="col-md-8">
+                            <!-- <div class="bubbleCircle3 bubbleCircle33"></div> -->
+                            <p class="mobileWelcomeText">Welcome <?php echo $userData['first_name']." ".$userData['last_name']; ?></p>
+                        </div>
+                        <div class="row">
+                        <div class="nameUser">
+                            <p><span class="label">Email: &nbsp;</span>
+                            <span class="name"> <?php echo $userData['email']; ?></span></p><br/>
+                            <p><span class="label">Mobile: &nbsp;</span><span class="name"> <?php echo $userData['contact_no']; ?></span></p>
+                            <!-- <p><span class="label">Gender</span> : <span class="name">ABCD</span></p> -->
+                        </div>
+                        </div>
+
+                        <?php if (isset($_SESSION['success'])) { echo "<small style='color:red'>".$_SESSION['success']."<small>";} ?>
+                        <!-- <div class="bubbleCircle4 bubbleCircle44"></div> -->
+                        <div style="margin-top: 3%">
+                        <img src=<?php echo base_url()."images/cloud.png";?> width="100%" height="100px">
+                        </div>
+                    </div>
+
 
                 </div>
             </div>

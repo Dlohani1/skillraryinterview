@@ -11,7 +11,6 @@
         .form__input:placeholder-shown {
             z-index: 1;
         }
-        
         .main-footer{
             box-sizing: border-box;
             background-color: black;
@@ -42,10 +41,10 @@
         .list-menu li{
             height: 25px;
             display: inline-block;
-            width: 50%;
+            width: 80%;
             padding-left: 0px;
             margin-left: 0px;
-            padding: 0 12px;
+            /* padding: 0 12px; */
         }
         .list-item a{
             color: #e8e8e8 !important; 

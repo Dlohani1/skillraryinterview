@@ -107,7 +107,7 @@ function validateregister(){
 
                             <div class="row rowGap">
                                 <div class="col-md-6">
-                                    <label>Gender<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                    <label class="labelText">Gender<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <select name="gender" class="form-control formControl" autocomplete="off">
                                         <option value="0">Select gender</option>
                                         <option value="1" <?php echo set_value('gender') == "1" ? 'selected' :''; ?>>Male</option>

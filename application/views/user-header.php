@@ -75,7 +75,7 @@
     }
     .profileBox{
         background: white;
-
+        margin-bottom: 20px;
         padding: 30px;
     }
     #contentBox{
@@ -212,11 +212,108 @@
         font-weight: 600;
         font-size: 20px;
     }
+    .mobileNavBtn{
+        width: 60%;
+    }
+    .icon{
+        font-size: 30px;
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        margin-top: -45px;
+        right: 25px;
+    }
+    .mobileNavigation{
+        display: none !important;
+    }
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+        display: block;
+        transition: 0.3s;
+        text-align: left;
+    }
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+    #main1 {
+        transition: margin-left .5s;
+        padding: 16px;
+    }
+    @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+    }
+    @media only screen and (max-width: 600px){
+        .icon{
+            display: block !important;
+        }
+        .headContainer{
+            display: none;
+        }
+        .mobileNavigation{
+            display: block !important;
+        }
+        .editButton{
+            position: absolute;
+            left: 50%;
+            top: 70%;
+            transform: translate(-50%,-17%);
+            background: white;
+            border: 2px solid white;
+        }
+    }
 </style>
-
-
+<script>
+    function openNav() {
+        document.getElementById("mySidenavigation").style.width = "250px";
+        document.getElementById("main1").style.marginLeft = "250px";
+    }
+    function closeNav() {
+        document.getElementById("mySidenavigation").style.width = "0";
+        document.getElementById("main1").style.marginLeft= "0";
+    }
+</script>
 </head>
 <body>
+    <!-- <div class="container-fluid editorContainer" style="margin:0px; padding: 0px;">
+        <div class="container-fluid headContainer" style="margin:0px; padding: 0px;">
+            <nav class="navbar navbar-white bg-white">
+                <div class="container">
+                    <img src="https://www.skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary Logo">
+                    <div style="float:right">
+                        <a class="btn registerBtn" href=<?php echo base_url()."user/home";?>>Home</a>
+                        <a class="btn registerBtn" href=<?php echo base_url()."user/profile";?>>Profile</a>
+                        <a class="btn registerBtn" href=<?php echo base_url()."user/enter-code";?>>Take Test</a>
+                        <a class="btn registerBtn" href=<?php echo base_url()."user/logout";?>>Logout</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div> -->
+
+
     <div class="container-fluid editorContainer" style="margin:0px; padding: 0px;">
         <div class="container-fluid headContainer" style="margin:0px; padding: 0px;">
             <nav class="navbar navbar-white bg-white">
@@ -231,7 +328,24 @@
                 </div>
             </nav>
         </div>
-    
+        <nav class="navbar navbar-white bg-white mobileNavigation">
+            <div class="container">
+                <img src="https://www.skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary Logo">
+                    <div id="mySidenavigation" class="sidenav">
+                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                        <a class="btn mobileNavBtn" href=<?php echo base_url()."user/home";?>>Home</a>
+                        <a class="btn mobileNavBtn" href=<?php echo base_url()."user/profile";?>>Profile</a>
+                        <a class="btn mobileNavBtn" href=<?php echo base_url()."user/enter-code";?>>Take Test</a>
+                        <a class="btn mobileNavBtn" href=<?php echo base_url()."user/logout";?>>Logout</a>
+                    </div>
+            </div>
+            <div style="float:right">
+                <span onclick="openNav()" class="icon">&#9776;</span>
+            </div>
+        </nav>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" defer></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
