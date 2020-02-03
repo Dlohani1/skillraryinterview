@@ -985,8 +985,6 @@ window.onload = function() {
                 // lastSave();
                 
                 if (document.getElementById("sectionId").value == 4) {
-
-
                     window.location.href="redirect-to-code";
                 }
                                 

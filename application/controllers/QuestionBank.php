@@ -488,7 +488,8 @@ class QuestionBank extends MyController {
         public function signin() {
 
                $email = $_POST['email'];
-               $pwd = md5(trim($_POST['pwd']));
+            //    $pwd = md5(trim($_POST['pwd']));
+                $pwd = trim($_POST['pwd']);
                $sql = "SELECT * FROM `student_register` WHERE email='$email' AND password = '$pwd'";
 
                $user = $this->db->query($sql)->row();
