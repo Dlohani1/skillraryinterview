@@ -3,6 +3,9 @@
         position: absolute;
         font-size: 13px
     }
+    .fieldInput{
+        margin-top: 14px;
+    }
 </style>
         <div class="container">
             <div class="row">
@@ -15,33 +18,32 @@
     text-align: center;'>".$_SESSION['error']."</p>";} ?>
                         <form method="post" action="signin" name="logForm">
                             <div class="row">
-                                <div class="col-md-6 offset-md-3">
+                                <div class="col-md-6 offset-md-3 fieldInput">
                                     <label class="labelText">Email<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="email" name="email" id="email" class="form-control"  autocomplete="off">
                                     <p id="erroremaillogin" class="errMessage" style="color:red"></p>
-                                    <br/>
+                                    
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 offset-md-3">
+                                <div class="col-md-6 offset-md-3 fieldInput">
                                     <label class="labelText">Password<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                     <input type="password" name="pwd" id="email" class="form-control"  autocomplete="off">
                                     <p id="errorpwdlogin" class="errMessage" style="color:red"></p>
-                                    <br/>
+                              
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 offset-md-3">
+                                <div class="col-md-6 offset-md-3 fieldInput">
                                     <label class="labelText">Have a code ?
-
                                         <!-- <sup>
                                             <span style="color:red;font-size: 16px;">*</span>
                                         </sup> -->
                                     </label>
-                                    <input type="checkbox" id="code" onchange="validate()" name="code" /> 
+                                    <input type="checkbox" id="code" onchange="validate()" name="code" /><br/>
 
-                                    <input type="text" name="enter-code" id="enter-code" autocomplete="off" hidden /> 
+                                    <input type="text" name="enter-code" id="enter-code" autocomplete="off" hidden class="form-control"/> 
                                     
                                 </div>
                             </div>
