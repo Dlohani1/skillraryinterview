@@ -64,7 +64,7 @@
             width: 19px;
             height: 20px;
             padding: 2px;
-            margin-right: 10px;
+            /* margin-right: 10px; */
         }
         .checkbox-custom:checked + .checkbox-custom-label:after {
             content: "";
@@ -76,7 +76,7 @@
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
             top: 6px;
-            left: 11px;
+            left: 15px;
         }
         .startBtn{
             background: black;
@@ -85,6 +85,29 @@
             font-size: 22px;
             border: 1px solid black;
             border-radius: 5px;
+        }
+        @media only screen and (max-width: 600px){
+            .checkbox-custom-label {
+                display: inline-block;
+                position: relative;
+                vertical-align: middle;
+                margin: 5px;
+                cursor: pointer;
+                width: 100%;
+                font-size: 15px;
+            }
+            /* .checkbox-custom:checked + .checkbox-custom-label:after {
+                content: "";
+                padding: 2px;
+                position: absolute;
+                width: 1px;
+                height: 11px;
+                border: 5px solid #28a745;
+                border-width: 0 3px 3px 0;
+                transform: rotate(45deg);
+                top: 5px;
+                left: 15px;
+            } */
         }
     </style>
 </head>

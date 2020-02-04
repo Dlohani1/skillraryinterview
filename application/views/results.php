@@ -62,7 +62,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="welcomeBox">
+                    <div class="welcomeBox"  style="overflow-x:auto;">
                         <table class="table table-bordered">
                             <tr>
                                 <th colspan="4" style="background-color: #d0cfcf;">Results</th>

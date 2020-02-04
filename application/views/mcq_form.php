@@ -35,7 +35,6 @@
         .footer{
             height:30px;
         }
-
         .column {
             float: left;
             width: 80%;
@@ -55,7 +54,6 @@
             display: table;
             clear: both;
         }
-
         .icon{
             float: left;
             font-size: 32px;
@@ -101,6 +99,7 @@
             font-weight: 600;
             font-size: 18px;
             width: 240px;
+            margin-left: 30px;
         }
         .saveBtn1{
             background: purple;
@@ -111,6 +110,7 @@
             font-weight: 600;
             font-size: 18px;
             width: 240px;
+            margin-bottom: 5px;
         }
 
         .clearBtn{
@@ -122,6 +122,8 @@
             font-weight: 600;
             font-size: 18px;
             width: 240px;
+            margin-bottom: 5px;
+            margin-left: 15px;
         }
 
         .submitBtn{
@@ -146,59 +148,262 @@
             border: 2px solid #33a478;
             font-size: 20px;
             border-radius: 5px;
+            margin-bottom: 10px;
         }
-.box1{
-padding: 6px 10px;
-font-size: 22px;
-border-radius: 5px;
-background: #28A745;
-}
-.box2{
-padding: 6px 10px;
-font-size: 22px;
-border-radius: 5px;
-background: #DC3545;
-}
-.box3{
-padding: 6px 10px;
-font-size: 22px;
-border-radius: 5px;
-background: #6C757D;
-}
-.box4{
-padding: 6px 10px;
-font-size: 22px;
-border-radius: 5px;
-background: purple;
-}
-.box5{
- padding: 6px 10px;
-font-size: 22px;
-border-radius: 5px;
-background: skyblue;   
-}
-.firstbox{
-margin: 20px 0px;
-}
-.imgProfile{
-width: 100px;
-border-radius: 20px;
-}
-.username{
-padding-left: 20px;
-position: absolute;
-line-height: 30px;
-}
-.closeBtn{
-    background: #33A478;
-    border: 1px solid #33A478;
-    padding: 6px 20px;
-    border-radius: 5px;
-}
-.closeBtnRow{
-    margin-bottom: 0px;
-    float: right;
-}
+        .box1{
+            padding: 6px 10px;
+            font-size: 22px;
+            border-radius: 5px;
+            background: #28A745;
+        }
+        .box2{
+            padding: 6px 10px;
+            font-size: 22px;
+            border-radius: 5px;
+            background: #DC3545;
+        }
+        .box3{
+            padding: 6px 10px;
+            font-size: 22px;
+            border-radius: 5px;
+            background: #6C757D;
+        }
+        .box4{
+            padding: 6px 10px;
+            font-size: 22px;
+            border-radius: 5px;
+            background: purple;
+        }
+        .box5{
+            padding: 6px 10px;
+            font-size: 22px;
+            border-radius: 5px;
+            background: skyblue;   
+        }
+        .firstbox{
+            margin: 20px 0px;
+        }
+        .imgProfile{
+            width: 100px;
+            border-radius: 20px;
+        }
+        .username{
+            padding-left: 20px;
+            position: absolute;
+            line-height: 30px;
+        }
+        .closeBtn{
+            background: #33A478;
+            border: 1px solid #33A478;
+            padding: 6px 20px;
+            border-radius: 5px;
+        }
+        .closeBtnRow{
+            margin-bottom: 0px;
+            float: right;
+        }
+        @media only screen and (max-width: 600px){
+            .column {
+                float: left;
+                width: 55%;
+                padding: 10px;
+            }
+            .column1 {
+                float: left;
+                width: 45%;
+                padding: 10px;
+                border: 2px solid black;
+            }
+            .imgProfile{
+                width: 100px;
+                border-radius: 20px;
+            }
+            .username {
+                padding-left: 11px;
+                position: inherit;
+                line-height: 30px;
+            }
+            .iconAnswered {
+                font-size: 14px;
+            }
+            .saveBtn{
+                background: #33A478;
+                border: 2px solid #33A478;
+                padding: 6px 5px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+            .saveBtn1{
+                background: purple;
+                border: 2px solid purple;
+                padding: 6px 13px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+
+            .clearBtn{
+                background: grey;
+                border: 2px solid grey;
+                padding: 6px 13px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+            .mobileno{
+                margin-left: 10px;
+            }
+            .gender{
+                margin-left: 10px;
+            }
+        }
+        @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+            .column {
+                float: left;
+                width: 76%;
+                padding: 10px;
+            }
+            .column1 {
+                float: left;
+                width: 24%;
+                padding: 10px;
+                border: 2px solid black;
+            }
+            .imgProfile{
+                width: 100px;
+                border-radius: 20px;
+            }
+            .username {
+                padding-left: 11px;
+                position: inherit;
+                line-height: 30px;
+            }
+            .iconAnswered {
+                font-size: 14px;
+            }
+            .saveBtn{
+                background: #33A478;
+                border: 2px solid #33A478;
+                padding: 6px 5px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+            .saveBtn1{
+                background: purple;
+                border: 2px solid purple;
+                padding: 6px 13px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+
+            .clearBtn{
+                background: grey;
+                border: 2px solid grey;
+                padding: 6px 13px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+            .mobileno{
+                margin-left: 10px;
+            }
+            .gender{
+                margin-left: 10px;
+            }
+            .content{
+                margin-top: inherit;
+                margin-left: inherit;
+                position: inherit;
+            }
+            .buttonRow{
+                display: block;
+            }
+        }
+        @media only screen and (min-width: 1024px) and (max-width: 1366px) and (-webkit-min-device-pixel-ratio: 1.5) {
+            .column {
+                float: left;
+                width: 76%;
+                padding: 10px;
+            }
+            .column1 {
+                float: left;
+                width: 24%;
+                padding: 10px;
+                border: 2px solid black;
+            }
+            .imgProfile{
+                width: 190px;
+                border-radius: 20px;
+            }
+            .username {
+                padding-left: 11px;
+                position: inherit;
+                line-height: 30px;
+            }
+            .iconAnswered {
+                font-size: 14px;
+            }
+            .saveBtn{
+                background: #33A478;
+                border: 2px solid #33A478;
+                padding: 6px 5px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+            .saveBtn1{
+                background: purple;
+                border: 2px solid purple;
+                padding: 6px 13px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+
+            .clearBtn{
+                background: grey;
+                border: 2px solid grey;
+                padding: 6px 13px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                width: 170px;
+            }
+            .mobileno{
+                margin-left: 10px;
+            }
+            .gender{
+                margin-left: 10px;
+            }
+            .content{
+                margin-top: inherit;
+                margin-left: inherit;
+                position: inherit;
+            }
+            .buttonRow{
+                display: block;
+            }
+        }
 </style>
     <script>
         function closeBtn(){
@@ -303,7 +508,7 @@ line-height: 30px;
 <!-- <div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
 </div> -->
-<div class="row" style="margin-top:10%">
+<div class="row buttonRow" style="margin-top:10%">
     <div class="col-md-4"  id="mark-btn">
         <button class="saveBtn1" onclick="saveNext(1)">Mark for Review & Next</button>
     </div>
@@ -359,8 +564,8 @@ line-height: 30px;
 <span><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
 <span class="username">
 <span>Name: <?php echo $userData['first_name']." ".$userData['last_name'] ; ?></span><br/>
-<span>Mobile: <?php echo $userData['contact_no']; ?></span><br/>
-<span>Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
+<span class="mobileno">Mobile: <?php echo $userData['contact_no']; ?></span><br/>
+<span class="gender">Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
 </span>
 </div>
                 <div>

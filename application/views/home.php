@@ -8,6 +8,11 @@
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
     <title>SkillRarya | Assessment</title>
     <style type="text/css">
+    html {
+  position: relative;
+  min-height: 100%;
+}
+
         .curveContainer{
             margin: 0px;
             padding: 0px;
@@ -29,10 +34,11 @@
             letter-spacing: 0px !important;
         }
         .curveBox{
-            position: fixed;
-            bottom: 0px;
-            left: 0px;
-            right: 0px;
+            position: absolute;
+            /* background-color: green; */
+            width: 100%;
+            bottom: 0;
+            left: 0;
         }
         .codeimg{
             width: 80%;
@@ -42,6 +48,8 @@
         }
         .content{
             margin-top: 6%;
+            /* margin-bottom: 2%; */
+            min-height: calc(100vh - 180px); 
         }
         #imporveContent{
             margin-top: 6%;
