@@ -235,6 +235,7 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-left: 0px;
             }
             .saveBtn1{
                 background: purple;
@@ -256,6 +257,7 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-left: 0px;
             }
             .mobileno{
                 margin-left: 10px;
@@ -297,6 +299,7 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-left: 0px;
             }
             .saveBtn1{
                 background: purple;
@@ -318,6 +321,7 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-left: 0px;
             }
             .mobileno{
                 margin-left: 10px;
@@ -367,6 +371,7 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-left: 0px;
             }
             .saveBtn1{
                 background: purple;
@@ -388,6 +393,7 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-left: 0px;
             }
             .mobileno{
                 margin-left: 10px;
