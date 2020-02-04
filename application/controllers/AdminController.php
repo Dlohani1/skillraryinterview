@@ -639,7 +639,7 @@ class AdminController extends CI_Controller {
                 foreach ($query->result() as $key => $row) {
                     $sec = $sub[$key];
                     $v = $row->result;
-                  $student->$sec = $v;
+                    $student->$sec = $v;
                 }  
                 //die;
             //}
@@ -652,12 +652,13 @@ class AdminController extends CI_Controller {
             }
         }
 
-        $sql = "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 1 and correct_ans = 1";
 
-        $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 2 and correct_ans = 1";
+        // $sql = "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 1 and correct_ans = 1";
+
+        // $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 2 and correct_ans = 1";
 
 
-        $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
+        // $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
 
         
 
