@@ -35,7 +35,7 @@ button.close{
                         <div class="card-header" style="background-color: #33A478;font-weight: 600">Enter Code :</div>
                         <div class="card-body">
 
-                            <!-- <form class="form-horizontal" method="post" action="checkCode" > -->
+                            <form class="form-horizontal" method="post" action="checkCode" >
 
                                 <div class="form-group">
                                     <label for="email" class="cols-sm-2 control-label"></label>
@@ -51,9 +51,12 @@ button.close{
                                 </div>
             
                                 <div class="form-group ">
-                                    <button type="submit" style="background-color: #33A478;font-weight: 600" class="btn  btn-md login-button"  data-toggle="modal" data-target="#myModal">
+                                    <!-- <button onclick="checkCode()" type="submit" style="background-color: #33A478;font-weight: 600" class="btn  btn-md login-button"  data-toggle="modal" data-target="#myModal">
 
-                                    Take Test</button>
+                                    Take Test</button> -->
+                                    <button type="submit" style="background-color: #33A478;font-weight: 600" class="btn  btn-md login-button" >
+                                        Take Test
+                                    </button>
                                 </div>
                                 <!-- The Modal -->
                                 <div class="modal" id="myModal">
@@ -67,16 +70,42 @@ button.close{
 
                                     <!-- Modal footer -->
                                     <div class="modal-footer" align="center">
-                                        <button type="button" class="btn closeBtn">Close</button>
+                                        <a href="checkCode"><button type="button" class="btn closeBtn">Proceed</button></a>
                                     </div>
 
                                     </div>
                                 </div>
                                 </div>
                 
-                            <!-- </form> -->
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+
+            function checkCode() {
+
+                if (document.getElementById("code").value.trim().length > 0) {
+                    $.ajax({
+                        url: "/checkAttempt",
+                        type: 'post',
+                        data: {'code': document.getElementById("code").value},
+                      
+                        success: function( data ){
+                            //$('#response pre').html( JSON.stringify( data ) );
+                            console.log('data', data);
+                   
+                        },
+                        error: function( jqXhr, textStatus, errorThrown ){
+                            console.log( errorThrown );
+                        }
+                    });
+                } else {
+                    alert('Please enter code');
+                    
+                }
+            }
+        </script>
