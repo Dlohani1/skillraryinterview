@@ -89,6 +89,7 @@
         }
         .iconAnswered{
             font-size: 24px;
+            cursor: pointer;
         }
         .saveBtn{
             background: #33A478;
