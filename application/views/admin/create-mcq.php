@@ -88,63 +88,17 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <!-- <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard</a
-                            > -->
-                           <!--  <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                            ></a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="layout-static.html">Static Navigation</a><a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a></nav>
-                            </div> -->
-<!--                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                            ></a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth"
-                                        >Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                                    ></a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="login.html">Login</a><a class="nav-link" href="register.html">Register</a><a class="nav-link" href="password.html">Forgot Password</a></nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError"
-                                        >Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                                    ></a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="401.html">401 Page</a><a class="nav-link" href="404.html">404 Page</a><a class="nav-link" href="500.html">500 Page</a></nav>
-                                    </div>
-                                </nav>
-                            </div> -->
-                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts</a
-                            ><a class="nav-link" href="tables.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables</a
-                            > -->
-
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
                                 >
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 MCQs
-                                <div class="sb-sidenav-collapse-arrow"><i id="mcq-link" class="fas fa-angle-down"></i></div>
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link active" href="create-test">Create</a>
-                                    <a class="nav-link" href="view-mcq">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/create-test";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-mcq";?>>View</a>
                                 </nav>
                             </div>
                              <div class="sb-sidenav-menu-heading">Interface</div>
@@ -156,11 +110,10 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="add-question">Create</a>
-                                   <!--  <a class="nav-link" href="layout-sidenav-light.html">View</a> -->
+                                    <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>View</a>
                                 </nav>
                             </div>
-
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
                                 >
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -169,7 +122,7 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsR" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="view-results">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-results";?>>View</a>
                                 </nav>
                             </div>
 
@@ -181,6 +134,9 @@
                     </div>
                 </nav>
             </div>
+            <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
+            
+            <input type="hidden" id="sectionNo" value="0"/>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
@@ -230,7 +186,7 @@
                         <div class="row" id="showSection" style="display:none">
                             <div class="col-md-8 offset-md-2">
                                 <label class="labelColor">Total Section</label>
-                                <input type="text" name="section" class="form-control" id="section" value='3' disabled>
+                                <input type="text" name="section" class="form-control" id="section" value='1' disabled>
                             </div>
                         </div>
                         <br/>
@@ -281,14 +237,16 @@
       <tr>
        <th>Section Name</th>
        <th>Total Questions</th>
+       <th>Questions Required</th>
        <th>Total Time (in sec)</th>
-       <!-- <th><button type="button" name="add" class="btn btn-success btn-sm add" onclick="addNewSection()"><span class="glyphicon glyphicon-plus"></span></button></th> -->
+       <th><button type="button" name="add" class="btn btn-success btn-sm add" onclick="addNewSection()"><span class="glyphicon glyphicon-plus"></span></button></th>
       </tr>
      </table>
      <!-- <div align="center">
       <input type="submit" name="submit" class="btn btn-info" value="Insert" />
      </div> -->
-     <span><button type="button" class="ESbutn" onclick="return secondFormSubmit();">Submit</button></span>
+    <span><button type="button" class="ESbutn" onclick="return secondFormSubmit();">Submit</button></span>
+    <span><button type="button" id="createTest" style="display: none" class="ESbutn" onclick="return createTest();">Create Test</button></span>
     </div>
    </form>
                 </div>
@@ -321,6 +279,7 @@
             
 
             <br/>
+            <input type="hidden"  value="0" id = "linkCount" />
             <div class="row" id="code-test" style="display: none;">
                 
                 <div class="col-md-8 offset-md-2 firstSection">
@@ -374,7 +333,10 @@
 
 
         <script>
-            document.getElementById("mcq-link").click();
+            //document.getElementById("mcq-link").click();
+
+             
+
 
             function enterCode() {
                 var code = document.getElementById('code').value;
@@ -388,6 +350,8 @@
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
                     data: { "mcqId" : mcqId,"code": code } ,
                     success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+                        window.location.href="admin/view-mcq";
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
                         document.getElementById("code").disabled = true;
@@ -435,6 +399,11 @@
                         addNewSection(i);
                     }
                     document.getElementById("secondPart").style.display = "block";
+
+                    var baseUrl = document.getElementById("base-url").value;
+
+                    //getSection(1);
+
                     //document.getElementById("code-test").style.display = "block";
                 } else {
                     alert('MCQ Title cannot be empty');
@@ -442,15 +411,60 @@
 
             }
 
+            function getTotal(a,b) {
+                console.log('aa',a, "b",b)
+
+                var baseUrl = document.getElementById("base-url").value;
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl+"question/getTotalQuestion",
+                     data: { 'Id': b},
+                    success: function(data){
+                    // Parse the returned json data
+                    var opts = $.parseJSON(data);
+                    console.log('dd',opts)
+
+                    document.getElementById("item_name_"+a).value=opts.total_question;
+                    // Use jQuery's each to iterate over the opts value
+                    //$.each(opts, function(i, d) { console.log('d',d);
+                    // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                  }  
+                });
+            }
+            
+
+
+            function getSection(id) {
+
+                console.log('dd',id)
+                //$('#item_unit_'+id).empty();
+                var baseUrl = document.getElementById("base-url").value;
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl+"question/getSection",
+                    success: function(data){
+                    // Parse the returned json data
+                    var opts = $.parseJSON(data);
+                    // Use jQuery's each to iterate over the opts value
+                    $.each(opts, function(i, d) { console.log('d',d);
+                    // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                    $('#item_unit_'+id).append('<option onclick=getTotal("'+id+'","'+d.id+'") value="' + d.id + '">' + d.name + '</option>');
+                });
+            }
+        });
+            }
             function secondFormSubmit() {
                 var baseUrl = document.getElementById("base_url").value;
                 console.log('a')
-               // document.getElementById("title").disabled = true;
-               // document.getElementById("type").disabled = true;
-               // document.getElementById("section").disabled = true;
-                var no =  document.getElementById("section").value;
+               document.getElementById("title").disabled = true;
+               document.getElementById("type").disabled = true;
+               document.getElementById("section").disabled = true;
+               //var no =  document.getElementById("section").value;
 
+               var noId = document.getElementsByClassName("item_unit");
+                var no = noId.length;
                 var mcqId = document.getElementById("mcqTestId").value ;
+
                 // var time1 = document.getElementById("time1").value ;
                 // var time2 = document.getElementById("time2").value ;
                 // var time3 = document.getElementById("time3").value ;
@@ -461,6 +475,7 @@
 
                 var  sectionTime = "";
 
+                console.log('nn',no)
                 for (var i=1;i<=no;i++){
                     document.getElementById("item_unit_"+i).disabled = true;
                     document.getElementById("item_name_"+i).disabled = true;
@@ -476,8 +491,12 @@
 
                     sectionId += document.getElementById("item_unit_"+i).value;
                     questionNos += document.getElementById("item_name_"+i).value;
-                    sectionTime += document.getElementById("item_quantity_"+i).value;
+
+ sectionTime += document.getElementById("item_question_"+i).value;
+                    // sectionTime += document.getElementById("item_quantity_"+i).value;
                 }
+
+                document.getElementById("createTest").style.display = "block";
 
                 console.log('sect', sectionId, questionNos, sectionTime)
 
@@ -487,7 +506,7 @@
                     data: {'mcqId': mcqId, 'sectionIds': sectionId, 'totalSection':no, 'totalQuestion':questionNos, 'sectionTime': sectionTime},
                   
                     success: function( data ){
-                        //$('#response pre').html( JSON.stringify( data ) );
+                      //  $('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
                
                     },
@@ -496,12 +515,12 @@
                     }
                 });
 
-                // for (var i=1;i<=no;i++){
-                //     document.getElementById("item_unit_"+i).disabled = true;
-                //     document.getElementById("item_name_"+i).disabled = true;
-                //     document.getElementById("item_quantity_"+i).disabled = true;
-                //     document.getElementById("add_question_"+i).style.display="block";
-                // }
+                for (var i=1;i<=no;i++){
+                    document.getElementById("item_unit_"+i).disabled = true;
+                    document.getElementById("item_name_"+i).disabled = true;
+                    document.getElementById("item_quantity_"+i).disabled = true;
+                    document.getElementById("add_question_"+i).style.display="block";
+                }
                 //thirdFormSubmit();
             }
 
@@ -537,22 +556,65 @@
 
             }
 
+
+            function testLink() {
+
+
+
+                console.log('test');
+                var val = document.getElementById("linkCount").value;
+                if (val >2) { console.log('dd')
+                    document.getElementById("code-test").style.display = "block";
+                } else {
+                    document.getElementById("linkCount").value =  val+1;    
+                }
+                
+
+
+            }
+
+
+
+            function checkQuestion() {
+                console.log('ttest');
+            }
+
             function addNewSection(i) {
+                var sectionCount = document.getElementById("sectionNo").value ;
+                document.getElementById("sectionNo").value = parseInt(sectionCount) + 1;
+                if (i == undefined) {
+                    
+                    var i = document.getElementById("sectionNo").value;
+                }
+
                 var html = '';
                 html += '<tr>';
-                html += '<td><select id="item_unit_'+i+'" name="item_unit[]" class="form-control item_unit"><option value="">Select</option><option value="1">English</option><option value="2">Reasoning</option><option value="3">Quantitative</option><option value="4">Code Test </option></select></td>';
+                html += '<td><select id="item_unit_'+i+'" name="item_unit[]" class="form-control item_unit"><option value="">Select</option></select></td>';
+                
                 html += '<td><input type="text" id="item_name_'+i+'" name="item_name[]" class="form-control item_name" /></td>';
-                html += '<td><input type="text" id="item_quantity_'+i+'" name="item_quantity[]" class="form-control item_quantity" /></td>';
-                html += '<td id="add_question_'+i+'" style="display:none;"><a target="_blank" id = "add_question_link_'+i+'"> Add Questions</a></td></tr>';
+                
+                html += '<td><input type="text" onchange="checkQuestion()" id="item_quantity_'+i+'" name="item_quantity[]" class="form-control item_quantity" /></td>';
+                
+                html += '<td><input type="text" id="item_question_'+i+'" name="item_question[]" class="form-control item_quantity" /></td>';
+                
+                html += '<td id="add_question_'+i+'" style="display:none;"><a onclick="testLink()" target="_blank" id = "add_question_link_'+i+'"> Add Questions</a></td>';
 
-                // html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td></tr>';
+                html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td></tr>';
                 $('#item_table').append(html);
+                getSection(i);
+
             }
+
 
             function thirdFormSubmit() {
             }
 
             $(document).on('click', '.remove', function(){
+                var sectionCount = document.getElementById("sectionNo").value ;
+
+                //document.getElementById("sectionNo").value = parseInt(sectionCount)-1;
+
+                console.log('aa')
                 $(this).closest('tr').remove();
             });
 

@@ -71,14 +71,14 @@
                                 <th class="subHeading">Section</th>
                                 <th class="subHeading">Total Question</th>
                                 <th class="subHeading">Total Time (in sec)</th>
-                                <th class="subHeading">User Completion Time (in sec)</th>
+                                <th class="subHeading">User Completion Time </th>
                             </tr>
                             <?php
-                            echo "<tr><td> English</td><td>".$results[0][0]."</td><td>".$results[1][0]."</td><td>".$results[2][0]."</td></tr>";
-                            echo "<tr><td> Reasoning</td><td>".$results[0][1]."</td><td>".$results[1][1]."</td><td>".$results[2][1]."</td></tr>";
-                            echo "<tr><td> Quantitative</td><td>".$results[0][2]."</td><td>".$results[1][2]."</td><td>".$results[2][2]."</td></tr>";
-                            echo "<tr><td> Code Test</td><td>".$results[3][1]."</td><td>".$results[3][2]."</td><td>".$results[3][3]."</td></tr>";
 
+                            foreach ($results as $key => $value) { 
+                                echo "<tr><td>".$value['section']."</td><td>".$value['total_question']."</td><td>".$value['total_time']."</td><td>".$value['user_time']."</td></tr>";
+
+                            } 
                             ?>
                         </table>
                     </div>

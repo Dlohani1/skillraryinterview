@@ -12,6 +12,24 @@
         body{
             background-color: #f5f5f5;
         }
+        .container:before{
+            content: initial !important;
+        }
+        .container-fluid:before{
+            content: initial !important;
+        }
+         .container:after{
+            content: initial !important;
+        }
+        .container-fluid:after{
+            content: initial !important;
+        }
+        .navbar:before{
+            content: initial !important;
+        }
+        .navbar:after{
+             content: initial !important;
+        }
         .headContainer{
             margin: 0px;
             padding: 0px;
@@ -74,7 +92,7 @@
             right: 25px;
         }
         .mobileNav{
-            display: none;
+            display: none !important;
         }
         .sidenav {
             height: 100%;
@@ -123,7 +141,7 @@
                 display: none;
             }
             .mobileNav{
-                display: block;
+                display: block !important;
             }
         }
 
@@ -140,14 +158,14 @@
 </script>
 </head>
 <body>
-    <div class="container-fluid editorContainer">
-        <div class="container-fluid headContainer">
+    <div class="container-fluid editorContainer" style="margin: 0;padding: 0;">
+        <div class="container-fluid headContainer" style="margin: 0;padding: 0;">
             <nav class="navbar navbar-white bg-white">
                 <div class="container">
                     <img src="https://www.skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary Logo">
                     <div style="float:right">
                         <a class="btn registerBtn" href="/">HOME</a>&nbsp;&nbsp;
-                        <a class="btn registerBtn" href="login">SIGNIN</a>&nbsp;&nbsp;
+                        <a class="btn registerBtn" href="new-login">SIGNIN</a>&nbsp;&nbsp;
                         <a class="btn registerBtn" href="registration">SIGNUP</a>
                     </div>
                 </div>
@@ -159,7 +177,7 @@
                     <div id="mySidenav" class="sidenav">
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                         <a class="btn mobileSideNavBtn" href="/">HOME</a>&nbsp;&nbsp;
-                        <a class="btn mobileSideNavBtn" href="login">SIGNIN</a>&nbsp;&nbsp;
+                        <a class="btn mobileSideNavBtn" href="new-login">SIGNIN</a>&nbsp;&nbsp;
                         <a class="btn mobileSideNavBtn" href="registration">SIGNUP</a>
                     </div>
             </div>

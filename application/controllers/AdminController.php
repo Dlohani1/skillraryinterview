@@ -7,8 +7,17 @@ class AdminController extends CI_Controller {
   {
     parent::__construct();
     $this->load->database();
-    $this->load->helper(array('form', 'url'));
+    $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
+  }
+
+
+  public function generateUsernamePwd($size) {
+
+    //$params = $this->input->post();
+
+    return strtoupper(random_string('alnum',$size));
+
   }
 
   public function createTest()
@@ -453,19 +462,287 @@ class AdminController extends CI_Controller {
 
         }
 
-                public function getSection() {
-                $sql = "SELECT * FROM `section`";
+        public function editQuestion() {
+          $questionId = $this->uri->segment(3);
+
+          $sql = "SELECT question_bank.*, answers.*  FROM question_bank 
+                LEFT JOIN answers 
+                ON answers.question_id = question_bank.id
+                WHERE question_bank.id = '$questionId' ";
+
                 $query = $this->db->query($sql);
 
                 $i = 0;
-                $sectionData = array();
+
+                $questionData = array();
                 foreach ($query->result() as $row) {
-                        $sectionData[$i]['id'] = $row->id;
-                        $sectionData[$i]['name'] = $row->section_name;
-                        $i++;
+
+                  if ($i<1) {
+                    $questionData['question_type'] = $row->question_type;
+                    $questionData['question_id'] = $row->question_id;
+                    $questionData['question'] = $row->question;
+                    $questionData['section_id'] = $row->section_id;
+                    $questionData['sub_section_id'] = $row->sub_section_id;
+                    $questionData['level_id'] = $row->level_id;
+
+                  }           
+                  
+                  $questionData['options'][$i]['id'] = $row->id;
+                  $questionData['options'][$i]['option'] = $row->answer;
+                  $questionData['options'][$i]['correct'] = $row->is_correct;
+                  $i++;
                 }
-                print_r(json_encode($sectionData));
+
+          $this->load->view('admin/edit-question', array('questionData' => $questionData));
+
         }
+
+        public function getSection() {
+          $sql = "SELECT * FROM `section`";
+          $query = $this->db->query($sql);
+
+          $i = 0;
+          $sectionData = array();
+          foreach ($query->result() as $row) {
+                  $sectionData[$i]['id'] = $row->id;
+                  $sectionData[$i]['name'] = $row->section_name;
+                  $i++;
+          }
+          print_r(json_encode($sectionData));
+        }
+
+        
+
+        public function getTotalQuestion() {
+          $sectionId = $_POST['Id'];
+          $sql = "SELECT count(id) as total_question FROM `question_bank` where section_id=$sectionId";
+          //$query = $this->db->query($sql);
+            //$sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
+
+            $result = $this->db->query($sql)->row();
+
+            //print_r($result);
+          // $i = 0;
+          // $sectionData = array();
+          // foreach ($query->result() as $row) {
+          //         $sectionData[$i]['id'] = $row->id;
+          //         $sectionData[$i]['name'] = $row->section_name;
+          //         $i++;
+          // }
+           print_r(json_encode($result));
+        }
+
+
+        public function uploadQuestion() {
+          //$sectionId = $_POST['Id'];
+          //$sql = "SELECT count(id) as total_question FROM `question_bank` where section_id=$sectionId";
+          //$query = $this->db->query($sql);
+            //$sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
+
+            //$result = $this->db->query($sql)->row();
+
+            //print_r($result);
+          // $i = 0;
+          // $sectionData = array();
+          // foreach ($query->result() as $row) {
+          //         $sectionData[$i]['id'] = $row->id;
+          //         $sectionData[$i]['name'] = $row->section_name;
+          //         $i++;
+          // }
+
+          $config['upload_path']          = './uploads/';
+          $config['allowed_types']        = '*';
+          $config['max_size']             = 100;
+          $config['max_width']            = 1024;
+          $config['max_height']           = 768;
+
+          $this->load->library('upload', $config);
+
+          if ( ! $this->upload->do_upload('questionFile'))
+          {
+                  $error = array('error' => $this->upload->display_errors());
+
+                  print_r($error); die;
+
+                  //$this->load->view('upload_form', $error);
+          }
+          else {
+             $filename = 'uploads/'.$_FILES['questionFile']['name'];
+          }
+
+//echo $filename ; die;
+          //$filename = 'uploads/jv.csv';
+
+// The nested array to hold all the arrays
+$the_big_array = []; 
+
+// Open the file for reading
+if (($h = fopen("{$filename}", "r")) !== FALSE) 
+{
+  // Each line in the file is converted into an individual array that we call $data
+  // The items of the array are comma separated
+  //echo "<pre>";
+  $i = 0;
+  while (($data = fgetcsv($h, 100000, ",")) !== FALSE) 
+  {
+
+     if ($i == 0) {
+      $i++;
+      continue;
+     }
+     // echo "<pre>";
+     // print_r($data); die;
+
+    //  echo "$i"; 
+
+    $data[1] = str_replace("'",'"',$data[1]);
+
+
+    //$sqlb = "INSERT INTO question_bank_test (question_type, question, level_id)
+       //     VALUES ('$data[0]', '$data[1]', '$data[9]')";
+
+    $qdata = array (
+     "section_id" => $_POST['sectionUpload'],
+      "question_type" => $data[0],
+      "question" => $data[1],
+      "level_id" => $data[9]
+    );
+
+//print_r($qdata); die;
+    $this->db->insert('question_bank', $qdata);
+
+
+    $questionId = $this->db->insert_id();
+
+    $correct  = 0;
+    //echo "<pre>";
+    //print_r($data); die;
+    $a1 = array(
+      'question_id' => $questionId,
+      'answer' => $data[2],
+      'is_correct' => $correct,
+    );
+
+    $a2 = array(
+      'question_id' => $questionId,
+      'answer' => $data[3],
+      'is_correct' => $correct,
+    );
+
+    $a3 = array(
+      'question_id' => $questionId,
+      'answer' => $data[4],
+      'is_correct' => $correct,
+    );
+
+    $a4 = array(
+      'question_id' => $questionId,
+      'answer' => $data[5],
+      'is_correct' => $correct,
+    );
+
+    for($i=1;$i<5;$i++) {
+
+      $varName = "a".$i;
+      if ($data[8] == $i) {
+        ${$varName}['is_correct'] = 1; 
+      }
+    }
+
+
+
+      // if ($data[8] == 1) {
+      //     $correct = 1;
+      // }
+
+                $data = array(
+                  $a1, $a2, $a3, $a4
+                );
+
+                // echo "<pre>";
+                // print_r($data); 
+
+                // die;
+
+                $this->db->insert_batch('answers', $data);
+
+
+      // if ($conn->query($sqlb) === TRUE) {
+      //     $last_id = $conn->insert_id;
+
+          
+
+    // $conn->next_result();
+    //   } else {
+    //      echo "Error1: " . $sqlb . "<br>" . $conn->error;
+
+    //      die;
+    //   }
+
+      // echo $last_id;
+
+      // $correct  = 0;
+      // if ($data[8] == 1) {
+      //     $correct = 1;
+      // } 
+
+      // $sql = "";
+                    
+      // $sql = "INSERT INTO answers_test (question_id, answer, is_correct)
+      // VALUES ('$last_id', '$data[2]', '$correct');";
+
+      // if ($data[8] == 2) {
+      // $correct = 1;
+      // } else {
+      // $correct  = 0;
+      // }
+
+      // $sql .= "INSERT INTO answers_test (question_id, answer, is_correct)
+      // VALUES ('$last_id', '$data[3]', '$correct');";
+
+      // if ($data[8] == 3) {
+      //   $correct = 1;
+      // } else {
+      //   $correct  = 0;
+      // }
+
+      // $sql .= "INSERT INTO answers_test (question_id, answer, is_correct)
+      // VALUES ('$last_id', '$data[4]', '$correct');";
+
+      // if ($data[8] == 4) {
+      //   $correct = 1;
+      // } else {
+      //   $correct  = 0;
+      // }
+
+      // $sql .= "INSERT INTO answers_test (question_id, answer, is_correct)
+      // VALUES ('$last_id', '$data[5]', '$correct');";
+
+
+      // if ($conn->multi_query($sql) === TRUE) {
+      //     echo "New records created successfully";
+      //     $conn->next_result();
+      // } else {
+      //     echo "Error: " . $sql . "<br>" . $conn->error; die;
+      // }
+
+
+     //print_r($data); die;
+    // Each individual array is being pushed into the nested array
+    //$the_big_array[] = $data;   
+  }
+
+   $this->session->set_flashdata('success', 'Questions Uploaded successfully');
+                redirect('user/login', 'refresh');
+
+
+echo "success"; die;
+}
+
+
+
+           //print_r(json_encode($result));
+        }      
 
         public function getSubSection() {
                 $sectionId = $_POST['Id'];
@@ -488,111 +765,194 @@ class AdminController extends CI_Controller {
         }
 
   public function save() {
+  
+    //print_r($_POST); die;
 
     $sectionId = $_POST['sectionId'];
     $subSectionId = $_POST['subsection'];
     $levelId = $_POST['levelId'];
     $question = $_POST['question'];
+    $questionType = $_POST['questionType'];
 
-    $ans1 = $_POST['ans1'];
-    $ans2 = $_POST['ans2'];
-    $ans3 = $_POST['ans3'];
-    $ans4 = $_POST['ans4'];
+    if ($questionType == 1) {
+      $ans1 = $_POST['ans1'];
+      $ans2 = $_POST['ans2'];
+      $ans3 = $_POST['ans3'];
+      $ans4 = $_POST['ans4'];
+    }
 
     $qdata = array(
       'section_id' => $sectionId,
       'sub_section_id' => $subSectionId,
       'level_id' => $levelId,
-      'question' => $question
+      'question' => $question,
+      'question_type' => $questionType
     );
 
 
-    if (!empty($_FILES['qimg']['name'])) {
+    // if (!empty($_FILES['qimg']['name'])) {
 
-      $config['upload_path']          = './question-images/';
-      $config['allowed_types']        = 'gif|jpg|png';
-      // $config['max_size']             = 100;
-      // $config['max_width']            = 1024;
-      // $config['max_height']           = 768;
+    //   $config['upload_path']          = './question-images/';
+    //   $config['allowed_types']        = 'gif|jpg|png';
+    //   // $config['max_size']             = 100;
+    //   // $config['max_width']            = 1024;
+    //   // $config['max_height']           = 768;
 
-      $this->load->library('upload', $config);
+    //   $this->load->library('upload', $config);
         
-      if ( ! $this->upload->do_upload('qimg')) {
-        $error = array('error' => $this->upload->display_errors());
+    //   if ( ! $this->upload->do_upload('qimg')) {
+    //     $error = array('error' => $this->upload->display_errors());
 
-        print_r($error); die;
-      } else {               
-        $qdata['question_image'] = "question-images/".$_FILES['qimg']['name'];
+    //     print_r($error); die;
+    //   } else {               
+    //     $qdata['question_image'] = "question-images/".$_FILES['qimg']['name'];
+    //   }
+    // }               
+
+  //   $sql = "SELECT * FROM `student_register` WHERE email='$email' AND password = '$pwd'";
+
+  //  $user = $this->db->query($sql)->row();
+
+  // if (null != $user) {
+
+    if (isset($_POST['questionId'])) {
+        $this->db->where('id', $_POST['questionId']);
+        $this->db->update('question_bank',$qdata);
+        $questionId = $_POST['questionId'];
+    } else {    
+      $this->db->insert('question_bank', $qdata);
+      $questionId = $this->db->insert_id();
+    }
+
+
+
+    if ($questionType == 3) {
+
+      if ($_POST['true_false'] == "1") {
+        $opt = array (
+          // 'id' => $_POST['answer_id'],
+        'question_id' => $questionId,
+        'answer' => "true",
+        'is_correct' => 1
+      );
+    
+
+      } else {
+
+        $opt = array (
+        // 'id' => $_POST['answer_id'],
+        'question_id' => $questionId,
+        'answer' => "false",
+        'is_correct' => 1
+      );
+      //$data = array($opt); 
+
       }
-    }               
 
-    $this->db->insert('question_bank', $qdata);
+      $data = array($opt); 
 
-
-    $questionId = $this->db->insert_id();
-
-    $is_correct = 0;
-
-    if ($_POST['correct'] == 1) {
-            $is_correct = 1;
     } else {
-     $is_correct = 0;
+      $is_correct = 0;
+    
+
+      if ($_POST['correct'] == 1) {
+              $is_correct = 1;
+      } else {
+       $is_correct = 0;
+      }
+
+      $opt1 = array (
+        'question_id' => $questionId,
+        'answer' => $ans1,
+        'is_correct' => $is_correct
+      );
+
+      if ($_POST['correct'] == 2) {
+              $is_correct = 1;
+      } else {
+       $is_correct = 0;
+      }
+
+      $opt2 = array (
+        'question_id' => $questionId,
+        'answer' => $ans2,
+        'is_correct' => $is_correct
+      );
+
+
+      //$sql .= "INSERT INTO answers (question_id, answer, is_correct) VALUES ('$questionId', '$ans2', '$is_correct');";
+      if ($_POST['correct'] == 3) {
+              $is_correct = 1;
+      } else {
+       $is_correct = 0;
+      }
+      $opt3 = array (
+        'question_id' => $questionId,
+        'answer' => $ans3,
+        'is_correct' => $is_correct
+      );
+
+      // $sql .= "INSERT INTO answers (question_id, answer, is_correct) VALUES ('$questionId', '$ans3', '$is_correct');";
+
+      if ($_POST['correct'] == 4) {
+              $is_correct = 1;
+      } else {
+       $is_correct = 0;
+      }
+      $opt4 = array (
+        'question_id' => $questionId,
+        'answer' => $ans4,
+        'is_correct' => $is_correct
+      );
+      $data = array(
+              $opt1, $opt2, $opt3, $opt4
+      ); 
+
+      if (isset($_POST['questionId'])) { 
+
+        //print_r($data); die;
+
+        $opt1['id'] = $_POST['ans1Id'];
+        $opt2['id'] = $_POST['ans2Id'];
+        $opt3['id'] = $_POST['ans3Id'];
+        $opt4['id'] = $_POST['ans4Id'];
+
+        $updateData = array(
+          $opt1, $opt2, $opt3, $opt4
+        ); 
+      }
     }
 
-    $opt1 = array (
-      'question_id' => $questionId,
-      'answer' => $ans1,
-      'is_correct' => $is_correct
-    );
 
-    if ($_POST['correct'] == 2) {
-            $is_correct = 1;
+    if (isset($_POST['questionId'])) { 
+
+      //print_r($data); die;
+
+      // $opt1['id'] = $_POST['ans1Id'];
+      // $opt2['id'] = $_POST['ans2Id'];
+      // $opt3['id'] = $_POST['ans3Id'];
+      // $opt4['id'] = $_POST['ans4Id'];
+
+      // $updateData = array(
+      //   $opt1, $opt2, $opt3, $opt4
+      // ); 
+      //echo "<pre>";
+      //print_r($updateData); die;
+      if ($questionType == 3) {
+        $opt['id'] = $_POST['answer_id'];
+        $updateData = array($opt);
+      }
+      //print_r($updateData); die;
+      $this->db->update_batch('answers', $updateData, 'id');
     } else {
-     $is_correct = 0;
-    }
+      $this->db->insert_batch('answers', $data);  
+    } 
 
-    $opt2 = array (
-      'question_id' => $questionId,
-      'answer' => $ans2,
-      'is_correct' => $is_correct
-    );
-
-
-    //$sql .= "INSERT INTO answers (question_id, answer, is_correct) VALUES ('$questionId', '$ans2', '$is_correct');";
-    if ($_POST['correct'] == 3) {
-            $is_correct = 1;
-    } else {
-     $is_correct = 0;
-    }
-    $opt3 = array (
-      'question_id' => $questionId,
-      'answer' => $ans3,
-      'is_correct' => $is_correct
-    );
-
-    // $sql .= "INSERT INTO answers (question_id, answer, is_correct) VALUES ('$questionId', '$ans3', '$is_correct');";
-
-    if ($_POST['correct'] == 4) {
-            $is_correct = 1;
-    } else {
-     $is_correct = 0;
-    }
-    $opt4 = array (
-      'question_id' => $questionId,
-      'answer' => $ans4,
-      'is_correct' => $is_correct
-    );
-    $data = array(
-            $opt1, $opt2, $opt3, $opt4
-    );
-
-    $this->db->insert_batch('answers', $data);
+    redirect($_SERVER['HTTP_REFERER']);   
   }
-
 
   public function downloadExcel() {
         $mcqId = $this->uri->segment(3);
-
     
         $sql = "SELECT DISTINCT(student_id) FROM `student_answers` where mcq_test_id =".$mcqId;
 
@@ -602,24 +962,49 @@ class AdminController extends CI_Controller {
 
         $i = 0;
 
-
+        $sectionDetails = $this->getMcqSection($mcqId);
 
         $studentData = array();
               
         if($query->num_rows() > 0)  {
 
             foreach ($query->result() as $row) {
-            $sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
+              $sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
 
-            $student = $this->db->query($sql)->row();
+              $student = $this->db->query($sql)->row();
+
+              $sectionCount = 0;
+              $sqll = "";
+              foreach ($sectionDetails['section'] as $key => $value) {
+                
+
+                if ($sectionCount > 0) {
+                  $sqll .= " UNION ALL ";
+                }
+
+                $sqll .= "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id =".$value['id']." and correct_ans = 1";
+
+                $sectionCount++;
+              }
+
+                $query = $this->db->query($sqll);
+                //$sub = array("verbal", "reasoning", "quantitative");
+                //print_r($sectionDetails); die;
+
+                foreach ($query->result() as $key => $row) {
+
+                  $sec = $sectionDetails['section'][$key]['name'];
+                  $v = $row->result;
+                  $student->$sec = $v;
+                }  
 
             //for ($j =1 ; $j < 4; $j++) {
-                $sqll = "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 1 and correct_ans = 1";
+                // $sqll = "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 1 and correct_ans = 1";
 
-                $sqll .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 2 and correct_ans = 1";
+                // $sqll .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 2 and correct_ans = 1";
 
 
-                $sqll .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
+                // $sqll .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
 
                 // $result = $this->db->query($sqll)->row();
 
@@ -633,19 +1018,18 @@ class AdminController extends CI_Controller {
                 //   $sub = "quantitative";
                 // }
 
-                $query = $this->db->query($sqll);
-                $sub = array("verbal", "reasoning", "quantitative");
+                // $query = $this->db->query($sqll);
+                // $sub = array("verbal", "reasoning", "quantitative");
 
-                foreach ($query->result() as $key => $row) {
-                    $sec = $sub[$key];
-                    $v = $row->result;
-                    $student->$sec = $v;
-                }  
+                // foreach ($query->result() as $key => $row) {
+                //     $sec = $sub[$key];
+                //     $v = $row->result;
+                //     $student->$sec = $v;
+                // }  
                 //die;
             //}
 
-          
-            //print_r($student); die;
+
 
             $studentData[$i] = $student;
             $i++;
@@ -660,12 +1044,72 @@ class AdminController extends CI_Controller {
 
         // $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
 
-        
+    echo "<pre>";
 
-        $this->generateXls($studentData);
+    print_r($studentData); die;    
+
+        $this->generateXls($studentData, $sectionDetails);
       }
 
-        public function generateXls($studentData) {
+      public function getField($a) {
+
+        switch ($a) {
+          
+            case 'S1':
+           return "T1";
+            break;
+            case 'T1':
+            return "U1";
+            break;
+
+            case 'U1':
+            return "V1";
+            break;
+
+            case 'V1':
+            return "W1";
+            break;
+            case 'W1':
+            return "X1";
+            break;
+            case 'X1':
+            return "Y1";
+            break;
+
+          
+          default:
+            return "Z1";
+            break;
+        }
+
+      }
+
+      public function getMcqSection($mcqId) {
+
+            $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
+                    inner join section on mcq_test_pattern.section_id = section.id
+                    where mcq_test_pattern.mcq_test_id =".$mcqId;
+
+            
+
+            $query = $this->db->query($sql);
+
+                $i = 0;
+
+                $section = array();
+                foreach ($query->result() as $row) {
+                        
+                        $section['section'][$i]['id'] = $row->section_id;
+                        $section['section'][$i]['name'] = $row->section_name;
+                        $i++;
+                }
+
+
+            return $section;
+            
+        }
+
+        public function generateXls($studentData, $sectionDetails) {
         // create file name
         $fileName = 'data-'.time().'.xlsx';  
         // load excel library
@@ -676,23 +1120,76 @@ class AdminController extends CI_Controller {
         // set Header
         $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Sl No');
         $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Student Name');
-        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'UserEmail');
-        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Contact No ');
-        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Residence city');
-        $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Residence State');
-        $objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Date of Birth');
-        $objPHPExcel->getActiveSheet()->SetCellValue('H1', '10th Percentage');
-        $objPHPExcel->getActiveSheet()->SetCellValue('I1', '10th Passing year');
-        $objPHPExcel->getActiveSheet()->SetCellValue('J1', '12th Percentage');
-        $objPHPExcel->getActiveSheet()->SetCellValue('K1', '12th Passing year');
-        $objPHPExcel->getActiveSheet()->SetCellValue('L1', 'Degree');
-        $objPHPExcel->getActiveSheet()->SetCellValue('M1', 'Stream');
-        $objPHPExcel->getActiveSheet()->SetCellValue('N1', 'Degree Percentage');
-        $objPHPExcel->getActiveSheet()->SetCellValue('O1', 'Degree Passing year');
-        $objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Preferred Work Location');
-        $objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Verbal Correct Answer');
-        $objPHPExcel->getActiveSheet()->SetCellValue('R1', 'Resoning Correct Answer');
-        $objPHPExcel->getActiveSheet()->SetCellValue('S1', 'Quantitative Correct Answer');
+        
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Test Status');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Gender');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Date of Birth');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Mobile');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Email');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('H1', 'X-Board');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('I1', 'X-Passing Year');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('J1', 'X-Marks');
+
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('K1', 'XII-Board');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('L1', 'XII-Passing Year');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('M1', 'XII-Marks');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('N1', 'College');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('O1', 'Batch');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Branch, Degree');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Degree Marks');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Start Time');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('R1', 'End Time');
+
+        $objPHPExcel->getActiveSheet()->SetCellValue('S1', 'Time Taken');
+
+
+        // $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'UserEmail');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Contact No ');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Residence city');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Residence State');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Date of Birth');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('H1', '10th Percentage');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('I1', '10th Passing year');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('J1', '12th Percentage');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('K1', '12th Passing year');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('L1', 'Degree');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('M1', 'Stream');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('N1', 'Degree Percentage');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('O1', 'Degree Passing year');
+
+
+        //$objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Preferred Work Location');
+
+        $a = "S1";
+
+        foreach ($sectionDetails['section'] as $key => $value) {
+
+          $fieldName = $this->getField($a);
+
+          $objPHPExcel->getActiveSheet()->SetCellValue('Q1', $value['name']." Marks");
+
+          $a = $fieldName;          
+        }
+
+        // $objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Verbal Correct Answer');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('R1', 'Resoning Correct Answer');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('S1', 'Quantitative Correct Answer');
 
         // set Row
         $rowCount = 2;
@@ -729,6 +1226,132 @@ class AdminController extends CI_Controller {
         $objWriter->save('php://output'); 
  
     }
-  
 
+    public function generatePassword() {
+      $fourdigitrandom = rand(1000,9999); 
+      return $fourdigitrandom; 
+    }  
+
+    public function checkCode($code = null) {
+
+      if (isset($_POST['code'])) {
+        $code = trim($_POST['code']);
+      }
+
+
+
+      $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
+
+      $query = $this->db->query($sql);
+
+      if($query->num_rows() > 0)  {
+
+          foreach ($query->result() as $row) {
+
+                  $mcqId = $row->mcq_test_id;
+                  $attempt = $row->attempt;
+          }
+
+          $this->session->set_userdata('mcqId', $mcqId);
+
+
+          //redirect('user/create/profile');
+          if (!isset($_SESSION['username'])) {
+            $data = array (
+              'username' => $this->generateUsernamePwd(4),
+              'password' => $this->generatePassword()
+           );  
+          $this->session->set_userdata('username', $data);
+  
+          }
+          
+
+
+          
+          redirect('user/create/profile');
+
+           //$this->createUserProfile();           
+
+      } else {
+        echo "code is invalid";
+      }
+  }
+
+
+
+
+  public function createUserProfile () {
+    $this->load->view('user-header');
+    $this->load->view('user-profile');
+    $this->load->view('codefooter');
+  }
+
+        public function checkProfile() {
+            $userId = $this->session->id;
+
+            $sql = "SELECT * FROM `student_register` Where id = '$userId'" ;
+
+           $query = $this->db->query($sql);
+
+           $isEmpty = 0;
+           
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+                   if (empty($row->first_name)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->last_name)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->email)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->contact_no)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->state)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->city)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->dob)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->gender)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->tenth_passing_year)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->tenth_percentage)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->twelveth_passing_year)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->twelveth_percentage)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->degree)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->degree_percentage)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->degree_passing_year)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->stream)) {
+                      $isEmpty = 1; 
+                    }
+                    if (empty($row->work_location)) {
+                      $isEmpty = 1; 
+                    }
+                }
+            }
+
+            return $isEmpty;
+        }
 }

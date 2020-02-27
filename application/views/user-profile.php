@@ -1,25 +1,25 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script>
-
 function validateUpdateProfile(){
-       
         
+          
         var error = true;
 
-        // var emailpattern = /^[a-z0-9]+(\.[_a-z0-9]+)@[a-z0-9-]+(\.[a-z-]+)(\.[a-z]{2,15})$/;
+        var emailpattern = /^[a-z0-9]+(\.[_a-z0-9]+)@[a-z0-9-]+(\.[a-z-]+)(\.[a-z]{2,15})$/;
 
-        // var email = document.getElementById('emaillogin').value;
+        var email = document.getElementById('emaillogin').value;
         var perPattern = /^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$/
         var highper = document.getElementById('highSPerU').value;
         var schoolper = document.getElementById('schoolperU').value;
         var udper = document.getElementById('udperU').value; 
         var gper = document.getElementById('gperU').value;
 
-        if(document.regform.firstname.value.length == 0){
+        if(document.regform.firstname.value.length == '0'){
             document.getElementById("errorFstName").innerHTML = "This field is required";
             error = false;
-        }
-
-         else {
+        } else {
             document.getElementById("errorFstName").innerHTML = "";
         }
         if(document.regform.lastname.value.length == '0'){
@@ -38,21 +38,20 @@ function validateUpdateProfile(){
             document.getElementById("errcno").innerHTML = "";
         }
     
-        // if(document.regform.email.value.length == '0') { 
-        //     document.getElementById("erremail").innerHTML = "This field is required";
-        //     error = false;
+        if(document.regform.email.value.length == '0') { 
+            document.getElementById("erremail").innerHTML = "This field is required";
+            error = false;
            
-        // }
+        }
         // else if(!emailpattern.test(email)) {
             
         //     document.getElementById("erremail").innerHTML = "Please enter valid email";
         //     error = false;
         // } 
 
-        // else {
-        //     document.getElementById("erremail").innerHTML = "";
-        // }
-
+        else {
+            document.getElementById("erremail").innerHTML = "";
+        }
         if(document.regform.dob.value.length == '0'){
             document.getElementById("errordob").innerHTML = "This field is required";
             error = false;
@@ -72,7 +71,7 @@ function validateUpdateProfile(){
         } else {
             document.getElementById("errortenth_branch").innerHTML = "";
         }
-        //tenth
+        // tenth
         if(document.regform.tenth_py.value.length == '0'){
             document.getElementById("errortenth_py").innerHTML = "This field is required";
             error = false;
@@ -91,7 +90,7 @@ function validateUpdateProfile(){
         } else {
             document.getElementById("errortenth_per").innerHTML = "";
         }
-        // // twelveth
+        // twelveth
         if(document.regform.twelveth_branch.value.length == '0'){
             document.getElementById("errortwelveth_branch").innerHTML = "This field is required";
         } else {
@@ -190,162 +189,14 @@ function validateUpdateProfile(){
         } else {
             document.getElementById("errorcity").innerHTML = "";
         }
-        // if(document.regform.pwl.value.length == '0'){
-        //     document.getElementById("errorpwl").innerHTML = "This field is required";
-        //     error = false;
-        // } else {
-        //     document.getElementById("errorpwl").innerHTML = "";
-        // }
-
-
+        if(document.regform.pwl.value.length == '0'){
+            document.getElementById("errorpwl").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errorpwl").innerHTML = "";
+        }
         return error;
 }
-
-// function validateUpdateProfile(){
-        
-//        var error = true;
-
-//         var emailpattern = /^[a-z0-9]+(\.[_a-z0-9]+)@[a-z0-9-]+(\.[a-z-]+)(\.[a-z]{2,15})$/;
-//         var email = document.getElementById('emaillogin1').value;
-//         var perPattern = /^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$/
-//         var highper = document.getElementById('highSPer').value;
-//         var schoolper = document.getElementById('schoolper').value;
-//         var udper = document.getElementById('udper').value; 
-//         var gper = document.getElementById('gper').value;
-
-//         if(document.regform.firstname.value.length == '0'){
-//             document.getElementById("errorFstName").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         if(document.regform.lastname.value.length == '0'){
-//             document.getElementById("errlstnm").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         if(document.regform.cno.value.length == '0'){
-//             document.getElementById("errcno").innerHTML = "This field is required";
-//             error = false;
-//         } else if(document.regform.cno.value.length > '10' || document.regform.cno.value.length < '10'){
-//             document.getElementById("errcno").innerHTML = "Enter valid number";
-//             error = false;
-//         }
-    
-//         if(document.regform.email.value.length == '0') { 
-//             document.getElementById("erremail").innerHTML = "This field is required";
-//             error = false;
-           
-//         } else if(!emailpattern.test(email)) {
-            
-//             document.getElementById("erremail").innerHTML = "Please enter valid email";
-//             error = false;
-//         } 
-//         if(document.regform.dob.value.length == '0'){
-//             document.getElementById("errordob").innerHTML = "This field is required";
-//             error = false;
-//         }
-
-//         if(document.regform.gender.selectedIndex == '0'){
-//             document.getElementById("errorgender").innerHTML = "This field is required";
-//             error = false;
-//         }
-
-//         if(document.regform.tenth_branch.value.length == '0'){
-//             document.getElementById("errortenth_branch").innerHTML = "This field is required";
-//         }
-//         // tenth
-//         if(document.regform.tenth_py.value.length == '0'){
-//             document.getElementById("errortenth_py").innerHTML = "This field is required";
-//             error = false;
-//         } else  if(document.regform.tenth_py.value.length > '4'){
-//             document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
-//             error = false;
-//         } 
-//         if(document.regform.tenth_per.value.length == '0'){
-//             document.getElementById("errortenth_per").innerHTML = "This field is required";
-//             error = false;
-//         } else if(!perPattern.test(schoolper)){
-//             document.getElementById("errortenth_per").innerHTML = "Please enter valid percentage";
-//             error = false;
-//         } 
-//         // twelveth
-//         if(document.regform.twelveth_branch.value.length == '0'){
-//             document.getElementById("errortwelveth_branch").innerHTML = "This field is required";
-//         }
-//         if(document.regform.twelveth_py.value.length == '0'){
-//             document.getElementById("errortwelveth_py").innerHTML = "This field is required";
-//         }
-//         if(document.regform.twelveth_per.value.length == '0'){
-
-//             document.getElementById("errortwelveth_per").innerHTML = "This field is required";
-
-//         } else if(!perPattern.test(highper)){
-//             document.getElementById("errortwelveth_per").innerHTML = "Please enter valid percentage";
-//             error = false;
-//         } 
-//         // under graduation
-//         if(document.regform.college.value.length == '0'){
-//             document.getElementById("errorcollege").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree_py.value.length == '0'){
-//             document.getElementById("errordegree_py").innerHTML = "This field is required";
-//         } else if(document.regform.degree_py.value.length > '4'){
-//             document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
-//             error = false;
-//         } 
-//         if(document.regform.branch.value.length == '0'){
-//             document.getElementById("errorbranch").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree.value.length == '0'){
-//             document.getElementById("errordegree").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree_per.value.length == '0'){
-//             document.getElementById("errordegree_per").innerHTML = "This field is required";
-//         }else  if(!perPattern.test(udper)){
-//             document.getElementById("errordegree_per").innerHTML = "Please enter valid percentage";
-//             error = false;
-//         } 
-//         if(document.regform.university.value.length == '0'){
-//             document.getElementById("erroruniversity").innerHTML = "This field is required";
-//         }
-//         // graduation
-//         if(document.regform.collegem.value.length == '0'){
-//             document.getElementById("errorcollegem").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree_pym.value.length == '0'){
-//             document.getElementById("errordegree_pym").innerHTML = "This field is required";
-//         } else if(document.regform.degree_pym.value.length > '4'){
-//             document.getElementById("errordegree_pym").innerHTML = "Please enter valid year";
-//             error = false;
-//         } 
-//         if(document.regform.branchm.value.length == '0'){
-//             document.getElementById("errorbranchm").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degreem.value.length == '0'){
-//             document.getElementById("errordegreem").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree_perm.value.length == '0'){
-//             document.getElementById("errordegree_perm").innerHTML = "This field is required";
-//         }else  if(!perPattern.test(gper)){
-//             document.getElementById("errordegree_perm").innerHTML = "Please enter valid percentage";
-//             error = false;
-//         } 
-//         if(document.regform.universitym.value.length == '0'){
-//             document.getElementById("erroruniversitym").innerHTML = "This field is required";
-//         }
-//         if(document.regform.state.value.length == '0'){
-//             document.getElementById("errorstate").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         if(document.regform.city.value.length == '0'){
-//             document.getElementById("errorcity").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         if(document.regform.pwl.value.length == '0'){
-//             document.getElementById("errorpwl").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         return error;
-// }
-
 function Upload() {
       
       var fileUpload = document.getElementById("fileUpload");
@@ -384,27 +235,29 @@ function Upload() {
       document.getElementById('demo').innerHTML = "";
       document.getElementById("fileUpload").value = "";
   }
-  function showField(isGap = 0){
+   function showField1(isGap1 = 0){
         
-    if (isGap > 0) {
+    if (isGap1 > 0) {
     
-        document.getElementById("hManyYears").style.display = "block";
+        document.getElementById("hManyYUser").style.display = "block";
     } else {
-        document.getElementById("hManyYears").style.display = "none";
+        document.getElementById("hManyYUser").style.display = "none";
     }
-}   
+}
 </script>
 
     <?php
 
-        if (null !== $userData['profile-pic']) {
-            $img = $userData['profile-pic'];
-        } else {
-            $img = "images/boy.png";
-            if ($userData['gender'] == "2") {
-                $img = "images/girl.png";
-            }
-        }
+    $img = "images/boy.png";
+
+        // if (null !== $userData['profile-pic']) {
+        //     $img = $userData['profile-pic'];
+        // } else {
+        //     $img = "images/boy.png";
+        //     if ($userData['gender'] == "2") {
+        //         $img = "images/girl.png";
+        //     }
+        // }
        
         ?>
 
@@ -418,7 +271,7 @@ function Upload() {
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Your Profile</h5>
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Create Your Profile</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -441,6 +294,43 @@ function Upload() {
                                     </div>
                                 </div>
                             </div>
+
+
+                            <button type="button" style="display:none" id="modal-btn" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
+    Open modal
+  </button>
+
+  <!-- The Modal -->
+  <div class="modal fade" id="userModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Please Note :</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <?php 
+            $userCred = $_SESSION['username'];
+            ?>
+            <p>
+                Your Username is  <span> <strong><?php echo " ".$userCred['username']." " ; ?></strong> </span> and password is  <span><strong>
+                <?php echo " ".$userCred['password']; ?></strong> </span>
+            </p>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
                             <img src=<?php echo base_url().$img;?> class="imgLogo"/>
                         </div><br/>
                         <p align="center"></p>
@@ -448,21 +338,22 @@ function Upload() {
                 </div>
                 <div class="col-md-8">
                     <div class="LoginBox">
-                        <h4 style="text-align: center;">Update Profile</h4>
+                        <h4 style="text-align: center;">Create Profile</h4>
                         <hr/>
                         <p class="updatedText"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?> </p>
-                        <form name="regform" method="post" action="update-profile"  onsubmit="return validateUpdateProfile();" >
-                            <fieldset>
+                        <form name="regform" method="post" action="<?php echo base_url()."user/update-profile";?>"  onsubmit="return validateUpdateProfile();" >
+                            <input type="hidden" name="isCreate" value="1" />
+                              <fieldset>
                                 <legend id="sectionHeading">Personal Details:</legend>
                                     <div class="row rowGap">
                                         <div class="col-md-6"> 
                                                 <label>First name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="firstname" value="<?php echo $userData['first_name']; ?>" class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" name="firstname" value="<?php echo set_value('firstname'); ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errorFstName" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Last name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="lastname" value="<?php echo $userData['last_name']; ?>"  class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" name="lastname" value="<?php echo set_value('lastname'); ?>"  class="form-control"  autocomplete="off"><br/>
                                                 <p id="errlstnm" class="errMessage"></p>
                                             </div>
                                         </div>
@@ -470,75 +361,77 @@ function Upload() {
                                     <div class="row rowGap">
                                         <div class="col-md-6">
                                             <label>Mobile<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                            <input type="number" name="cno" value="<?php echo $userData['contact_no']; ?>"  class="form-control"  autocomplete="off"><br/>
+                                            <input type="number" name="cno" value="<?php echo set_value('cno'); ?>"  class="form-control"  autocomplete="off"><br/>
                                             <p id="errcno" class="errMessage"></p>
                                         </div>
                                         <div class="col-md-6">
                                             <label>Email<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                            <input type="text" name="email" value="<?php echo $userData['email']; ?>"  id="emaillogin1" class="form-control"  autocomplete="off"><br/>
+                                            <input type="email" name="email" value="<?php echo set_value('email'); ?>"  id="emaillogin" class="form-control"  autocomplete="off"><br/>
                                             <p id="erremail" class="errMessage"></p>
+                                            <?php echo "<span style='color:red'>".form_error('email')."</span>"; ?>
                                         </div>
                                     </div>
 
                                     <div class="row rowGap">
                                         <div class="col-md-6">
                                             <label>Date of Birth<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                            <input type="date" name="dob" value="<?php echo $userData['dob']; ?>"  class="form-control formControl"  autocomplete="off"><br/>
+                                            <input type="date" name="dob" value="<?php echo set_value('dob'); ?>"  class="form-control formControl"  autocomplete="off"><br/>
                                             <p id="errordob" class="errMessage"></p>
                                         </div>
                                         <div class="col-md-6">
                                             <label>Gender<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                             <select name="gender" class="form-control formControl" autocomplete="off">
                                                 <option value="0">Select gender</option>
-                                                <option value="1" <?php if ($userData['gender']=="1") {
-                                                    echo "selected"; } ?>>Male</option>
-                                                <option value="2" <?php if ($userData['gender']=="2") {
-                                                    echo "selected"; } ?>>Female</option>
+                                                <option value="1" <?php if (set_value('gender') == "1") { echo "selected";} ?> >Male
+                                                </option>
+                                                <option value="2" <?php if (set_value('gender') == "2") { echo "selected";} ?> >Female
+                                                </option>
                                             </select><br/>
                                             <p id="errorgender" class="errMessage"></p>
                                         </div>
                                     </div>
-                            </fieldset><br/>
-                            <fieldset>
-                                <legend id="sectionHeading">Educational Details:</legend>
-                                    <h6 class="tenthDetails">10<sup>th</sup> Grade:</h6>
-                                    <hr class="hrDesignUpdate">
-                                        <div class="row rowGap">
-                                            <div class="col-md-4">
-                                                <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="tenth_branch"   class="form-control"  autocomplete="off"><br/>
-                                                <p id="errortenth_branch" class="errMessage"></p>
+                                </fieldset><br/>
+                                <fieldset>
+                                    <legend id="sectionHeading">Educational Details:</legend>
+                                        <h6 class="tenthDetails">10<sup>th</sup> Grade:</h6>
+                                        <hr class="hrDesignUpdate">
+                                            <div class="row rowGap">
+                                                <div class="col-md-4">
+                                                    <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                    <input type="text" name="tenth_branch"   class="form-control"  autocomplete="off"><br/>
+                                                    <p id="errortenth_branch" class="errMessage"></p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                    <input type="number" name="tenth_py" value="<?php echo set_value('tenth_py'); ?>"   class="form-control"  autocomplete="off"><br/>
+                                                    <p id="errortenth_py" class="errMessage"></p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                    <input type="text" id="schoolperU" name="tenth_per" value="<?php echo set_value('tenth_per'); ?>"   class="form-control" autocomplete="off"><br/>
+                                                    <p id="errortenth_per" class="errMessage"></p>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="number" name="tenth_py" value="<?php echo $userData['tenth_passing_year']; ?>"   class="form-control"  autocomplete="off"><br/>
-                                                <p id="errortenth_py" class="errMessage"></p>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="tenth_per"  id="schoolperU" value="<?php echo $userData['tenth_percentage']; ?>"   class="form-control" autocomplete="off"><br/>
-                                                <p id="errortenth_per" class="errMessage"></p>
-                                            </div>
-                                        </div>
                                         <h6 class="twelvethDetails">High School:</h6>
                                         <hr class="hrDesignUpdate">
-                                        <div class="row rowGap">
-                                            <div class="col-md-4">
-                                                <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="twelveth_branch"   class="form-control"  autocomplete="off"><br/>
-                                                <p id="errortwelveth_branch" class="errMessage"></p>
+                                            <div class="row rowGap">
+                                                <div class="col-md-4">
+                                                    <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                    <input type="text" name="twelveth_branch"   class="form-control"  autocomplete="off"><br/>
+                                                    <p id="errortwelveth_branch" class="errMessage"></p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                    <input type="number" name="twelveth_py" value="<?php echo set_value('twelveth_py'); ?>" class="form-control"  autocomplete="off"><br/>
+                                                    <p id="errortwelveth_py" class="errMessage"></p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                    <input type="text" id="highSPerU" name="twelveth_per" value="<?php echo set_value('twelveth_per'); ?>" class="form-control"  autocomplete="off"><br/>
+                                                    <p id="errortwelveth_per" class="errMessage"></p>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="number" name="twelveth_py" value="<?php echo $userData['twelveth_passing_year']; ?>" class="form-control"  autocomplete="off"><br/>
-                                                <p id="errortwelveth_py" class="errMessage"></p>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" id="highSPerU" name="twelveth_per" value="<?php echo $userData['twelveth_percentage']; ?>" class="form-control"  autocomplete="off"><br/>
-                                                <p id="errortwelveth_per" class="errMessage"></p>
-                                            </div>
-                                        </div>
+
                                         <h6 class="twelvethDetails">Under Graduate:</h6>
                                         <hr class="hrDesignUpdate">
                                         <div class="row rowGap">
@@ -550,25 +443,25 @@ function Upload() {
                                         
                                             <div class="col-md-4">
                                                 <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="number" name="degree_py"  value="<?php echo $userData['degree_passing_year']; ?>" class="form-control"  autocomplete="off"><br/>
+                                                <input type="number" name="degree_py"  value="<?php echo set_value('degree_py'); ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_py" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Branch<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="branch"  value="<?php echo $userData['stream']; ?>"  class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" name="branch"  value="<?php echo set_value('branch'); ?>"  class="form-control"  autocomplete="off"><br/>
                                                 <p id="errorbranch" class="errMessage"></p>
                                             </div>
                                         </div>
                                         <div class="row rowGap">
                                             <div class="col-md-4">
                                                 <label>Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="degree" value="<?php echo $userData['degree']; ?>" class="form-control" autocomplete="off"><br/>
+                                                <input type="text" name="degree" value="<?php echo set_value('degree'); ?>" class="form-control" autocomplete="off"><br/>
                                                 <p id="errordegree" class="errMessage"></p>
                                             </div>
                                         
                                             <div class="col-md-4">
                                                 <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" id="udperU" name="degree_per" value="<?php echo $userData['degree_percentage']; ?>" class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" id="udperU" name="degree_per" value="<?php echo set_value('degree_per'); ?>"  class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_per" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
@@ -577,6 +470,7 @@ function Upload() {
                                                 <p id="erroruniversity" class="errMessage"></p>
                                             </div>
                                         </div>
+
                                         <h6 class="twelvethDetails">Graduate:</h6>
                                         <hr class="hrDesignUpdate">
                                         <div class="row rowGap">
@@ -618,41 +512,42 @@ function Upload() {
                                         <div class="row rowGapDegree">
                                             <div class="col-md-4">
                                                 <label>Year Gap in Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label><br/>
-                                                <input type="radio" name="gap" autocomplete="off" onclick=" showField(1)"> Yes &nbsp;&nbsp;&nbsp;<input type="radio" name="gap" autocomplete="off" onclick="showField()"> No
+                                                <input type="radio" name="gap" autocomplete="off" onclick=" showField1(1)"> Yes &nbsp;&nbsp;&nbsp;<input type="radio" name="gap" autocomplete="off" onclick="showField1()"> No
                                           
                                             </div>
-                                            <div class="col-md-8" style="display: none;" id="hManyYears">
+                                            <div class="col-md-8" style="display: none;" id="hManyYUser">
                                                 <label>How many years?</label>
                                                 <input type="text" name="universitym" class="form-control" autocomplete="off"><br/>
                                                 
                                             </div>
                                         </div>
+
                                     </fieldset><br/>
-                                    <fieldset>
+                                     <fieldset>
                                         <legend id="sectionHeading">Other Details:</legend>
-                                            <div class="row rowGap">
-                                                <div class="col-md-6">
-                                                    <label>Residence State<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                    <input type="text" name="state" value="<?php echo $userData['state']; ?>"  class="form-control formControl"  autocomplete="off"><br/>
-                                                    <p id="errorstate" class="errMessage"></p>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label>Residence City<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                    <input type="text" name="city" value="<?php echo $userData['city']; ?>"  class="form-control formControl"  autocomplete="off"><br/>
-                                                    <p id="errorcity" class="errMessage"></p>
-                                                </div>
+                                        <div class="row rowGap">
+                                            <div class="col-md-6">
+                                                <label>Residence State<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="state" value="<?php echo set_value('state'); ?>"  class="form-control formControl"  autocomplete="off"><br/>
+                                                <p id="errorstate" class="errMessage"></p>
                                             </div>
-                                            <div class="row rowGap">
-                                                <div class="col-md-6">
-                                                    <label>Preffered Work Location<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                    <input type="text" name="pwl" value="<?php echo $userData['work_location']; ?>"  class="form-control"   autocomplete="off">
-                                                    <p id="errorpwl" class="errMessageLast"></p>
-                                                </div>
-                                            </div><br/>
+                                            <div class="col-md-6">
+                                                <label>Residence City<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="city" value="<?php echo set_value('city'); ?>"  class="form-control formControl"  autocomplete="off"><br/>
+                                                <p id="errorcity" class="errMessage"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row rowGap">
+                                            <div class="col-md-6">
+                                                <label>Preffered Work Location<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="pwl" value="<?php echo set_value('pwl'); ?>"  class="form-control"   autocomplete="off">
+                                                <p id="errorpwl" class="errMessageLast"></p>
+                                            </div>
+                                        </div><br/>
                                     </fieldset><br/>
                             <div align="center">
                                 <div>
-                                    <button type="submit" class="subtn">Update Profile</button>
+                                    <button type="submit" class="subtn"> Create Profile</button>
                                 </div>
                             </div>
                         </form>
@@ -671,3 +566,16 @@ function Upload() {
             </div> -->
         </div>
     </div>
+<script>
+
+window.onload = test();
+
+function test() {
+   
+        document.getElementById("modal-btn").click();    
+        
+    
+}
+
+
+</script>

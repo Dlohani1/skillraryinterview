@@ -148,8 +148,8 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="create-test">Create</a>
-                                    <a class="nav-link" href="view-mcq">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/create-test";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-mcq";?>>View</a>
                                 </nav>
                             </div>
                              <div class="sb-sidenav-menu-heading">Interface</div>
@@ -161,8 +161,8 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="add-question">Create</a>
-                                    <a class="nav-link" href="view-questions">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>View</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
@@ -173,7 +173,7 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsR" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="view-results">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-results";?>>View</a>
                                 </nav>
                             </div>
 
@@ -207,6 +207,48 @@
             
 
             <div class="container">
+
+                                        <div align="left">
+                         <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Upload Question</button>
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Questions</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="uploadQuestion" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                
+                                                    <span class="btn_lbl">Select Type</span>
+                                                    <select  id="sectionUpload" name="sectionUpload">
+                                                        <option> Select </option>
+                                                    </select>
+                                                
+                                              
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button class="resume_upload" type="button">
+                                                    <span class="btn_lbl">Browse</span>
+                                                    <span class="btn_colorlayer"></span>
+                                                    <input type="file" name="questionFile" id="fileUpload" />
+                                                </button>
+                                                <p id="demo" class="errortag"></p>
+                                            </div>
+                                            <div>
+                                                <input type="submit" value="Upload" class="subbtn" >
+                                            </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div><br/>
   <h2>Question Bank</h2>
   <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
   <form class="form-horizontal" method="post" action="save" enctype="multipart/form-data">
@@ -236,17 +278,6 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="sub-section">Question Type:</label>
-      <div class="col-md-8">
-        <select id="level" name="levelId" >
-            <!-- <option value="0" >Select </option> -->
-            <option value="1" selected>Single Ans</option>
-            <option value="2" disabled>Multiple Ans</option>
-            <option value="3" disabled>True/False</option>
-        </select>
-      </div>
-    </div>
 
     <div class="form-group">
       <label class="control-label col-sm-2" for="question">Question:</label>
@@ -265,16 +296,36 @@
       </div>
     </div>
 
-<div class="form-group">
-      <label class="control-label col-sm-2" for="pwd">Answers:</label>
-      <div class="col-md-8">          
-        <input type="radio" name="correct" value="1"> Select if correct option<input type="text" class="form-control" id="option1" placeholder="Enter Answer" name="ans1">
-	<input type="radio" name="correct" value="2"> Select if correct option<input type="text" class="form-control" id="option2" placeholder="Enter Answer" name="ans2">
-	<input type="radio" name="correct" value="3"> Select if correct option<input type="text" class="form-control" id="option3" placeholder="Enter Answer" name="ans3">
-	<input type="radio" name="correct" value="4"> Select if correct option<input type="text" class="form-control" id="option4" placeholder="Enter Answer" name="ans4">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="sub-section">Question Type:</label>
+      <div class="col-md-8">
+        <select id="questionType" name="questionType"  onchange="changeType()">
+            <option value="0" >Select </option>
+            <option value="1">Single Ans</option>
+            <option value="2" disabled>Multiple Ans</option>
+            <option value="3" >True/False</option>
+        </select>
       </div>
     </div>
 
+<div class="form-group" id="singleOptions" style="display: none">
+    <label class="control-label col-sm-2" for="pwd">Answers:</label>
+    <div class="col-md-8">          
+        <input type="radio" name="correct" value="1"> Select if correct option<input type="text" class="form-control" id="option1" placeholder="Enter Answer" name="ans1">
+        <input type="radio" name="correct" value="2"> Select if correct option<input type="text" class="form-control" id="option2" placeholder="Enter Answer" name="ans2">
+        <input type="radio" name="correct" value="3"> Select if correct option<input type="text" class="form-control" id="option3" placeholder="Enter Answer" name="ans3">
+        <input type="radio" name="correct" value="4"> Select if correct option<input type="text" class="form-control" id="option4" placeholder="Enter Answer" name="ans4">
+    </div>
+</div>
+
+<div class="form-group" id="trueFalse" style="display: none">
+    <label class="control-label col-sm-2" for="pwd">Answers:</label>
+    <div class="col-md-8">          
+        <input type="radio" name="true_false" value="1"> True
+        <input type="radio" name="true_false" value="2"> False
+
+    </div>
+</div>
 
     <div class="form-group">        
       <div class="col-sm-offset-2 col-md-8">
@@ -301,6 +352,7 @@ $( document ).ready(function() {
                 $.each(opts, function(i, d) { console.log('d',d);
                     // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
                     $('#section').append('<option value="' + d.id + '">' + d.name + '</option>');
+                    $('#sectionUpload').append('<option value="' + d.id + '">' + d.name + '</option>');
                 });
             }
         });
@@ -386,100 +438,118 @@ $('#subsection').empty()
 
 
         <script>
-            function firstForm() {
 
-                console.log('ll', window.location.host)
-                $.ajax({
-                    url: "/addTest",
+
+            function changeType() {
+                console.log('test', document.getElementById("questionType").value)
+                var questionType =  document.getElementById("questionType").value;
+                if (questionType == 3) {
+                    document.getElementById("singleOptions").style.display="none";  
+                      
+                    document.getElementById("trueFalse").style.display="block";
+                } else if (questionType == 1) {
+                     document.getElementById("trueFalse").style.display="none";
+                    document.getElementById("singleOptions").style.display="block";
+
+                }
+                
+            }
+
+
+            // function firstForm() {
+
+            //     console.log('ll', window.location.host)
+            //     $.ajax({
+            //         url: "/addTest",
                    
-                    type: 'post',
+            //         type: 'post',
                     
-                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "test-title": $('#title').val(), "test-type": $('#type').val() } ,
-                    success: function( data, textStatus, jQxhr ){
-                        //$('#response pre').html( JSON.stringify( data ) );
-                        console.log('data', data);
-                        document.getElementById("mcqTestId").value = data;
-                        //document.getElementById("nextBtnn").disabled = false;
-                    },
-                    error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
-                    }
-                });
+            //         // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+            //         data: { "test-title": $('#title').val(), "test-type": $('#type').val() } ,
+            //         success: function( data, textStatus, jQxhr ){
+            //             //$('#response pre').html( JSON.stringify( data ) );
+            //             console.log('data', data);
+            //             document.getElementById("mcqTestId").value = data;
+            //             //document.getElementById("nextBtnn").disabled = false;
+            //         },
+            //         error: function( jqXhr, textStatus, errorThrown ){
+            //             console.log( errorThrown );
+            //         }
+            //     });
 
-                document.getElementById("title").disabled = true;
-                document.getElementById("type").disabled = true;
-                document.getElementById("section").disabled = true;
-                var no =  document.getElementById("section").value;
+            //     document.getElementById("title").disabled = true;
+            //     document.getElementById("type").disabled = true;
+            //     document.getElementById("section").disabled = true;
+            //     var no =  document.getElementById("section").value;
 
 
-                for (var i=1;i<=no;i++){
-                    addNewSection(i);
-                }
-                document.getElementById("secondPart").style.display = "block";
-            }
+            //     for (var i=1;i<=no;i++){
+            //         addNewSection(i);
+            //     }
+            //     document.getElementById("secondPart").style.display = "block";
+            // }
 
-            function secondFormSubmit() {
-                console.log('a')
-               // document.getElementById("title").disabled = true;
-               // document.getElementById("type").disabled = true;
-               // document.getElementById("section").disabled = true;
-                var no =  document.getElementById("section").value;
+            // function secondFormSubmit() {
+            //     console.log('a')
+            //    // document.getElementById("title").disabled = true;
+            //    // document.getElementById("type").disabled = true;
+            //    // document.getElementById("section").disabled = true;
+            //     var no =  document.getElementById("section").value;
 
-                var mcqId = document.getElementById("mcqTestId").value ;
-                // var time1 = document.getElementById("time1").value ;
-                // var time2 = document.getElementById("time2").value ;
-                // var time3 = document.getElementById("time3").value ;
+            //     var mcqId = document.getElementById("mcqTestId").value ;
+            //     // var time1 = document.getElementById("time1").value ;
+            //     // var time2 = document.getElementById("time2").value ;
+            //     // var time3 = document.getElementById("time3").value ;
 
-                var sectionId = "";
+            //     var sectionId = "";
 
-                var questionNos = "";
+            //     var questionNos = "";
 
-                var  sectionTime = "";
+            //     var  sectionTime = "";
 
-                for (var i=1;i<=no;i++){
-                    document.getElementById("item_unit_"+i).disabled = true;
-                    document.getElementById("item_name_"+i).disabled = true;
-                    document.getElementById("item_quantity_"+i).disabled = true;
-                    document.getElementById("add_question_"+i).style.display="block";
-                    document.getElementById("add_question_link_"+i).href = "/add-question/"+mcqId+"/"+document.getElementById("item_unit_"+i).value;
+            //     for (var i=1;i<=no;i++){
+            //         document.getElementById("item_unit_"+i).disabled = true;
+            //         document.getElementById("item_name_"+i).disabled = true;
+            //         document.getElementById("item_quantity_"+i).disabled = true;
+            //         document.getElementById("add_question_"+i).style.display="block";
+            //         document.getElementById("add_question_link_"+i).href = "/add-question/"+mcqId+"/"+document.getElementById("item_unit_"+i).value;
 
-                    if (i > 1) {
-                        sectionId += ",";
-                        questionNos += ",";
-                        sectionTime += ",";
-                    }
+            //         if (i > 1) {
+            //             sectionId += ",";
+            //             questionNos += ",";
+            //             sectionTime += ",";
+            //         }
 
-                    sectionId += document.getElementById("item_unit_"+i).value;
-                    questionNos += document.getElementById("item_name_"+i).value;
-                    sectionTime += document.getElementById("item_quantity_"+i).value;
-                }
+            //         sectionId += document.getElementById("item_unit_"+i).value;
+            //         questionNos += document.getElementById("item_name_"+i).value;
+            //         sectionTime += document.getElementById("item_quantity_"+i).value;
+            //     }
 
-                console.log('sect', sectionId, questionNos, sectionTime)
+            //     console.log('sect', sectionId, questionNos, sectionTime)
 
-                $.ajax({
-                    url: "/addTestTime",
-                    type: 'post',
-                    data: {'mcqId': mcqId, 'sectionIds': sectionId, 'totalSection':no, 'totalQuestion':questionNos, 'sectionTime': sectionTime},
+            //     $.ajax({
+            //         url: "/addTestTime",
+            //         type: 'post',
+            //         data: {'mcqId': mcqId, 'sectionIds': sectionId, 'totalSection':no, 'totalQuestion':questionNos, 'sectionTime': sectionTime},
                   
-                    success: function( data ){
-                        //$('#response pre').html( JSON.stringify( data ) );
-                        console.log('data', data);
+            //         success: function( data ){
+            //             //$('#response pre').html( JSON.stringify( data ) );
+            //             console.log('data', data);
                
-                    },
-                    error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
-                    }
-                });
+            //         },
+            //         error: function( jqXhr, textStatus, errorThrown ){
+            //             console.log( errorThrown );
+            //         }
+            //     });
 
-                // for (var i=1;i<=no;i++){
-                //     document.getElementById("item_unit_"+i).disabled = true;
-                //     document.getElementById("item_name_"+i).disabled = true;
-                //     document.getElementById("item_quantity_"+i).disabled = true;
-                //     document.getElementById("add_question_"+i).style.display="block";
-                // }
-                //thirdFormSubmit();
-            }
+            //     // for (var i=1;i<=no;i++){
+            //     //     document.getElementById("item_unit_"+i).disabled = true;
+            //     //     document.getElementById("item_name_"+i).disabled = true;
+            //     //     document.getElementById("item_quantity_"+i).disabled = true;
+            //     //     document.getElementById("add_question_"+i).style.display="block";
+            //     // }
+            //     //thirdFormSubmit();
+            // }
 
             function addSection() {
                 var no =  document.getElementById("type").value;
@@ -523,14 +593,6 @@ $('#subsection').empty()
 
                 // html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td></tr>';
                 $('#item_table').append(html);
-            }
-
-            function thirdFormSubmit() {
-                var html = '<tr><td rowspan="9" class="tdborder" style="vertical-align : middle">English Usage</td><td class="tdborder">Articles, Prepositions</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><td class="tdborder">Tense, Gerund</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><td class="tdborder">Sentence Correction</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><td class="tdborder">Speech</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><td class="tdborder">Reading Comprehension</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><td class="tdborder">Synonyms & Antonyms</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><td class="tdborder">Vocabulary</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><td class="tdborder">Spelling</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><td class="tdborder">Sequencing</td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td><td class="tdborder"><input type="text" style="width:50px;text-align:center"/></td></tr><tr><th class="thborder" colspan="<input type="text" style="width:50px;text-align:center"/>">Total English Usage</th><th class="thborder"><input type="text" style="width:50px;text-align:center"/></th><th class="thborder"><input type="text" style="width:50px;text-align:center"/></th><th class="thborder"><input type="text" style="width:50px;text-align:center"/></th><th class="thborder"><input type="text" style="width:50px;text-align:center"/><input type="text" style="width:50px;text-align:center"/></th><th class="thborder"><input type="text" style="width:50px;text-align:center"/>.<input type="text" style="width:50px;text-align:center"/></th></tr>';
-
-                        $('#section_table').append(html);
-
-                        document.getElementById("subSectionPart").style.display="block";
             }
 
             $(document).on('click', '.remove', function(){

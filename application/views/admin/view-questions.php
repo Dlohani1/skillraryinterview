@@ -7,13 +7,13 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>SkillRary Admin</title>
-        <link href="admin-css-js/css/styles.css" rel="stylesheet" />
+        <link href=<?php echo base_url()."admin/admin-css-js/css/styles.css"; ?> rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
-         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-            <style>
+        <style>
         .firstSection{
             background: white;
             box-shadow: 2px 2px 10px 0px #aaa;
@@ -102,53 +102,7 @@
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <!-- <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard</a
-                            > -->
-                           <!--  <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                            ></a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="layout-static.html">Static Navigation</a><a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a></nav>
-                            </div> -->
-<!--                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                            ></a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth"
-                                        >Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                                    ></a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="login.html">Login</a><a class="nav-link" href="register.html">Register</a><a class="nav-link" href="password.html">Forgot Password</a></nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError"
-                                        >Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                                    ></a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="401.html">401 Page</a><a class="nav-link" href="404.html">404 Page</a><a class="nav-link" href="500.html">500 Page</a></nav>
-                                    </div>
-                                </nav>
-                            </div> -->
-                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts</a
-                            ><a class="nav-link" href="tables.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables</a
-                            > -->
-
+                                                <div class="nav">
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
                                 >
@@ -158,8 +112,8 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="create-test">Create</a>
-                                    <a class="nav-link" href="view-mcq">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/create-test";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-mcq";?>>View</a>
                                 </nav>
                             </div>
                              <div class="sb-sidenav-menu-heading">Interface</div>
@@ -171,11 +125,10 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="add-question">Create</a>
-                                    <!-- <a class="nav-link" href="layout-sidenav-light.html">View</a> -->
+                                    <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>View</a>
                                 </nav>
                             </div>
-
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
                                 >
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -184,7 +137,7 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsR" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="view-results">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-results";?>>View</a>
                                 </nav>
                             </div>
 
@@ -213,7 +166,7 @@
     
         
         <div class="col-md-12">
-        <h4>MCQs</h4>
+        <!-- <h4>MCQs</h4>
             <div class="container">
                 <div class="searchBox">
                     <div class="row">
@@ -225,8 +178,12 @@
                             <label>Sub section</label>
                             <input type="text" class="form-control inputBox">
                         </div>
-                        <div class="col-md-2 offset-md-1">
+                        <div class="col-md-3 offset-md-1">
                             <label>Difficulty Level</label>
+                            <input type="text" class="form-control inputBox">
+                        </div>
+                        <div class="col-md-3 offset-md-1">
+                            <label>Question Type</label>
                             <input type="text" class="form-control inputBox">
                         </div>
                     </div><br/>
@@ -236,7 +193,8 @@
                         </div>
                     </div>
                 </div>
-            </div><br/>
+            </div> -->
+            <br/>
         <div class="table-responsive">
 
                 
@@ -255,8 +213,7 @@
                    </thead>
     <tbody>
 
-        <?php 
-
+        <?php
         foreach($questionData as $key => $value) {
 
             $question = $value->question; 
@@ -264,22 +221,27 @@
             $subSection = $value->sub_section_name;
             $level = $value->level;
 
+            $id = $value->id;
 
-            echo '<tr><td><span style="height: 18px;
-  width: 140px;
-  overflow: hidden;
-  position: relative;
-  display: inline-block;
-  margin: 0 5px 0 5px;
-  text-align: center;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #000;">'.$question.'</span></td><td>'.$section.'</td> <td>'.$subSection.'</td>
-    <td>'.$level.'</td>
-      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-eye-open"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td></tr>';
+            echo '<tr>
+                    <td><span style="height: 18px;
+                      width: 140px;
+                      overflow: hidden;
+                      position: relative;
+                      display: inline-block;
+                      margin: 0 5px 0 5px;
+                      text-align: center;
+                      text-decoration: none;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      color: #000;">'.$question.'</span>
+                    </td>
+                    <td>'.$section.'</td> <td>'.$subSection.'</td>
+                    <td>'.$level.'</td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="view"><button disabled onclick="populateData()" class="btn btn-primary btn-xs" data-title="view" data-toggle="modal" data-target="#view"><span class="glyphicon glyphicon-eye-open"></span></button></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="edit-question/'.$id.'"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+                </tr>';
         }
         ?>
     
@@ -346,8 +308,7 @@
     
    
     
-    </tbody>
-        
+    </tbody>        
 </table>
 
 <div class="clearfix"></div>
@@ -367,6 +328,33 @@
   </div>
 </div>
 
+<div class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="view" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">View Your Detail</h4>
+      </div>
+          <div class="modal-body">
+          <div class="form-group">
+        <input class="form-control " type="text" placeholder="Mohsin" id="questionDetail" value="hello">
+        </div>
+        <div class="form-group">
+        
+        <input class="form-control " type="text" placeholder="Irshad">
+        </div>
+        <div class="form-group">
+        <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+        </div>
+      </div>
+          <div class="modal-footer ">
+        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+    </div>
 
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
@@ -446,10 +434,27 @@
         </div>
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="admin-css-js/js/scripts.js"></script>
+        <script src=<?php echo base_url()."admin/admin-css-js/js/scripts.js"; ?>></script>
 
+<script>
+    function populateData() {
+        var i = 0;
+        var a = i;
+    }
 
+    $('#view').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+
+      console.log('bb', button.data('whatever'))
+      var recipient = button.data('whatever') // Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('#questionDetail').val('New message to ' + recipient)
+      //modal.find('.modal-body input').val(recipient)
+    })
       
-
+</script>
     </body>
+    
 </html>

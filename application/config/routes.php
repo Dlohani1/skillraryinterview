@@ -50,9 +50,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
+$route['user/new-login']['GET'] = 'MyController/loginOpt';
+
 $route['question/create'] = 'questionBank';
 // $route['question/getSection']['POST'] = 'questionBank/getSection';
 $route['question/getSection']['POST'] = 'AdminController/getSection';
+
+$route['question/getTotalQuestion']['POST'] = 'AdminController/getTotalQuestion';
+
+
+$route['question/uploadQuestion']['GET'] = 'AdminController/uploadQuestion';
 
 // $route['question/getSubSection']['POST'] = 'questionBank/getSubSection';
 
@@ -67,6 +74,11 @@ $route['code-test'] = 'questionBank/showCodeTest';
 
 $route['getQuestion'] = 'questionBank/getQuestion';
 $route['fetchQuestion'] = 'questionBank/fetchQuestion';
+
+$route['search/MCQ'] = 'questionBank/searchTest';
+
+
+$route['admin/uploadQuestion']['POST'] = 'AdminController/uploadQuestion';
 
 
 $route['user/registration'] = 'questionBank/registration';
@@ -92,13 +104,16 @@ $route['user/enter-code'] = 'questionBank/enterCode';
 
 $route['user/profile'] = 'questionBank/showUserProfile';
 
+$route['user/create/profile'] = 'AdminController/createUserProfile';
+
 $route['user/update-profile']['POST'] = 'questionBank/userProfileUpdate';
 
 $route['read-instructions'] = 'questionBank/showInstructions';
 
 $route['user/checkCode']['POST'] = 'questionBank/checkCode';
+$route['admin/checkCode']['POST'] = 'AdminController/checkCode';
 
-$route['user/logout'] = 'questionBank/logout';
+$route['user/logout'] = 'MyController/logout';
 
 $route['user/home'] = 'questionBank/userHome';
 
@@ -116,6 +131,8 @@ $route['admin/view-students/:any']= 'AdminController/showStudents';
 $route['admin/download-students/:any']= 'AdminController/downloadExcel';
 
 $route['admin/add-question'] = 'AdminController/createQuestion';
+
+$route['admin/edit-question/:any'] = 'AdminController/editQuestion';
 
 $route['essay'] = 'welcome/showEssay';
 $route['user/view-results'] = 'questionBank/viewResult';

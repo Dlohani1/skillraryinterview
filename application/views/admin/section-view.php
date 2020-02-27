@@ -83,53 +83,7 @@
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <!-- <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard</a
-                            > -->
-                           <!--  <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                            ></a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="layout-static.html">Static Navigation</a><a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a></nav>
-                            </div> -->
-<!--                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                            ></a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth"
-                                        >Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                                    ></a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="login.html">Login</a><a class="nav-link" href="register.html">Register</a><a class="nav-link" href="password.html">Forgot Password</a></nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError"
-                                        >Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                                    ></a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="401.html">401 Page</a><a class="nav-link" href="404.html">404 Page</a><a class="nav-link" href="500.html">500 Page</a></nav>
-                                    </div>
-                                </nav>
-                            </div> -->
-                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts</a
-                            ><a class="nav-link" href="tables.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables</a
-                            > -->
-
+                                                <div class="nav">
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
                                 >
@@ -139,8 +93,8 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Create</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/create-test";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-mcq";?>>View</a>
                                 </nav>
                             </div>
                              <div class="sb-sidenav-menu-heading">Interface</div>
@@ -152,8 +106,19 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Create</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">View</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>View</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
+                                >
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Results
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayoutsR" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href=<?php echo base_url()."admin/view-results";?>>View</a>
                                 </nav>
                             </div>
 
@@ -382,11 +347,11 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 //echo  "a", $url[count($url) - 2];
 
 
-// $mcqTestId = $url[4]; // change in deploy
-//$sectionIdValue = $url[5]; //change in deploy
+$mcqTestId = $url[4]; // change in deploy
+$sectionIdValue = $url[5]; //change in deploy
 
-$mcqTestId = $url[2];
-$sectionIdValue = $url[3];
+// $mcqTestId = $url[2];
+// $sectionIdValue = $url[3];
 
 //echo $sectionIdValue; die;
 $secName = "English";
@@ -657,24 +622,24 @@ if ($sectionIdValue == 2) {
                             alert('Entered value cannot be greater than '+ data)
                             var c = parseInt(a.value);
                             document.getElementById(a.id).value = data;
-                           //document.getElementById(a.id).style.backgroundColor ="greu";
-                           document.getElementById(a.id).focus();
-                           // var c = parseInt(a.value);
-                            var b = parseInt(data);
+                           // //document.getElementById(a.id).style.backgroundColor ="greu";
+                           // document.getElementById(a.id).focus();
+                           // // var c = parseInt(a.value);
+                           //  var b = parseInt(data);
 
-                            console.log('b',b, 'c',c,'a',a)
-                            var d = parseInt(b-c);
-                            var v = parseInt(document.getElementById(label).value);
-                            if (c>b) {console.log('n')
-                                d = c-b;
-                                v += parseInt(d);
-                                console.log('aa',v)
+                           //  console.log('b',b, 'c',c,'a',a)
+                           //  var d = parseInt(b-c);
+                           //  var v = parseInt(document.getElementById(label).value);
+                           //  if (c>b) {console.log('n')
+                           //      d = c-b;
+                           //      v += parseInt(d);
+                           //      console.log('aa',v)
 
-                                document.getElementById(label).value = v;
-                            } else {console.log('m',d)
-                                v -= d;
-                                document.getElementById(label).value = v;
-                            }
+                           //      document.getElementById(label).value = v;
+                           //  } else {console.log('m',d)
+                           //      v -= d;
+                           //      document.getElementById(label).value = v;
+                           //  }
                         } else {
                             if (a.value != data ) {
                                 var b = a.oldvalue-a.value;

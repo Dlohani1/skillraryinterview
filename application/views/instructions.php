@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!--     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     <title>Assessment Instructions</title>
     <style type="text/css">
         .MainHead{
@@ -164,7 +164,10 @@
                 </table>
             </div>
         </div><br/><br/> -->
-<?php  $data = $_SESSION['instructionData'];?>
+<?php  $data = $_SESSION['instructionData'];
+$isCodeTest = $data['isCodeId'];
+unset($data['isCodeId']);
+?>
          <div class="row">
             <div class="col-md-10 offset-md-1">
                 <table class="table table-bordered">
@@ -180,15 +183,21 @@
                     </tr>
 
                     <?php
-                    for($i=0;$i<3;$i++) {
+                    for($i=0;$i<count($data);$i++) {
                         echo "<tr><td>".$data[$i]['section']."</td>
                         <td>".$data[$i]['total']."</td>
                         <td>".$data[$i]['time']." sec</td>
                         </tr>";
                     }
 
+                    if($isCodeTest) {?>
+                        <tr><td> Programming </td><td>2</td><td>10 min</td></tr>    
+                    <?php 
+                    }
+
                     ?>
-		   <tr><td> Programming </td><td>2</td><td>10 min</td></tr>
+
+		            
                 </table>
             </div>
         </div><br/><br/>
@@ -216,12 +225,13 @@
 
         <div align="center">
             <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
-            <label for="checkbox-1" class="checkbox-custom-label">I agree and follow all the instructions mentioned by SkillRary</label>
+            <label for="checkbox-1" class="checkbox-custom-label"> <strong>I agree and follow all the instructions mentioned by SkillRary</strong></label>
         </div><br/>
 
         <div align="center">
-            <button class="startBtn" onclick="enterCode()">Start Assessment</button>
+            <button class="startBtn" onclick="enterCode()">Start Assessment</button><br/>  <br/>
         </div>
+
     </div>
 
 

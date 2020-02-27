@@ -11,19 +11,47 @@ class MyController extends CI_Controller {
         $this->load->library(array('session','form_validation'));
 
         $urls = $this->uri->segment(2);
-        // echo $urls; die;
+
         $u = 1;
 
-       if ($urls == 'registration' || $urls == 'login' || $urls == 'signin' || $urls == 'register') {
+       if ($urls == 'registration' ||  $urls == 'login' || $urls == 'signin' || $urls == 'register' || $urls == 'new-login' || $urls == 'checkCode') {
        		$u = 0;
        }
 
        //echo var_dump($this->session->id); die;
 
-        if ( (null == $this->session->id) && $u) {        	
+        if ( (null == $this->session->id) && $u) {
+        if (isset($_SESSION['username'])) {
+            redirect('user/create/profile');
+          }        	
         	redirect('user/login');
         } else if (!$u && (null !== $this->session->id)) {
-            redirect('user/home');
+
+          if (isset($_SESSION['username'])) {
+            if ($urls == "logout") {
+              $this->logout();
+            } else {
+              redirect('user/create/profile');
+            }
+            
+          }
+          redirect('user/home');
         }  
+    }
+
+    public function logout() {
+
+      $this->session->sess_destroy();
+      redirect('user/new-login');
+    } 
+
+    public function loginOpt() {
+      //$this->load->view('codheader');
+      //$this->load->view('loginviacode');
+
+      $this->load->view('codheader');
+      $this->load->view('loginnew1');
+      $this->load->view('codefooter');
+
     }
 }

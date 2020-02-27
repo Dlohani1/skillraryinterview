@@ -72,7 +72,7 @@ document.getElementById("enter-code").hidden = true;
 }
 
 function validateLoginForm(){
-    var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    var pattern = /^[a-z0-9]+(\.[_a-z0-9]+)@[a-z0-9-]+(\.[a-z-]+)(\.[a-z]{2,15})$/;
         var email = document.getElementById('email').value;
         console.log('ee', email)
         var error = false;

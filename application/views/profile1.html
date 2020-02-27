@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
+    <title>Login</title>
+    <style type="text/css">
+    body{
+        background-color: #f5f5f5;
+    }
+    .headContainer{
+        margin: 0px;
+        padding: 0px;
+    }
+    .errMessage{
+        position: absolute;
+        margin-top: -23px;
+        font-size: 13px;
+        color: red;
+    }
+    .errMessageLast{
+        position: absolute;
+        margin-top: 0px;
+        font-size: 13px;
+        color: red;
+    }
+    .bg-white{
+        background: white !important;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 8px 6px -6px #aaa;
+    }
+    .hrDesign{
+        border-top: 1px solid white !important;
+        padding: 0;
+        width: 100%;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .editorContainer{
+        margin: 0;
+        padding: 0;
+    }
+
+    .registerBtn{
+        background: #33A478;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0px !important;
+    }
+    .LoginBox{
+        background: white;
+
+        padding: 30px;
+    }
+    .labelText{
+        font-size: 14px;
+    }
+    .subtn{
+        background: #33A478;
+        padding: 6px 20px;
+        border: 1px solid #33A478;
+        color: white;
+        font-weight: 600;   
+    }
+    .formControl:focus {
+        color: black;
+        background-color: #fff;
+        border-color: #aaa !important;
+        outline: 0;
+        box-shadow: none !important;
+    }
+    .profileBox{
+        background: white;
+
+        padding: 30px;
+    }
+    #contentBox{
+        margin-top: 5%;
+    }
+    .rowGap{
+        margin-bottom: -10px;
+    }
+    .rowGapDegree{
+        margin-bottom: 10px;
+    }
+    .imgLogo{
+        width: 130px;
+        border-radius: 100px;
+    }
+    .dashboardList{
+        list-style-type: none;
+        margin :0px;
+        padding: 0px;
+    }
+    .dashboardBox{
+        background: white;
+        padding: 20px;
+    }
+    .liList{
+        padding: 10px 25px;
+        background: #33A478;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .editButton{
+        position: absolute;
+        left: 50%;
+        top: 10%;
+        transform: translate(-50%,-10%);
+        background: white;
+        border: 2px solid white;
+    }
+    .editButton:focus{
+        outline: none;
+    }
+    .modal-content {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        min-width: 600px;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: .3rem;
+        outline: 0;
+    }
+    .modal-header .close {
+        padding: 1rem 1rem;
+        margin: -1rem -1rem -1rem auto;
+        margin-top: -10% !important;
+    }
+    .modal-header {
+        display: inline-block !important;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: 1rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+    }
+    .modal-footer{
+        display: inline-block !important;
+        border-top: 1px solid transparent !important;
+    }
+    .resume_upload {
+        position: relative;
+        min-width: 141px;
+        height: 36px;
+        text-align: center;
+        color: #33a478;
+        line-height: 25px;
+        background: #fff;
+        border: solid 2px black;
+        font-weight: 600;
+    }
+        
+    a.resume_upload {
+        display: inline-block;
+    }
+        
+    .resume_upload .btn_lbl {
+        position: relative;
+        z-index: 2;
+        pointer-events: none;
+    }
+        
+    .resume_upload .btn_colorlayer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        z-index: 1;
+        pointer-events: none;
+    }
+        
+    .resume_upload input[type="file"] {
+        position: absolute;
+        top: 0px;
+        left: -90px;
+        font-weight: 600;
+        margin-left: 92%;
+        color: #33a478;
+        outline: none;                    
+    }
+    .subbtn{
+        background: #33A478;
+        padding: 5px 17px;
+        border: 2px solid #33A478;
+    }
+    .subbtn:focus{
+        outline: none;
+    }
+    .errortag{
+        margin-top: -2px;
+        position: absolute;
+        font-size: 12px;
+        color: red;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    /* .hrDesignUpdate{
+        border-top: 1px solid black;
+    } */
+    #sectionHeading{
+        font-weight: 700;
+        font-size: 20px;
+        color: #333742;
+        letter-spacing: 1.5px;
+        position: relative;
+        /* padding: 0px 0px 10px 0px;
+        margin-bottom: 20px; */
+    }
+    /* #sectionHeading:before{
+        content: ' ';
+        background: #33A478;
+        box-shadow: 0 4px 8px 0 rgba(76,215,200,0.3);
+        width: 44px;
+        height: 4px;
+        position: absolute;
+        bottom: 0;
+    } */
+    .tenthDetails{
+        color: #333742;
+        font-weight: 600;
+        font-size: 18px;
+    }
+    .twelvethDetails{
+        color: #333742;
+        font-weight: 600;
+        font-size: 18px;
+        margin-top: 10px;
+    }
+    fieldset {
+        display: block;
+        margin-left: 2px;
+        margin-right: 2px;
+        padding-top: 0.35em;
+        padding-bottom: 0.625em;
+        padding-left: 0.75em;
+        padding-right: 0.75em;
+        border: 1px groove black;
+    }
+    legend {
+        font-weight: 600;
+        display: block;
+        width: inherit;
+        max-width: 100%;
+        padding: 0;
+        margin-bottom: .5rem;
+        font-size: 1.5rem;
+        line-height: inherit;
+        color: #33A478 !important;
+        white-space: normal;
+    }
+    </style>
+
+<script>
+
+function validateUpdateProfile(){
+        var error = true;
+
+        var emailpattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        var email = document.getElementById('emaillogin').value;
+
+        if(document.regform.firstname.value.length == '0'){
+            document.getElementById("errorFstName").innerHTML = "This field is required";
+            error = false;
+        }
+        if(document.regform.lastname.value.length == '0'){
+            document.getElementById("errlstnm").innerHTML = "This field is required";
+            error = false;
+        }
+        if(document.regform.cno.value.length == '0'){
+            document.getElementById("errcno").innerHTML = "This field is required";
+            error = false;
+        } else if(document.regform.cno.value.length > '10' || document.regform.cno.value.length < '10'){
+            document.getElementById("errcno").innerHTML = "Enter valid number";
+            error = false;
+        }
+
+        if(document.regform.email.value.length == '0') { 
+            document.getElementById("erremail").innerHTML = "This field is required";
+            error = false;
+        
+        } else if(!emailpattern.test(email)) {
+            document.getElementById("erremail").innerHTML = "Please enter valid email";
+            error = false;
+        } 
+
+        if(document.regform.dob.value.length == '0'){
+            document.getElementById("errordob").innerHTML = "This field is required";
+        } else if(document.regform.dob.value.length != '0'){
+            document.regform.dob.focus();
+        }
+        if(document.regform.gender.selectedIndex == '0'){
+            document.getElementById("errorgender").innerHTML = "This field is required";
+        }
+        if(document.regform.tenth_py.value.length == '0'){
+            document.getElementById("errortenth_branch").innerHTML = "This field is required";
+        }
+        if(document.regform.tenth_py.value.length == '0'){
+            document.getElementById("errortenth_py").innerHTML = "This field is required";
+        }
+        if(document.regform.tenth_per.value.length == '0'){
+            document.getElementById("errortenth_per").innerHTML = "This field is required";
+        }
+        if(document.regform.twelveth_py.value.length == '0'){
+            document.getElementById("errortwelveth_branch").innerHTML = "This field is required";
+        }
+        if(document.regform.twelveth_py.value.length == '0'){
+            document.getElementById("errortwelveth_py").innerHTML = "This field is required";
+        }
+        if(document.regform.twelveth_per.value.length == '0'){
+            document.getElementById("errortwelveth_per").innerHTML = "This field is required";
+        }
+        if(document.regform.twelveth_per.value.length == '0'){
+            document.getElementById("errortwelveth_per").innerHTML = "This field is required";
+        }
+        if(document.regform.college.value.length == '0'){
+            document.getElementById("errorcollege").innerHTML = "This field is required";
+        }
+        if(document.regform.degree_py.value.length == '0'){
+            document.getElementById("errordegree_py").innerHTML = "This field is required";
+        }
+        if(document.regform.branch.value.length == '0'){
+            document.getElementById("errorbranch").innerHTML = "This field is required";
+        }
+        if(document.regform.degree.value.length == '0'){
+            document.getElementById("errordegree").innerHTML = "This field is required";
+        }
+        if(document.regform.degree_per.value.length == '0'){
+            document.getElementById("errordegree_per").innerHTML = "This field is required";
+        }
+        if(document.regform.university.value.length == '0'){
+            document.getElementById("erroruniversity").innerHTML = "This field is required";
+        }
+
+        if(document.regform.collegem.value.length == '0'){
+            document.getElementById("errorcollegem").innerHTML = "This field is required";
+        }
+        if(document.regform.degree_pym.value.length == '0'){
+            document.getElementById("errordegree_pym").innerHTML = "This field is required";
+        }
+        if(document.regform.branchm.value.length == '0'){
+            document.getElementById("errorbranchm").innerHTML = "This field is required";
+        }
+        if(document.regform.degreem.value.length == '0'){
+            document.getElementById("errordegreem").innerHTML = "This field is required";
+        }
+        if(document.regform.degree_perm.value.length == '0'){
+            document.getElementById("errordegree_perm").innerHTML = "This field is required";
+        }
+        if(document.regform.universitym.value.length == '0'){
+            document.getElementById("erroruniversitym").innerHTML = "This field is required";
+        }
+
+        if(document.regform.state.value.length == '0'){
+            document.getElementById("errorstate").innerHTML = "This field is required";
+        }
+        if(document.regform.city.value.length == '0'){
+            document.getElementById("errorcity").innerHTML = "This field is required";
+        }
+        if(document.regform.pwl.value.length == '0'){
+            document.getElementById("errorpwl").innerHTML = "This field is required";
+        }
+        return false;
+}
+
+</script>
+
+<script type="text/javascript">
+    function Upload() {
+      
+        var fileUpload = document.getElementById("fileUpload");
+     
+        var regex = new RegExp("(.jpg|.png|.jpeg)$");
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof (fileUpload.files) != "undefined") {
+                var reader = new FileReader();
+                reader.readAsDataURL(fileUpload.files[0]);
+                reader.onload = function (e) {
+                    var image = new Image();
+                    image.src = e.target.result;
+                    image.onload = function () {
+                        var height = this.height;
+                        var width = this.width;
+                        if (height > 180 || width > 180) {
+                            document.getElementById('demo').innerHTML = "Image height and width must not exceed 185px.";
+                            return false;
+                        }else if(height < 180 || width <  180){
+                        document.getElementById('demo').innerHTML = "";
+                        $("#exampleModalCenter").modal("hide");
+                        document.getElementById("fileUpload").value = "";
+                          return false;
+                      }
+                    };
+                }
+            }
+        } else {
+            document.getElementById('demo').innerHTML = "Please select a valid Image file.";
+            return false;
+        }
+    }
+    function closeButtonLogin(){
+        document.getElementById('demo').innerHTML = "";
+        document.getElementById("fileUpload").value = "";
+    }
+
+    function showField(isGap = 0){
+        
+        if (isGap > 0) {
+     
+            document.getElementById("hManyYears").style.display = "block";
+        } else {
+            document.getElementById("hManyYears").style.display = "none";
+        }
+    }   
+
+</script>
+
+</head>
+<body>
+    <div class="container-fluid editorContainer">
+        <div class="container-fluid headContainer">
+            <nav class="navbar navbar-white bg-white">
+                <div class="container">
+                    <img src="https://www.skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary Logo">
+                    <div style="float:right">
+                        <a class="btn registerBtn" href="#">LOGIN</a>&nbsp;&nbsp;
+                        <a class="btn registerBtn" href="#">REGISTER</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="container" id="contentBox">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profileBox">
+                        <div align="center">
+                            <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Edit</button>
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Your Profile</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="#">
+                                            <div class="form-group">
+                                                <button class="resume_upload" type="button">
+                                                    <span class="btn_lbl">Browse</span>
+                                                    <span class="btn_colorlayer"></span>
+                                                    <input type="file" id="fileUpload" />
+                                                </button>
+                                                <p id="demo" class="errortag"></p>
+                                            </div>
+                                            <div>
+                                                <button type="button" value="Upload" class="subbtn" onclick="return Upload()">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="download.png" class="imgLogo"/>
+                        </div><br/>
+                        <p align="center">Name</p>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="LoginBox">
+                        <h4 style="text-align: center;">Update Profile</h4>
+                        <hr/>
+                        <form name="regform" onsubmit="return validateUpdateProfile();" >
+                                <fieldset>
+                                <legend id="sectionHeading">Personal Details:</legend>
+                                <div class="row rowGap">
+                                    <div class="col-md-6"> 
+                                            <label>First name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                            <input type="text" name="firstname" class="form-control"  autocomplete="off"><br/>
+                                            <p id="errorFstName" class="errMessage"></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Last name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                            <input type="text" name="lastname" class="form-control"  autocomplete="off"><br/>
+                                            <p id="errlstnm" class="errMessage"></p>
+                                        </div>
+                                    </div>
+                                
+                                <div class="row rowGap">
+                                    <div class="col-md-6">
+                                        <label>Mobile<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                        <input type="number" name="cno" class="form-control"  autocomplete="off"><br/>
+                                        <p id="errcno" class="errMessage"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Email<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                        <input type="text" name="email"  id="emaillogin" class="form-control"  autocomplete="off"><br/>
+                                        <p id="erremail" class="errMessage"></p>
+                                    </div>
+                                </div>
+    
+                                <div class="row rowGap">
+                                    <div class="col-md-6">
+                                        <label>Date of Birth<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                        <input type="date" name="dob" class="form-control formControl"  autocomplete="off"><br/>
+                                        <p id="errordob" class="errMessage"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Gender<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                        <select name="gender" class="form-control formControl" autocomplete="off">
+                                            <option value="0">Select gender</option>
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                        </select><br/>
+                                        <p id="errorgender" class="errMessage"></p>
+                                    </div>
+                                </div>
+                                </fieldset><br/>
+                                <fieldset>
+                                    <legend id="sectionHeading">Educational Details:</legend>
+                                        <h6 class="tenthDetails">10<sup>th</sup> Grade:</h6>
+                                        <hr class="hrDesignUpdate">
+                                        <div class="row rowGap">
+                                            <div class="col-md-4">
+                                                <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="tenth_branch"   class="form-control"  autocomplete="off"><br/>
+                                                <p id="errortenth_branch" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="tenth_py"   class="form-control"  autocomplete="off"><br/>
+                                                <p id="errortenth_py" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="tenth_per" class="form-control" autocomplete="off"><br/>
+                                                <p id="errortenth_per" class="errMessage"></p>
+                                            </div>
+                                        </div>
+                                
+                                        <h6 class="twelvethDetails">12<sup>th</sup> Grade:</h6>
+                                        <hr class="hrDesignUpdate">
+                                        <div class="row rowGap">
+                                            <div class="col-md-4">
+                                                <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="twelveth_branch"   class="form-control"  autocomplete="off"><br/>
+                                                <p id="errortwelveth_branch" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="twelveth_py"  class="form-control"  autocomplete="off"><br/>
+                                                <p id="errortwelveth_py" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="twelveth_per" class="form-control"  autocomplete="off"><br/>
+                                                <p id="errortwelveth_per" class="errMessage"></p>
+                                            </div>
+                                        </div>
+                               
+                                        <h6 class="twelvethDetails">Under Graduate:</h6>
+                                        <div class="row rowGap">
+                                            <div class="col-md-4">
+                                                <label>College<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="college" class="form-control" autocomplete="off"><br/>
+                                                <p id="errorcollege" class="errMessage"></p>
+                                            </div>
+                                        
+                                            <div class="col-md-4">
+                                                <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="degree_py" class="form-control"  autocomplete="off"><br/>
+                                                <p id="errordegree_py" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Branch<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="branch"  class="form-control"  autocomplete="off"><br/>
+                                                <p id="errorbranch" class="errMessage"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row rowGap">
+                                            <div class="col-md-4">
+                                                <label>Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="degree" class="form-control" autocomplete="off"><br/>
+                                                <p id="errordegree" class="errMessage"></p>
+                                            </div>
+                                        
+                                            <div class="col-md-4">
+                                                <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="degree_per" class="form-control"  autocomplete="off"><br/>
+                                                <p id="errordegree_per" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>University<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="university" class="form-control" autocomplete="off"><br/>
+                                                <p id="erroruniversity" class="errMessage"></p>
+                                            </div>
+                                        </div>
+
+                                        <h6 class="twelvethDetails">Graduate:</h6>
+                                        <div class="row rowGap">
+                                            <div class="col-md-4">
+                                                <label>College<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="collegem" class="form-control" autocomplete="off"><br/>
+                                                <p id="errorcollegem" class="errMessage"></p>
+                                            </div>
+                                        
+                                            <div class="col-md-4">
+                                                <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="degree_pym" class="form-control"  autocomplete="off"><br/>
+                                                <p id="errordegree_pym" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Branch<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="branchm"  class="form-control"  autocomplete="off"><br/>
+                                                <p id="errorbranchm" class="errMessage"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row rowGap">
+                                            <div class="col-md-4">
+                                                <label>Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="degreem" class="form-control" autocomplete="off"><br/>
+                                                <p id="errordegreem" class="errMessage"></p>
+                                            </div>
+                                        
+                                            <div class="col-md-4">
+                                                <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="number" name="degree_perm" class="form-control"  autocomplete="off"><br/>
+                                                <p id="errordegree_perm" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>University<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="universitym" class="form-control" autocomplete="off"><br/>
+                                                <p id="erroruniversitym" class="errMessage"></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row rowGapDegree">
+                                            <div class="col-md-4">
+                                                <label>Year Gap in Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label><br/>
+                                                <input type="radio" name="gap" autocomplete="off" onclick=" showField(1)"> Yes &nbsp;&nbsp;&nbsp;<input type="radio" name="gap" autocomplete="off" onclick="showField()"> No
+                                          
+                                            </div>
+                                            <div class="col-md-8" style="display: none;" id="hManyYears">
+                                                <label>How many years?</label>
+                                                <input type="text" name="universitym" class="form-control" autocomplete="off"><br/>
+                                                
+                                            </div>
+                                        </div>
+                                </fieldset><br/>
+                                <fieldset>
+                                    <legend id="sectionHeading">Other Details:</legend>
+                                        <div class="row rowGap">
+                                            <div class="col-md-6">
+                                                <label>Residence State<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="state" class="form-control formControl"  autocomplete="off"><br/>
+                                                <p id="errorstate" class="errMessage"></p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Residence City<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="city" class="form-control formControl"  autocomplete="off"><br/>
+                                                <p id="errorcity" class="errMessage"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row rowGap">
+                                            <div class="col-md-6">
+                                                <label>Preffered Work Location<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="pwl"  class="form-control"   autocomplete="off">
+                                                <p id="errorpwl" class="errMessageLast"></p>
+                                            </div>
+                                        </div><br/>
+                                        <div class="col-md-6">
+                                                <label>Residence <sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <select id="countySel" size="1">
+                                                    <option value="" selected="selected">-- Select Country --</option>
+                                                </select>
+                                                 <br>
+                                                <br>
+                                              
+                                                <select id="stateSel" size="1">
+                                                    <option value="" selected="selected">-- Select State--</option>
+                                                </select>
+                                                <br>
+                                                <br>    
+                                                <select id="citySel" size="1">
+                                                    <option value="" selected="selected">-- Select City--</option>
+                                                </select>
+                                                <br>
+                                                <br>
+                                            </div>
+                                </fieldset><br/>
+                                <div align="center">
+                                    <div>
+                                        <button type="submit" class="subtn">Update Profile</button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row" style="margin-top: -40%">
+                <div class="col-md-4">
+                    <div class="dashboardBox">
+                        <ul class="dashboardList">
+                            <li class="liList">Home</li>
+                            <li class="liList">Contact Us</li>
+                        </ul>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+    <script>
+
+
+        var countryStateInfo = {
+    "USA": {
+        "California": {
+            "Los Angeles": ["90001", "90002", "90003", "90004"],
+            "San Diego": ["92093", "92101"]
+        },
+        "Texas": {
+            "Dallas": ["75201", "75202"],
+            "Austin": ["73301", "73344"]
+        }
+    },
+    "India": {
+        
+  "Andaman and Nicobar Islands": {
+    "Port Blair*":[]
+},
+  "Andhra Pradesh": {
+    "Adoni":[],
+    "Amalapuram":[],
+    "Anakapalle":[],
+    "Anantapur":[],
+    "Bapatla":[],
+    "Bheemunipatnam":[],
+    "Bhimavaram":[],
+    "Bobbili":[],
+    "Chilakaluripet":[],
+    "Chirala":[],
+    "Chittoor":[],
+    "Dharmavaram":[],
+    "Eluru":[],
+    "Gooty":[],
+    "Gudivada":[],
+    "Gudur":[],
+    "Guntakal":[],
+    "Guntur":[],
+    "Hindupur":[],
+    "Jaggaiahpet":[],
+    "Jammalamadugu":[],
+    "Kadapa":[],
+    "Kadiri":[],
+    "Kakinada":[],
+    "Kandukur":[],
+    "Kavali":[],
+    "Kovvur":[],
+    "Kurnool":[],
+    "Macherla":[],
+    "Machilipatnam":[],
+    "Madanapalle":[],
+    "Mandapeta":[],
+    "Markapur":[],
+    "Nagari":[],
+    "Naidupet":[],
+    "Nandyal":[],
+    "Narasapuram":[],
+    "Narasaraopet":[],
+    "Narsipatnam":[],
+    "Nellore":[],
+    "Nidadavole":[],
+    "Nuzvid":[],
+    "Ongole":[],
+    "Palacole":[],
+    "Palasa Kasibugga":[],
+    "Parvathipuram":[],
+    "Pedana":[],
+    "Peddapuram":[],
+    "Pithapuram":[],
+    "Ponnur":[],
+    "Proddatur":[],
+    "Punganur":[],
+    "Puttur":[],
+    "Rajahmundry":[],
+    "Rajam":[],
+    "Rajampet":[],
+    "Ramachandrapuram":[],
+    "Rayachoti":[],
+    "Rayadurg":[],
+    "Renigunta":[],
+    "Repalle":[],
+    "Salur":[],
+    "Samalkot":[],
+    "Sattenapalle":[],
+    "Srikakulam":[],
+    "Srikalahasti":[],
+    "Srisailam Project (Right Flank Colony) Township":[],
+    "Sullurpeta":[],
+    "Tadepalligudem":[],
+    "Tadpatri":[],
+    "Tanuku":[],
+    "Tenali":[],
+    "Tirupati":[],
+    "Tiruvuru":[],
+    "Tuni":[],
+    "Uravakonda":[],
+    "Venkatagiri":[],
+    "Vijayawada":[],
+    "Vinukonda":[],
+    "Visakhapatnam":[],
+    "Vizianagaram":[],
+    "Yemmiganur":[],
+    "Yerraguntla"
+},
+  "Arunachal Pradesh": {
+    "Naharlagun":[],
+    "Pasighat"
+},
+  "Assam": {
+    "Barpeta":[],
+    "Bongaigaon City":[],
+    "Dhubri":[],
+    "Dibrugarh":[],
+    "Diphu":[],
+    "Goalpara":[],
+    "Guwahati":[],
+    "Jorhat":[],
+    "Karimganj":[],
+    "Lanka":[],
+    "Lumding":[],
+    "Mangaldoi":[],
+    "Mankachar":[],
+    "Margherita":[],
+    "Mariani":[],
+    "Marigaon":[],
+    "Nagaon":[],
+    "Nalbari":[],
+    "North Lakhimpur":[],
+    "Rangia":[],
+    "Sibsagar":[],
+    "Silapathar":[],
+    "Silchar":[],
+    "Tezpur":[],
+    "Tinsukia"
+},
+  "Bihar": {
+    "Araria":[],
+    "Arrah":[],
+    "Arwal":[],
+    "Asarganj":[],
+    "Aurangabad":[],
+    "Bagaha":[],
+    "Barh":[],
+    "Begusarai":[],
+    "Bettiah":[],
+    "Bhabua":[],
+    "Bhagalpur":[],
+    "Buxar":[],
+    "Chhapra":[],
+    "Darbhanga":[],
+    "Dehri-on-Sone":[],
+    "Dumraon":[],
+    "Forbesganj":[],
+    "Gaya":[],
+    "Gopalganj":[],
+    "Hajipur":[],
+    "Jamalpur":[],
+    "Jamui":[],
+    "Jehanabad":[],
+    "Katihar":[],
+    "Kishanganj":[],
+    "Lakhisarai":[],
+    "Lalganj":[],
+    "Madhepura":[],
+    "Madhubani":[],
+    "Maharajganj":[],
+    "Mahnar Bazar":[],
+    "Makhdumpur":[],
+    "Maner":[],
+    "Manihari":[],
+    "Marhaura":[],
+    "Masaurhi":[],
+    "Mirganj":[],
+    "Mokameh":[],
+    "Motihari":[],
+    "Motipur":[],
+    "Munger":[],
+    "Murliganj":[],
+    "Muzaffarpur":[],
+    "Narkatiaganj":[],
+    "Naugachhia":[],
+    "Nawada":[],
+    "Nokha":[],
+    "Patna*":[],
+    "Piro":[],
+    "Purnia":[],
+    "Rafiganj":[],
+    "Rajgir":[],
+    "Ramnagar":[],
+    "Raxaul Bazar":[],
+    "Revelganj":[],
+    "Rosera":[],
+    "Saharsa":[],
+    "Samastipur":[],
+    "Sasaram":[],
+    "Sheikhpura":[],
+    "Sheohar":[],
+    "Sherghati":[],
+    "Silao":[],
+    "Sitamarhi":[],
+    "Siwan":[],
+    "Sonepur":[],
+    "Sugauli":[],
+    "Sultanganj":[],
+    "Supaul":[],
+    "Warisaliganj"
+},
+  "Chandigarh": {
+    "Chandigarh*"
+},
+  "Chhattisgarh": {
+    "Ambikapur":[],
+    "Bhatapara":[],
+    "Bhilai Nagar":[],
+    "Bilaspur":[],
+    "Chirmiri":[],
+    "Dalli-Rajhara":[],
+    "Dhamtari":[],
+    "Durg":[],
+    "Jagdalpur":[],
+    "Korba":[],
+    "Mahasamund":[],
+    "Manendragarh":[],
+    "Mungeli":[],
+    "Naila Janjgir":[],
+    "Raigarh":[],
+    "Raipur*":[],
+    "Rajnandgaon":[],
+    "Sakti":[],
+    "Tilda Newra"
+},
+  "Dadra and Nagar Haveli": {
+    "Silvassa*"
+},
+  "Delhi": {
+    "Delhi":[],
+    "New Delhi*"
+},
+  "Goa": {
+    "Mapusa":[],
+    "Margao":[],
+    "Marmagao":[],
+    "Panaji*"
+},
+  "Gujarat": {
+    "Adalaj":[],
+    "Ahmedabad":[],
+    "Amreli":[],
+    "Anand":[],
+    "Anjar":[],
+    "Ankleshwar":[],
+    "Bharuch":[],
+    "Bhavnagar":[],
+    "Bhuj":[],
+    "Chhapra":[],
+    "Deesa":[],
+    "Dhoraji":[],
+    "Godhra":[],
+    "Jamnagar":[],
+    "Kadi":[],
+    "Kapadvanj":[],
+    "Keshod":[],
+    "Khambhat":[],
+    "Lathi":[],
+    "Limbdi":[],
+    "Lunawada":[],
+    "Mahesana":[],
+    "Mahuva":[],
+    "Manavadar":[],
+    "Mandvi":[],
+    "Mangrol":[],
+    "Mansa":[],
+    "Mahemdabad":[],
+    "Modasa":[],
+    "Morvi":[],
+    "Nadiad":[],
+    "Navsari":[],
+    "Padra":[],
+    "Palanpur":[],
+    "Palitana":[],
+    "Pardi":[],
+    "Patan":[],
+    "Petlad":[],
+    "Porbandar":[],
+    "Radhanpur":[],
+    "Rajkot":[],
+    "Rajpipla":[],
+    "Rajula":[],
+    "Ranavav":[],
+    "Rapar":[],
+    "Salaya":[],
+    "Sanand":[],
+    "Savarkundla":[],
+    "Sidhpur":[],
+    "Sihor":[],
+    "Songadh":[],
+    "Surat":[],
+    "Talaja":[],
+    "Thangadh":[],
+    "Tharad":[],
+    "Umbergaon":[],
+    "Umreth":[],
+    "Una":[],
+    "Unjha":[],
+    "Upleta":[],
+    "Vadnagar":[],
+    "Vadodara":[],
+    "Valsad":[],
+    "Vapi":[],
+    "Vapi":[],
+    "Veraval":[],
+    "Vijapur":[],
+    "Viramgam":[],
+    "Visnagar":[],
+    "Vyara":[],
+    "Wadhwan":[],
+    "Wankaner"
+},
+  "Haryana": {
+    "Bahadurgarh":[],
+    "Bhiwani":[],
+    "Charkhi Dadri":[],
+    "Faridabad":[],
+    "Fatehabad":[],
+    "Gohana":[],
+    "Gurgaon":[],
+    "Hansi":[],
+    "Hisar":[],
+    "Jind":[],
+    "Kaithal":[],
+    "Karnal":[],
+    "Ladwa":[],
+    "Mahendragarh":[],
+    "Mandi Dabwali":[],
+    "Narnaul":[],
+    "Narwana":[],
+    "Palwal":[],
+    "Panchkula":[],
+    "Panipat":[],
+    "Pehowa":[],
+    "Pinjore":[],
+    "Rania":[],
+    "Ratia":[],
+    "Rewari":[],
+    "Rohtak":[],
+    "Safidon":[],
+    "Samalkha":[],
+    "Sarsod":[],
+    "Shahbad":[],
+    "Sirsa":[],
+    "Sohna":[],
+    "Sonipat":[],
+    "Taraori":[],
+    "Thanesar":[],
+    "Tohana":[],
+    "Yamunanagar"
+},
+  "Himachal Pradesh": {
+    "Mandi":[],
+    "Nahan":[],
+    "Palampur":[],
+    "Shimla*":[],
+    "Solan":[],
+    "Sundarnagar"
+},
+  "Jammu and Kashmir": {
+    "Anantnag":[],
+    "Baramula":[],
+    "Jammu":[],
+    "Kathua":[],
+    "Punch":[],
+    "Rajauri":[],
+    "Sopore":[],
+    "Srinagar*":[],
+    "Udhampur"
+},
+  "Jharkhand": {
+    "Adityapur":[],
+    "Bokaro Steel City":[],
+    "Chaibasa":[],
+    "Chatra":[],
+    "Chirkunda":[],
+    "Medininagar (Daltonganj)":[],
+    "Deoghar":[],
+    "Dhanbad":[],
+    "Dumka":[],
+    "Giridih":[],
+    "Gumia":[],
+    "Hazaribag":[],
+    "Jamshedpur":[],
+    "Jhumri Tilaiya":[],
+    "Lohardaga":[],
+    "Madhupur":[],
+    "Mihijam":[],
+    "Musabani":[],
+    "Pakaur":[],
+    "Patratu":[],
+    "Phusro":[],
+    "Ramgarh":[],
+    "Ranchi*":[],
+    "Sahibganj":[],
+    "Saunda":[],
+    "Simdega":[],
+    "Tenu dam-cum-Kathhara"
+},
+  "Karnataka": {
+    "Adyar":[],
+    "Afzalpur":[],
+    "Arsikere":[],
+    "Athni":[],
+    "Bengaluru":[],
+    "Belagavi":[],
+    "Ballari":[],
+    "Chikkamagaluru":[],
+    "Davanagere":[],
+    "Gokak":[],
+    "Hubli-Dharwad":[],
+    "Karwar":[],
+    "Kolar":[],
+    "Lakshmeshwar":[],
+    "Lingsugur":[],
+    "Maddur":[],
+    "Madhugiri":[],
+    "Madikeri":[],
+    "Magadi":[],
+    "Mahalingapura":[],
+    "Malavalli":[],
+    "Malur":[],
+    "Mandya":[],
+    "Mangaluru":[],
+    "Manvi":[],
+    "Mudalagi":[],
+    "Mudabidri":[],
+    "Muddebihal":[],
+    "Mudhol":[],
+    "Mulbagal":[],
+    "Mundargi":[],
+    "Nanjangud":[],
+    "Nargund":[],
+    "Navalgund":[],
+    "Nelamangala":[],
+    "Pavagada":[],
+    "Piriyapatna":[],
+    "Puttur":[],
+    "Rabkavi Banhatti":[],
+    "Raayachuru":[],
+    "Ranebennuru":[],
+    "Ramanagaram":[],
+    "Ramdurg":[],
+    "Ranibennur":[],
+    "Robertson Pet":[],
+    "Ron":[],
+    "Sadalagi":[],
+    "Sagara":[],
+    "Sakaleshapura":[],
+    "Sindagi":[],
+    "Sanduru":[],
+    "Sankeshwara":[],
+    "Saundatti-Yellamma":[],
+    "Savanur":[],
+    "Sedam":[],
+    "Shahabad":[],
+    "Shahpur":[],
+    "Shiggaon":[],
+    "Shikaripur":[],
+    "Shivamogga":[],
+    "Surapura":[],
+    "Shrirangapattana":[],
+    "Sidlaghatta":[],
+    "Sindhagi":[],
+    "Sindhnur":[],
+    "Sira":[],
+    "Sirsi":[],
+    "Siruguppa":[],
+    "Srinivaspur":[],
+    "Tarikere":[],
+    "Tekkalakote":[],
+    "Terdal":[],
+    "Talikota":[],
+    "Tiptur":[],
+    "Tumkur":[],
+    "Udupi":[],
+    "Vijayapura":[],
+    "Wadi":[],
+    "Yadgir"
+},
+  "Karnatka": {
+    "Mysore"
+},
+  "Kerala": {
+    "Adoor":[],
+    "Alappuzha":[],
+    "Attingal":[],
+    "Chalakudy":[],
+    "Changanassery":[],
+    "Cherthala":[],
+    "Chittur-Thathamangalam":[],
+    "Guruvayoor":[],
+    "Kanhangad":[],
+    "Kannur":[],
+    "Kasaragod":[],
+    "Kayamkulam":[],
+    "Kochi":[],
+    "Kodungallur":[],
+    "Kollam":[],
+    "Kottayam":[],
+    "Kozhikode":[],
+    "Kunnamkulam":[],
+    "Malappuram":[],
+    "Mattannur":[],
+    "Mavelikkara":[],
+    "Mavoor":[],
+    "Muvattupuzha":[],
+    "Nedumangad":[],
+    "Neyyattinkara":[],
+    "Nilambur":[],
+    "Ottappalam":[],
+    "Palai":[],
+    "Palakkad":[],
+    "Panamattom":[],
+    "Panniyannur":[],
+    "Pappinisseri":[],
+    "Paravoor":[],
+    "Pathanamthitta":[],
+    "Peringathur":[],
+    "Perinthalmanna":[],
+    "Perumbavoor":[],
+    "Ponnani":[],
+    "Punalur":[],
+    "Puthuppally":[],
+    "Koyilandy":[],
+    "Shoranur":[],
+    "Taliparamba":[],
+    "Thiruvalla":[],
+    "Thiruvananthapuram":[],
+    "Thodupuzha":[],
+    "Thrissur":[],
+    "Tirur":[],
+    "Vaikom":[],
+    "Varkala":[],
+    "Vatakara"
+},
+  "Madhya Pradesh": {
+    "Alirajpur":[],
+    "Ashok Nagar":[],
+    "Balaghat":[],
+    "Bhopal":[],
+    "Ganjbasoda":[],
+    "Gwalior":[],
+    "Indore":[],
+    "Itarsi":[],
+    "Jabalpur":[],
+    "Lahar":[],
+    "Maharajpur":[],
+    "Mahidpur":[],
+    "Maihar":[],
+    "Malaj Khand":[],
+    "Manasa":[],
+    "Manawar":[],
+    "Mandideep":[],
+    "Mandla":[],
+    "Mandsaur":[],
+    "Mauganj":[],
+    "Mhow Cantonment":[],
+    "Mhowgaon":[],
+    "Morena":[],
+    "Multai":[],
+    "Mundi":[],
+    "Murwara (Katni)":[],
+    "Nagda":[],
+    "Nainpur":[],
+    "Narsinghgarh":[],
+    "Narsinghgarh":[],
+    "Neemuch":[],
+    "Nepanagar":[],
+    "Niwari":[],
+    "Nowgong":[],
+    "Nowrozabad (Khodargama)":[],
+    "Pachore":[],
+    "Pali":[],
+    "Panagar":[],
+    "Pandhurna":[],
+    "Panna":[],
+    "Pasan":[],
+    "Pipariya":[],
+    "Pithampur":[],
+    "Porsa":[],
+    "Prithvipur":[],
+    "Raghogarh-Vijaypur":[],
+    "Rahatgarh":[],
+    "Raisen":[],
+    "Rajgarh":[],
+    "Ratlam":[],
+    "Rau":[],
+    "Rehli":[],
+    "Rewa":[],
+    "Sabalgarh":[],
+    "Sagar":[],
+    "Sanawad":[],
+    "Sarangpur":[],
+    "Sarni":[],
+    "Satna":[],
+    "Sausar":[],
+    "Sehore":[],
+    "Sendhwa":[],
+    "Seoni":[],
+    "Seoni-Malwa":[],
+    "Shahdol":[],
+    "Shajapur":[],
+    "Shamgarh":[],
+    "Sheopur":[],
+    "Shivpuri":[],
+    "Shujalpur":[],
+    "Sidhi":[],
+    "Sihora":[],
+    "Singrauli":[],
+    "Sironj":[],
+    "Sohagpur":[],
+    "Tarana":[],
+    "Tikamgarh":[],
+    "Ujjain":[],
+    "Umaria":[],
+    "Vidisha":[],
+    "Vijaypur":[],
+    "Wara Seoni"
+},
+  "Maharashtra": {
+    "{{]]":[],
+    "Ahmednagar":[],
+    "Akola":[],
+    "Akot":[],
+    "Amalner":[],
+    "Ambejogai":[],
+    "Amravati":[],
+    "Anjangaon":[],
+    "Arvi":[],
+    "Aurangabad":[],
+    "Bhiwandi":[],
+    "Dhule":[],
+    "Kalyan-Dombivali":[],
+    "Ichalkaranji":[],
+    "Kalyan-Dombivali":[],
+    "Karjat":[],
+    "Latur":[],
+    "Loha":[],
+    "Lonar":[],
+    "Lonavla":[],
+    "Mahad":[],
+    "Malegaon":[],
+    "Malkapur":[],
+    "Mangalvedhe":[],
+    "Mangrulpir":[],
+    "Manjlegaon":[],
+    "Manmad":[],
+    "Manwath":[],
+    "Mehkar":[],
+    "Mhaswad":[],
+    "Mira-Bhayandar":[],
+    "Morshi":[],
+    "Mukhed":[],
+    "Mul":[],
+    "Greater Mumbai*":[],
+    "Murtijapur":[],
+    "Nagpur":[],
+    "Nanded-Waghala":[],
+    "Nandgaon":[],
+    "Nandura":[],
+    "Nandurbar":[],
+    "Narkhed":[],
+    "Nashik":[],
+    "Navi Mumbai":[],
+    "Nawapur":[],
+    "Nilanga":[],
+    "Osmanabad":[],
+    "Ozar":[],
+    "Pachora":[],
+    "Paithan":[],
+    "Palghar":[],
+    "Pandharkaoda":[],
+    "Pandharpur":[],
+    "Panvel":[],
+    "Parbhani":[],
+    "Parli":[],
+    "Partur":[],
+    "Pathardi":[],
+    "Pathri":[],
+    "Patur":[],
+    "Pauni":[],
+    "Pen":[],
+    "Phaltan":[],
+    "Pulgaon":[],
+    "Pune":[],
+    "Purna":[],
+    "Pusad":[],
+    "Rahuri":[],
+    "Rajura":[],
+    "Ramtek":[],
+    "Ratnagiri":[],
+    "Raver":[],
+    "Risod":[],
+    "Sailu":[],
+    "Sangamner":[],
+    "Sangli":[],
+    "Sangole":[],
+    "Sasvad":[],
+    "Satana":[],
+    "Satara":[],
+    "Savner":[],
+    "Sawantwadi":[],
+    "Shahade":[],
+    "Shegaon":[],
+    "Shendurjana":[],
+    "Shirdi":[],
+    "Shirpur-Warwade":[],
+    "Shirur":[],
+    "Shrigonda":[],
+    "Shrirampur":[],
+    "Sillod":[],
+    "Sinnar":[],
+    "Solapur":[],
+    "Soyagaon":[],
+    "Talegaon Dabhade":[],
+    "Talode":[],
+    "Tasgaon":[],
+    "Thane":[],
+    "Tirora":[],
+    "Tuljapur":[],
+    "Tumsar":[],
+    "Uchgaon":[],
+    "Udgir":[],
+    "Umarga":[],
+    "Umarkhed":[],
+    "Umred":[],
+    "Uran":[],
+    "Uran Islampur":[],
+    "Vadgaon Kasba":[],
+    "Vaijapur":[],
+    "Vasai-Virar":[],
+    "Vita":[],
+    "Wadgaon Road":[],
+    "Wai":[],
+    "Wani":[],
+    "Wardha":[],
+    "Warora":[],
+    "Warud":[],
+    "Washim":[],
+    "Yavatmal":[],
+    "Yawal":[],
+    "Yevla"
+},
+  "Manipur": {
+    "Imphal*":[],
+    "Lilong":[],
+    "Mayang Imphal":[],
+    "Thoubal"
+},
+  "Meghalaya": {
+    "Nongstoin":[],
+    "Shillong*":[],
+    "Tura"
+},
+  "Mizoram": {
+    "Aizawl":[],
+    "Lunglei":[],
+    "Saiha"
+},
+  "Nagaland": {
+    "Dimapur":[],
+    "Kohima*":[],
+    "Mokokchung":[],
+    "Tuensang":[],
+    "Wokha":[],
+    "Zunheboto"
+},
+  "Odisha": {
+    "Balangir":[],
+    "Baleshwar Town":[],
+    "Barbil":[],
+    "Bargarh":[],
+    "Baripada Town":[],
+    "Bhadrak":[],
+    "Bhawanipatna":[],
+    "Bhubaneswar*":[],
+    "Brahmapur":[],
+    "Byasanagar":[],
+    "Cuttack":[],
+    "Dhenkanal":[],
+    "Jatani":[],
+    "Jharsuguda":[],
+    "Kendrapara":[],
+    "Kendujhar":[],
+    "Malkangiri":[],
+    "Nabarangapur":[],
+    "Paradip":[],
+    "Parlakhemundi":[],
+    "Pattamundai":[],
+    "Phulabani":[],
+    "Puri":[],
+    "Rairangpur":[],
+    "Rajagangapur":[],
+    "Raurkela":[],
+    "Rayagada":[],
+    "Sambalpur":[],
+    "Soro":[],
+    "Sunabeda":[],
+    "Sundargarh":[],
+    "Talcher":[],
+    "Tarbha":[],
+    "Titlagarh"
+},
+  "Puducherry": {
+    "Karaikal":[],
+    "Mahe":[],
+    "Pondicherry*":[],
+    "Yanam"
+},
+  "Punjab": {
+    "Amritsar":[],
+    "Barnala":[],
+    "Batala":[],
+    "Bathinda":[],
+    "Dhuri":[],
+    "Faridkot":[],
+    "Fazilka":[],
+    "Firozpur":[],
+    "Firozpur Cantt.":[],
+    "Gobindgarh":[],
+    "Gurdaspur":[],
+    "Hoshiarpur":[],
+    "Jagraon":[],
+    "Jalandhar Cantt.":[],
+    "Jalandhar":[],
+    "Kapurthala":[],
+    "Khanna":[],
+    "Kharar":[],
+    "Kot Kapura":[],
+    "Longowal":[],
+    "Ludhiana":[],
+    "Malerkotla":[],
+    "Malout":[],
+    "Mansa":[],
+    "Moga":[],
+    "Mohali":[],
+    "Morinda, India":[],
+    "Mukerian":[],
+    "Muktsar":[],
+    "Nabha":[],
+    "Nakodar":[],
+    "Nangal":[],
+    "Nawanshahr":[],
+    "Pathankot":[],
+    "Patiala":[],
+    "Pattran":[],
+    "Patti":[],
+    "Phagwara":[],
+    "Phillaur":[],
+    "Qadian":[],
+    "Raikot":[],
+    "Rajpura":[],
+    "Rampura Phul":[],
+    "Rupnagar":[],
+    "Samana":[],
+    "Sangrur":[],
+    "Sirhind Fatehgarh Sahib":[],
+    "Sujanpur":[],
+    "Sunam":[],
+    "Talwara":[],
+    "Tarn Taran":[],
+    "Urmar Tanda":[],
+    "Zira":[],
+    "Zirakpur"
+},
+  "Rajasthan": {
+    "Ajmer":[],
+    "Alwar":[],
+    "Bikaner":[],
+    "Bharatpur":[],
+    "Bhilwara":[],
+    "Jaipur*":[],
+    "Jodhpur":[],
+    "Lachhmangarh":[],
+    "Ladnu":[],
+    "Lakheri":[],
+    "Lalsot":[],
+    "Losal":[],
+    "Makrana":[],
+    "Malpura":[],
+    "Mandalgarh":[],
+    "Mandawa":[],
+    "Mangrol":[],
+    "Merta City":[],
+    "Mount Abu":[],
+    "Nadbai":[],
+    "Nagar":[],
+    "Nagaur":[],
+    "Nasirabad":[],
+    "Nathdwara":[],
+    "Neem-Ka-Thana":[],
+    "Nimbahera":[],
+    "Nohar":[],
+    "Nokha":[],
+    "Pali":[],
+    "Phalodi":[],
+    "Phulera":[],
+    "Pilani":[],
+    "Pilibanga":[],
+    "Pindwara":[],
+    "Pipar City":[],
+    "Prantij":[],
+    "Pratapgarh":[],
+    "Raisinghnagar":[],
+    "Rajakhera":[],
+    "Rajaldesar":[],
+    "Rajgarh (Alwar)":[],
+    "Rajgarh (Churu)":[],
+    "Rajsamand":[],
+    "Ramganj Mandi":[],
+    "Ramngarh":[],
+    "Ratangarh":[],
+    "Rawatbhata":[],
+    "Rawatsar":[],
+    "Reengus":[],
+    "Sadri":[],
+    "Sadulshahar":[],
+    "Sadulpur":[],
+    "Sagwara":[],
+    "Sambhar":[],
+    "Sanchore":[],
+    "Sangaria":[],
+    "Sardarshahar":[],
+    "Sawai Madhopur":[],
+    "Shahpura":[],
+    "Shahpura":[],
+    "Sheoganj":[],
+    "Sikar":[],
+    "Sirohi":[],
+    "Sojat":[],
+    "Sri Madhopur":[],
+    "Sujangarh":[],
+    "Sumerpur":[],
+    "Suratgarh":[],
+    "Taranagar":[],
+    "Todabhim":[],
+    "Todaraisingh":[],
+    "Tonk":[],
+    "Udaipur":[],
+    "Udaipurwati":[],
+    "Vijainagar, Ajmer"
+},
+  "Tamil Nadu": {
+    "Arakkonam":[],
+    "Aruppukkottai":[],
+    "Chennai*":[],
+    "Coimbatore":[],
+    "Erode":[],
+    "Gobichettipalayam":[],
+    "Kancheepuram":[],
+    "Karur":[],
+    "Lalgudi":[],
+    "Madurai":[],
+    "Manachanallur":[],
+    "Nagapattinam":[],
+    "Nagercoil":[],
+    "Namagiripettai":[],
+    "Namakkal":[],
+    "Nandivaram-Guduvancheri":[],
+    "Nanjikottai":[],
+    "Natham":[],
+    "Nellikuppam":[],
+    "Neyveli (TS)":[],
+    "O' Valley":[],
+    "Oddanchatram":[],
+    "P.N.Patti":[],
+    "Pacode":[],
+    "Padmanabhapuram":[],
+    "Palani":[],
+    "Palladam":[],
+    "Pallapatti":[],
+    "Pallikonda":[],
+    "Panagudi":[],
+    "Panruti":[],
+    "Paramakudi":[],
+    "Parangipettai":[],
+    "Pattukkottai":[],
+    "Perambalur":[],
+    "Peravurani":[],
+    "Periyakulam":[],
+    "Periyasemur":[],
+    "Pernampattu":[],
+    "Pollachi":[],
+    "Polur":[],
+    "Ponneri":[],
+    "Pudukkottai":[],
+    "Pudupattinam":[],
+    "Puliyankudi":[],
+    "Punjaipugalur":[],
+    "Ranipet":[],
+    "Rajapalayam":[],
+    "Ramanathapuram":[],
+    "Rameshwaram":[],
+    "Rasipuram":[],
+    "Salem":[],
+    "Sankarankoil":[],
+    "Sankari":[],
+    "Sathyamangalam":[],
+    "Sattur":[],
+    "Shenkottai":[],
+    "Sholavandan":[],
+    "Sholingur":[],
+    "Sirkali":[],
+    "Sivaganga":[],
+    "Sivagiri":[],
+    "Sivakasi":[],
+    "Srivilliputhur":[],
+    "Surandai":[],
+    "Suriyampalayam":[],
+    "Tenkasi":[],
+    "Thammampatti":[],
+    "Thanjavur":[],
+    "Tharamangalam":[],
+    "Tharangambadi":[],
+    "Theni Allinagaram":[],
+    "Thirumangalam":[],
+    "Thirupuvanam":[],
+    "Thiruthuraipoondi":[],
+    "Thiruvallur":[],
+    "Thiruvarur":[],
+    "Thuraiyur":[],
+    "Tindivanam":[],
+    "Tiruchendur":[],
+    "Tiruchengode":[],
+    "Tiruchirappalli":[],
+    "Tirukalukundram":[],
+    "Tirukkoyilur":[],
+    "Tirunelveli":[],
+    "Tirupathur":[],
+    "Tirupathur":[],
+    "Tiruppur":[],
+    "Tiruttani":[],
+    "Tiruvannamalai":[],
+    "Tiruvethipuram":[],
+    "Tittakudi":[],
+    "Udhagamandalam":[],
+    "Udumalaipettai":[],
+    "Unnamalaikadai":[],
+    "Usilampatti":[],
+    "Uthamapalayam":[],
+    "Uthiramerur":[],
+    "Vadakkuvalliyur":[],
+    "Vadalur":[],
+    "Vadipatti":[],
+    "Valparai":[],
+    "Vandavasi":[],
+    "Vaniyambadi":[],
+    "Vedaranyam":[],
+    "Vellakoil":[],
+    "Vellore":[],
+    "Vikramasingapuram":[],
+    "Viluppuram":[],
+    "Virudhachalam":[],
+    "Virudhunagar":[],
+    "Viswanatham"
+},
+  "Telangana": {
+    "Adilabad":[],
+    "Bellampalle":[],
+    "Bhadrachalam":[],
+    "Bhainsa":[],
+    "Bhongir":[],
+    "Bodhan":[],
+    "Farooqnagar":[],
+    "Gadwal":[],
+    "Hyderabad*":[],
+    "Jagtial":[],
+    "Jangaon":[],
+    "Kagaznagar":[],
+    "Kamareddy":[],
+    "Karimnagar":[],
+    "Khammam":[],
+    "Koratla":[],
+    "Kothagudem":[],
+    "Kyathampalle":[],
+    "Mahbubnagar":[],
+    "Mancherial":[],
+    "Mandamarri":[],
+    "Manuguru":[],
+    "Medak":[],
+    "Miryalaguda":[],
+    "Nagarkurnool":[],
+    "Narayanpet":[],
+    "Nirmal":[],
+    "Nizamabad":[],
+    "Palwancha":[],
+    "Ramagundam":[],
+    "Sadasivpet":[],
+    "Sangareddy":[],
+    "Siddipet":[],
+    "Sircilla":[],
+    "Suryapet":[],
+    "Tandur":[],
+    "Vikarabad":[],
+    "Wanaparthy":[],
+    "Warangal":[],
+    "Yellandu"
+},
+  "Tripura": {
+    "Agartala*":[],
+    "Belonia":[],
+    "Dharmanagar":[],
+    "Kailasahar":[],
+    "Khowai":[],
+    "Pratapgarh":[],
+    "Udaipur"
+},
+  "Uttar Pradesh": {
+    "Achhnera":[],
+    "Agra":[],
+    "Aligarh":[],
+    "Allahabad":[],
+    "Amroha":[],
+    "Azamgarh":[],
+    "Bahraich":[],
+    "Chandausi":[],
+    "Etawah":[],
+    "Firozabad":[],
+    "Fatehpur Sikri":[],
+    "Hapur":[],
+    "Hardoi *":[],
+    "Jhansi":[],
+    "Kalpi":[],
+    "Kanpur":[],
+    "Khair":[],
+    "Laharpur":[],
+    "Lakhimpur":[],
+    "Lal Gopalganj Nindaura":[],
+    "Lalitpur":[],
+    "Lalganj":[],
+    "Lar":[],
+    "Loni":[],
+    "Lucknow*":[],
+    "Mathura":[],
+    "Meerut":[],
+    "Modinagar":[],
+    "Moradabad":[],
+    "Nagina":[],
+    "Najibabad":[],
+    "Nakur":[],
+    "Nanpara":[],
+    "Naraura":[],
+    "Naugawan Sadat":[],
+    "Nautanwa":[],
+    "Nawabganj":[],
+    "Nehtaur":[],
+    "Niwai":[],
+    "Noida":[],
+    "Noorpur":[],
+    "Obra":[],
+    "Orai":[],
+    "Padrauna":[],
+    "Palia Kalan":[],
+    "Parasi":[],
+    "Phulpur":[],
+    "Pihani":[],
+    "Pilibhit":[],
+    "Pilkhuwa":[],
+    "Powayan":[],
+    "Pukhrayan":[],
+    "Puranpur":[],
+    "Purquazi":[],
+    "Purwa":[],
+    "Rae Bareli":[],
+    "Rampur":[],
+    "Rampur Maniharan":[],
+    "Rampur Maniharan":[],
+    "Rasra":[],
+    "Rath":[],
+    "Renukoot":[],
+    "Reoti":[],
+    "Robertsganj":[],
+    "Rudauli":[],
+    "Rudrapur":[],
+    "Sadabad":[],
+    "Safipur":[],
+    "Saharanpur":[],
+    "Sahaspur":[],
+    "Sahaswan":[],
+    "Sahawar":[],
+    "Sahjanwa":[],
+    "Saidpur":[],
+    "Sambhal":[],
+    "Samdhan":[],
+    "Samthar":[],
+    "Sandi":[],
+    "Sandila":[],
+    "Sardhana":[],
+    "Seohara":[],
+    "Shahabad, Hardoi":[],
+    "Shahabad, Rampur":[],
+    "Shahganj":[],
+    "Shahjahanpur":[],
+    "Shamli":[],
+    "Shamsabad, Agra":[],
+    "Shamsabad, Farrukhabad":[],
+    "Sherkot":[],
+    "Shikarpur, Bulandshahr":[],
+    "Shikohabad":[],
+    "Shishgarh":[],
+    "Siana":[],
+    "Sikanderpur":[],
+    "Sikandra Rao":[],
+    "Sikandrabad":[],
+    "Sirsaganj":[],
+    "Sirsi":[],
+    "Sitapur":[],
+    "Soron":[],
+    "Suar":[],
+    "Sultanpur":[],
+    "Sumerpur":[],
+    "Tanda":[],
+    "Thakurdwara":[],
+    "Thana Bhawan":[],
+    "Tilhar":[],
+    "Tirwaganj":[],
+    "Tulsipur":[],
+    "Tundla":[],
+    "Ujhani":[],
+    "Unnao":[],
+    "Utraula":[],
+    "Varanasi":[],
+    "Vrindavan":[],
+    "Warhapur":[],
+    "Zaidpur":[],
+    "Zamania"
+},
+  "Uttarakhand": {
+    "Bageshwar":[],
+    "Dehradun":[],
+    "Haldwani-cum-Kathgodam":[],
+    "Hardwar":[],
+    "Kashipur":[],
+    "Manglaur":[],
+    "Mussoorie":[],
+    "Nagla":[],
+    "Nainital":[],
+    "Pauri":[],
+    "Pithoragarh":[],
+    "Ramnagar":[],
+    "Rishikesh":[],
+    "Roorkee":[],
+    "Rudrapur":[],
+    "Sitarganj":[],
+    "Srinagar":[],
+    "Tehri"
+},
+  "West Bengal": {
+    "Adra":[],
+    "Alipurduar":[],
+    "Arambagh":[],
+    "Asansol":[],
+    "Baharampur":[],
+    "Balurghat":[],
+    "Bankura":[],
+    "Darjiling":[],
+    "English Bazar":[],
+    "Gangarampur":[],
+    "Habra":[],
+    "Hugli-Chinsurah":[],
+    "Jalpaiguri":[],
+    "Jhargram":[],
+    "Kalimpong":[],
+    "Kharagpur":[],
+    "Kolkata":[],
+    "Mainaguri":[],
+    "Malda":[],
+    "Mathabhanga":[],
+    "Medinipur":[],
+    "Memari":[],
+    "Monoharpur":[],
+    "Murshidabad":[],
+    "Nabadwip":[],
+    "Naihati":[],
+    "Panchla":[],
+    "Pandua":[],
+    "Paschim Punropara":[],
+    "Purulia":[],
+    "Raghunathpur":[],
+    "Raghunathganj":[],
+    "Raiganj":[],
+    "Rampurhat":[],
+    "Ranaghat":[],
+    "Sainthia":[],
+    "Santipur":[],
+    "Siliguri":[],
+    "Sonamukhi":[],
+    "Srirampore":[],
+    "Suri":[],
+    "Taki":[],
+    "Tamluk":[],
+    "Tarakeswar"
+}
+ 
+    }
+}
+
+
+window.onload = function () {
+    
+    //Get html elements
+    var countySel = document.getElementById("countySel");
+    var stateSel = document.getElementById("stateSel"); 
+    var citySel = document.getElementById("citySel");
+   // var zipSel = document.getElementById("zipSel");
+    
+    //Load countries
+    for (var country in countryStateInfo) {
+        countySel.options[countySel.options.length] = new Option(country, country);
+    }
+    
+    //County Changed
+    countySel.onchange = function () {
+         
+         stateSel.length = 1; // remove all options bar first
+         citySel.length = 1; // remove all options bar first
+         //zipSel.length = 1; // remove all options bar first
+         
+         if (this.selectedIndex < 1)
+             return; // done
+         
+         for (var state in countryStateInfo[this.value]) {
+             stateSel.options[stateSel.options.length] = new Option(state, state);
+         }
+    }
+    
+    //State Changed
+    stateSel.onchange = function () {        
+         
+         citySel.length = 1; // remove all options bar first
+         //zipSel.length = 1; // remove all options bar first
+         
+         if (this.selectedIndex < 1)
+             return; // done
+         
+         for (var city in countryStateInfo[countySel.value][this.value]) {
+             citySel.options[citySel.options.length] = new Option(city, city);
+         }
+    }
+    
+    //City Changed
+    citySel.onchange = function () {
+       // zipSel.length = 1; // remove all options bar first
+        
+        // if (this.selectedIndex < 1)
+        //     return; // done
+        
+        // var zips = countryStateInfo[countySel.value][stateSel.value][this.value];
+        // for (var i = 0; i < zips.length; i++) {
+        //     zipSel.options[zipSel.options.length] = new Option(zips[i], zips[i]);
+        // }
+    }   
+}
+
+    </script>
+</body>
+</html>

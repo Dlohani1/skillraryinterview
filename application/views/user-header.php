@@ -107,8 +107,8 @@
     .editButton{
         position: absolute;
         left: 50%;
-        top: 17%;
-        transform: translate(-50%,-17%);
+        top: 8%;
+        transform: translate(-50%,-8%);
         background: white;
         border: 2px solid white;
     }
@@ -262,6 +262,65 @@
         transition: margin-left .5s;
         padding: 16px;
     }
+
+    .rowGapDegree{
+        margin-bottom: 10px;
+    }
+     /* .hrDesignUpdate{
+        border-top: 1px solid black;
+    } */
+    #sectionHeading{
+        font-weight: 700;
+        font-size: 20px;
+        color: #333742;
+        letter-spacing: 1.5px;
+        position: relative;
+        /* padding: 0px 0px 10px 0px;
+        margin-bottom: 20px; */
+    }
+    /* #sectionHeading:before{
+        content: ' ';
+        background: #33A478;
+        box-shadow: 0 4px 8px 0 rgba(76,215,200,0.3);
+        width: 44px;
+        height: 4px;
+        position: absolute;
+        bottom: 0;
+    } */
+    .tenthDetails{
+        color: #333742;
+        font-weight: 600;
+        font-size: 18px;
+    }
+    .twelvethDetails{
+        color: #333742;
+        font-weight: 600;
+        font-size: 18px;
+        margin-top: 10px;
+    }
+    fieldset {
+        display: block;
+        margin-left: 2px;
+        margin-right: 2px;
+        padding-top: 0.35em;
+        padding-bottom: 0.625em;
+        padding-left: 0.75em;
+        padding-right: 0.75em;
+        border: 1px groove black;
+    }
+    legend {
+        font-weight: 600;
+        display: block;
+        width: inherit;
+        max-width: 100%;
+        padding: 0;
+        margin-bottom: .5rem;
+        font-size: 1.5rem;
+        line-height: inherit;
+        color: #33A478 !important;
+        white-space: normal;
+    }
+
     @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}

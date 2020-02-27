@@ -10,7 +10,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
     <title>MCQ Form</title>
     <style type="text/css">
-
+        /*.active, .badge:hover {
+          background-color: #f576a0 !important;
+          color: white;
+        }*/
+        .submitTest{
+            background: #e45353;
+            border: 2px solid #e45353;
+            padding: 6px 13px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
         html{
             position:relative; 
             min-height: 100%;
@@ -59,7 +71,7 @@
             font-size: 32px;
         }
         .content{
-            margin-left: 40px;
+            margin-left: 50px;
             margin-top: 12px;
             position: absolute;
         }
@@ -115,8 +127,8 @@
         }
 
         .clearBtn{
-            background: grey;
-            border: 2px solid grey;
+            background: #3a360d;
+            border: 2px solid #3a360d;
             padding: 6px 13px;
             border-radius: 5px;
             color: white;
@@ -124,7 +136,7 @@
             font-size: 18px;
             width: 240px;
             margin-bottom: 5px;
-            margin-left: 15px;
+            margin-left: -27px;
         }
 
         .submitBtn{
@@ -250,7 +262,7 @@
             }
 
             .clearBtn{
-                background: grey;
+                background: #60ca78ba;
                 border: 2px solid grey;
                 padding: 6px 13px;
                 border-radius: 5px;
@@ -386,7 +398,7 @@
             }
 
             .clearBtn{
-                background: grey;
+                background: #97ba78;
                 border: 2px solid grey;
                 padding: 6px 13px;
                 border-radius: 5px;
@@ -418,6 +430,20 @@
             //window.location.href="user/view-results";
             window.close();
         }
+
+
+// var btnContainer = document.getElementById("question_no");
+
+// var btns = btnContainer.getElementsByClassName("badge");
+
+// for (var i = 0; i < btns.length; i++) {
+//   btns[i].addEventListener("click", function() {
+//     var current = document.getElementsByClassName("active");
+//     current[0].className = current[0].className.replace(" active", "");
+//     this.className += " active";
+//   });
+// }
+
     </script>
 </head>
 <body>
@@ -439,7 +465,39 @@
                 <hr>
                 <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
+
+<?php
+
+//print_r($sections); die; 
+    $i = 0;
+    $disabled = "";
+    $countSection = 0;
+   
+    foreach ($sections['section'] as $key => $value) {
+
+        $countSection++; 
+        if ($i) {
+            $disabled = "disabled";
+        } else {
+            echo "<input type='hidden' id='firstSection' value='".$value['id']."' />";
+        }
+
+    echo "<div class='col-md-3'>
+            <button id='section".$countSection."' $disabled class='bntbtn' onclick='getQuestion(".$value['id'].")'>".$value['name']."</button>
+        </div>";
+                
+        $i = 1;
+                   
+    }
+
+    if ($countSection) {
+        echo "<input type='hidden' id='sectionCount' value='".$countSection."' />";
+    }
+
+?>
+
+
+                    <!-- <div class="col-md-3">
                         <button id="section1" class="bntbtn" onclick="getQuestion(1)">English</button>
                     </div>
                     <div class="col-md-3">
@@ -447,14 +505,26 @@
                     </div>
                     <div class="col-md-3">
                         <button id="section3" class="bntbtn" disabled onclick="getQuestion(3)">Quantitative</button>
-                    </div>
+                    </div> -->
+
+                    <input type="hidden" id="sectionIdValue" />
+
+                   <?php 
+                   if ($codeId) {?> 
                     <div class="col-md-3">
-                        <button id="section4" class="bntbtn" disabled onclick="getQuestion(4)">Code Test</button>
+                        <button id="<?php echo "section".($countSection+1);?>" class="bntbtn" disabled onclick="getQuestion(<?php echo ($countSection+1);?>, true)">Code Test</button>
                     </div>
+                    <?php 
+                }
+                ?>
+
+
                 </div>
                 </div><hr>
                 <div class="row">
-                    <div class="col-md-8 offset-md-1" id="questionMCQ">Question Type : MCQ</div>
+                    <div class="col-md-11 offset-md-1" id="questionMCQ">Question Type : MCQ
+                        <span style="float:right"><button class="submitTest" onclick="submitExam()"> Submit Test </button></span>
+                    </div>
                     <div class="col-md-6 text-right" onload="starttime()">
                         <!-- Marks for Correct Answer | Negative Marks : 0.33 -->
                     </div>
@@ -507,7 +577,10 @@
                 <div class="questionSection">
                     <div class="row">
                         <div class="col-md-8 offset-md-1">
+                            <br/>
+                            <div class="well">
                             <p id="questionData"></p>
+                        </div>
                     <div>
                         <ul id="optionsList" class="optionList">
                         </ul>
@@ -516,15 +589,17 @@
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
 </div> -->
 <div class="row buttonRow" style="margin-top:10%">
+    <div class="col-md-4" id="save-next" >
+        <button class="saveBtn" id="saveNxt" onclick="saveNext(2)">Save & Next</button>
+    </div>
+
     <div class="col-md-4"  id="mark-btn">
-        <button class="saveBtn1" onclick="saveNext(1)">Mark for Review & Next</button>
+        <button class="saveBtn1" id="markReview" onclick="saveNext(1)">Mark for Review & Next</button>
     </div>
     <div class="col-md-4"  id="clear-btn">
         <button class="clearBtn" onclick="clearResponse()">Clear Response</button>
     </div>
-    <div class="col-md-4" id="save-next" >
-        <button class="saveBtn" onclick="saveNext(2)">Save & Next</button>
-    </div>
+    
 </div>
                    <iframe id="myIframe" style="width:100%;height:100%; display: none"></iframe>
                         </div>
@@ -650,8 +725,9 @@ $( document ).ready(function() {
 //$('#section').empty()
     //var dropDown = document.getElementById("carId");
     //var carId = dropDown.options[dropDown.selectedIndex].value;
-    
-  getQuestion(1)
+    var firstSection = document.getElementById("firstSection").value;
+    //console.log('fr', firstSection)
+  getQuestion(firstSection);
 });
 
 function loadIframe() {
@@ -686,12 +762,18 @@ win.onbeforeunload = function(){
     
 }
 
-function getQuestion(sectionId) {
+function getQuestion(sectionId, codeTest = false) {
+
+    console.log('sectionId', sectionId);
+
+    document.getElementById("sectionIdValue").value = sectionId;
+
     if (sectionId == 1) {
+        console.log('aa')
 
         setTime();
     }
-    if (sectionId == 4) {
+    if (codeTest) {
         document.getElementById("code-test").style.display = 'block';
         document.getElementById("questionId").style.display = 'none';    
         document.getElementById("questionData").style.display = 'none';
@@ -705,8 +787,11 @@ function getQuestion(sectionId) {
         document.getElementById("mark-btn").style.display = 'none';
         
     } else {
+        console.log('aavd')
         var mcqId = document.getElementById("mcqSessionId").value;
         var student = document.getElementById("studentSessionId").value;
+        console.log('vaa', sectionId)
+
         $.ajax({
             type: "POST",
             url: "getQuestion",
@@ -742,15 +827,25 @@ function getQuestion(sectionId) {
                 window.totalsec = document.getElementById("totalTime").value;
                 
                 starttime();
-                fetchQuestion(opts[0].questions[0], 1);
+                fetchQuestion(opts[0].questions[0], 1, sectionId);
             }
         });
     }
 }
 
-function fetchQuestion(id,no) {
+function fetchQuestion(id, no, sectionIdno = 0) {
+
+
+
+    console.log('sectionIdno ', no)
+    if (no == 1) {
+        console.log('aab')
+
+        setTime();
+    }
+
     if (document.getElementById("iconAnswered"+no).style.backgroundColor != "purple" && document.getElementById("iconAnswered"+no).style.backgroundColor != "green" ) {
-         if (document.getElementById("iconAnswered"+no).style.backgroundColor != "lightblue") {
+        if (document.getElementById("iconAnswered"+no).style.backgroundColor != "lightblue") {
               var val = document.getElementById("notViewed").innerHTML ;
                 if (no > 1 && val != 0) {               
 
@@ -759,9 +854,18 @@ function fetchQuestion(id,no) {
                 document.getElementById("iconAnswered"+no).style.backgroundColor = "lightblue";
                 var viewedCount = document.getElementById("viewedCount").innerHTML;
                 document.getElementById("viewedCount").innerHTML = parseInt(viewedCount) + 1;       
-         }
-        
-       
+        }
+    }
+    
+    var totalQ = document.getElementById("totalQuestion").value;
+
+    if (no != totalQ) {
+        document.getElementById("saveNxt").style.display = "block";
+        document.getElementById("saveNxt").innerHTML= "Save & Next";
+        document.getElementById("markReview").innerHTML= "Mark for Review & Next";
+    } else {
+        document.getElementById("saveNxt").innerHTML= "Save";
+        document.getElementById("markReview").innerHTML= "Mark for Review";
     }
      
     
@@ -774,11 +878,11 @@ function fetchQuestion(id,no) {
     $.ajax({
             type: "POST",
             url: "fetchQuestion",
-            data:{"id":student, "section_id":1, "mcq_id": mcqId, "question_id":id},
+            data:{"id":student, "section_id":sectionIdno, "mcq_id": mcqId, "question_id":id},
             success: function(data){
                 var opts = $.parseJSON(data);
                 console.log('total', opts.userAnswer.id);
-                document.getElementById("questionData").innerHTML= opts.question;
+                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;'><strong>"+opts.question+"</strong></pre>";
                 // console.log('data', opts[0].questions);
                 // // Parse the returned json data
                 // // var opts = $.parseJSON(data);
@@ -876,15 +980,21 @@ function saveNext(isMarked, timeUp = false) {
         console.log('bb', b);
 
         var sectionId = document.getElementById("sectionId").value;
+
         var questionId = document.getElementById("questionIdSave").value;
         var ansId = document.getElementById("saveAnsId").value;
         var student = document.getElementById("studentSessionId").value;
         var mcqId = document.getElementById("mcqSessionId").value;
         var timeTaken = document.getElementById("countdown").value;
+
+
+        var sectionIdValue = document.getElementById("sectionIdValue").value;
+
+        console.log('timeTaken', document.getElementById("countdown").value );
         $.ajax({
             type: "POST",
             url: "saveAnswer",
-            data:{"student_id":student, "answer_id":ansId, "section_id": sectionId, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken},
+            data:{"student_id":student, "answer_id":ansId, "section_id": sectionIdValue, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken},
 
             success: function(data){
                 console.log('ansr', data)
@@ -892,66 +1002,140 @@ function saveNext(isMarked, timeUp = false) {
         });
 
 
+        // if (document.getElementById("sectionId").value < document.getElementById("sectionCount").value) {
+        //     //alert('aad')
+        //     var oldsectionId = document.getElementById("sectionId").value;
+        //     var newSectionId = parseInt(oldsectionId)+1;
 
-        if (b > document.getElementById("totalQuestion").value) {console.log('t')
+        //     var oldsectionId = document.getElementById("sectionId").value;
+        //     var newSectionId = parseInt(oldsectionId)+1;
+        //     document.getElementById("sectionId").value = newSectionId;
+        //     console.log('aa',document.getElementById("section"+oldsectionId));
+        //     console.log('aa',document.getElementById("section"+newSectionId));
+        //     document.getElementById("section"+oldsectionId).disabled = true;
+        //     document.getElementById("section"+newSectionId).disabled = false;
+        //     $("#section"+newSectionId).click();
+        // } else {
+        //     closeBtn();
+        // }
 
-            if (document.getElementById("sectionId").value == 1) {
-                document.getElementById("sectionId").value = 2;
-                document.getElementById("section1").disabled = true;
-                document.getElementById("section2").disabled = false;
+
+
+        if (b > document.getElementById("totalQuestion").value) {
+
+             var nextSec = false;
+            // if ((document.getElementById("sectionId").value == document.getElementById("sectionCount").value)) {
+            //     closeBtn();    
+            // } else {
+
+                // if (document.getElementById("saveNxt").innerHTML =="Save") {
+
+                //     var yes = confirm("Please confirm to Submit. This will take you to next section");
+                   
+                //     if (yes){
+                //         nextSec = true;
+                //         document.getElementById("saveNxt").innerHTML = "Save & Next";    
+                //     }
+                // }
+           // }
+
+
+        if ( (document.getElementById("sectionId").value < document.getElementById("sectionCount").value)  && nextSec) {
+            //alert('aad')
+            var oldsectionId = document.getElementById("sectionId").value;
+            var newSectionId = parseInt(oldsectionId)+1;
+
+            var oldsectionId = document.getElementById("sectionId").value;
+            var newSectionId = parseInt(oldsectionId)+1;
+            document.getElementById("sectionId").value = newSectionId;
+            console.log('aa',document.getElementById("section"+oldsectionId));
+            console.log('aa',document.getElementById("section"+newSectionId));
+            document.getElementById("section"+oldsectionId).disabled = true;
+            document.getElementById("section"+newSectionId).disabled = false;
+
+            clearTimeout(tim);
+            clearCount();
+
+            $("#section"+newSectionId).click();
+        } else {
+
+            
+        }
+
+
+            // if (document.getElementById("sectionId").value == 1 && nextSec) {
+            //     document.getElementById("sectionId").value = 2;
+            //     document.getElementById("section1").disabled = true;
+            //     document.getElementById("section2").disabled = false;
                 
-                // var yes = confirm("Please confirm to Submit. This will take you to next section");
+            //     // var yes = confirm("Please confirm to Submit. This will take you to next section");
   
-                // if (yes){
-                //     //alert('yes');
+            //     // if (yes){
+            //     //     //alert('yes');
                     
-                //     clearCount();
-                //     $("#section2").click();
-                // }
 
-                clearTimeout(tim);
-                $("#section2").click();
-            } else if (document.getElementById("sectionId").value == 2) {
-                document.getElementById("sectionId").value = 3;
-                document.getElementById("section2").disabled = true;
-                document.getElementById("section3").disabled = false;
-                clearTimeout(tim);
-                // var yes = confirm("Please confirm to Submit. This will take you to next section");
+
+            //     //     clearCount();
+            //     //     $("#section2").click();
+            //     // }
+
+            //     clearTimeout(tim);
+            //     clearCount();
+            //     $("#section2").click();
+            // } else if (document.getElementById("sectionId").value == 2  && nextSec) {
+            //     document.getElementById("sectionId").value = 3;
+            //     document.getElementById("section2").disabled = true;
+            //     document.getElementById("section3").disabled = false;
+            //     clearTimeout(tim);
+            //     // var yes = confirm("Please confirm to Submit. This will take you to next section");
   
-                // if (yes){
-                //     //alert('yes');
-                //     clearCount();
-                //     $("#section3").click();
-                // }
+            //     // if (yes){
+            //     //     //alert('yes');
+            //     //     clearCount();
+            //     //     $("#section3").click();
+            //     // }
 
-                clearCount();
-                $("#section3").click();
+            //     clearCount();
+            //     $("#section3").click();
                 
-            }  else if (document.getElementById("sectionId").value == 3) {
-                document.getElementById("sectionId").value = 4;
-                document.getElementById("section3").disabled = true;
-                document.getElementById("section4").disabled = false;
-                clearTimeout(tim);
+            // }  else if (document.getElementById("sectionId").value == 3  && nextSec) {
+            //     document.getElementById("sectionId").value = 4;
+            //     document.getElementById("section3").disabled = true;
+            //     document.getElementById("section4").disabled = false;
+            //     clearTimeout(tim);
                 
-                // var yes = confirm("Please confirm to Submit. This will take you to next section");
+            //     // var yes = confirm("Please confirm to Submit. This will take you to next section");
   
-                // if (yes){
-                //     //alert('yes');
-                //     clearCount();
-                //     $("#section4").click();
-                // }
+            //     // if (yes){
+            //     //     //alert('yes');
+            //     //     clearCount();
+            //     //     $("#section4").click();
+            //     // }
 
-                clearCount();
-                $("#section4").click();
+            //     clearCount();
+            //     $("#section4").click();
 
-            } else {
-                window.location.href="redirect-to-code";
-            }
+            // } else {
+            //     //window.location.href="redirect-to-code";
+            // }
 
 
             
         } else {
+
+
             $("#iconAnswered"+b).click();
+
+            var totalQ = document.getElementById("totalQuestion").value;
+
+            if (b == parseInt(totalQ)) { console.log('vv');
+                
+                //document.getElementById("saveNxt").style.display = "none";
+                document.getElementById("saveNxt").innerHTML = "Save";
+            } else { console.log('cvd')
+                //document.getElementById("saveNxt").style.display = "block";
+                document.getElementById("saveNxt").innerHTML = "Save & Next";
+            }
             // if (isMarked == 1) {
             //     //alert('aa')
             //     document.getElementById("iconAnswered"+res[1].trim()).style.backgroundColor = "darkblue";  
@@ -966,26 +1150,32 @@ function saveNext(isMarked, timeUp = false) {
         }
         
         console.log('No one selected');
-    }
-     
+    }     
 }
 
 function lastSave() {
-     var sectionId = document.getElementById("sectionId").value;
-        var questionId = document.getElementById("questionIdSave").value;
-        var ansId = document.getElementById("saveAnsId").value;
-        var student = document.getElementById("studentSessionId").value;
-        var mcqId = document.getElementById("mcqSessionId").value;
-        var timeTaken = document.getElementById("countdown").value;
-        $.ajax({
-            type: "POST",
-            url: "saveAnswer",
-            data:{"student_id":student, "answer_id":ansId, "section_id": sectionId, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken},
+    var sectionId = document.getElementById("sectionId").value;
+    var questionId = document.getElementById("questionIdSave").value;
+    var ansId = document.getElementById("saveAnsId").value;
+    var student = document.getElementById("studentSessionId").value;
+    var mcqId = document.getElementById("mcqSessionId").value;
+    var timeTaken = document.getElementById("countdown").value;
 
-            success: function(data){
-                console.log('ansr', data)
-            }
-        });
+    $.ajax({
+        type: "POST",
+        url: "saveAnswer",
+        data:{
+            "student_id":student,
+            "answer_id":ansId,
+            "section_id": sectionId,
+            "mcq_id":mcqId,
+            "question_id":questionId,
+            "time_taken":timeTaken
+        },
+        success: function(data) {
+            console.log('ansrr', data)
+        }
+    });
 }
 
 function clearCount() {
@@ -1001,7 +1191,7 @@ function clearResponse() {
 
 </script>
  <script>
-
+/*
     function InitializeMap() 
        {
            document.onkeydown = function () {
@@ -1063,14 +1253,17 @@ window.onload = function() {
     }
   };
 
-
+*/
     var countdownTimer;
 
     function setTime() {
 
+        console.log('aaddd');
+
         var seconds = 0;
         countdownTimer = setInterval(function() {
             ++seconds;
+           // console.log('aass');
 
             document.getElementById("countdown").value = seconds;
         }, 1000);
@@ -1110,6 +1303,49 @@ window.onload = function() {
 
     //window.addEventListener("load", renderQuestion, false);
 
+    function submitExam() {
+
+        var yes = confirm("Please confirm to Submit. This will end your active test and you cannot go back");
+               
+        if (yes){
+            clearTimeout(tim);
+            
+            console.log('asection', document.getElementById("sectionId").value);
+
+            if (document.getElementById("sectionId").value < document.getElementById("sectionCount").value) {
+                //alert('aad')
+                var oldsectionId = document.getElementById("sectionId").value;
+                var newSectionId = parseInt(oldsectionId)+1;
+                document.getElementById("sectionId").value = newSectionId;
+                console.log('aa',document.getElementById("section"+oldsectionId));
+                console.log('aa',document.getElementById("section"+newSectionId));
+                document.getElementById("section"+oldsectionId).disabled = true;
+                document.getElementById("section"+newSectionId).disabled = false;
+                $("#section"+newSectionId).click();
+            }  else {
+                clearTimeout(tim);
+                clearCount();
+                var oldsectionId = document.getElementById("sectionId").value;
+                document.getElementById("section"+oldsectionId).disabled = true;
+                var newSectionId = parseInt(oldsectionId)+1;
+                console.log('new', newSectionId)
+                console.log('ddd')
+                var codeSection = "<?php echo $codeId; ?>";
+                console.log('cc', codeSection);
+
+                // document.getElementById("section"+oldsectionId).disabled = false;
+
+                if (codeSection != 0) {
+                    console.log('ad', codeSection, newSectionId)
+                    document.getElementById("section"+newSectionId).disabled = false;
+                    $("#section"+newSectionId).click(); 
+                } else {
+                    closeBtn();
+                } 
+                console.log('ddd')          
+            } 
+        }        
+    }
 
     function EndExam() {
 
@@ -1119,37 +1355,77 @@ window.onload = function() {
         //     $("#section2").click();
             //starttime();
 
+            var yes = confirm("Please confirm to Submit. This will take you to next section");
+                   
+            if (yes){
+                nextSec = true;
+                document.getElementById("saveNxt").innerHTML = "Save & Next";    
+            }
 
-        if (document.getElementById("sectionId").value == 1) {
-            document.getElementById("sectionId").value = 2;
-            document.getElementById("section1").disabled = true;
-            document.getElementById("section2").disabled = false;
-            $("#section2").click();
-        } else if (document.getElementById("sectionId").value == 2) {
-            document.getElementById("sectionId").value = 3;
-            document.getElementById("section2").disabled = true;
-            document.getElementById("section3").disabled = false;
-            $("#section3").click();
-        } else if (document.getElementById("sectionId").value == 3) {
-                document.getElementById("sectionId").value = 4;
-                document.getElementById("section3").disabled = true;
-                document.getElementById("section4").disabled = false;
-                clearTimeout(tim);
+            console.log('asection', document.getElementById("sectionId").value);
+
+        if (document.getElementById("sectionId").value < document.getElementById("sectionCount").value) {
+            //alert('aad')
+            var oldsectionId = document.getElementById("sectionId").value;
+            var newSectionId = parseInt(oldsectionId)+1;
+            document.getElementById("sectionId").value = newSectionId;
+            console.log('aa',document.getElementById("section"+oldsectionId));
+            console.log('aa',document.getElementById("section"+newSectionId));
+            document.getElementById("section"+oldsectionId).disabled = true;
+            document.getElementById("section"+newSectionId).disabled = false;
+            $("#section"+newSectionId).click();
+        }  else {
+            clearTimeout(tim);
+            clearCount();
+            var oldsectionId = document.getElementById("sectionId").value;
+            document.getElementById("section"+oldsectionId).disabled = true;
+            var newSectionId = parseInt(oldsectionId)+1;
+            console.log('new', newSectionId)
+            console.log('ddd')
+            var codeSection = "<?php echo $codeId; ?>";
+            console.log('cc', codeSection);
+
+            // document.getElementById("section"+oldsectionId).disabled = false;
+
+            if (codeSection != 0) {
+                console.log('ad', codeSection, newSectionId)
+                document.getElementById("section"+newSectionId).disabled = false;
+                $("#section"+newSectionId).click(); 
+            } else {
+                closeBtn();
+            } 
+            console.log('ddd')          
+        } 
+        // if (document.getElementById("sectionId").value == 1) {
+        //     document.getElementById("sectionId").value = 2;
+        //     document.getElementById("section1").disabled = true;
+        //     document.getElementById("section2").disabled = false;
+        //     $("#section2").click();
+        // } else if (document.getElementById("sectionId").value == 2) {
+        //     document.getElementById("sectionId").value = 3;
+        //     document.getElementById("section2").disabled = true;
+        //     document.getElementById("section3").disabled = false;
+        //     $("#section3").click();
+        // } else if (document.getElementById("sectionId").value == 3) {
+        //         document.getElementById("sectionId").value = 4;
+        //         document.getElementById("section3").disabled = true;
+        //         document.getElementById("section4").disabled = false;
+        //         clearTimeout(tim);
                 
-                // var yes = confirm("Please confirm to Submit. This will take you to next section");
+        //         // var yes = confirm("Please confirm to Submit. This will take you to next section");
   
-                // if (yes){
-                //     //alert('yes');
-                //     clearCount();
-                //     $("#section4").click();
-                // }
+        //         // if (yes){
+        //         //     //alert('yes');
+        //         //     clearCount();
+        //         //     $("#section4").click();
+        //         // }
 
-                clearCount();
-                $("#section4").click();
+        //         clearCount();
+        //         $("#section4").click();
 
-            }else {
-            $("#section1").click();
-        }
+        //     }else {
+        //     $("#section1").click();
+        // }
         
     }
 
@@ -1165,7 +1441,8 @@ window.onload = function() {
     }
 
     function showtime() {
-        console.log('showtime', totalsec);
+        //console.log('showtime', totalsec);
+
         // first check if exam finished
         // if (pos >= questions.length) {
         //     console.log('end');
@@ -1195,10 +1472,13 @@ window.onload = function() {
                 alert("Time Up");
                 //saveNext(2);
                 // lastSave();
-                
-                if (document.getElementById("sectionId").value == 4) {
-                    window.location.href="redirect-to-code";
-                }
+                console.log('aa', document.getElementById("sectionId").value, "bb", document.getElementById("sectionCount").value)
+
+                //document.getElementById('sectionId').value = parseInt(document.getElementById('sectionId').value) + 1;
+
+                // if (document.getElementById("sectionId").value == document.getElementById("sectionCount").value) {
+                //     window.location.href="redirect-to-code";
+                // }
                                 
                 EndExam();
               } else {
