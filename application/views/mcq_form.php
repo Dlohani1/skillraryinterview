@@ -15,10 +15,9 @@
           color: white;
         }*/
         .wellBg{
-            background: #212529c7;
-            padding: 10px;
-            border-radius: 5px;
-
+            /* background: #212529c7; */
+            /* padding: 10px;
+            border-radius: 5px; */
         }
         pre {
             
@@ -894,7 +893,7 @@ function fetchQuestion(id, no, sectionIdno = 0) {
             success: function(data){
                 var opts = $.parseJSON(data);
                 console.log('total', opts.userAnswer.id);
-                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;font-size:17px;color:white'><strong>"+opts.question+"</strong></pre>";
+                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;font-size:17px;font-family: inherit;margin-bottom: 10px !important;'><strong>"+opts.question+"</strong></pre>";
                 // console.log('data', opts[0].questions);
                 // // Parse the returned json data
                 // // var opts = $.parseJSON(data);
