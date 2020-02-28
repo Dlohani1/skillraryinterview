@@ -1309,6 +1309,7 @@ window.onload = function() {
                
         if (yes){
             clearTimeout(tim);
+            clearCount();
             
             console.log('asection', document.getElementById("sectionId").value);
 
