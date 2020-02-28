@@ -683,13 +683,13 @@ class QuestionBank extends MyController {
 
             if (isset($_POST['isCreate'])) {
 
-                $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[student_register.email]');
+                //$this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[student_register.email]');
                 
 
-                if ($this->form_validation->run() == false)
-                {
-                    $this->createUserProfile();
-                } else {
+                // if ($this->form_validation->run() == false)
+                // {
+                //     $this->createUserProfile();
+                // } else {
 
                     if (isset($_SESSION['username'])) {
                         $userData['username'] = $_SESSION['username']['username'];
@@ -713,23 +713,23 @@ class QuestionBank extends MyController {
                     
                     // $this->session->set_flashdata('credentials', $cred);
 
-                $this->session->set_userdata('id', $userId); 
+                    $this->session->set_userdata('id', $userId); 
 
-                $this->session->set_userdata('email', $userData['email']); 
+                    $this->session->set_userdata('email', $userData['email']); 
 
-                $this->session->set_userdata('contact', $userData['contact_no']);
+                    $this->session->set_userdata('contact', $userData['contact_no']);
 
-                $this->session->set_userdata('firstName', $userData['first_name']); 
+                    $this->session->set_userdata('firstName', $userData['first_name']); 
 
-                $this->session->set_userdata('lastName', $userData['last_name']);
-                
-                $this->session->set_userdata('userGender', $userData['gender']);
+                    $this->session->set_userdata('lastName', $userData['last_name']);
+                    
+                    $this->session->set_userdata('userGender', $userData['gender']);
 
                     $this->session->set_flashdata('success', 'Profile Created Successfully');
 
                     redirect('user/profile', 'refresh');
 
-                }
+                //}
 
             } else {
 
