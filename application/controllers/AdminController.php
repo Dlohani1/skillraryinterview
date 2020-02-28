@@ -1253,7 +1253,7 @@ echo "success"; die;
           }
 
           $this->session->set_userdata('mcqId', $mcqId);
-
+          $this->session->set_userdata('mcqCode', $code);
 
           //redirect('user/create/profile');
           if (!isset($_SESSION['username'])) {

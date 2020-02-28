@@ -727,7 +727,13 @@ class QuestionBank extends MyController {
 
                     $this->session->set_flashdata('success', 'Profile Created Successfully');
 
-                    redirect('user/profile', 'refresh');
+                    if (isset($_SESSION['mcqCode'])) {
+                        $this->checkCode($_SESSION['mcqCode']);
+                    } else {
+                        redirect('user/profile', 'refresh');    
+                    }
+
+                    
 
                 //}
 
@@ -738,7 +744,13 @@ class QuestionBank extends MyController {
                 $this->db->where('id', $userId);
                 $this->db->update('student_register',$userData);  
                 $this->session->set_flashdata('success', 'Profile Updated Successfully');
-                redirect('user/profile', 'refresh');
+                 if (isset($_SESSION['mcqCode'])) {
+                    $this->checkCode($_SESSION['mcqCode']);
+                } else {
+                    redirect('user/profile', 'refresh');    
+                }
+
+                //redirect('user/profile', 'refresh');
             }
 
         }  
@@ -1114,12 +1126,11 @@ class QuestionBank extends MyController {
 
             //     redirect('user/enter-code');
             // } else {
-
-                if (isset($_POST['code'])) {
-                    $code = trim($_POST['code']);
+                 if (NULL == $code) {
+                    if (isset($_POST['code'])) {
+                        $code = trim($_POST['code']);
+                    }
                 }
-
-
 
                 $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
 
@@ -1210,6 +1221,7 @@ class QuestionBank extends MyController {
                 
 
                 $sectionDetail[] = $row->section_id;
+
                 $result = "result".$countSection;
                 $$result =  $this->db->query($$sql);
                 
