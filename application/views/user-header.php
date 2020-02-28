@@ -326,6 +326,17 @@
     .sidenav a {font-size: 18px;}
     }
     @media only screen and (max-width: 600px){
+        fieldset{
+            display: block;
+            margin-left: 2px;
+            margin-right: 2px;
+            padding-top: 0.35em;
+            padding-bottom: 0.625em;
+            padding-left: 0.75em;
+            padding-right: 0.75em;
+            border: 1px groove black;
+            border-right: 0.7px solid;
+        }
         .icon{
             display: block !important;
         }
