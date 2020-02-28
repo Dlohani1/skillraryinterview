@@ -434,7 +434,7 @@ function Upload() {
                                                 </div>
                                             </div>
 
-                                        <h6 class="twelvethDetails">Under Graduate:</h6>
+                                        <h6 class="twelvethDetails">Graduate:</h6>
                                         <hr class="hrDesignUpdate">
                                         <div class="row rowGap">
                                             <div class="col-md-4">
@@ -473,47 +473,47 @@ function Upload() {
                                             </div>
                                         </div>
 
-                                        <h6 class="twelvethDetails">Graduate:</h6>
+                                        <h6 class="twelvethDetails">Post Graduate:</h6>
                                         <hr class="hrDesignUpdate">
                                         <div class="row rowGap">
                                             <div class="col-md-4">
-                                                <label>College<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <label>College</label>
                                                 <input type="text" name="collegem" class="form-control" autocomplete="off"><br/>
                                                 <p id="errorcollegem" class="errMessage"></p>
                                             </div>
                                         
                                             <div class="col-md-4">
-                                                <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <label>Passing Year</label>
                                                 <input type="number" name="degree_pym" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_pym" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
-                                                <label>Branch<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <label>Branch</label>
                                                 <input type="text" name="branchm"  class="form-control"  autocomplete="off"><br/>
                                                 <p id="errorbranchm" class="errMessage"></p>
                                             </div>
                                         </div>
                                         <div class="row rowGap">
                                             <div class="col-md-4">
-                                                <label>Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <label>Degree</label>
                                                 <input type="text" name="degreem" class="form-control" autocomplete="off"><br/>
                                                 <p id="errordegreem" class="errMessage"></p>
                                             </div>
                                         
                                             <div class="col-md-4">
-                                                <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <label>Percentage</label>
                                                 <input type="text" id="gperU" name="degree_perm" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_perm" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
-                                                <label>University<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <label>University</label>
                                                 <input type="text" name="universitym" class="form-control" autocomplete="off"><br/>
                                                 <p id="erroruniversitym" class="errMessage"></p>
                                             </div>
                                         </div>
                                         <div class="row rowGapDegree">
                                             <div class="col-md-4">
-                                                <label>Year Gap in Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label><br/>
+                                                <label>Year Gap in Degree</label><br/>
                                                 <input type="radio" name="gap" autocomplete="off" onclick=" showField1(1)"> Yes &nbsp;&nbsp;&nbsp;<input type="radio" name="gap" autocomplete="off" onclick="showField1()"> No
                                           
                                             </div>
