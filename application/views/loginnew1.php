@@ -49,7 +49,7 @@
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px 0 30px 0;
-
+  margin-bottom: 6%;
 }
 .fb {
   background-color: #3B5998;
@@ -120,7 +120,11 @@
 .btn:focus{
   color: white;
 }
-
+.proceedBtn{
+background:#33A478;
+border: 1px solid #33A478;
+font-size: 16px;
+} 
 @media screen and (max-width: 600px) {
   .vl {
   position: absolute;
@@ -192,7 +196,7 @@
     <div class="modal-content">
 
       <!-- Modal Header -->
-      <div class="modal-header">
+      <div class="modal-header headerModal">
         <h4 class="modal-title">Enter Code</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
@@ -200,8 +204,8 @@
       <!-- Modal body -->
       <div class="modal-body">
          <form method="post" action="<?php echo base_url().'admin/checkCode'; ?>">
-          <input type="text" id = "code" name = "code" placeholder="Type Code Here"  required autocomplete="off"/>
-          <input type="submit" value="Proceed">
+          <input type="text" id = "code" name = "code" placeholder="Type Code Here" class="form-control" required autocomplete="off"/><br/>
+          <input type="submit" class="btn proceedBtn" value="Proceed">
         </form>
       </div>
 
