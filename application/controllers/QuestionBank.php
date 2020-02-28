@@ -315,6 +315,7 @@ class QuestionBank extends MyController {
         public function logout() {
 
             $this->session->sess_destroy();
+           
             redirect('user/login');
         } 
 
@@ -640,9 +641,7 @@ class QuestionBank extends MyController {
             return (random_string('alnum',6));
         }
 
-        public function userProfileUpdate() {       
-            print_r($this->input->post()); die;
-
+        public function userProfileUpdate() {
             $userData = array();
 
             $userData['first_name'] = $_POST['firstname'];

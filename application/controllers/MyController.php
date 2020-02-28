@@ -14,7 +14,7 @@ class MyController extends CI_Controller {
 
         $u = 1;
 
-       if ($urls == 'registration' ||  $urls == 'logout' ||  $urls == 'login' || $urls == 'signin' || $urls == 'register' || $urls == 'new-login' || $urls == 'checkCode') {
+       if ($urls == 'registration' ||  $urls == 'update-profile' || $urls == 'logout' ||  $urls == 'login' || $urls == 'signin' || $urls == 'register' || $urls == 'new-login' || $urls == 'checkCode') {
        		$u = 0;
        }
 
@@ -23,6 +23,7 @@ class MyController extends CI_Controller {
         if ( (null == $this->session->id) && $u) {
         if (isset($_SESSION['username'])) {
             redirect('user/create/profile');
+            
           }        	
         	redirect('user/login');
         } else if (!$u && (null !== $this->session->id)) {
@@ -30,12 +31,12 @@ class MyController extends CI_Controller {
           if (isset($_SESSION['username'])) {
             if ($urls == "logout") {
               $this->logout();
-            } else {
               redirect('user/create/profile');
             }
             
           }
-          redirect('user/home');
+
+         // redirect('user/home');
         }  
     }
 
