@@ -836,13 +836,13 @@ function getQuestion(sectionId, codeTest = false) {
 function fetchQuestion(id, no, sectionIdno = 0) {
 
 
-
+    clearTime();
     console.log('sectionIdno ', no)
-    if (no == 1) {
-        console.log('aab')
+    // if (no == 1) {
+    //     console.log('aab')
 
         setTime();
-    }
+   // }
 
     if (document.getElementById("iconAnswered"+no).style.backgroundColor != "purple" && document.getElementById("iconAnswered"+no).style.backgroundColor != "green" ) {
         if (document.getElementById("iconAnswered"+no).style.backgroundColor != "lightblue") {
@@ -1355,12 +1355,12 @@ window.onload = function() {
         //     $("#section2").click();
             //starttime();
 
-            var yes = confirm("Please confirm to Submit. This will take you to next section");
+            // var yes = confirm("Please confirm to Submit. This will take you to next section");
                    
-            if (yes){
-                nextSec = true;
-                document.getElementById("saveNxt").innerHTML = "Save & Next";    
-            }
+            // if (yes){
+            //     nextSec = true;
+            //     document.getElementById("saveNxt").innerHTML = "Save & Next";    
+            // }
 
             console.log('asection', document.getElementById("sectionId").value);
 

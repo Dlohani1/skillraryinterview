@@ -1273,7 +1273,9 @@ echo "success"; die;
            //$this->createUserProfile();           
 
       } else {
-        echo "code is invalid";
+       // echo "code is invalid";
+        $this->session->set_flashdata('error', 'Please enter valid code');
+                redirect('user/new-login', 'refresh');
       }
   }
 

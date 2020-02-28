@@ -316,7 +316,7 @@ class QuestionBank extends MyController {
 
             $this->session->sess_destroy();
            
-            redirect('user/login');
+            redirect('user/new-login');
         } 
 
         public function register() {
@@ -350,7 +350,7 @@ class QuestionBank extends MyController {
 
                 $this->db->insert('student_register', $data);
                 $this->session->set_flashdata('success', 'Registration successfull. Please Login');
-                redirect('user/login', 'refresh');
+                redirect('user/new-login', 'refresh');
             }
             
         }
@@ -629,7 +629,7 @@ class QuestionBank extends MyController {
                 // }
               } else {
                 $this->session->set_flashdata('error', 'Invalid Credentials');
-                redirect('user/login', 'refresh');
+                redirect('user/new-login', 'refresh');
               }
                 
                 

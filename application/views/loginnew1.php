@@ -12,22 +12,27 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script>
     localStorage.clear();
-</script>
-
+  </script>
 <style>
 
-
+.headingLogin{
+  text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #33A478;
+}
 .vl {
   position: absolute;
-  left: 50%;
+  left: 36%;
   transform: translate(-50%);
   border: 2px solid #ddd;
-  height: 175px;
+  width: 308px;
+  margin: 7px;
 }
 
 .vl-innertext {
   position: absolute;
-  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   background-color: #f1f1f1;
   border: 1px solid #ccc;
@@ -52,8 +57,9 @@
 }
 
 .twitter {
-  background-color: #55ACEE;
+  background-color: #33A478;
   color: white;
+  font-size: 18px;
 }
 
 .google {
@@ -62,13 +68,15 @@
 }
 .socailLoginList{
   list-style-type: none;
+  margin: 4px 8px;
+  padding: 0;
 }
 .socialbtn{
   width: 100%;
   padding: 10px 50px;
   border-radius: 4px;
   margin-bottom: 10px;
-  opacity: 0.85;
+
 }
 .socialbtn:hover{
   color: white;
@@ -81,14 +89,14 @@
   border: none;
   border-radius: 4px;
   margin: 10px 0;
-  opacity: 0.85;
+
   display: inline-block;
   font-size: 17px;
   line-height: 20px;
   text-decoration: none;
 }
 .loginBtn {
-  background-color: #4CAF50;
+  background-color: #33A478;
   color: white;
   cursor: pointer !important;
   width: 100%;
@@ -96,10 +104,11 @@
   border: none;
   border-radius: 4px;
   margin: 8px 0px;
+  font-size: 18px;
 }
 
 .loginBtn:hover {
-  background-color: #45a049;
+  background-color: #33A478;
 }
 .bottom-container {
   text-align: center;
@@ -108,113 +117,75 @@
   padding: 15px 0px;
   margin-bottom: 2%;
 }
-@media only screen and(max-width: 600px){
+.btn:focus{
+  color: white;
+}
 
-.vl {
+@media screen and (max-width: 600px) {
+  .vl {
   position: absolute;
-  left: 50%;
+  left:47%;
   transform: translate(-50%);
   border: 2px solid #ddd;
-  height: 175px;
-  display: none;
+  width: 308px;
+  margin: 7px;
+}
 }
 
-.vl-innertext {
-  display: none;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #f1f1f1;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  padding: 8px 10px;
-}
-}
 </style>
 </head>
 <body>
 
 
-<div class="container googleLoginContainer">
-
-  <h4 style="text-align:center">Login with Social Media or Manually</h4><br/>
-    <div class="row">
+<div class="container">
+<div class="col-md-8 offset-md-2 googleLoginContainer">
+  <h4 style="text-align:center" class="headingLogin">SkillRary Assessment Login</h4><br/>
+    <div class="container">
+      <div class="col-lg-5 offset-md-2">
       
-      <div class="vl">
-        <span class="vl-innertext">or</span>
-      </div>
-
-      <div class="col-lg-5 col-md-5 offset-lg-1">
-     
-        <!-- <a href="#" class="twitter btn"  data-toggle="modal" data-target="#myModal">
-          <i class="fa fa-laptop fa-fw"></i> Login with Code
-        </a>
-        <a href="#" class="fb btn">
-          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
-         </a>
-
-        <a href="#" class="google btn"><i class="fa fa-google fa-fw">
-          </i> Login with Google+
-        </a> -->
-        <div class="row">
-        <div class="col-lg-10 col-md-6">
-        <ul class="socailLoginList">
-         
-          <li>
-            <a href="#" class="twitter socialbtn btn"  data-toggle="modal" data-target="#myModal">
-              <i class="fa fa-laptop fa-fw"></i> Login with code
-            </a>
-          </li>
-
-           <li>
-    
-            <a href="#" class="fb socialbtn btn">
-              <i class="fa fa-facebook fa-fw"></i> Login with Facebook
-            </a>
-
-          </li>
-
-
-          <li>
-            <a href="#" class="google socialbtn btn"><i class="fa fa-google fa-fw">
-              </i> Login with Google+
-            </a>
-          </li>
-        </ul>
-        </div>
-        </div>
-      </div>
-
-      <div class="col-lg-5 col-md-5 offset-md-1">
         <div class="hide-manually">
           <p>Or sign in manually:</p>
         </div>
+          <?php if (isset($_SESSION['error'])) { echo "<p style='color: red;
+    text-align: center;'>".$_SESSION['error']."</p>";} ?>
         <form class="form-horizontal" method="post" action="signin">
           <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <input type="text" name="email" id="email" autocomplete="off" placeholder="User name" class="form-control inputSocial">
             </div>
           </div>
           <div class="row">
-            <div class="col-md-10">           
+            <div class="col-md-9">           
               <input type="password" name="pwd" id="pwd" autocomplete="off" placeholder="Password" class="form-control inputSocial">
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-9">
             <input type="submit" value="Login" class="loginBtn">
             </div>
-          </div>
+          </div><br/>
         </form>
-     
+        <div class="row">
+          <div class="col-md-9 vl">
+            <span class="vl-innertext">or</span>
+          </div><br/><br/>
+        </div>
+        <div class="row">
+            <div class="col-md-9">           
+              <a href="#" class="twitter socialbtn btn"  data-toggle="modal" data-target="#myModal">
+                  <i class="fa fa-laptop fa-fw"></i> Login with code
+                </a>
+            </div>
+          </div>
       </div>
-      
+    </div><br/>
     </div>
 
-</div>
+</div><br/>
 
- 
+
+
 <!-- The Modal -->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
@@ -265,7 +236,7 @@
     </div>
   </div> -->
 
-<div class="container bottom-container">
+<!-- <div class="container bottom-container">
   <div class="row">
     <div class="col-lg-6 col-md-6">
       <a href="registration" style="color:white" class="btn">Sign up</a>
@@ -274,8 +245,7 @@
       <a href="#" style="color:white" class="btn">Forgot password?</a>
     </div>
   </div>
-</div> 
+</div>  -->
 
 </body>
 </html>
-
