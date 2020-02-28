@@ -14,6 +14,18 @@
           background-color: #f576a0 !important;
           color: white;
         }*/
+        .wellBg{
+            background: #212529c7;
+            padding: 10px;
+            border-radius: 5px;
+
+        }
+        pre {
+            
+            margin-bottom: -1rem !important;
+            
+        }
+
         .submitTest{
             background: #e45353;
             border: 2px solid #e45353;
@@ -578,7 +590,7 @@
                     <div class="row">
                         <div class="col-md-8 offset-md-1">
                             <br/>
-                            <div class="well">
+                            <div class="wellBg">
                             <p id="questionData"></p>
                         </div>
                     <div>
@@ -882,7 +894,7 @@ function fetchQuestion(id, no, sectionIdno = 0) {
             success: function(data){
                 var opts = $.parseJSON(data);
                 console.log('total', opts.userAnswer.id);
-                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;'><strong>"+opts.question+"</strong></pre>";
+                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;font-size:17px;color:white'><strong>"+opts.question+"</strong></pre>";
                 // console.log('data', opts[0].questions);
                 // // Parse the returned json data
                 // // var opts = $.parseJSON(data);

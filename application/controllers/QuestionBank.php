@@ -648,6 +648,10 @@ class QuestionBank extends MyController {
         }
 
         public function userProfileUpdate() {
+
+            // echo "<pre>";
+            // print_r($this->input->post());
+            // die;
             $userData = array();
 
             $userData['first_name'] = $_POST['firstname'];

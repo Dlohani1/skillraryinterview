@@ -8,25 +8,40 @@ function validateUpdateProfile(){
           
         var error = true;
 
-        var emailpattern = /^[a-z0-9]+(\.[_a-z0-9]+)@[a-z0-9-]+(\.[a-z-]+)(\.[a-z]{2,15})$/;
-
+        var emailpattern = /^([a-zA-Z0-9.-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z]{2,4})+$/;
         var email = document.getElementById('emaillogin').value;
+
         var perPattern = /^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$/
         var highper = document.getElementById('highSPerU').value;
         var schoolper = document.getElementById('schoolperU').value;
         var udper = document.getElementById('udperU').value; 
-        var gper = document.getElementById('gperU').value;
+
+        var passing_year_pattern = /^([0-9]{4})+$/;
+        var ten_passing_year = document.getElementById('TPY').value;
+        var twlevth_passing_year = document.getElementById('HPY').value;
+        var degree_passing_year = document.getElementById('DPY').value;
+
+        var namepattern = /^[a-zA-Z]{0,50}$/;
+        var fname = document.getElementById('Fname').value;
+        var lname = document.getElementById('Lname').value;
 
         if(document.regform.firstname.value.length == '0'){
             document.getElementById("errorFstName").innerHTML = "This field is required";
             error = false;
-        } else {
+        } else if(!namepattern.test(fname)){
+            document.getElementById("errorFstName").innerHTML = "Enter valid name";
+            error = false;
+        }
+        else {
             document.getElementById("errorFstName").innerHTML = "";
         }
         if(document.regform.lastname.value.length == '0'){
             document.getElementById("errlstnm").innerHTML = "This field is required";
             error = false;
-        } else {
+        }  else if(!namepattern.test(lname)){
+            document.getElementById("errlstnm").innerHTML = "Enter valid name";
+            error = false;
+        }else {
             document.getElementById("errlstnm").innerHTML = "";
         }
         if(document.regform.cno.value.length == '0'){
@@ -43,13 +58,11 @@ function validateUpdateProfile(){
             document.getElementById("erremail").innerHTML = "This field is required";
             error = false;
            
-        }
-        // else if(!emailpattern.test(email)) {
-            
-        //     document.getElementById("erremail").innerHTML = "Please enter valid email";
-        //     error = false;
-        // } 
-
+        }else if(!emailpattern.test(email)) {
+         
+            document.getElementById("erremail").innerHTML = "Please enter valid email";
+            error = false;
+        } 
         else {
             document.getElementById("erremail").innerHTML = "";
         }
@@ -66,50 +79,75 @@ function validateUpdateProfile(){
         } else {
             document.getElementById("errorgender").innerHTML = "";
         }
-
+        // tenth
         if(document.regform.tenth_branch.value.length == '0'){
             document.getElementById("errortenth_branch").innerHTML = "This field is required";
         } else {
             document.getElementById("errortenth_branch").innerHTML = "";
         }
-        // tenth
+        
         if(document.regform.tenth_py.value.length == '0'){
             document.getElementById("errortenth_py").innerHTML = "This field is required";
+            error = false;
+        } else  if(document.regform.tenth_py.value.length < '4'){
+            document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
             error = false;
         } else  if(document.regform.tenth_py.value.length > '4'){
             document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
             error = false;
-        } else {
+        } else if(!passing_year_pattern.test(ten_passing_year)){
+            document.getElementById("errortenth_py").innerHTML = "Please enter valid number";
+            error = false;
+        }else {
             document.getElementById("errortenth_py").innerHTML = "";
         }
-        if(document.regform.tenth_per.value.length == '0'){
+
+
+        if(document.regform.tenth_per.value.length == '0'){ 
             document.getElementById("errortenth_per").innerHTML = "This field is required";
             error = false;
-        } else if(!perPattern.test(schoolper)){
-            document.getElementById("errortenth_per").innerHTML = "Please enter valid percentage";
-            error = false;
-        } else {
+        } else if(document.regform.tenth_per.value != "100"){
+            if(!perPattern.test(schoolper)){
+                document.getElementById("errortenth_per").innerHTML = "Please enter valid percentage";
+                error = false;
+            }
+        } else{
             document.getElementById("errortenth_per").innerHTML = "";
         }
+
+
         // twelveth
         if(document.regform.twelveth_branch.value.length == '0'){
             document.getElementById("errortwelveth_branch").innerHTML = "This field is required";
         } else {
             document.getElementById("errortwelveth_branch").innerHTML = "";
         }
+
         if(document.regform.twelveth_py.value.length == '0'){
             document.getElementById("errortwelveth_py").innerHTML = "This field is required";
-        } else {
+        } else  if(document.regform.twelveth_py.value.length < '4'){
+            document.getElementById("errortwelveth_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else  if(document.regform.twelveth_py.value.length > '4'){
+            document.getElementById("errortwelveth_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else if(!passing_year_pattern.test(twlevth_passing_year)){
+            document.getElementById("errortwelveth_py").innerHTML = "Please enter valid number";
+            error = false;
+        }else {
             document.getElementById("errortwelveth_py").innerHTML = "";
         }
+
         if(document.regform.twelveth_per.value.length == '0'){
 
             document.getElementById("errortwelveth_per").innerHTML = "This field is required";
 
-        } else if(!perPattern.test(highper)){
-            document.getElementById("errortwelveth_per").innerHTML = "Please enter valid percentage";
-            error = false;
-        } else {
+        }else if(document.regform.twelveth_per.value != "100"){
+            if(!perPattern.test(highper)){
+                document.getElementById("errortwelveth_per").innerHTML = "Please enter valid percentage";
+                error = false;
+            }
+        }else {
             document.getElementById("errortwelveth_per").innerHTML = "";
         }
         // under graduation
@@ -120,8 +158,14 @@ function validateUpdateProfile(){
         }
         if(document.regform.degree_py.value.length == '0'){
             document.getElementById("errordegree_py").innerHTML = "This field is required";
+        } else  if(document.regform.degree_py.value.length < '4'){
+            document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
+            error = false;
         } else if(document.regform.degree_py.value.length > '4'){
             document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else if(!passing_year_pattern.test(degree_passing_year)){
+            document.getElementById("errordegree_py").innerHTML = "Please enter valid number";
             error = false;
         } else {
             document.getElementById("errordegree_py").innerHTML = "";
@@ -138,9 +182,11 @@ function validateUpdateProfile(){
         }
         if(document.regform.degree_per.value.length == '0'){
             document.getElementById("errordegree_per").innerHTML = "This field is required";
-        }else  if(!perPattern.test(udper)){
-            document.getElementById("errordegree_per").innerHTML = "Please enter valid percentage";
-            error = false;
+        }else if(document.regform.degree_per.value != "100"){
+            if(!perPattern.test(udper)){
+                document.getElementById("errordegree_per").innerHTML = "Please enter valid percentage";
+                error = false;
+            }
         } else {
             document.getElementById("errordegree_per").innerHTML = "";
         }
@@ -350,12 +396,12 @@ function Upload() {
                                     <div class="row rowGap">
                                         <div class="col-md-6"> 
                                                 <label>First name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="firstname" value="<?php echo set_value('firstname'); ?>" class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" id="Fname" name="firstname" value="<?php echo set_value('firstname'); ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errorFstName" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Last name<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="lastname" value="<?php echo set_value('lastname'); ?>"  class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" id="Lname" name="lastname" value="<?php echo set_value('lastname'); ?>"  class="form-control"  autocomplete="off"><br/>
                                                 <p id="errlstnm" class="errMessage"></p>
                                             </div>
                                         </div>
@@ -405,7 +451,7 @@ function Upload() {
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                    <input type="number" name="tenth_py" value="<?php echo set_value('tenth_py'); ?>"   class="form-control"  autocomplete="off"><br/>
+                                                    <input type="text" name="tenth_py" value="<?php echo set_value('tenth_py'); ?>" id="TPY"  class="form-control"  autocomplete="off"><br/>
                                                     <p id="errortenth_py" class="errMessage"></p>
                                                 </div>
                                                 <div class="col-md-4">
@@ -424,7 +470,7 @@ function Upload() {
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                    <input type="number" name="twelveth_py" value="<?php echo set_value('twelveth_py'); ?>" class="form-control"  autocomplete="off"><br/>
+                                                    <input type="text" name="twelveth_py" id="HPY" value="<?php echo set_value('twelveth_py'); ?>" class="form-control"  autocomplete="off"><br/>
                                                     <p id="errortwelveth_py" class="errMessage"></p>
                                                 </div>
                                                 <div class="col-md-4">
@@ -445,7 +491,7 @@ function Upload() {
                                         
                                             <div class="col-md-4">
                                                 <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="number" name="degree_py"  value="<?php echo set_value('degree_py'); ?>" class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" name="degree_py" id="DPY" value="<?php echo set_value('degree_py'); ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_py" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
