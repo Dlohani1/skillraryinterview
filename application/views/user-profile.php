@@ -371,9 +371,9 @@ function Upload() {
         </div>
         
         <!-- Modal footer -->
-       <!--  <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div> -->
+        <div class="modal-footer">
+          <button type="button" style="display:none" id="okbtn" class="btn btn-secondary" data-dismiss="modal">OK</button>
+        </div>
         
       </div>
     </div>
@@ -643,8 +643,9 @@ function test() {
 
 function readNote() {
     
-    document.getElementById("closeModal").click();
+    //document.getElementById("closeModal").click();
 
+    document.getElementById("okbtn").style.display="block";
      // Store
     localStorage.setItem("isRead", "1");
 }

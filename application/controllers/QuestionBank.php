@@ -530,6 +530,12 @@ class QuestionBank extends MyController {
 
                $user = $this->db->query($sql)->row();
 
+               if (null == $user) {
+                    $sql = "SELECT * FROM `student_register` WHERE username='$email' AND password = '$pwd'";
+
+                    $user = $this->db->query($sql)->row();
+               }
+
 
               if (null != $user) {
                 $this->session->set_userdata('id', $user->id); 
