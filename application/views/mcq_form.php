@@ -15,10 +15,9 @@
           color: white;
         }*/
         .wellBg{
-            background: #212529c7;
-            padding: 10px;
-            border-radius: 5px;
-
+            /* background: #212529c7; */
+            /* padding: 10px;
+            border-radius: 5px; */
         }
         pre {
             
@@ -123,8 +122,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
-            margin-left: 30px;
+            width: 100%;
+            max-width: 240px;
+            margin-bottom: 5px;
         }
         .saveBtn1{
             background: purple;
@@ -134,7 +134,8 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
+            max-width: 240px;
             margin-bottom: 5px;
         }
 
@@ -146,9 +147,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
+            max-width: 240px;
             margin-bottom: 5px;
-            margin-left: -27px;
         }
 
         .submitBtn{
@@ -213,9 +214,15 @@
             border-radius: 20px;
         }
         .username{
-            padding-left: 20px;
+            /* padding-left: 20px;
             position: absolute;
+            line-height: 30px; */
+      
+            left: 10px;
+            position: relative;
             line-height: 30px;
+            top: 15px;
+
         }
         .closeBtn{
             background: #33A478;
@@ -271,11 +278,13 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-top:7px;
+                margin-left: 0px;
             }
 
             .clearBtn{
-                background: #60ca78ba;
-                border: 2px solid grey;
+                background: #3a360d;
+                border: 2px solid #3a360d;
                 padding: 6px 13px;
                 border-radius: 5px;
                 color: white;
@@ -655,12 +664,12 @@
             <div class="column1" id="questionPallate">
 
                 <div class="firstbox">
-<span><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
-<span class="username">
+<span style="float:left"><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
+<div class="username">
 <span>Name: <?php echo $userData['first_name']." ".$userData['last_name'] ; ?></span><br/>
 <span class="mobileno">Mobile: <?php echo $userData['contact_no']; ?></span><br/>
 <span class="gender">Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
-</span>
+</div>
 </div>
                 <div>
                     <div class="row" style="margin:0px;padding:0px;">
@@ -894,7 +903,7 @@ function fetchQuestion(id, no, sectionIdno = 0) {
             success: function(data){
                 var opts = $.parseJSON(data);
                 console.log('total', opts.userAnswer.id);
-                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;font-size:17px;color:white'><strong>"+opts.question+"</strong></pre>";
+                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;font-size:17px;font-family: inherit;margin-bottom: 10px !important;'><strong>"+opts.question+"</strong></pre>";
                 // console.log('data', opts[0].questions);
                 // // Parse the returned json data
                 // // var opts = $.parseJSON(data);
