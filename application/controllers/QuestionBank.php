@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once(APPPATH."controllers/MyController.php");
 
-class QuestionBank extends CI_Controller {
+class QuestionBank extends MyController {
 
         public function __construct()
         {
@@ -641,7 +641,7 @@ class QuestionBank extends CI_Controller {
         }
 
         public function userProfileUpdate() {       
-            
+            print_r($this->input->post()); die;
 
             $userData = array();
 
@@ -662,6 +662,23 @@ class QuestionBank extends CI_Controller {
             $userData['degree_percentage'] = $_POST['degree_per'];
             $userData['stream'] = $_POST['branch'];
             $userData['work_location'] = $_POST['pwl'];
+
+
+            $userData['degree_university'] = $_POST['university'];
+
+            $userData['pg_college'] = $_POST['collegem'];
+            $userData['pg_passing_year'] = $_POST['degree_pym'];
+            $userData['pg_university'] = $_POST['universitym'];
+            $userData['pg_branch'] = $_POST['branchm'];
+
+            $userData['pg_percentage'] = $_POST['degree_perm'];
+            $userData['pg_degree'] = $_POST['degreem'];
+
+            if (isset($_POST['gap'])) {
+                $userData['year_gap'] = $_POST['gap'];
+            }
+
+
 
     
 

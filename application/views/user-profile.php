@@ -1,6 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
 <script>
 function validateUpdateProfile(){
         
@@ -308,7 +309,7 @@ function Upload() {
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Please Note :</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button"  id="closeModal" style="display:none" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
@@ -320,12 +321,13 @@ function Upload() {
                 Your Username is  <span> <strong><?php echo " ".$userCred['username']." " ; ?></strong> </span> and password is  <span><strong>
                 <?php echo " ".$userCred['password']; ?></strong> </span>
             </p>
+            <input type="checkbox" onclick="readNote()" name="read" id="read" /> <strong>Noted</strong>
         </div>
         
         <!-- Modal footer -->
-        <div class="modal-footer">
+       <!--  <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+        </div> -->
         
       </div>
     </div>
@@ -571,10 +573,19 @@ function Upload() {
 window.onload = test();
 
 function test() {
-   
-        document.getElementById("modal-btn").click();    
-        
+
+    if (localStorage.getItem("isRead") != 1) {
+        $('#userModal').modal({backdrop: 'static', keyboard: false})
+        document.getElementById("modal-btn").click();
+    }
+}
+
+function readNote() {
     
+    document.getElementById("closeModal").click();
+
+     // Store
+    localStorage.setItem("isRead", "1");
 }
 
 

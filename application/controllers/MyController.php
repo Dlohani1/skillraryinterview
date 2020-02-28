@@ -14,7 +14,7 @@ class MyController extends CI_Controller {
 
         $u = 1;
 
-       if ($urls == 'registration' ||  $urls == 'login' || $urls == 'signin' || $urls == 'register' || $urls == 'new-login' || $urls == 'checkCode') {
+       if ($urls == 'registration' ||  $urls == 'logout' ||  $urls == 'login' || $urls == 'signin' || $urls == 'register' || $urls == 'new-login' || $urls == 'checkCode') {
        		$u = 0;
        }
 
