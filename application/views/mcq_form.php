@@ -111,7 +111,7 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
             margin-left: 30px;
         }
         .saveBtn1{
@@ -122,8 +122,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
             margin-bottom: 5px;
+            margin-left: 5px;
         }
 
         .clearBtn{
@@ -134,9 +135,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
             margin-bottom: 5px;
-            margin-left: -27px;
+            margin-left: -19px;
         }
 
         .submitBtn{
@@ -1191,7 +1192,7 @@ function clearResponse() {
 
 </script>
  <script>
-/*
+
     function InitializeMap() 
        {
            document.onkeydown = function () {
@@ -1253,7 +1254,7 @@ window.onload = function() {
     }
   };
 
-*/
+
     var countdownTimer;
 
     function setTime() {

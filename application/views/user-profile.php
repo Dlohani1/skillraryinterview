@@ -434,7 +434,7 @@ function Upload() {
                                                 </div>
                                             </div>
 
-                                        <h6 class="twelvethDetails">Under Graduate:</h6>
+                                        <h6 class="twelvethDetails">Graduate:</h6>
                                         <hr class="hrDesignUpdate">
                                         <div class="row rowGap">
                                             <div class="col-md-4">
@@ -473,7 +473,7 @@ function Upload() {
                                             </div>
                                         </div>
 
-                                        <h6 class="twelvethDetails">Graduate:</h6>
+                                        <h6 class="twelvethDetails">Post Graduate:</h6>
                                         <hr class="hrDesignUpdate">
                                         <div class="row rowGap">
                                             <div class="col-md-4">

@@ -539,7 +539,7 @@ function Upload() {
                                                 <p id="errortwelveth_per" class="errMessage"></p>
                                             </div>
                                         </div>
-                                        <h6 class="twelvethDetails">Under Graduate:</h6>
+                                        <h6 class="twelvethDetails">Graduate:</h6>
                                         <hr class="hrDesignUpdate">
                                         <div class="row rowGap">
                                             <div class="col-md-4">
@@ -577,7 +577,7 @@ function Upload() {
                                                 <p id="erroruniversity" class="errMessage"></p>
                                             </div>
                                         </div>
-                                        <h6 class="twelvethDetails">Graduate:</h6>
+                                        <h6 class="twelvethDetails">Post Graduate:</h6>
                                         <hr class="hrDesignUpdate">
                                         <div class="row rowGap">
                                             <div class="col-md-4">
@@ -637,8 +637,7 @@ function Upload() {
                                             </div>
                                             <div class="col-md-8" style="display: none;" id="hManyYears">
                                                 <label>How many years?</label>
-                                                <input type="text" name="universitym" class="form-control" autocomplete="off"><br/>
-                                                
+                                                <input type="text" name="gap_year" class="form-control" autocomplete="off"><br/>
                                             </div>
                                         </div>
                                     </fieldset><br/>
