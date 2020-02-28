@@ -185,7 +185,7 @@ class QuestionBank extends MyController {
 
         public function getCodeTest() {
             $mcqId = $this->session->mcqId;
-            $sql = "SELECT * FROM `mcq-code-test` WHERE mcq_test_id =".$mcqId;
+            $sql = "SELECT * FROM `mcq_code_test` WHERE mcq_test_id =".$mcqId;
 
             $codeId = $this->db->query($sql)->row();
 

@@ -179,7 +179,7 @@ class AdminController extends CI_Controller {
 
     $data  = array ('mcq_test_id' => $_POST['mcqId'], 'code_id' => $result->result);
 
-    $this->db->insert('mcq-code-test', $data);
+    $this->db->insert('mcq_code_test', $data);
     die;
 
   }
