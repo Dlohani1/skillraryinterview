@@ -123,7 +123,8 @@
             font-weight: 600;
             font-size: 18px;
             width: 100%;
-            margin-left: 30px;
+            max-width: 240px;
+            margin-bottom: 5px;
         }
         .saveBtn1{
             background: purple;
@@ -134,8 +135,8 @@
             font-weight: 600;
             font-size: 18px;
             width: 100%;
+            max-width: 240px;
             margin-bottom: 5px;
-            margin-left: 5px;
         }
 
         .clearBtn{
@@ -147,8 +148,8 @@
             font-weight: 600;
             font-size: 18px;
             width: 100%;
+            max-width: 240px;
             margin-bottom: 5px;
-            margin-left: -16px;
         }
 
         .submitBtn{
@@ -213,9 +214,15 @@
             border-radius: 20px;
         }
         .username{
-            padding-left: 20px;
+            /* padding-left: 20px;
             position: absolute;
+            line-height: 30px; */
+      
+            left: 10px;
+            position: relative;
             line-height: 30px;
+            top: 15px;
+
         }
         .closeBtn{
             background: #33A478;
@@ -657,12 +664,12 @@
             <div class="column1" id="questionPallate">
 
                 <div class="firstbox">
-<span><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
-<span class="username">
+<span style="float:left"><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
+<div class="username">
 <span>Name: <?php echo $userData['first_name']." ".$userData['last_name'] ; ?></span><br/>
 <span class="mobileno">Mobile: <?php echo $userData['contact_no']; ?></span><br/>
 <span class="gender">Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
-</span>
+</div>
 </div>
                 <div>
                     <div class="row" style="margin:0px;padding:0px;">
