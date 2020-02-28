@@ -769,8 +769,7 @@ class QuestionBank extends MyController {
 
             $userId = $this->session->id;
 
-            $sql = "SELECT first_name,last_name,email,contact_no,state, city, dob, gender, tenth_passing_year, tenth_percentage,
-            tenth_board, twelveth_board, twelveth_passing_year, twelveth_percentage, degree, degree_college_name, degree_passing_year, degree_percentage, stream, work_location, profile_image,degree_university, pg_college, pg_passing_year, pg_branch,
+            $sql = "SELECT first_name,last_name,email,contact_no,state, city, dob, gender, tenth_passing_year, tenth_percentage,tenth_board, twelveth_board, twelveth_passing_year, twelveth_percentage, degree, degree_college_name, degree_passing_year, degree_percentage, stream, work_location, profile_image,degree_university, pg_college, pg_passing_year, pg_branch,
             pg_university, pg_percentage, pg_degree FROM `student_register` Where id = '$userId'" ;
 
             $query = $this->db->query($sql);
