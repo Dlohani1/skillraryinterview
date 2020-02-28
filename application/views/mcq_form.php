@@ -111,7 +111,7 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 100%;
+            width: 240px;
             margin-left: 30px;
         }
         .saveBtn1{
@@ -122,9 +122,8 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 100%;
+            width: 240px;
             margin-bottom: 5px;
-            margin-left: 5px;
         }
 
         .clearBtn{
@@ -135,9 +134,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 100%;
+            width: 240px;
             margin-bottom: 5px;
-            margin-left: -19px;
+            margin-left: -27px;
         }
 
         .submitBtn{
@@ -735,7 +734,7 @@ function loadIframe() {
 
     var id = document.getElementById("code-lang").value;
     if (id > 0) {
-        var mcqId = document.getElementById("mcqSessionId").value;
+    var mcqId = document.getElementById("mcqSessionId").value;
     var userId  = document.getElementById("studentSessionId").value;
     var codeId = document.getElementById("codeTestId").value;
     var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/"+codeId+"/"+mcqId;
@@ -1029,15 +1028,15 @@ function saveNext(isMarked, timeUp = false) {
             //     closeBtn();    
             // } else {
 
-                // if (document.getElementById("saveNxt").innerHTML =="Save") {
+                if (document.getElementById("saveNxt").innerHTML =="Save") {
 
-                //     var yes = confirm("Please confirm to Submit. This will take you to next section");
+                    var yes = confirm("Do you want to sumbit test? Once submit you will be move to next section and cannot come back");
                    
-                //     if (yes){
-                //         nextSec = true;
-                //         document.getElementById("saveNxt").innerHTML = "Save & Next";    
-                //     }
-                // }
+                    if (yes){
+                        nextSec = true;
+                        document.getElementById("saveNxt").innerHTML = "Save & Next";    
+                    }
+                }
            // }
 
 
@@ -1192,7 +1191,7 @@ function clearResponse() {
 
 </script>
  <script>
-
+/*
     function InitializeMap() 
        {
            document.onkeydown = function () {
@@ -1254,7 +1253,7 @@ window.onload = function() {
     }
   };
 
-
+*/
     var countdownTimer;
 
     function setTime() {

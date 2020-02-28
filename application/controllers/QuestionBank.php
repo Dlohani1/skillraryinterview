@@ -677,13 +677,17 @@ class QuestionBank extends MyController {
             $userData['pg_percentage'] = $_POST['degree_perm'];
             $userData['pg_degree'] = $_POST['degreem'];
 
+            $userData['tenth_board'] = $_POST['tenth_branch'];
+            $userData['twelveth_board'] = $_POST['twelveth_branch'];
+
+            
+
+            $userData['degree_college_name'] = $_POST['college'];
+
+
             if (isset($_POST['gap'])) {
                 $userData['year_gap'] = $_POST['gap'];
             }
-
-
-
-    
 
             if (isset($_POST['isCreate'])) {
 
@@ -731,7 +735,13 @@ class QuestionBank extends MyController {
 
                     $this->session->set_flashdata('success', 'Profile Created Successfully');
 
-                    redirect('user/profile', 'refresh');
+                    if (isset($_SESSION['mcqCode'])) {
+                        $this->checkCode($_SESSION['mcqCode']);
+                    } else {
+                        redirect('user/profile', 'refresh');    
+                    }
+
+                    
 
                 //}
 
@@ -742,7 +752,13 @@ class QuestionBank extends MyController {
                 $this->db->where('id', $userId);
                 $this->db->update('student_register',$userData);  
                 $this->session->set_flashdata('success', 'Profile Updated Successfully');
-                redirect('user/profile', 'refresh');
+                 if (isset($_SESSION['mcqCode'])) {
+                    $this->checkCode($_SESSION['mcqCode']);
+                } else {
+                    redirect('user/profile', 'refresh');    
+                }
+
+                //redirect('user/profile', 'refresh');
             }
 
         }  
@@ -751,7 +767,9 @@ class QuestionBank extends MyController {
 
             $userId = $this->session->id;
 
-            $sql = "SELECT first_name,last_name,email,contact_no,state, city, dob, gender, tenth_passing_year, tenth_percentage, twelveth_passing_year, twelveth_percentage, degree, degree_passing_year, degree_percentage, stream, work_location, profile_image FROM `student_register` Where id = '$userId'" ;
+            $sql = "SELECT first_name,last_name,email,contact_no,state, city, dob, gender, tenth_passing_year, tenth_percentage,
+            tenth_board, twelveth_board, twelveth_passing_year, twelveth_percentage, degree, degree_college_name, degree_passing_year, degree_percentage, stream, work_location, profile_image,degree_university, pg_college, pg_passing_year, pg_branch,
+            pg_university, pg_percentage, pg_degree FROM `student_register` Where id = '$userId'" ;
 
             $query = $this->db->query($sql);
 
@@ -781,6 +799,17 @@ class QuestionBank extends MyController {
                     $userData['stream'] = $row->stream;
                     $userData['work_location'] = $row->work_location;
                     $userData['profile-pic'] = $row->profile_image;
+                    $userData['tenth_board'] = $row->tenth_board;
+                    $userData['twelveth_board'] = $row->twelveth_board;
+                    $userData['university'] = $row->degree_university;
+                    $userData['college'] = $row->degree_college_name;
+
+                    $userData['universitym'] = $row->pg_university;
+                    $userData['collegem'] = $row->pg_college;
+                    $userData['pg_per'] = $row->pg_percentage;
+                    $userData['pg_py'] = $row->pg_passing_year;
+                    $userData['pg_branch'] = $row->pg_branch;
+                    $userData['pg_degree'] = $row->pg_degree;
                 }
             }
 
@@ -1118,12 +1147,11 @@ class QuestionBank extends MyController {
 
             //     redirect('user/enter-code');
             // } else {
-
-                if (isset($_POST['code'])) {
-                    $code = trim($_POST['code']);
+                 if (NULL == $code) {
+                    if (isset($_POST['code'])) {
+                        $code = trim($_POST['code']);
+                    }
                 }
-
-
 
                 $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
 
@@ -1214,6 +1242,7 @@ class QuestionBank extends MyController {
                 
 
                 $sectionDetail[] = $row->section_id;
+
                 $result = "result".$countSection;
                 $$result =  $this->db->query($$sql);
                 
