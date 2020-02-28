@@ -122,7 +122,7 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
             margin-left: 30px;
         }
         .saveBtn1{
@@ -133,8 +133,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
             margin-bottom: 5px;
+            margin-left: 5px;
         }
 
         .clearBtn{
@@ -145,9 +146,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
             margin-bottom: 5px;
-            margin-left: -27px;
+            margin-left: -16px;
         }
 
         .submitBtn{
@@ -270,11 +271,13 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-top:7px;
+                margin-left: 0px;
             }
 
             .clearBtn{
-                background: #60ca78ba;
-                border: 2px solid grey;
+                background: #3a360d;
+                border: 2px solid #3a360d;
                 padding: 6px 13px;
                 border-radius: 5px;
                 color: white;
