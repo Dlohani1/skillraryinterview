@@ -506,7 +506,7 @@ function Upload() {
                                         <div class="row rowGap">
                                             <div class="col-md-4">
                                                 <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="tenth_branch"   class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" name="tenth_branch"   value="<?php echo $userData['tenth_board']; ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errortenth_branch" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
@@ -525,7 +525,7 @@ function Upload() {
                                         <div class="row rowGap">
                                             <div class="col-md-4">
                                                 <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="twelveth_branch"   class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" name="twelveth_branch"   value="<?php echo $userData['twelveth_board']; ?>"class="form-control"  autocomplete="off"><br/>
                                                 <p id="errortwelveth_branch" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
@@ -544,7 +544,7 @@ function Upload() {
                                         <div class="row rowGap">
                                             <div class="col-md-4">
                                                 <label>College<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="college" class="form-control" autocomplete="off"><br/>
+                                                <input type="text" name="college" value="<?php echo $userData['college']; ?>" class="form-control" autocomplete="off"><br/>
                                                 <p id="errorcollege" class="errMessage"></p>
                                             </div>
                                         
@@ -573,7 +573,7 @@ function Upload() {
                                             </div>
                                             <div class="col-md-4">
                                                 <label>University<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="university" class="form-control" autocomplete="off"><br/>
+                                                <input type="text" name="university" value="<?php echo $userData['university']; ?>"class="form-control" autocomplete="off"><br/>
                                                 <p id="erroruniversity" class="errMessage"></p>
                                             </div>
                                         </div>
@@ -584,7 +584,7 @@ function Upload() {
                                                 <label>College
                                                     <!-- <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
                                                 </label>
-                                                <input type="text" name="collegem" class="form-control" autocomplete="off"><br/>
+                                                <input type="text" name="collegem" value="<?php echo $userData['collegem']; ?>"class="form-control" autocomplete="off"><br/>
                                                 <p id="errorcollegem" class="errMessage"></p>
                                             </div>
                                         
@@ -592,14 +592,14 @@ function Upload() {
                                                 <label>Passing Year
                                                     <!-- <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
                                                 </label>
-                                                <input type="number" name="degree_pym" class="form-control"  autocomplete="off"><br/>
+                                                <input type="number" name="degree_pym" value="<?php echo $userData['pg_py']; ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_pym" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Branch
                                                     <!-- <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
                                                 </label>
-                                                <input type="text" name="branchm"  class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" name="branchm"  value="<?php echo $userData['pg_branch']; ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errorbranchm" class="errMessage"></p>
                                             </div>
                                         </div>
@@ -608,7 +608,7 @@ function Upload() {
                                                 <label>Degree
                                                     <!-- <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
                                                 </label>
-                                                <input type="text" name="degreem" class="form-control" autocomplete="off"><br/>
+                                                <input type="text" name="degreem" value="<?php echo $userData['pg_degree']; ?>" class="form-control" autocomplete="off"><br/>
                                                 <p id="errordegreem" class="errMessage"></p>
                                             </div>
                                         
@@ -616,14 +616,14 @@ function Upload() {
                                                 <label>Percentage
                                                     <!-- <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
                                                 </label>
-                                                <input type="text" id="gperU" name="degree_perm" class="form-control"  autocomplete="off"><br/>
+                                                <input type="text" id="gperU" value="<?php echo $userData['pg_per']; ?>" name="degree_perm" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_perm" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
                                                 <label>University
                                                     <!-- <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
                                                 </label>
-                                                <input type="text" name="universitym" class="form-control" autocomplete="off"><br/>
+                                                <input type="text" name="universitym" value="<?php echo $userData['universitym']; ?>" class="form-control" autocomplete="off"><br/>
                                                 <p id="erroruniversitym" class="errMessage"></p>
                                             </div>
                                         </div>
