@@ -8,6 +8,7 @@
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    
     <title>MCQ Form</title>
     <style type="text/css">
         /*.active, .badge:hover {
@@ -19,6 +20,7 @@
             /* padding: 10px;
             border-radius: 5px; */
         }
+
         pre {
             margin-bottom: -1rem !important;
         }
@@ -44,6 +46,7 @@
             padding: 0px;
             line-height: 42px;
         }
+    
         .questionSection{
             min-height:calc(65vh - 60px);
         }
@@ -66,8 +69,7 @@
             width: 20%;
             padding: 10px;
             border: 2px solid black;
-            /* margin-top: 8%;*/
-            /* height: 85vh; */
+
         }
         .row:after {
             content: "";
@@ -77,9 +79,11 @@
         .icon{
             float: left;
             font-size: 32px;
+            margin: 0;
+            padding: 0;
         }
         .content{
-            margin-left: 50px;
+            margin-left: 40px;
             margin-top: 12px;
             position: absolute;
         }
@@ -238,6 +242,10 @@
             float: right;
         }
         @media only screen and (max-width: 600px){
+            .firstbox {
+                margin: 20px 0px;
+                display: inline-grid;
+            }
             .column {
                 float: left;
                 width: 55%;
@@ -256,6 +264,7 @@
             .username {
                 padding-left: 11px;
                 position: inherit;
+                margin-top: 10px;
                 line-height: 30px;
             }
             .iconAnswered {
@@ -304,14 +313,18 @@
                 max-width: 70px;
                 min-width: 70px;
             }
-            .mobileno{
+            /* .mobileno{
                 margin-left: 10px;
             }
             .gender{
                 margin-left: 10px;
-            }
+            } */
         }
         @media only screen and (min-width: 601px) and (max-width:1024px){
+            .firstbox {
+                margin: 20px 0px;
+                display: inline-grid;
+            }
             .column {
                 float: left;
                 width: 76%;
@@ -374,12 +387,12 @@
                 max-width: 170px;
                 min-width: 170px;
             }
-            .mobileno{
+            /* .mobileno{
                 margin-left: 10px;
             }
             .gender{
                 margin-left: 10px;
-            }
+            } */
             .content{
                 margin-top: inherit;
                 margin-left: inherit;
@@ -402,7 +415,7 @@
                 border: 2px solid black;
             }
             .imgProfile{
-                width: 190px;
+                width: 100px;
                 border-radius: 20px;
             }
             .username {
@@ -446,12 +459,12 @@
                 width: 170px;
                 margin-left: 0px;
             }
-            .mobileno{
+            /* .mobileno{
                 margin-left: 10px;
             }
             .gender{
                 margin-left: 10px;
-            }
+            } */
             .content{
                 margin-top: inherit;
                 margin-left: inherit;
@@ -681,7 +694,7 @@
             <div class="column1" id="questionPallate">
 
                 <div class="firstbox">
-<span style="float:left"><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
+<span style="float:left;text-align:center"><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
 <div class="username">
 <span>Name: <?php echo $userData['first_name']." ".$userData['last_name'] ; ?></span><br/>
 <span class="mobileno">Mobile: <?php echo $userData['contact_no']; ?></span><br/>
