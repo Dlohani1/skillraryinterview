@@ -277,7 +277,7 @@
                 border-radius: 5px;
                 color: white;
                 font-weight: 600;
-                font-size: 13px;
+                font-size: 10px;
                 width: 70px;
                 margin-left: 0px;
                 margin: 5px;
@@ -291,7 +291,7 @@
                 border-radius: 5px;
                 color: white;
                 font-weight: 600;
-                font-size: 13px;
+                font-size: 10px;
                 width: 70px;
                 margin-left: 0px;
                 margin:5px;
@@ -306,7 +306,7 @@
                 border-radius: 5px;
                 color: white;
                 font-weight: 600;
-                font-size: 13px;
+                font-size: 10px;
                 width: 70px;
                 margin-left: 0px;
                 margin:5px;
