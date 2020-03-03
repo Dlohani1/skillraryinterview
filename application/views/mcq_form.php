@@ -10,10 +10,77 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
     <title>MCQ Form</title>
     <style type="text/css">
-        /*.active, .badge:hover {
-          background-color: #f576a0 !important;
-          color: white;
-        }*/
+
+        .radioButn {
+            display: block;
+            position: relative;
+            padding-left: 10px;
+            line-height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            margin-bottom: 0px;
+        }
+        .radioButn input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .radioButn input:checked ~ .checkmark {
+            color: #2196F3;
+        }
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 10px;
+            height: 20px;
+            width: 20px;
+            background: #eee;
+            border-radius: 50%;
+            margin-top: 5px;
+            display: none;
+        }
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        .radioButn input:checked ~ .checkmark:after {
+            display: block;
+        }
+        .radioButn .checkmark:after {
+            top: 5px;
+            left: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #33A478;
+        }
+        .radiBackground{
+            list-style-type: none;
+            background: #6c757dc2;
+            margin: 0;
+            margin-bottom: 20px;
+            border-radius: 7px;
+            width: 50%;
+        }
+        .radiBackground1 {
+            text-align: left; 
+            color: #fff; 
+            background-color:#33A478; 
+            text-decoration: none;
+            list-style-type: none;
+            margin: 0;
+            margin-bottom: 20px;
+            border-radius: 7px;
+            width: 50%;
+        }
+        pre {
+            margin-bottom: -1rem !important;
+        }
         .submitTest{
             background: #e45353;
             border: 2px solid #e45353;
@@ -58,8 +125,6 @@
             width: 20%;
             padding: 10px;
             border: 2px solid black;
-            /* margin-top: 8%;*/
-            /* height: 85vh; */
         }
         .row:after {
             content: "";
@@ -111,8 +176,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
-            margin-left: 30px;
+            width: 100%;
+            max-width: 240px;
+            margin-bottom: 5px;
         }
         .saveBtn1{
             background: purple;
@@ -122,7 +188,8 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
+            max-width: 240px;
             margin-bottom: 5px;
         }
 
@@ -134,9 +201,9 @@
             color: white;
             font-weight: 600;
             font-size: 18px;
-            width: 240px;
+            width: 100%;
+            max-width: 240px;
             margin-bottom: 5px;
-            margin-left: -27px;
         }
 
         .submitBtn{
@@ -201,9 +268,11 @@
             border-radius: 20px;
         }
         .username{
-            padding-left: 20px;
-            position: absolute;
+            left: 10px;
+            position: relative;
             line-height: 30px;
+            top: 15px;
+
         }
         .closeBtn{
             background: #33A478;
@@ -259,11 +328,13 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                margin-top:7px;
+                margin-left: 0px;
             }
 
             .clearBtn{
-                background: #60ca78ba;
-                border: 2px solid grey;
+                background: #3a360d;
+                border: 2px solid #3a360d;
                 padding: 6px 13px;
                 border-radius: 5px;
                 color: white;
@@ -578,7 +649,7 @@
                     <div class="row">
                         <div class="col-md-8 offset-md-1">
                             <br/>
-                            <div class="well">
+                            <div class="wellBg">
                             <p id="questionData"></p>
                         </div>
                     <div>
@@ -643,57 +714,57 @@
             <div class="column1" id="questionPallate">
 
                 <div class="firstbox">
-<span><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
-<span class="username">
-<span>Name: <?php echo $userData['first_name']." ".$userData['last_name'] ; ?></span><br/>
-<span class="mobileno">Mobile: <?php echo $userData['contact_no']; ?></span><br/>
-<span class="gender">Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
-</span>
-</div>
+                <span style="float:left"><img src=<?php echo base_url().$img;?> class="imgProfile"/></span>
+                <div class="username">
+                <span>Name: <?php echo $userData['first_name']." ".$userData['last_name'] ; ?></span><br/>
+                <span class="mobileno">Mobile: <?php echo $userData['contact_no']; ?></span><br/>
+                <span class="gender">Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
+                </div>
+                </div>
+                                <div>
+                                    <div class="row" style="margin:0px;padding:0px;">
+                <div class="col-md-6">
                 <div>
-                    <div class="row" style="margin:0px;padding:0px;">
-<div class="col-md-6">
-<div>
-<p class="icon"><span class="box1"><span class="countColor" id="ansCount" style="visibility: hidden;">0</span></span></p>
-<p class="content">Answered</p>
-</div>
-</div>
-<div class="col-md-6">
-<div>
-<!-- <p class="icon"><span class="box2"><span style="visibility: hidden;">5</span></span></p>
-<p class="content">Not Answered</p>
- -->
-<p class="icon"><span class="box3"><span class="countColor" id="notViewed" style="visibility: hidden;">5</span></span></p>
-<p class="content">Not Viewed</p>
+                <p class="icon"><span class="box1"><span class="countColor" id="ansCount" style="visibility: hidden;">0</span></span></p>
+                <p class="content">Answered</p>
+                </div>
+                </div>
+                <div class="col-md-6">
+                <div>
+                <!-- <p class="icon"><span class="box2"><span style="visibility: hidden;">5</span></span></p>
+                <p class="content">Not Answered</p>
+                -->
+                <p class="icon"><span class="box3"><span class="countColor" id="notViewed" style="visibility: hidden;">5</span></span></p>
+                <p class="content">Not Viewed</p>
 
-</div>
-</div>
-</div><br/>
+                </div>
+                </div>
+                </div><br/>
 
-<div class="row" style="margin:0px;padding:0px;">
-<div class="col-md-6">
-<div>
-<p class="icon"><span class="box5"><span class="countColor" id="viewedCount"style="visibility: hidden;">0</span></span></p>
-<!-- <p class="content">Not Visited</p> -->
-<p class="content">Viewed</p>
-</div>
-</div>
-<div class="col-md-6">
-<div>
-<p class="icon"><span class="box4"><span class="countColor" id="markedCount" style="visibility: hidden;">0</span></span></p>
-<p class="content">Marked For Review</p>
-</div>
-</div>
-</div><br/>
+                <div class="row" style="margin:0px;padding:0px;">
+                <div class="col-md-6">
+                <div>
+                <p class="icon"><span class="box5"><span class="countColor" id="viewedCount"style="visibility: hidden;">0</span></span></p>
+                <!-- <p class="content">Not Visited</p> -->
+                <p class="content">Viewed</p>
+                </div>
+                </div>
+                <div class="col-md-6">
+                <div>
+                <p class="icon"><span class="box4"><span class="countColor" id="markedCount" style="visibility: hidden;">0</span></span></p>
+                <p class="content">Marked For Review</p>
+                </div>
+                </div>
+                </div><br/>
 
-<div class="row" style="margin:0px;padding:0px;">
-<div class="col-md-12">
-<div>
-<!--<p class="icon"><span class="box4"><span style="visibility: hidden;">5</span></span></p><i class="fa fa-check" id="checkIcon" aria-hidden="true"></i></p>
-<p class="content1">Answered & Marked for Review</p>-->
-</div>
-</div>
-</div>
+                <div class="row" style="margin:0px;padding:0px;">
+                <div class="col-md-12">
+                <div>
+                <!--<p class="icon"><span class="box4"><span style="visibility: hidden;">5</span></span></p><i class="fa fa-check" id="checkIcon" aria-hidden="true"></i></p>
+                <p class="content1">Answered & Marked for Review</p>-->
+                </div>
+                </div>
+                </div>
                 </div>
                 <hr>
                 <div class="row"  style="margin:0px;padding:0px;">
@@ -719,7 +790,17 @@
         </div>
     </div>
 
+    <script>
+     
+    </script>
+
 <script>
+
+$(document).on('click','.radiBackground',function(){
+    $(".radiBackground").removeClass("radiBackground1");
+    $(this).addClass("radiBackground1");
+})
+
 $( document ).ready(function() {
     
 //$('#section').empty()
@@ -882,7 +963,7 @@ function fetchQuestion(id, no, sectionIdno = 0) {
             success: function(data){
                 var opts = $.parseJSON(data);
                 console.log('total', opts.userAnswer.id);
-                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;'><strong>"+opts.question+"</strong></pre>";
+                document.getElementById("questionData").innerHTML= "<pre style='white-space: pre-wrap;font-size:17px;font-family: inherit;margin-bottom: 10px !important;'><strong>"+opts.question+"</strong></pre>";
                 // console.log('data', opts[0].questions);
                 // // Parse the returned json data
                 // // var opts = $.parseJSON(data);
@@ -895,12 +976,16 @@ function fetchQuestion(id, no, sectionIdno = 0) {
                 $.each(opts.options, function(i, d) { console.log('d',d);
                     // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
                     var sel = "";
+
+                    var backColor = "radiBackground";
                     if (undefined !== opts.userAnswer.id) {
                         if (d.id == opts.userAnswer.id) {
                             sel = "checked";
+                            backColor = "radiBackground1";
+
                         }
                     }
-                    $('#optionsList').append("<li> <input  "+sel+" name='answer' type='radio' onclick='saveAns(this)' value="+ d.id +"> "+ d.option+" </li>");
+                    $('#optionsList').append("<li class="+backColor+"><label class='radioButn'><input  "+sel+" name='answer' type='radio' onclick='saveAns(this)' value="+ d.id +"> <span class='checkmark'></span>"+ d.option+"</label></li>");
                 });
                 
                 if (document.getElementById("countdown").value > 0) {
@@ -1191,7 +1276,7 @@ function clearResponse() {
 
 </script>
  <script>
-/*
+
     function InitializeMap() 
        {
            document.onkeydown = function () {
@@ -1253,7 +1338,6 @@ window.onload = function() {
     }
   };
 
-*/
     var countdownTimer;
 
     function setTime() {
