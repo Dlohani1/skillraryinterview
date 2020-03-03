@@ -1052,10 +1052,17 @@ class QuestionBank extends MyController {
                 }
             }
 
+            $codeTest = 0;
 
-            //$codeResult = $this->codeTestResult();
+            if (isset($_SESSION['codeTestId'])) {
+                $codeResult = $this->codeTestResult();
+
+                $codeTest = $codeResult[3]; 
+            }
+            //print_r($codeResult[3][1]); die;
 
             $result = array ($resultQ, $result2, $result1);
+
             $a = array();
             $i = 0;
             foreach ($result2 as $key => $value) {
@@ -1097,14 +1104,18 @@ class QuestionBank extends MyController {
            // print_r($a); die;
 
             $this->load->view('user-header');
-            $this->load->view('results', array("results"=>$a));
+            $this->load->view('results', array("results"=>$a, "codeTestResult" => $codeTest));
             $this->load->view('codefooter');
 
         }
 
         public function codeTestResult() {
 
-            $id = $this->session->id;
+            
+            $mcqId = $this->session->mcqId;
+            $studentId = $this->session->id;
+            $codeId = $this->session->codeTestId;
+
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_URL,"https://code.skillrary.com/api/user-timings");
@@ -1113,10 +1124,12 @@ class QuestionBank extends MyController {
 
             // In real life you should use something like:
              curl_setopt($ch, CURLOPT_POSTFIELDS, 
-                     http_build_query(array('user_id' => $id)));
+                     http_build_query(array("user_id" => "8000", "mcq" => $mcqId, "assessment_id"=>"17", "source" => "assess" )));
 
             // Receive server response ...
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+
 
             $server_output = curl_exec($ch);
 
@@ -1124,8 +1137,7 @@ class QuestionBank extends MyController {
             $result = json_decode($server_output);
 
             curl_close ($ch);
-
-            
+ 
             $codeResult = array ("Code Test", "2", "120", $result->result);
             return $codeResult;
 
