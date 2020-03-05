@@ -460,7 +460,7 @@ function Upload() {
                                                     <p id="errortenth_per" class="errMessage"></p>
                                                 </div>
                                             </div>
-                                        <h6 class="twelvethDetails">11<sup>th</sup> & 12<sup>th</sup> Grade:</h6>
+                                        <h6 class="twelvethDetails">12<sup>th</sup> Grade:</h6>
                                         <hr class="hrDesignUpdate">
                                             <div class="row rowGap">
                                                 <div class="col-md-4">
