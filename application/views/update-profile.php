@@ -83,7 +83,9 @@ function validateUpdateProfile(){
 
         //tenth
         if(document.regform.tenth_branch.value.length == '0'){
+            console.log('11college')
             document.getElementById("errortenth_branch").innerHTML = "This field is required";
+            error = false;
         } else {
             document.getElementById("errortenth_branch").innerHTML = "";
         }
@@ -115,16 +117,19 @@ function validateUpdateProfile(){
         }
         // // twelveth
         if(document.regform.twelveth_branch.value.length == '0'){
+            console.log('12branch')
             document.getElementById("errortwelveth_branch").innerHTML = "This field is required";
+            error = false;
         } else {
             document.getElementById("errortwelveth_branch").innerHTML = "";
         }
         if(document.regform.twelveth_py.value.length == '0'){
             document.getElementById("errortwelveth_py").innerHTML = "This field is required";
+            error = false;
         } else if(!passing_year_pattern.test(twlevthpyear)){
             document.getElementById("errortwelveth_py").innerHTML = "Enter valid year";
             error = false;
-        }else  if(document.regform.twelveth_py.value.length < '4'){
+        }else if(document.regform.twelveth_py.value.length < '4'){
             document.getElementById("errortwelveth_py").innerHTML = "Please enter valid year";
             error = false;
         } else  if(document.regform.twelveth_py.value.length > '4'){
@@ -134,8 +139,8 @@ function validateUpdateProfile(){
             document.getElementById("errortwelveth_py").innerHTML = "";
         }
         if(document.regform.twelveth_per.value.length == '0'){
-
             document.getElementById("errortwelveth_per").innerHTML = "This field is required";
+            error = false;
 
         } else if(document.regform.twelveth_per.value != "100"){
             if(!perPattern.test(highper)){
@@ -147,12 +152,15 @@ function validateUpdateProfile(){
         }
         // under graduation
         if(document.regform.college.value.length == '0'){
+            console.log('college')
             document.getElementById("errorcollege").innerHTML = "This field is required";
+            error = false;
         } else {
             document.getElementById("errorcollege").innerHTML = "";
         }
         if(document.regform.degree_py.value.length == '0'){
             document.getElementById("errordegree_py").innerHTML = "This field is required";
+            error = false;
         } else if(!passing_year_pattern.test(degreepyear)){
             document.getElementById("errordegree_py").innerHTML = "Enter valid year";
             error = false;
@@ -167,16 +175,19 @@ function validateUpdateProfile(){
         }
         if(document.regform.branch.value.length == '0'){
             document.getElementById("errorbranch").innerHTML = "This field is required";
+            error = false;
         } else {
             document.getElementById("errorbranch").innerHTML = "";
         }
         if(document.regform.degree.value.length == '0'){
             document.getElementById("errordegree").innerHTML = "This field is required";
+            error = false;
         } else {
             document.getElementById("errordegree").innerHTML = "";
         }
         if(document.regform.degree_per.value.length == '0'){
             document.getElementById("errordegree_per").innerHTML = "This field is required";
+            error = false;
         }else if(document.regform.degree_per.value != "100"){
             if(!perPattern.test(udper)){
                 document.getElementById("errordegree_per").innerHTML = "Please enter valid percentage";
@@ -187,6 +198,7 @@ function validateUpdateProfile(){
         }
         if(document.regform.university.value.length == '0'){
             document.getElementById("erroruniversity").innerHTML = "This field is required";
+            error = false;
         } else {
             document.getElementById("erroruniversity").innerHTML = "";
         }
@@ -238,7 +250,7 @@ function validateUpdateProfile(){
             document.getElementById("errorpwl").innerHTML = "";
         }
 
-
+        console.log('last')
         return error;
 }
 
@@ -547,6 +559,7 @@ function Upload() {
                                         <div class="row rowGap">
                                             <div class="col-md-4">
                                                 <label>Board</label><sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+
                                                 <input type="text" name="tenth_branch"   value="<?php echo $userData['tenth_board']; ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errortenth_branch" class="errMessage"></p>
                                             </div>
