@@ -144,14 +144,15 @@ font-size: 16px;
 <div class="container">
 <div class="col-md-8 offset-md-2 googleLoginContainer">
   <h4 style="text-align:center" class="headingLogin">SkillRary Assessment Login</h4><br/>
+  <?php if (isset($_SESSION['error'])) { echo "<p style='color: red;
+    text-align: center;'>".$_SESSION['error']."</p>";} ?>
     <div class="container">
       <div class="col-lg-5 offset-md-2">
       
         <div class="hide-manually">
           <p>Or sign in manually:</p>
         </div>
-          <?php if (isset($_SESSION['error'])) { echo "<p style='color: red;
-    text-align: center;'>".$_SESSION['error']."</p>";} ?>
+    
         <form class="form-horizontal" method="post" action="signin">
           <div class="row">
             <div class="col-md-9">

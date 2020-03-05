@@ -8,6 +8,7 @@
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    
     <title>MCQ Form</title>
     <style type="text/css">
 
@@ -78,6 +79,7 @@
             border-radius: 7px;
             width: 50%;
         }
+
         pre {
             margin-bottom: -1rem !important;
         }
@@ -103,6 +105,7 @@
             padding: 0px;
             line-height: 42px;
         }
+    
         .questionSection{
             min-height:calc(65vh - 60px);
         }
@@ -134,9 +137,11 @@
         .icon{
             float: left;
             font-size: 32px;
+            margin: 0;
+            padding: 0;
         }
         .content{
-            margin-left: 50px;
+            margin-left: 40px;
             margin-top: 12px;
             position: absolute;
         }
@@ -178,7 +183,9 @@
             font-size: 18px;
             width: 100%;
             max-width: 240px;
+            min-width: 240px;
             margin-bottom: 5px;
+            margin: 5px;
         }
         .saveBtn1{
             background: purple;
@@ -190,7 +197,9 @@
             font-size: 18px;
             width: 100%;
             max-width: 240px;
+            min-width: 240px;
             margin-bottom: 5px;
+            margin: 5px;
         }
 
         .clearBtn{
@@ -203,7 +212,9 @@
             font-size: 18px;
             width: 100%;
             max-width: 240px;
+            min-width: 240px;
             margin-bottom: 5px;
+            margin: 5px;
         }
 
         .submitBtn{
@@ -285,6 +296,10 @@
             float: right;
         }
         @media only screen and (max-width: 600px){
+            .firstbox {
+                margin: 20px 0px;
+                display: inline-grid;
+            }
             .column {
                 float: left;
                 width: 55%;
@@ -303,6 +318,7 @@
             .username {
                 padding-left: 11px;
                 position: inherit;
+                margin-top: 10px;
                 line-height: 30px;
             }
             .iconAnswered {
@@ -311,46 +327,58 @@
             .saveBtn{
                 background: #33A478;
                 border: 2px solid #33A478;
-                padding: 6px 5px;
+                padding: initial;
                 border-radius: 5px;
                 color: white;
                 font-weight: 600;
-                font-size: 18px;
-                width: 170px;
+                font-size: 10px;
+                width: 70px;
                 margin-left: 0px;
+                margin: 5px;
+                max-width: 70px;
+                min-width: 70px;
             }
             .saveBtn1{
                 background: purple;
                 border: 2px solid purple;
-                padding: 6px 13px;
+                padding: initial;
                 border-radius: 5px;
                 color: white;
                 font-weight: 600;
-                font-size: 18px;
-                width: 170px;
-                margin-top:7px;
+                font-size: 10px;
+                width: 70px;
                 margin-left: 0px;
+                margin:5px;
+                max-width: 70px;
+                min-width: 70px;
             }
 
             .clearBtn{
                 background: #3a360d;
                 border: 2px solid #3a360d;
-                padding: 6px 13px;
+                padding: initial;
                 border-radius: 5px;
                 color: white;
                 font-weight: 600;
-                font-size: 18px;
-                width: 170px;
+                font-size: 10px;
+                width: 70px;
                 margin-left: 0px;
+                margin:5px;
+                max-width: 70px;
+                min-width: 70px;
             }
-            .mobileno{
+            /* .mobileno{
                 margin-left: 10px;
             }
             .gender{
                 margin-left: 10px;
-            }
+            } */
         }
-        @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+        @media only screen and (min-width: 601px) and (max-width:1024px){
+            .firstbox {
+                margin: 20px 0px;
+                display: inline-grid;
+            }
             .column {
                 float: left;
                 width: 76%;
@@ -384,6 +412,8 @@
                 font-size: 18px;
                 width: 170px;
                 margin-left: 0px;
+                max-width: 170px;
+                min-width: 170px;
             }
             .saveBtn1{
                 background: purple;
@@ -394,11 +424,13 @@
                 font-weight: 600;
                 font-size: 18px;
                 width: 170px;
+                max-width: 170px;
+                min-width: 170px;
             }
 
             .clearBtn{
-                background: grey;
-                border: 2px solid grey;
+                background: #3a360d;
+                border: 2px solid  #3a360d;
                 padding: 6px 13px;
                 border-radius: 5px;
                 color: white;
@@ -406,13 +438,15 @@
                 font-size: 18px;
                 width: 170px;
                 margin-left: 0px;
+                max-width: 170px;
+                min-width: 170px;
             }
-            .mobileno{
+            /* .mobileno{
                 margin-left: 10px;
             }
             .gender{
                 margin-left: 10px;
-            }
+            } */
             .content{
                 margin-top: inherit;
                 margin-left: inherit;
@@ -435,7 +469,7 @@
                 border: 2px solid black;
             }
             .imgProfile{
-                width: 190px;
+                width: 100px;
                 border-radius: 20px;
             }
             .username {
@@ -469,8 +503,8 @@
             }
 
             .clearBtn{
-                background: #97ba78;
-                border: 2px solid grey;
+                background: #3a360d;
+                border: 2px solid #3a360d;
                 padding: 6px 13px;
                 border-radius: 5px;
                 color: white;
@@ -479,12 +513,12 @@
                 width: 170px;
                 margin-left: 0px;
             }
-            .mobileno{
+            /* .mobileno{
                 margin-left: 10px;
             }
             .gender{
                 margin-left: 10px;
-            }
+            } */
             .content{
                 margin-top: inherit;
                 margin-left: inherit;
@@ -659,15 +693,15 @@
 <!-- <div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
 </div> -->
-<div class="row buttonRow" style="margin-top:10%">
-    <div class="col-md-4" id="save-next" >
+<div class="row buttonRow" style="margin-top: 10%;display: inline-flex;flex-wrap: nowrap;">
+    <div  id="save-next" >
         <button class="saveBtn" id="saveNxt" onclick="saveNext(2)">Save & Next</button>
     </div>
 
-    <div class="col-md-4"  id="mark-btn">
+    <div id="mark-btn">
         <button class="saveBtn1" id="markReview" onclick="saveNext(1)">Mark for Review & Next</button>
     </div>
-    <div class="col-md-4"  id="clear-btn">
+    <div id="clear-btn">
         <button class="clearBtn" onclick="clearResponse()">Clear Response</button>
     </div>
     
@@ -958,6 +992,7 @@ function fetchQuestion(id, no, sectionIdno = 0) {
 
     $.ajax({
             type: "POST",
+
             url: "fetchQuestion",
             data:{"id":student, "section_id":sectionIdno, "mcq_id": mcqId, "question_id":id},
             success: function(data){
