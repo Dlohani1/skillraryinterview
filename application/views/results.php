@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
-    <title>Login</title>
+    <title>SkillRary Assessment</title>
     <style type="text/css">
         body{
             background-color: #f5f5f5;
@@ -79,6 +79,29 @@
                                 echo "<tr><td>".$value['section']."</td><td>".$value['total_question']."</td><td>".$value['total_time']."</td><td>".$value['user_time']."</td></tr>";
 
                             } 
+
+                            if ($codeTestResult != 0) {
+                               foreach ($codeTestResult as $key => $value) {
+
+                                if ($value->time_taken > 60 ) {
+                                    $min = intval($value->time_taken / 60);
+                                    $sec = $value->time_taken % 60;
+                                    $time = $min." min ".$sec. " sec";
+                                } else {
+                                    if ($value->time_taken> 0) {
+                                        $time = $value->time_taken." sec";    
+                                    } else {
+                                        $time = "NA";
+                                    }
+                                    
+                                }
+
+
+                                    echo "<tr><td>Code Test</td><td>Question".$key."</td><td>".$value->time_taken."</td><td>".$value->time_taken."</td></tr>";
+
+                                }  
+                            }
+                            print_r($codeTestResult);
                             ?>
                         </table>
                     </div>

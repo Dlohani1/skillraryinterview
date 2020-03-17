@@ -411,6 +411,31 @@
 
             }
 
+
+              
+               function getTotalS(id,a) {
+                //console.log('aa',a, "b",b)
+                var selectedId =  document.getElementById(id).selectedIndex;
+
+                var baseUrl = document.getElementById("base-url").value;
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl+"question/getTotalQuestion",
+                     data: { 'Id': selectedId},
+                    success: function(data){
+                    // Parse the returned json data
+                    var opts = $.parseJSON(data);
+                    console.log('dd',opts)
+
+                    document.getElementById("item_name_"+a).value=opts.total_question;
+                    // Use jQuery's each to iterate over the opts value
+                    //$.each(opts, function(i, d) { console.log('d',d);
+                    // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                  }  
+                });
+            }
+
+
             function getTotal(a,b) {
                 console.log('aa',a, "b",b)
 
@@ -448,7 +473,11 @@
                     // Use jQuery's each to iterate over the opts value
                     $.each(opts, function(i, d) { console.log('d',d);
                     // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
-                    $('#item_unit_'+id).append('<option onclick=getTotal("'+id+'","'+d.id+'") value="' + d.id + '">' + d.name + '</option>');
+                      $('#item_unit_'+id).click(function (e) {
+                            //alert('click');
+                            getTotalS("item_unit_"+id,  id);
+                        });
+                    $('#item_unit_'+id).append('<option value="' + d.id + '">' + d.name + '</option>');
                 });
             }
         });
@@ -475,7 +504,9 @@
 
                 var  sectionTime = "";
 
+                var  requiredQnos = "";
                 console.log('nn',no)
+                
                 for (var i=1;i<=no;i++){
                     document.getElementById("item_unit_"+i).disabled = true;
                     document.getElementById("item_name_"+i).disabled = true;
@@ -487,13 +518,16 @@
                         sectionId += ",";
                         questionNos += ",";
                         sectionTime += ",";
+                        requiredQnos += ",";
                     }
 
                     sectionId += document.getElementById("item_unit_"+i).value;
                     questionNos += document.getElementById("item_name_"+i).value;
 
- sectionTime += document.getElementById("item_question_"+i).value;
-                    // sectionTime += document.getElementById("item_quantity_"+i).value;
+                    
+                    sectionTime += document.getElementById("item_question_"+i).value;
+                    
+                    requiredQnos += document.getElementById("item_quantity_"+i).value;
                 }
 
                 document.getElementById("createTest").style.display = "block";
@@ -503,12 +537,10 @@
                 $.ajax({
                     url: baseUrl+"/addTestTime",
                     type: 'post',
-                    data: {'mcqId': mcqId, 'sectionIds': sectionId, 'totalSection':no, 'totalQuestion':questionNos, 'sectionTime': sectionTime},
-                  
+                    data: {'mcqId': mcqId, 'sectionIds': sectionId, 'totalSection':no, 'totalQuestion':questionNos, 'requiredQnos':requiredQnos, 'sectionTime': sectionTime},
                     success: function( data ){
                       //  $('#response pre').html( JSON.stringify( data ) );
-                        console.log('data', data);
-               
+                        console.log('data', data);               
                     },
                     error: function( jqXhr, textStatus, errorThrown ){
                         console.log( errorThrown );

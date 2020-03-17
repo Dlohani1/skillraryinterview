@@ -241,7 +241,11 @@ class AdminController extends CI_Controller {
                 $totalQuestion = explode(",",$_POST['totalQuestion']);
                 $totalTime = explode(",",$_POST['sectionTime']);
 
+                $requiredQuestion = explode(",", $_POST['requiredQnos']);
+
                 $data = array();
+
+                $patternData = array();
 
                 for($i=0; $i < $totalSection; $i++) {
                     $t = array (
@@ -252,6 +256,13 @@ class AdminController extends CI_Controller {
                     );
 
                     $data[] = $t;
+
+                    $p = $t;
+                    $p['level_id'] = "1";
+                    $p['sub_section_id'] = "1";
+                    $p['total_question'] = $requiredQuestion[$i];
+
+                    $patternData[] = $p;
 
                 }
 
@@ -283,6 +294,8 @@ class AdminController extends CI_Controller {
 
                 $this->db->insert_batch('mcq_time', $data);
 
+
+                $this->db->insert_batch('mcq_test_pattern', $patternData);
         }
 
         public function showQuestion() {
@@ -370,7 +383,7 @@ class AdminController extends CI_Controller {
         }
 
         public function addPatern() {
-          echo "<pre>";
+          //echo "<pre>";
           
           $sectionArray = array_chunk($_POST,3);
           $aa = $sectionArray[0]; 
@@ -455,7 +468,7 @@ class AdminController extends CI_Controller {
           echo  "<script type='text/javascript'>";
           echo "window.close();";
           echo "</script>";
-      }
+        }
 
         public function createQuestion() {
           $this->load->view('admin/create-question');
