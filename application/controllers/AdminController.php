@@ -982,9 +982,10 @@ echo "success"; die;
                   $sqll .= " UNION ALL ";
                 }
 
-                $sqll .= "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id =".$value['id']." and correct_ans = 1";
-
-                $sectionCount++;
+                //$sqll .= "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id =".$value['id']." and correct_ans = 1";
+		$sqll .= "select count(id) as result from `student_answers` where test_attempt = (select max(test_attempt) from student_answers where student_id =".$row->student_id." and mcq_test_id=".$mcqId.") and student_id= ".$row->student_id." and mcq_test_id=".$mcqId." and section_id=".$value['id']." and correct_ans=1";
+                //echo $sqll; die;
+		$sectionCount++;
               }
 
                 $query = $this->db->query($sqll);
@@ -1036,7 +1037,7 @@ echo "success"; die;
             }
         }
 
-
+//echo "<pre>"; print_r($studentData); die;
         // $sql = "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 1 and correct_ans = 1";
 
         // $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 2 and correct_ans = 1";
@@ -1044,9 +1045,9 @@ echo "success"; die;
 
         // $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
 
-    echo "<pre>";
+    
 
-    print_r($studentData); die;    
+   // print_r($studentData); die;    
 
         $this->generateXls($studentData, $sectionDetails);
       }
@@ -1054,26 +1055,47 @@ echo "success"; die;
       public function getField($a) {
 
         switch ($a) {
-          
-            case 'S1':
-           return "T1";
+            case 'Q':
+		return "R";
+		break;
+ 	    case 'R':
+                return "S"; 
+		break;
+	    case 'S':
+                return "T"; 
+		break;
+	    case 'T':
+                return "U"; 
+                break;
+	    case 'U':
+                return "V"; 
+		break;
+	    case 'V':
+                return "W"; 
+                break;
+            case 'W':
+                return "X"; 
+                break;
+
+            case 'Q1':
+           return "R1";
             break;
-            case 'T1':
-            return "U1";
+            case 'R1':
+            return "S1";
+            break;
+
+            case 'S1':
+            return "T1";
             break;
 
             case 'U1':
             return "V1";
             break;
-
             case 'V1':
             return "W1";
             break;
             case 'W1':
             return "X1";
-            break;
-            case 'X1':
-            return "Y1";
             break;
 
           
@@ -1086,8 +1108,7 @@ echo "success"; die;
 
       public function getMcqSection($mcqId) {
 
-            $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
-                    inner join section on mcq_test_pattern.section_id = section.id
+            $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` inner join section on mcq_test_pattern.section_id = section.id
                     where mcq_test_pattern.mcq_test_id =".$mcqId;
 
             
@@ -1119,8 +1140,9 @@ echo "success"; die;
         $objPHPExcel->setActiveSheetIndex(0);
         // set Header
         $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Sl No');
+
         $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Student Name');
-        
+
         $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Test Status');
 
         $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Gender');
@@ -1152,11 +1174,11 @@ echo "success"; die;
 
         $objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Degree Marks');
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Start Time');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('R1', 'Start Time');
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('R1', 'End Time');
+        //$objPHPExcel->getActiveSheet()->SetCellValue('S1', 'End Time');
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('S1', 'Time Taken');
+        // $objPHPExcel->getActiveSheet()->SetCellValue('T1', 'Time Taken');
 
 
         // $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'UserEmail');
@@ -1176,15 +1198,17 @@ echo "success"; die;
 
         //$objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Preferred Work Location');
 
-        $a = "S1";
+        $a = "Q1";
+
+
 
         foreach ($sectionDetails['section'] as $key => $value) {
 
           $fieldName = $this->getField($a);
 
-          $objPHPExcel->getActiveSheet()->SetCellValue('Q1', $value['name']." Marks");
+          $objPHPExcel->getActiveSheet()->SetCellValue($fieldName, $value['name']." Marks");
 
-          $a = $fieldName;          
+          $a = $fieldName;
         }
 
         // $objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Verbal Correct Answer');
@@ -1196,28 +1220,60 @@ echo "success"; die;
         $i = 1;
         foreach ($studentData as $student) {
 
-            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $i);
-            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $student->first_name." ".$student->last_name);
-            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $student->email);
-            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $student->contact_no);
-            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $student->city);
-            $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $student->state);
-            $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $student->dob);
-            $objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, $student->tenth_percentage);
-            $objPHPExcel->getActiveSheet()->SetCellValue('I' . $rowCount, $student->tenth_passing_year);
-            $objPHPExcel->getActiveSheet()->SetCellValue('J' . $rowCount, $student->twelveth_percentage);
-            $objPHPExcel->getActiveSheet()->SetCellValue('K' . $rowCount, $student->twelveth_passing_year);
-            $objPHPExcel->getActiveSheet()->SetCellValue('L' . $rowCount, $student->degree);
-            $objPHPExcel->getActiveSheet()->SetCellValue('M' . $rowCount, $student->stream);
-            $objPHPExcel->getActiveSheet()->SetCellValue('N' . $rowCount, $student->degree_percentage);
-            $objPHPExcel->getActiveSheet()->SetCellValue('O' . $rowCount, $student->degree_passing_year);
-            $objPHPExcel->getActiveSheet()->SetCellValue('P' . $rowCount, $student->work_location);
-            $objPHPExcel->getActiveSheet()->SetCellValue('Q' . $rowCount, $student->verbal);
-            $objPHPExcel->getActiveSheet()->SetCellValue('R' . $rowCount, $student->reasoning);
-            $objPHPExcel->getActiveSheet()->SetCellValue('S' . $rowCount, $student->quantitative);
+		if ($student->gender == "1") {
+			$genderValue = "Male";
+		} else {
+			$genderValue = "Female";
+		}
+$marks = 0;
+foreach ($sectionDetails['section'] as $key => $value) {
+          $sectionName = $value['name']; 
+
+           $marks += $student->$sectionName;
+        }
+$status = "Failed";
+if ($marks >= 15) {
+$status = "Passed";
+}
+
+$objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $i);
+$objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount,  $student->first_name." ".$student->last_name);
+$objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $status);
+$objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $genderValue );
+$objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $student->dob);
+$objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $student->contact_no);
+$objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $student->email);
+
+$objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, $student->tenth_board);
+
+$objPHPExcel->getActiveSheet()->SetCellValue('I' . $rowCount, $student->tenth_passing_year);
+$objPHPExcel->getActiveSheet()->SetCellValue('J' . $rowCount, $student->tenth_percentage);
+
+$objPHPExcel->getActiveSheet()->SetCellValue('K' . $rowCount, $student->twelveth_board);
+
+$objPHPExcel->getActiveSheet()->SetCellValue('L' . $rowCount, $student->twelveth_passing_year);
+$objPHPExcel->getActiveSheet()->SetCellValue('M' . $rowCount, $student->twelveth_percentage);
+$objPHPExcel->getActiveSheet()->SetCellValue('N' . $rowCount, $student->degree_college_name);
+$objPHPExcel->getActiveSheet()->SetCellValue('O' . $rowCount, $student->degree_passing_year);
+$objPHPExcel->getActiveSheet()->SetCellValue('P' . $rowCount, $student->stream.",".$student->degree);
+$objPHPExcel->getActiveSheet()->SetCellValue('Q' . $rowCount, $student->degree_percentage);
+
+
+$a = "Q";
+foreach ($sectionDetails['section'] as $key => $value) {
+	  $sectionName = $value['name']; 
+
+          $fieldName = $this->getField($a);
+
+          $objPHPExcel->getActiveSheet()->SetCellValue($fieldName. $rowCount, $student->$sectionName);
+
+          $a = $fieldName;
+        }
+
             $rowCount++;
             $i++;
         }
+
         $filename = "skillrary_mcq". date("Y-m-d-H-i-s").".csv";
         header('Content-Type: application/vnd.ms-excel'); 
         header('Content-Disposition: attachment;filename="'.$filename.'"');
@@ -1228,9 +1284,9 @@ echo "success"; die;
     }
 
     public function generatePassword() {
-      $fourdigitrandom = rand(1000,9999); 
-      return $fourdigitrandom; 
-    }  
+      $fourdigitrandom = rand(1000,9999);
+      return $fourdigitrandom;
+    }
 
     public function checkCode($code = null) {
 
