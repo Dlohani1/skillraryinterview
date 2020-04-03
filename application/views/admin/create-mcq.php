@@ -10,9 +10,11 @@
         <link href="admin-css-js/css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<!--          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
             <style>
         .firstSection{
             background: white;
@@ -238,14 +240,14 @@
        <th>Section Name</th>
        <th>Total Questions</th>
        <th>Questions Required</th>
-       <th>Total Time (in sec)</th>
+       <th>Total Time (in min)</th>
        <th><button type="button" name="add" class="btn btn-success btn-sm add" onclick="addNewSection()"><span class="glyphicon glyphicon-plus"></span></button></th>
       </tr>
      </table>
      <!-- <div align="center">
       <input type="submit" name="submit" class="btn btn-info" value="Insert" />
      </div> -->
-    <span><button type="button" class="ESbutn" onclick="return secondFormSubmit();">Submit</button></span>
+    <span><button type="button" class="ESbutn"  id="secondForm" onclick="return secondFormSubmit();">Submit</button></span>
     <span><button type="button" id="createTest" style="display: none" class="ESbutn" onclick="return createTest();">Create Test</button></span>
     </div>
    </form>
@@ -280,7 +282,7 @@
 
             <br/>
             <input type="hidden"  value="0" id = "linkCount" />
-            <div class="row" id="code-test" style="display: none;">
+            <div class="row" id="code-test" style="display:  none;">
                 
                 <div class="col-md-8 offset-md-2 firstSection">
 
@@ -289,19 +291,25 @@
                             <div class="col-md-8 offset-md-2">
                                 <label class="labelColor">Add Code Test</label>
                                 <input type="checkbox" id="add-code-test" />
-                                <a href="https://code.skillrary.com/admin/login" target="_blank"> Click here to create code test </a>
-                                <input type="text" name="code" class="form-control" id="code" placeholder="Enter Code" autocomplete="off">
+                               <!--  <a href="https://code.skillrary.com/admin/login" target="_blank"> Click here to create code test </a> -->
+                                <input type="text" name="code" style="display:none" class="form-control" id="code" placeholder="Enter Code" autocomplete="off">
                             </div>
                         </div><br/>
                         <div class="editSubbtn">
-                           <span><button type="button" class="ESbutn" id="codeSubmit" onclick="return enterCode();">Submit</button></span>
+                           <span><button type="button" style="display:none" class="ESbutn" id="codeSubmit" onclick="return enterCode();">Submit</button></span>
                         </div>
                     </form>
                 </div>
             </div>
 
             <br/>
-
+                   <div class="row" id="generateUP" style="display:none">
+                            <div class="col-md-8 offset-md-2">
+                                <label class="labelColor">Generate UserName Password</label>
+                                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off">
+                                <button onclick="generateUsrPwd()">Generate IDs</button>
+                            </div>
+                        </div><br/>
 
         </div>
     </div>
@@ -335,7 +343,41 @@
         <script>
             //document.getElementById("mcq-link").click();
 
-             
+             function generateUsrPwd() {
+
+                alert('aa');
+                var num = document.getElementById("generate").value;
+                var mcqId = document.getElementById("mcqTestId").value ;
+                var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"generateUsrPwd",
+                   
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "mcqId" : mcqId, "num":num} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        document.getElementById("code").disabled = true;
+
+                        document.getElementById("codeSubmit").disabled = true;
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
 
 
             function enterCode() {
@@ -351,7 +393,7 @@
                     data: { "mcqId" : mcqId,"code": code } ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
-                        window.location.href="admin/view-mcq";
+                       // window.location.href="admin/view-mcq";
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
                         document.getElementById("code").disabled = true;
@@ -362,6 +404,13 @@
                         console.log( errorThrown );
                     }
                 });
+
+
+                // $.alert({
+                //     title: 'SkillRary Alert!',
+                //     content: 'Code Test Added Successfully',
+                // });
+
             }
 
 
@@ -399,8 +448,16 @@
                         addNewSection(i);
                     }
                     document.getElementById("secondPart").style.display = "block";
+                    document.getElementById("code-test").style.display = "block";
+                    
+                    document.getElementById("generateUP").style.display = "block";
 
                     var baseUrl = document.getElementById("base-url").value;
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Assessment Created Successfully',
+                        // });
 
                     //getSection(1);
 
@@ -511,7 +568,7 @@
                     document.getElementById("item_unit_"+i).disabled = true;
                     document.getElementById("item_name_"+i).disabled = true;
                     document.getElementById("item_quantity_"+i).disabled = true;
-                    document.getElementById("add_question_"+i).style.display="block";
+                    //document.getElementById("add_question_"+i).style.display="block";
                     document.getElementById("add_question_link_"+i).href = baseUrl+"add-question/"+mcqId+"/"+document.getElementById("item_unit_"+i).value;
 
                     if (i > 1) {
@@ -525,12 +582,14 @@
                     questionNos += document.getElementById("item_name_"+i).value;
 
                     
-                    sectionTime += document.getElementById("item_question_"+i).value;
+                    sectionTime += parseInt(document.getElementById("item_question_"+i).value)*60;
                     
                     requiredQnos += document.getElementById("item_quantity_"+i).value;
                 }
 
-                document.getElementById("createTest").style.display = "block";
+                //document.getElementById("createTest").style.display = "block";
+
+                document.getElementById("secondForm").disabled = true;
 
                 console.log('sect', sectionId, questionNos, sectionTime)
 
@@ -551,8 +610,17 @@
                     document.getElementById("item_unit_"+i).disabled = true;
                     document.getElementById("item_name_"+i).disabled = true;
                     document.getElementById("item_quantity_"+i).disabled = true;
-                    document.getElementById("add_question_"+i).style.display="block";
+                    document.getElementById("item_question_"+i).disabled = true;
+                    //document.getElementById("add_question_"+i).style.display="block";
                 }
+
+
+                // $.alert({
+                //     title: 'SkillRary Alert!',
+                //     content: 'Sections Created Successfully',
+                // });
+
+
                 //thirdFormSubmit();
             }
 
@@ -567,8 +635,6 @@
             }
 
             function checkValue(id) {
-
-
 
                 var idN = id.id;
               
@@ -623,7 +689,7 @@
                 html += '<tr>';
                 html += '<td><select id="item_unit_'+i+'" name="item_unit[]" class="form-control item_unit"><option value="">Select</option></select></td>';
                 
-                html += '<td><input type="text" id="item_name_'+i+'" name="item_name[]" class="form-control item_name" /></td>';
+                html += '<td><input readonly type="text" id="item_name_'+i+'" name="item_name[]" class="form-control item_name" /></td>';
                 
                 html += '<td><input type="text" onchange="checkQuestion()" id="item_quantity_'+i+'" name="item_quantity[]" class="form-control item_quantity" /></td>';
                 
@@ -649,6 +715,21 @@
                 console.log('aa')
                 $(this).closest('tr').remove();
             });
+
+
+        $('input[type="checkbox"]').click(function(){
+
+            if($(this).prop("id") == "add-code-test") {
+
+                if($(this).prop("checked") == true) {
+                    document.getElementById("code").style.display = "block";
+                    document.getElementById("codeSubmit").style.display = "block";
+                } else if($(this).prop("checked") == false){
+                    document.getElementById("code").style.display = "none";
+                    document.getElementById("codeSubmit").style.display = "none";
+                }
+            }
+        });
 
         </script>
       

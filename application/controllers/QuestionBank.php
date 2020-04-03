@@ -151,9 +151,17 @@ class QuestionBank extends MyController {
 
                     $mcqSection = $this->getMcqSection();
 
-                    $this->session->set_userdata('codeTestId', $codeId); 
+                    $this->session->set_userdata('codeTestId', $codeId);
 
-                    $this->load->view('mcq_form', array('userData'=>$userData,'codeId'=>$codeId, 'sections' => $mcqSection));      
+                     $resumeTest = $this->isTestResume();
+                     $testData = array();
+                     if ($resumeTest['resume']) {
+                         $sql = "SELECT * FROM `user_status` WHERE user_id= ".$_SESSION['id']." AND mcq_test_id = ".$_SESSION['mcqId'];
+
+                        $testData = (array)$this->db->query($sql)->row();            
+                     }
+
+                    $this->load->view('mcq_form', array('userData'=>$userData,'codeId'=>$codeId, 'sections' => $mcqSection, 'testData' => $testData));      
                 // }
                 
         }
@@ -171,19 +179,20 @@ class QuestionBank extends MyController {
                 $i = 0;
 
                 $section = array();
+
                 foreach ($query->result() as $row) {
                         
-                        $section['section'][$i]['id'] = $row->section_id;
-                        $section['section'][$i]['name'] = $row->section_name;
-                        $i++;
+                    $section['section'][$i]['id'] = $row->section_id;
+                    $section['section'][$i]['name'] = $row->section_name;
+                    $i++;
                 }
-
 
             return $section;
             
         }
 
         public function getCodeTest() {
+           // $_SESSION['mcqId'] = "1";
             $mcqId = $this->session->mcqId;
             $sql = "SELECT * FROM `mcq_code_test` WHERE mcq_test_id =".$mcqId;
 
@@ -297,9 +306,11 @@ class QuestionBank extends MyController {
 
                 $questionData['userAnswer'] = array();
 
-                $answerAttempt = $this->session->attempt;
+                $answerAttempt = $this->session->attempt != null ? $this->session->attempt : 1;
 
                 $sql = "SELECT answer_id FROM `student_answers` WHERE student_id='$studentId' AND question_id = '$questionId' AND mcq_test_id='$mcqId' AND test_attempt = '$answerAttempt'";
+
+                //echo $sql ; die;
 
                 $answer = $this->db->query($sql)->row();
 
@@ -369,8 +380,8 @@ class QuestionBank extends MyController {
                 'question_id' => $_POST['question_id'],
                 'student_id' => $_POST['student_id'],
                 'correct_ans' => 0,
-                'time_taken' => $timeTaken,
-                'test_attempt' => $this->session->attempt
+                'time_taken' => "$timeTaken",
+                'test_attempt' => $this->session->attempt != null ? $this->session->attempt : 1
             );
 
             $questionId = $_POST['question_id'];
@@ -838,16 +849,54 @@ class QuestionBank extends MyController {
 
         public function enterCode() {
 
+            $resume = $this->isTestResume();
+
+            $resumeTest = 0;
+
+            if($resume['resume']) {
+                $resumeTest = 1;
+            }
+
+            $_SESSION['resumeTest'] = 1;
+            redirect('read-instructions');
+
+            //$this->load->view('user-header');
+            //$this->load->view('instructions',array('resume'=>$resumeTest));
+
+           // print_r ($resume); die('t');
+
+
             // if ($this->checkProfile()) {
             //     redirect('user/profile', 'refresh');
                     
             // } else {
-                $this->load->view('user-header');
-                $this->load->view('enter-code');
-                $this->load->view('codefooter');
+                // $this->load->view('user-header');
+                // $this->load->view('enter-code', array('resume' => $resume));
+                // $this->load->view('codefooter');
            // }
             
             //$this->load->view('html/index.html'); 
+        }
+
+        public function isTestResume() {
+            $userId = $_SESSION['id'];
+            //echo $userId; die;
+            //$mcqId = $_SESSION['mcqId'];
+
+            $sql = "SELECT * FROM `user_status` WHERE user_id= $userId AND is_completed = 0";
+
+            $alreadyAnswer = $this->db->query($sql)->row();
+
+            //print_r($alreadyAnswer); die;
+            $userStatus = array();
+            $userStatus['resume'] = 0;
+            if (null != $alreadyAnswer) {
+                $_SESSION['mcqId'] = $alreadyAnswer->mcq_test_id;
+                $userStatus = (array) $alreadyAnswer;
+                $userStatus['resume'] = 1;
+            }
+
+            return $userStatus;
         }
 
         public function checkProfile() {
@@ -1718,5 +1767,33 @@ class QuestionBank extends MyController {
 
         public function searchTest() {
             echo "hello"; die;
+        }
+
+        public function saveTestStatus() {
+            //print_r(var_dump($_POST)); die;
+
+
+            $userData = array(
+                'user_id' => $_POST['student_id'],
+                'mcq_test_id' => $_POST['mcq_id'],
+                'section_id' => $_POST['section_id'],
+                'question_id' => $_POST['question_id'],
+                'answer_id' => $_POST['answer_id'],
+                'time_left' => $_POST['time_taken'],
+                'is_completed' => $_POST['is_completed']
+            );
+
+
+            $sql = "SELECT id FROM `user_status` WHERE user_id=".$userData['user_id']." AND mcq_test_id = ".$userData['mcq_test_id'];
+
+            $alreadyAnswer = $this->db->query($sql)->row();
+
+            if (null != $alreadyAnswer) {
+                $this->db->where('id', $alreadyAnswer->id);
+                $this->db->update('user_status',$userData);
+            } else {
+
+                $this->db->insert('user_status', $userData);
+            }
         }
 }

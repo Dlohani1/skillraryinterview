@@ -9,6 +9,10 @@ class AdminController extends CI_Controller {
     $this->load->database();
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
+
+    // if (!isset($_SESSION['isAdmin'])) {
+    //   $this->
+    // }
   }
 
 
@@ -175,12 +179,44 @@ class AdminController extends CI_Controller {
     
     $result = json_decode($server_output);
     curl_close ($ch);
-    print_r($result->result);
+    //print_r($result->result);
 
     $data  = array ('mcq_test_id' => $_POST['mcqId'], 'code_id' => $result->result);
 
     $this->db->insert('mcq_code_test', $data);
     die;
+
+  }
+
+  public function random_strings($length_of_string, $type) { 
+  
+    if ($type == "numeric") {
+      $str_result = '0123456789';      
+    } else if ($type == "alphaNuMCaps") {
+      $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';      
+    } else {
+      $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';  
+    }
+  
+    // Shufle the $str_result and returns substring 
+    // of specified length 
+    return substr(str_shuffle($str_result),  
+                       0, $length_of_string); 
+  }
+
+  public function generateUsrPwd() {
+    
+    $data = array();
+    $mcqId = $_POST['mcqId'];
+    $num = $_POST['num'];
+    for ($i=1; $i<=$num; $i++) {
+      $username = $this->random_strings(4,"alphaNuMCaps");
+      $password = $this->random_strings(4,"numeric");
+      $data[]  = array ('mcq_test_id' => $mcqId,'username' => $username, 'password' => $password);
+    }
+
+    //print_r($data);
+    $this->db->insert_batch('assess_usr_pwd', $data);
 
   }
 
@@ -296,6 +332,14 @@ class AdminController extends CI_Controller {
 
 
                 $this->db->insert_batch('mcq_test_pattern', $patternData);
+        }
+
+        public function viewCodeTest() {
+          $this->load->view('codeframe');
+        }
+
+        public function adminLogin() {
+          $this->load->view('admin/admin-login');
         }
 
         public function showQuestion() {
@@ -1151,12 +1195,17 @@ echo "success"; die;
         //$listInfo = $this->export->exportList();
         $objPHPExcel = new PHPExcel();
         $objPHPExcel->setActiveSheetIndex(0);
+
+        $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setName('Arial');
+$objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setSize( 8);
         // set Header
         $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Sl No');
 
         $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Student Name');
 
         $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Test Status');
+
+        $objPHPExcel->getActiveSheet()->getStyle('B1')->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
 
         $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Gender');
 
@@ -1287,12 +1336,18 @@ foreach ($sectionDetails['section'] as $key => $value) {
             $i++;
         }
 
-        $filename = "skillrary_mcq". date("Y-m-d-H-i-s").".csv";
-        header('Content-Type: application/vnd.ms-excel'); 
-        header('Content-Disposition: attachment;filename="'.$filename.'"');
-        header('Cache-Control: max-age=0'); 
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
-        $objWriter->save('php://output'); 
+        // $filename = "skillrary_mcq". date("Y-m-d-H-i-s").".csv";
+        // header('Content-Type: application/vnd.ms-excel'); 
+        // header('Content-Disposition: attachment;filename="'.$filename.'"');
+        // header('Cache-Control: max-age=0'); 
+        // $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
+        // $objWriter->save('php://output'); 
+
+
+  $object_writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+  header('Content-Type: application/vnd.ms-excel');
+  header('Content-Disposition: attachment;filename="Employee Data.xls"');
+  $object_writer->save('php://output');
  
     }
 

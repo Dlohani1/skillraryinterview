@@ -57,7 +57,8 @@ function validateregister(){
        
 
    
-        var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        //var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        var pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         var email = document.getElementById('emaillogin').value;
 
         if(document.logForm.email.value.length == '0') {

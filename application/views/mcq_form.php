@@ -1,3 +1,16 @@
+<?php
+$resumeTest  = 0;
+ $sectionIdResume =  0;
+ $questionIdResume = 0;
+ $timeTaken = 0;
+if (count($testData) > 0) {
+    print_r($testData);
+    $sectionIdResume =  $testData['section_id'];
+    $questionIdResume = $testData['question_id'];
+    $timeTaken = $testData['time_left'];
+    $resumeTest = 1;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -664,6 +677,8 @@
                                     border: 1px solid #33A478;">
                                     Start Test
                                 </button>
+
+                                <a href="admin/code-test"> Start Test </a>
                             </div>
                         </div>
                     </div>
@@ -824,11 +839,10 @@
         </div>
     </div>
 
-    <script>
-     
-    </script>
-
 <script>
+
+setInterval(function(){ saveTestStatus();}, 60000);
+
 
 $(document).on('click','.radiBackground',function(){
     $(".radiBackground").removeClass("radiBackground1");
@@ -842,43 +856,102 @@ $( document ).ready(function() {
     //var carId = dropDown.options[dropDown.selectedIndex].value;
     var firstSection = document.getElementById("firstSection").value;
     //console.log('fr', firstSection)
-  getQuestion(firstSection);
+    var resumeTest = <?php echo $resumeTest; ?>
+
+    console.log('resume', resumeTest)
+    
+    var sectionId = "<?php echo $sectionIdResume; ?>"
+
+    console.log('sectionId', sectionId, "test", firstSection)
+
+    //firstSection = 2;
+    // if (resumeTest == "1") {
+    //     var sectionId = <?php echo $sectionIdResume; ?>;
+    //     var questionId = <?php echo $questionIdResume; ?>;
+    //     //resumeQuestion();
+    //     console.log('sectionId', sectionId)
+    //      var res = sectionId.split(",");
+    //      resumeQuestion(res[0],res[1],questionId);
+    // } else {
+    //     getQuestion(firstSection);
+    // }
+    var resumeTest = <?php echo $resumeTest; ?>;
+    console.log('resumee', resumeTest)
+    var sectionResumeId = "<?php echo $sectionIdResume; ?>";
+    var res = sectionResumeId.split(",");
+     if (resumeTest == "1") {
+                    
+                    var questionId = <?php echo $questionIdResume; ?>;
+                    //resumeQuestion();
+                     
+                     //resumeQuestion(res[0],res[1],questionId);
+                     fetchQuestion(questionId, res[1], res[0]);
+                     var sectionCount = "<?php echo $countSection; ?>";
+                     console.log('sectionCount', sectionCount)
+                     for (var i=1; i<=(sectionCount); i++) {
+                        if (i == res[1]) { console.log('addSec');
+                            document.getElementById("section"+i).disabled = false;
+                        } else { console.log('addSec1', res[1],'s',sectionCount);
+                            document.getElementById("section"+i).disabled = true;
+                        }
+                     }
+                     
+                    var timeTaken = "<?php echo $timeTaken; ?>";
+
+                    window.totalsec = parseInt(document.getElementById("totalTime").value)-parseInt(timeTaken);   
+} else {
+
+    getQuestion(firstSection);
+}
 });
+
+function resumeQuestion() {
+
+
+}
 
 function loadIframe() {
 
+
     var id = document.getElementById("code-lang").value;
+
     if (id > 0) {
-    var mcqId = document.getElementById("mcqSessionId").value;
-    var userId  = document.getElementById("studentSessionId").value;
-    var codeId = document.getElementById("codeTestId").value;
-    var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/"+codeId+"/"+mcqId;
-    var win = window.open(url, "_self", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
-    // document.getElementById('myIframe').src = "https://code.skillrary.com/url_assessm"+userId+"/"+id+"/9";
+        var mcqId = document.getElementById("mcqSessionId").value;
+        var userId  = document.getElementById("studentSessionId").value;
+        var codeId = document.getElementById("codeTestId").value;
+        var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/"+codeId+"/"+mcqId;
+        //var win = window.open(url, "_self", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+        // document.getElementById('myIframe').src = "https://code.skillrary.com/url_assessm"+userId+"/"+id+"/9";
 
-    // document.getElementById("myIframe").style.display = 'block';
+        // document.getElementById("myIframe").style.display = 'block';
 
-//     win.onunload = function() {
-//   if (window.opener && typeof(window.opener.onPopupClosed) == 'function') {
-//     window.opener.onPopupClosed();
-//   }
-// };
+        //     win.onunload = function() {
+        //   if (window.opener && typeof(window.opener.onPopupClosed) == 'function') {
+        //     window.opener.onPopupClosed();
+        //   }
+        // };
 
-// window.onPopupClosed = function() {
-//   alert("You closed the pop up!");
-// };
-win.onbeforeunload = function(){
-        console.log('unload test');
-        window.location.href="user/home";
-    }    
+        window.location.href = "admin/test-code";
+        // window.onPopupClosed = function() {
+        //   alert("You closed the pop up!");
+        // };
+
+        win.onbeforeunload = function(){
+            console.log('unload test');
+            window.location.href="user/home";
+        }    
     } else {
         alert('Please select a language to code')
-    }
-    
+    }    
 }
+
+// function resumeQuestion() {
+//     $sectionId = 
+// }
 
 function getQuestion(sectionId, codeTest = false) {
 
+    //alert('ad')
     console.log('sectionId', sectionId);
 
     document.getElementById("sectionIdValue").value = sectionId;
@@ -942,6 +1015,36 @@ function getQuestion(sectionId, codeTest = false) {
                 window.totalsec = document.getElementById("totalTime").value;
                 
                 starttime();
+                // fetchQuestion(opts[0].questions[0], 1, sectionId);
+                // var resumeTest = <?php echo $resumeTest; ?>;
+                // console.log('resumee', resumeTest)
+                // var sectionResumeId = "<?php echo $sectionIdResume; ?>";
+                // var res = sectionResumeId.split(",");
+                // if (resumeTest == "1") {
+                    
+                //     var questionId = <?php echo $questionIdResume; ?>;
+                //     //resumeQuestion();
+                     
+                //      //resumeQuestion(res[0],res[1],questionId);
+                //      fetchQuestion(questionId, res[1], res[0]);
+                //      var sectionCount = "<?php echo $countSection; ?>";
+                //      console.log('sectionCount', sectionCount)
+                //      for (var i=1; i<=(sectionCount); i++) {
+                //         if (i == res[1]) { console.log('addSec');
+                //             document.getElementById("section"+i).disabled = false;
+                //         } else { console.log('addSec1', res[1],'s',sectionCount);
+                //             document.getElementById("section"+i).disabled = true;
+                //         }
+                //      }
+                     
+                //     var timeTaken = <?php echo $timeTaken; ?>;
+
+                //     window.totalsec = parseInt(document.getElementById("totalTime").value)-parseInt(timeTaken);   
+                // } else {
+                //     //getQuestion(firstSection);
+                //     fetchQuestion(opts[0].questions[0], 1, sectionId);
+                // }
+
                 fetchQuestion(opts[0].questions[0], 1, sectionId);
             }
         });
@@ -989,7 +1092,7 @@ function fetchQuestion(id, no, sectionIdno = 0) {
     document.getElementById("questionIdSave").value = id;
     var mcqId = document.getElementById("mcqSessionId").value;
     var student = document.getElementById("studentSessionId").value;
-
+console.log('colo')
     $.ajax({
             type: "POST",
 
@@ -1013,12 +1116,13 @@ function fetchQuestion(id, no, sectionIdno = 0) {
                     var sel = "";
 
                     var backColor = "radiBackground";
+                    console.log('opts',opts.userAnswer.id)
                     if (undefined !== opts.userAnswer.id) {
                         if (d.id == opts.userAnswer.id) {
                             sel = "checked";
                             backColor = "radiBackground1";
-
-                        }
+                            console.log('acolor')
+                        } console.log('bcolor');
                     }
                     $('#optionsList').append("<li class="+backColor+"><label class='radioButn'><input  "+sel+" name='answer' type='radio' onclick='saveAns(this)' value="+ d.id +"> <span class='checkmark'></span>"+ d.option+"</label></li>");
                 });
@@ -1118,6 +1222,7 @@ function saveNext(isMarked, timeUp = false) {
 
             success: function(data){
                 console.log('ansr', data)
+                saveTestStatus();
             }
         });
 
@@ -1298,29 +1403,28 @@ function lastSave() {
     });
 }
 
-function clearCount() {
-    document.getElementById("ansCount").innerHTML = 0;
-    document.getElementById("markedCount").innerHTML = 0;
-    document.getElementById("viewedCount").innerHTML = 0;
-    document.getElementById("notViewed").innerHTML = 0;
-}
+    function clearCount() {
+        document.getElementById("ansCount").innerHTML = 0;
+        document.getElementById("markedCount").innerHTML = 0;
+        document.getElementById("viewedCount").innerHTML = 0;
+        document.getElementById("notViewed").innerHTML = 0;
+    }
 
-function clearResponse() {
-    $('input[name="answer"]').prop('checked', false);
-} 
+    function clearResponse() {
+        $('input[name="answer"]').prop('checked', false);
+    } 
 
-</script>
- <script>
 
-    function InitializeMap() 
-       {
-           document.onkeydown = function () {
+
+    function InitializeMap() {
+        document.onkeydown = function () {
+        
             if (122 == event.keyCode) {
                 event.keyCode = 0;
                 return false;
-       }
-      }
-}
+            }
+        }
+    }
 
 window.onload = InitializeMap;
 
@@ -1388,8 +1492,7 @@ window.onload = InitializeMap;
         }, 1000);
     }
 
-    var pos = 0,
-      test, test_status, question, choice, choices, chA, chB, chC, correct = 0;
+    var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, correct = 0;
 
     // var questions = [
     //   ["Which of the following a is not a keyword in Java ?", "class", "interface", "extends", "C"],
@@ -1558,6 +1661,26 @@ window.onload = InitializeMap;
 
     function starttime() {
       showtime();
+    }
+
+    function saveTestStatus() {
+        var questionId = document.getElementById("questionIdSave").value;
+        var ansId = document.getElementById("saveAnsId").value;
+        var student = document.getElementById("studentSessionId").value;
+        var mcqId = document.getElementById("mcqSessionId").value;
+        var timeTaken = document.getElementById("countdown").value;
+        var sectionIdValue = document.getElementById("sectionIdValue").value;
+        var sectionId = document.getElementById("sectionId").value;
+        $.ajax({
+            type: "POST",
+            url: "saveTestStatus",
+            data:{"student_id":student, "answer_id":ansId, "section_id": sectionIdValue+","+sectionId, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken,"is_completed":0},
+
+            success: function(data){
+                console.log('ansr', data)
+            }
+        });
+        console.log('tst');
     }
 
     function showtime() {

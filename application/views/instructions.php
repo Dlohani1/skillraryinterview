@@ -330,7 +330,7 @@
         </div><br/>
 
         <div align="center">
-            <button class="startBtn" onclick="enterCode()">Start Assessment</button>
+            <button class="startBtn" onclick="enterCode()"><?php if (isset($_SESSION['resumeTest']) && $_SESSION['resumeTest'] == 1) { echo "Resume Assessment";} else {echo "Start Assessment"; } ?></button>
         </div><br/>
     </div>
 

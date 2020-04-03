@@ -82,9 +82,13 @@ $route['admin/uploadQuestion']['POST'] = 'AdminController/uploadQuestion';
 
 
 $route['user/registration'] = 'questionBank/registration';
+
 $route['user/register']['POST'] = 'questionBank/register';
+
 $route['user/login'] = 'questionBank/login';
+
 $route['user/signin']['POST'] = 'questionBank/signin';
+
 $route['saveAnswer'] = 'questionBank/saveAnswer';
 
 $route['createMCQ'] = 'questionBank/createMcq';
@@ -92,12 +96,16 @@ $route['createMCQ'] = 'questionBank/createMcq';
 
 $route['saveCodeTest']['POST'] = 'AdminController/codeTest';
 
+$route['generateUsrPwd']['POST'] = 'AdminController/generateUsrPwd';
+
 $route['addTest']['POST'] = 'AdminController/addTest';
+
 $route['checkAvailableQuestion']['POST'] = 'AdminController/checkAvailableQuestion';
 
 $route['addTestTime']['POST'] = 'AdminController/addTestTime';
 
 $route['addQuestion']['POST'] = 'questionBank/addQuestion';
+
 $route['add-question/:any/:any']= 'AdminController/showQuestion';
 
 $route['user/enter-code'] = 'questionBank/enterCode';
@@ -111,6 +119,7 @@ $route['user/update-profile']['POST'] = 'questionBank/userProfileUpdate';
 $route['read-instructions'] = 'questionBank/showInstructions';
 
 $route['user/checkCode']['POST'] = 'questionBank/checkCode';
+
 $route['admin/checkCode']['POST'] = 'AdminController/checkCode';
 
 $route['user/logout'] = 'MyController/logout';
@@ -121,35 +130,46 @@ $route['user/test'] = 'questionBank/codeTestResult';
 
 $route['user/upload/do_upload'] = 'questionBank/uploadProfileImage';
 
-
 $route['admin/create-test'] = 'AdminController/createTest';
+
 $route['admin/view-mcq'] = 'AdminController/viewTest';
+
 $route['admin/view-questions'] = 'AdminController/viewQuestion';
 
 $route['admin/view-results'] = 'AdminController/viewResult';
+
 $route['admin/view-students/:any']= 'AdminController/showStudents';
+
 $route['admin/download-students/:any']= 'AdminController/downloadExcel';
 
 $route['admin/add-question'] = 'AdminController/createQuestion';
 
 $route['admin/edit-question/:any'] = 'AdminController/editQuestion';
 
+$route['admin/login'] = 'AdminController/adminLogin';
+
+$route['admin/test-code'] = 'AdminController/viewCodeTest';
+
 $route['essay'] = 'welcome/showEssay';
+
 $route['user/view-results'] = 'questionBank/viewResult';
 
 $route['addMcq']['POST'] = 'questionBank/addMcqCode';
 
 $route['redirect-to-code'] = 'questionBank/redirectPage';
 
+$route['saveTestStatus'] = 'questionBank/saveTestStatus';
 
 $route['load-frame'] = 'questionBank/loadFrame';
 
 $route['create/test'] = 'questionBank/loadTest';
 
 $route['mypdf'] = "welcome/generateXls";
+
 $route['download-pdf/:any/:any'] = "welcome/mypdf";
 
 $route['default_controller'] = 'welcome';
 //$route['default_controller'] = 'createMCQ';
 $route['404_override'] = '';
+
 $route['translate_uri_dashes'] = FALSE;
