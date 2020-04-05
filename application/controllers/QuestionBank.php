@@ -534,120 +534,162 @@ class QuestionBank extends MyController {
 
         public function signin() {
 
+                $isEmailLogin = 0;
                $email = $_POST['email'];
             //    $pwd = md5(trim($_POST['pwd']));
                $pwd = trim($_POST['pwd']);
-               $sql = "SELECT * FROM `student_register` WHERE email='$email' AND password = '$pwd'";
 
-               $user = $this->db->query($sql)->row();
+               $this->load->helper('email');
 
-               if (null == $user) {
-                    $sql = "SELECT * FROM `student_register` WHERE username='$email' AND password = '$pwd'";
-
-                    $user = $this->db->query($sql)->row();
-               }
-
-
-              if (null != $user) {
-                $this->session->set_userdata('id', $user->id); 
-
-                $this->session->set_userdata('email', $user->email); 
-
-                $this->session->set_userdata('contact', $user->contact_no);
-
-                $this->session->set_userdata('firstName', $user->first_name); 
-
-                $this->session->set_userdata('lastName', $user->last_name);
-
-                $this->session->set_userdata('userGender', $user->gender);
-
-                 if ($this->checkProfile()) {
-                    //echo "aa"; die;
-                    $this->session->set_flashdata('success', 'Complete your profile');
-                    redirect('user/profile');
-                    //return $this->showUserProfile();
-                } else {
-                    if (strlen(trim($_POST['enter-code'])) > 0) {
-                        $this->session->set_userdata('code', trim($_POST['enter-code']));
-                        redirect('user/enter-code');
-                    }
-                    //redirect('user/enter-code');
-                    redirect('user/home');
+                if (valid_email($email)) {
+                    $isEmailLogin = 1;    
                 }
 
+                if ($isEmailLogin) {
 
-            //     if (strlen(trim($_POST['enter-code'])) > 0) {
-            //         //check profile if empty
+                   $sql = "SELECT * FROM `student_register` WHERE email='$email' AND password = '$pwd'";
 
-            //         if ($this->checkProfile()) {
-            //             //redirect('user/profile', 'refresh');
-            //             $this->session->set_flashdata('success', 'Complete your profile');
-            //             return $this->showUserProfile();
-            //         } else {
-            //            $a = $this->checkCode($_POST['enter-code']);
-            //            echo $a; die;
-            //         }
+                   $user = $this->db->query($sql)->row();
 
-                    
-            //     } else {
-            //                     $userId = $this->session->id;
+                   if (null == $user) {
+                        $sql = "SELECT * FROM `student_register` WHERE username='$email' AND password = '$pwd'";
 
-            // $sql = "SELECT * FROM `student_register` Where id = '$userId'" ;
+                        $user = $this->db->query($sql)->row();
+                   }
 
-            // $query = $this->db->query($sql);
 
-            // $isEmpty = 0;
+                  if (null != $user) {
+                    $this->session->set_userdata('id', $user->id); 
 
-            // $userData = array();
-           
-            // if($query->num_rows() > 0)  {
+                    $this->session->set_userdata('email', $user->email); 
 
-            //     foreach ($query->result() as $row) {
-                    
-            //         $userData['first_name'] = $row->first_name;
-            //         $userData['last_name'] = $row->last_name;
-            //         $userData['email'] = $row->email;
-            //         $userData['contact_no'] = $row->contact_no;
-            //         $userData['state'] = $row->state;
-            //         $userData['city'] = $row->city;
-            //         $userData['dob'] = $row->dob;
-            //         $userData['gender'] = $row->gender;
-            //         $userData['tenth_passing_year'] = $row->tenth_passing_year;
-            //         $userData['tenth_percentage'] = $row->tenth_percentage;
-            //         $userData['twelveth_passing_year'] = $row->twelveth_passing_year;
-            //         $userData['twelveth_percentage'] = $row->twelveth_percentage;
-            //         $userData['degree'] = $row->degree;
-            //         $userData['degree_passing_year'] = $row->degree_passing_year;
-            //         $userData['degree_percentage'] = $row->degree_percentage;
-            //         $userData['stream'] = $row->stream;
-            //         $userData['work_location'] = $row->work_location;
-            //     }
-            // }
+                    $this->session->set_userdata('contact', $user->contact_no);
 
-            //         $this->load->view('user-header');
-            //         $this->load->view('update-profile',array('userData' => $userData));
-            //         $this->load->view('codefooter');
-            //     }
-                   
+                    $this->session->set_userdata('firstName', $user->first_name); 
+
+                    $this->session->set_userdata('lastName', $user->last_name);
+
+                    $this->session->set_userdata('userGender', $user->gender);
+
+                     if ($this->checkProfile()) {
+                        //echo "aa"; die;
+                        $this->session->set_flashdata('success', 'Complete your profile');
+                        redirect('user/profile');
+                        //return $this->showUserProfile();
+                    } else {
+                        if (strlen(trim($_POST['enter-code'])) > 0) {
+                            $this->session->set_userdata('code', trim($_POST['enter-code']));
+                            redirect('user/enter-code');
+                        }
+                        //redirect('user/enter-code');
+                        redirect('user/home');
+                    }
+
+
+                //     if (strlen(trim($_POST['enter-code'])) > 0) {
+                //         //check profile if empty
+
+                //         if ($this->checkProfile()) {
+                //             //redirect('user/profile', 'refresh');
+                //             $this->session->set_flashdata('success', 'Complete your profile');
+                //             return $this->showUserProfile();
+                //         } else {
+                //            $a = $this->checkCode($_POST['enter-code']);
+                //            echo $a; die;
+                //         }
+
+                        
+                //     } else {
+                //                     $userId = $this->session->id;
+
+                // $sql = "SELECT * FROM `student_register` Where id = '$userId'" ;
+
+                // $query = $this->db->query($sql);
+
+                // $isEmpty = 0;
+
+                // $userData = array();
+               
                 // if($query->num_rows() > 0)  {
-                //         //$this->load->view('enter-code');
 
-                // foreach ($query->result() as $row) {
-
-                //         $id = $row->id;
+                //     foreach ($query->result() as $row) {
+                        
+                //         $userData['first_name'] = $row->first_name;
+                //         $userData['last_name'] = $row->last_name;
+                //         $userData['email'] = $row->email;
+                //         $userData['contact_no'] = $row->contact_no;
+                //         $userData['state'] = $row->state;
+                //         $userData['city'] = $row->city;
+                //         $userData['dob'] = $row->dob;
+                //         $userData['gender'] = $row->gender;
+                //         $userData['tenth_passing_year'] = $row->tenth_passing_year;
+                //         $userData['tenth_percentage'] = $row->tenth_percentage;
+                //         $userData['twelveth_passing_year'] = $row->twelveth_passing_year;
+                //         $userData['twelveth_percentage'] = $row->twelveth_percentage;
+                //         $userData['degree'] = $row->degree;
+                //         $userData['degree_passing_year'] = $row->degree_passing_year;
+                //         $userData['degree_percentage'] = $row->degree_percentage;
+                //         $userData['stream'] = $row->stream;
+                //         $userData['work_location'] = $row->work_location;
+                //     }
                 // }
 
-                // $this->session->set_userdata('id', $id); 
+                //         $this->load->view('user-header');
+                //         $this->load->view('update-profile',array('userData' => $userData));
+                //         $this->load->view('codefooter');
+                //     }
+                       
+                    // if($query->num_rows() > 0)  {
+                    //         //$this->load->view('enter-code');
+
+                    // foreach ($query->result() as $row) {
+
+                    //         $id = $row->id;
+                    // }
+
+                    // $this->session->set_userdata('id', $id); 
 
 
-                //redirect('read-instructions');   
+                    //redirect('read-instructions');   
 
-               // redirect('enter-code', 'refresh');
-                // }
-              } else {
-                $this->session->set_flashdata('error', 'Invalid Credentials');
-                redirect('user/new-login', 'refresh');
-              }
+                   // redirect('enter-code', 'refresh');
+                    // }
+                  } else {
+                    $this->session->set_flashdata('error', 'Invalid Credentials');
+                    redirect('user/new-login', 'refresh');
+                  }
+                } else {
+                   // echo "test"; die;
+                    $sql = "SELECT * FROM `assess_usr_pwd` WHERE username='$email' AND password = '$pwd'";
+
+                   $user = $this->db->query($sql)->row();
+
+
+                   if (null != $user) {
+
+                    $mcqId = $user->mcq_test_id;
+
+                    $_SESSION['mcqCode'] = $mcqId;
+
+                    $_SESSION['username'] = $user->username;
+
+                     $assessId = $user->id;
+
+                     $sql = "SELECT * FROM `student_register` WHERE assess_usr_pwd_id = $assessId";
+
+                     $user = $this->db->query($sql)->row();
+
+                    // if (null == $user) {
+                         $this->session->set_flashdata('success', 'Complete your profile');
+                            redirect('user/profile');
+                    //} else 
+
+                     
+                   } else {
+                    $this->session->set_flashdata('error', 'Invalid Credentials');
+                    redirect('user/new-login', 'refresh');
+                   }
+                }
                 
                 
 
@@ -697,7 +739,7 @@ class QuestionBank extends MyController {
             $userData['tenth_board'] = $_POST['tenth_branch'];
             $userData['twelveth_board'] = $_POST['twelveth_branch'];
 
-            
+            $userData['assess_usr_pwd_id'] = $_SESSION['assess_id'];
 
             $userData['degree_college_name'] = $_POST['college'];
 
@@ -849,15 +891,24 @@ class QuestionBank extends MyController {
 
         public function enterCode() {
 
-            $resume = $this->isTestResume();
+            //$resume = $this->isTestResume();
 
+
+            $resume = $this->isTestProctored();
+
+            
             $resumeTest = 0;
 
-            if($resume['resume']) {
+            // if($resume['resume']) {
+            //     $resumeTest = 1;
+            // }
+
+            if($resume['proctoed']) {
                 $resumeTest = 1;
             }
 
-            $_SESSION['resumeTest'] = 1;
+            //$_SESSION['resumeTest'] = 1;
+            $_SESSION['proctoredTest'] = 1;
             redirect('read-instructions');
 
             //$this->load->view('user-header');
@@ -878,7 +929,34 @@ class QuestionBank extends MyController {
             //$this->load->view('html/index.html'); 
         }
 
+        public function isTestProctored() {
+             $userId = $_SESSION['id'];
+            //echo $userId; die;
+            $mcqId = $_SESSION['mcqCode'];
+            $userEmail = $_SESSION['email'];
+
+            $sql = "SELECT * FROM `proctored_mcq` WHERE user_email = '".$userEmail."' AND mcq_test_id = $mcqId AND is_active = 1";
+
+            $result = $this->db->query($sql)->row();
+ 
+            $userStatus = array();
+            $userStatus['proctored'] = 0;
+
+            if (null != $result) {
+                $_SESSION['mcqId'] = $result->mcq_test_id;
+                $userStatus = (array) $result;
+                $userStatus['proctored'] = 1;
+                $userStatus['start_test'] = $result->start_test;
+                 $_SESSION['startTest'] = $result->start_test;
+            }
+
+            return $userStatus;
+
+        }
+
         public function isTestResume() {
+
+            print_r($_SESSION); die;
             $userId = $_SESSION['id'];
             //echo $userId; die;
             //$mcqId = $_SESSION['mcqId'];

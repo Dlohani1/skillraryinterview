@@ -321,7 +321,9 @@
                 </ul>
             </div>
         </div><br/>
-
+        
+        <?php 
+        if ($_SESSION['startTest']) {?>
         <div align="center">
             <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
             <label for="checkbox-1" class="checkbox-custom-label">I agree and follow all the instructions mentioned by SkillRary</label>
@@ -332,6 +334,7 @@
         <div align="center">
             <button class="startBtn" onclick="enterCode()"><?php if (isset($_SESSION['resumeTest']) && $_SESSION['resumeTest'] == 1) { echo "Resume Assessment";} else {echo "Start Assessment"; } ?></button>
         </div><br/>
+            <?php } ?>
     </div>
 
 

@@ -138,6 +138,8 @@ $route['admin/view-questions'] = 'AdminController/viewQuestion';
 
 $route['admin/view-results'] = 'AdminController/viewResult';
 
+$route['admin/view-mcq-data/:any'] = 'AdminController/viewMcqData';
+
 $route['admin/view-students/:any']= 'AdminController/showStudents';
 
 $route['admin/download-students/:any']= 'AdminController/downloadExcel';
@@ -146,7 +148,7 @@ $route['admin/add-question'] = 'AdminController/createQuestion';
 
 $route['admin/edit-question/:any'] = 'AdminController/editQuestion';
 
-$route['admin/login'] = 'AdminController/adminLogin';
+//$route['admin/login'] = 'AdminController/adminLogin';
 
 $route['admin/test-code'] = 'AdminController/viewCodeTest';
 
@@ -173,3 +175,39 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 
 $route['translate_uri_dashes'] = FALSE;
+
+
+// Chandan
+
+
+$route['admin/login'] = 'AdminController/adminLogin'; 
+
+$route['admin/checklogin']['POST'] = 'AdminController/checkLogin';
+
+$route['admin/logout'] = 'AdminController/logout';
+
+$route['admin/edit-test/:any'] = 'AdminController/editTest';
+
+$route['admin/edit-test-save']['POST'] = 'AdminController/editTestsave';
+
+
+//4 april
+
+$route['admin/create-roles'] = 'AdminController/addRoles'; 
+
+$route['admin/saveRole'] ['POST']= 'AdminController/saveRole'; 
+
+
+$route['admin/create-users'] = 'AdminController/createUser'; 
+
+$route['admin/saveUser'] ['POST']= 'AdminController/saveUser'; 
+
+$route['admin/sendInvite'] ['POST']= 'AdminController/sendInvite';
+
+//proctored controller make later
+$route['proctor/assignedUsers'] = 'AdminController/proctoredUsers'; 
+
+//email
+$route['admin/contact'] = 'AdminController/contact'; 
+
+$route['admin/sendMail'] ['POST']= 'AdminController/sendMail';

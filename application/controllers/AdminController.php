@@ -10,11 +10,75 @@ class AdminController extends CI_Controller {
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
 
-    // if (!isset($_SESSION['isAdmin'])) {
-    //   $this->
-    // }
+    //$db2 = $this->load->database('database2', TRUE);
+
+     $getUrl = $this->uri->segment(2);
+     $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'logout');
+
+     if (in_array($getUrl, $checkUrl)) {
+        if (!isset($_SESSION['admin_id'])) {
+            redirect('admin/login');
+        }
+     }
+
   }
 
+  public function saveUser() {
+
+    $data  = array ('role' => $_POST['roleId'],'username' => $_POST['username'],'password' => $_POST['password']);
+
+    $this->db->insert('assess_login', $data);
+
+    echo "success";
+
+  }
+
+  public function createUser() {
+
+    $sql = "SELECT * FROM roles ";
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+
+    $sql = "SELECT * FROM assess_login INNER JOIN roles on roles.id = assess_login.role";
+
+    $query = $this->db->query($sql);
+
+    $userResult = $query->result();
+
+    //print_r($userResult); die;
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+
+    $this->load->view('admin/create-users', array("user"=>$userResult,"roles"=>$result));
+    $this->load->view('admin/footer');
+    
+  }
+
+  public function addRoles() {
+    $sql = "SELECT * FROM roles ";
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-roles', array("roles"=>$result));
+    $this->load->view('admin/footer');
+  }
+
+  public function saveRole() {
+     $data  = array ('roles' => $_POST['role']);
+
+    $this->db->insert('roles', $data);
+
+    echo "success";
+
+  }
 
   public function generateUsernamePwd($size) {
 
@@ -24,9 +88,11 @@ class AdminController extends CI_Controller {
 
   }
 
-  public function createTest()
-  {
-    $this->load->view('admin/create-mcq.php');
+  public function createTest() {
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-mcq');
+    $this->load->view('admin/footer');
   }
 
 
@@ -78,8 +144,6 @@ class AdminController extends CI_Controller {
 
         foreach ($query->result() as $row) {
 
-
-
         $sql = "SELECT title FROM `mcq_test` WHERE id=".$row->mcq_test_id;
 
         $mcq = $this->db->query($sql)->row();
@@ -91,9 +155,179 @@ class AdminController extends CI_Controller {
         }
     }
 
-    $this->load->view('admin/view-result.php', array('mcq' => $mcqData));
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/view-result', array('mcq' => $mcqData));
+    $this->load->view('admin/footer');
+ }
+
+ public function contact() {
+  $sql = "SELECT * FROM `bse_citrix` limit 2";
+
+       // $mcq = $db2->query($sql)->row();
+          
+print_r($mcq); die;
+ $this->load->view('admin/testcontact');
+  //$this->load->view('admin/emailbody');
+ }
+ public function sendMail($from, $to, $subject, $data) {
+ // echo "a"; die;
+        $this->load->config('email');
+        $this->load->library('email');
+        
+        //$from = "info@skillrary.com";
+        // $to = $this->input->post('to');
+        // $subject = $this->input->post('subject');
+        // $message = $this->input->post('message');
+        //$from = "info@skillrary.com";
+         //$to = $this->input->post('to');
+        //$subject = $this->input->post('subject');
+        //$message = $this->input->post('message');
+
+        $this->email->set_newline("\r\n");
+        $this->email->from($from);
+        $this->email->to($to);
+        $this->email->subject($subject);
+
+       //     $data = array(
+
+       // 'name'=> 'Deepak Lohani',
+       // 'username' => "abc",
+       // 'password' => "123"
+
+       //   );
+//   $this->load->view('admin/emailbody');
+// die;
+        $body = $this->load->view('admin/emailbody',$data,TRUE);
+
+        $this->email->message($body); 
+        //$this->email->message($message);
+
+        if ($this->email->send()) {
+            echo 'Your Email has successfully been sent.';
+        } else {
+            show_error($this->email->print_debugger());
+        }
+    }
+
+ public function sendInvite() {
+
+  $mcqId = $_POST['mcqId'];
+  $email = $_POST['email'];
+  $testDate = $_POST['testDate'];
+  $testTime = $_POST['testTime'];
+  $proctorId = $_POST['proctorId'];
+  $assessId = $_POST['assessId'];
+
+
+    $data  = array (
+      'mcq_test_id' => $mcqId,
+      'proctor_id' => $proctorId,
+      'user_email' => $email,
+      'test_date' => $testDate,
+      'test_time' => $testTime,
+      'assess_usr_pwd_id' => $assessId
+    );
+
+    $this->db->insert('proctored_mcq', $data);
+
+    $data  = array (
+      'assess_usr_pwd_id' => $assessId,
+      'email' => $email
+    );
+
+    $this->db->insert('student_register', $data);
+
+    $sql = "SELECT username, password from assess_usr_pwd where id = ".$assessId;
+
+    $result = $this->db->query($sql)->row();
+
+  //  print_r(var_dump($result)); die;
+
+      $from = "info@skillrary.com";
+
+      $data = array(
+        "username" => $result->username,
+        "password" => $result->password
+      );
+      $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
+
+    //send email
  }
   
+  public function viewMcqData() {
+     $mcqId = $this->uri->segment(3);   
+
+
+        $sql = "SELECT mcq_test.id as id,title, mcq_code.code FROM `mcq_test` 
+         LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
+         WHERE mcq_test.id=".$mcqId;
+
+        $mcq = $this->db->query($sql)->row();
+
+         $mcqData['mcq-details'] = $mcq;
+
+        $sql = "SELECT * from `assess_usr_pwd` where mcq_test_id= ".$mcqId;
+
+        $query = $this->db->query($sql);
+         $mcqData['mcq-users'] = $query->result();
+
+         $sql = "SELECT * from `assess_login` where role= 7"; //proctor role
+
+        $query = $this->db->query($sql);
+
+        //   echo "<pre>";
+        //   print_r($query->result());
+
+        // print_r($mcq); die;
+
+        $mcqData['mcq-proctor'] = $query->result();
+       
+        //print_r($mcqData); die;
+
+        $sql = "SELECT count(DISTINCT(`student_id`)) as total FROM `mcq_test_question` where mcq_test_id = $mcqId";
+
+
+        $totalStudent = $this->db->query($sql)->row();
+
+        $mcqData['mcq-details']->totalStudent = $totalStudent->total;
+
+
+
+        $sql = "SELECT assess_usr_pwd_id as assessIds FROM `proctored_mcq` where mcq_test_id = $mcqId";
+
+
+        $assessIds = $this->db->query($sql)->result();
+        $proctoredIds = array();
+
+        foreach ($assessIds as $key => $value) {
+          $proctoredIds[] = $value->assessIds;
+
+        }
+
+        $mcqData['proctoredIds'] = $proctoredIds;
+
+
+        $this->load->view('admin/header');
+        $this->load->view('admin/sidenav');
+        $this->load->view('admin/view-mcq-data', array('mcq' => $mcqData));
+        //$this->load->view('admin/view-mcq-data');
+        $this->load->view('admin/footer');
+  }
+
+  public function proctoredUsers() {
+    $sql = "SELECT * FROM proctored_mcq where proctor_id = ".$_SESSION['admin_id'];
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+
+    //print_r($result); die;
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/assigned-proctor-users', array("users"=>$result));
+    $this->load->view('admin/footer');
+  }
 
   public function viewQuestion() {
 
@@ -113,12 +347,19 @@ class AdminController extends CI_Controller {
 
   public function viewTest() {
 
+    $adminId = $_SESSION['admin_id'];
+
 
     $sql = "SELECT mcq_test.id, mcq_test.title, mcq_code.code, SUM(mcq_test_pattern.total_question) as totalQuestion
             FROM mcq_test
-            INNER JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
-            INNER JOIN mcq_test_pattern on mcq_test.id=mcq_test_pattern.mcq_test_id
-            GROUP by mcq_test.id, mcq_test.title, mcq_code.code";
+            LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
+            LEFT JOIN mcq_test_pattern on mcq_test.id=mcq_test_pattern.mcq_test_id";
+
+    if ($adminId > 1) {
+      $sql .= " WHERE mcq_test.created_by = $adminId ";
+    }
+            
+    $sql .= " GROUP by mcq_test.id, mcq_test.title, mcq_code.code";
 
     $query = $this->db->query($sql);
 
@@ -138,8 +379,12 @@ class AdminController extends CI_Controller {
         }
     }
 
-
-    $this->load->view('admin/view-mcq.php', array('mcq'=>$mcq));
+        $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/view-mcq', array('mcq' => $mcq));
+    //$this->load->view('admin/view-mcq-data');
+    $this->load->view('admin/footer');
+   // $this->load->view('admin/view-mcq.php', array('mcq'=>$mcq));
   }
 
 
@@ -229,7 +474,8 @@ class AdminController extends CI_Controller {
 
                 $data = array(
                         'title' => $title,
-                        'type' => $type
+                        'type' => $type,
+                        'created_by' => $_SESSION['admin_id']
                 );
 
                 $this->db->insert('mcq_test', $data);
@@ -339,7 +585,17 @@ class AdminController extends CI_Controller {
         }
 
         public function adminLogin() {
-          $this->load->view('admin/admin-login');
+          //$this->load->view('admin/admin-login');
+
+          $sessionId = $this->session->userdata('admin_id');
+
+
+          if($sessionId) {
+            redirect('admin/create-test');
+          }
+          else{
+            $this->load->view('admin/admin-login');
+          }
         }
 
         public function showQuestion() {
@@ -1385,12 +1641,21 @@ foreach ($sectionDetails['section'] as $key => $value) {
               'username' => $this->generateUsernamePwd(4),
               'password' => $this->generatePassword()
            );  
-          $this->session->set_userdata('username', $data);
+            $this->session->set_userdata('username', $data);
   
           }
           
 
+          $username = $_SESSION['username']['username'];
+          $password = $_SESSION['username']['password'];
 
+          $userData  = array ('mcq_test_id' => $mcqId,'username' => $username, 'password' => $password);
+
+          $this->db->insert('assess_usr_pwd', $userData);
+
+          $userId = $this->db->insert_id();
+
+          $_SESSION['assess_id'] = $userId;
           
           redirect('user/create/profile');
 
@@ -1480,4 +1745,146 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
             return $isEmpty;
         }
+         public function checkLogin() {
+
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+
+    $sql = "SELECT * FROM `assess_login` where username = '$login' and password='$password' and is_active='1'";
+
+    $query = $this->db->query($sql);
+
+   $query =  $query->result_object();
+
+
+
+   if($query){
+       $id = $query[0]->id;
+    //  echo $role =  $query[0]->role;
+    //   echo  $username =  $query[0]->username;
+    //    echo $password =  $query[0]->password;
+    //     echo  $is_active =  $query[0]->is_active;
+
+
+ // if(isset($check[0]->id)){
+ //          Session::put('traineradmin', $username);
+ //          return redirect('/dashboard');
+
+ //          redirect('user/create/profile');
+ //      }
+ //      else{
+ //        return back()->with('error', 'Wrong Login Details');
+ //      } 
+
+
+        if(isset($id)){
+          $this->session->set_userdata('admin_id', $id);
+          $this->session->set_userdata('role_id', $query[0]->role);
+        // $SessionId = $this->session->userdata('id');
+          if ($_SESSION['role_id'] != 7) {
+           redirect('admin/create-test');
+          
+          }else{
+            redirect('proctor/assignedUsers');
+          }
+
+         } else{
+            redirect('admin/login');
+         }
+
+   
+
+
+
+  }
+}
+ 
+
+  public function logout() {
+
+      $this->session->sess_destroy();
+      redirect('admin/login');
+  }
+
+    public function editTest() {
+
+        $questionId = $this->uri->segment(3);
+
+        $sql = "SELECT id as mcq_test_id, title as mcq_test_title, type as mcq_test_type 
+                FROM mcq_test
+                where id = $questionId";
+        $query = $this->db->query($sql);
+
+        $mcq_test_data = $query->result();
+      // var_dump($mcq_test_data[0]->mcq_test_title);
+      //           var_dump($mcq_test_data[0]->mcq_test_type);
+
+        $sql = "SELECT id as drive_id, drive_date as drive_drive_date, drive_time 
+                as drive_drive_time, drive_place as drive_drive_place
+                FROM ci_skillrary_assessment.`drive-details` as drive
+                where  mcq_test_id = $questionId";
+
+        $query = $this->db->query($sql);
+
+        $drive_data = $query->result();
+                
+        $sql = "SELECT mcq_time.id as mcq_time_id, mcq_test_id as mcq_time_mcq_test_id, section_id as mcq_time_section_id , 
+                total_question as mcq_time_total_question , completion_time as mcq_time_completion_time,
+                section.id as section_id, section_name
+                FROM ci_skillrary_assessment.mcq_time 
+                inner join 
+                ci_skillrary_assessment.section section
+                on mcq_time.section_id  =  section.id
+                where mcq_test_id= $questionId";
+
+        $query = $this->db->query($sql);
+
+        $mcq_time_data = [];
+
+        foreach ($query->result() as $key => $value) {
+          $mcq_time_data[$key]['mcq_time_id']= $value->mcq_time_id;
+          $mcq_time_data[$key]['mcq_time_mcq_test_id']= $value->mcq_time_mcq_test_id;
+          $mcq_time_data[$key]['mcq_time_section_id']= $value->mcq_time_section_id;
+          $mcq_time_data[$key]['mcq_time_total_question']= $value->mcq_time_total_question;
+          $mcq_time_data[$key]['mcq_time_completion_time']= $value->mcq_time_completion_time;
+          $mcq_time_data[$key]['section_id']= $value->section_id;
+          $mcq_time_data[$key]['section_name']= $value->section_name;
+                
+        } 
+
+        $sql = "SELECT total_question 
+                FROM mcq_test_pattern mtp
+                inner join section sec
+                on sec.id = mtp.section_id
+                where mtp.mcq_test_id=$questionId";
+
+        $query = $this->db->query($sql);
+
+        $get_total_question = [];
+
+        foreach ($query->result() as $key => $value) {
+          $get_total_question[$key]['total_question']= $value->total_question;
+        } 
+
+        $this->load->view('admin/edit-test', array('mcq_test_data' => $mcq_test_data, 'drive_data' => $drive_data, 'mcq_time_data' => $mcq_time_data , 'get_total_question' => $get_total_question));
+
+    }
+
+    
+
+    public function editTestsave()
+    {
+
+
+       echo $testId = $_POST['testId'];
+       echo  $mcq_name_title = $_POST['mcq_name_title'];
+
+     echo $mcq_code = $_POST['mcq_code'];
+            echo $total_section = $_POST['total_section'];
+       echo  $password = $_POST['password'];
+
+
+      echo "string";
+    }
+
 }

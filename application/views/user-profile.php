@@ -634,8 +634,9 @@ function Upload() {
 window.onload = test();
 
 function test() {
+    var  username = <?php echo $_SESSION['username']; ?>;
 
-    if (localStorage.getItem("isRead") != 1) {
+    if (localStorage.getItem("isRead") != 1 && undefined !== username) {
         $('#userModal').modal({backdrop: 'static', keyboard: false})
         document.getElementById("modal-btn").click();
     }
