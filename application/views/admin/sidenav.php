@@ -64,7 +64,7 @@
                                     <a class="nav-link" href=<?php echo base_url()."admin/view-results";?>>View</a>
                                 </nav>
                             </div>
-                        <?php } else {?>
+                        <?php } else {/*?>
                              <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsQ" aria-expanded="false" aria-controls="collapseLayoutsQ"
                                 >
@@ -79,7 +79,8 @@
                                 </nav>
                             </div>
 
-                            <?php }?>
+                            <?php 
+				*/ }?>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

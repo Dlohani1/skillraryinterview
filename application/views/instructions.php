@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-    <title>Assessment Instructions</title>
+
     <style type="text/css">
         .MainHead{
             font-size: 24px;
@@ -321,9 +312,11 @@
                 </ul>
             </div>
         </div><br/>
-        
+        <p id="demo" style="text-align:center;color:red;font-weight:600"></p>
+	<center><button id="startTest" style="display:none"> Join Meeting </button></center>
         <?php 
-        if ($_SESSION['startTest']) {?>
+        //if ($_SESSION['startTest']) {
+?>
         <div align="center">
             <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
             <label for="checkbox-1" class="checkbox-custom-label">I agree and follow all the instructions mentioned by SkillRary</label>
@@ -334,35 +327,149 @@
         <div align="center">
             <button class="startBtn" onclick="enterCode()"><?php if (isset($_SESSION['resumeTest']) && $_SESSION['resumeTest'] == 1) { echo "Resume Assessment";} else {echo "Start Assessment"; } ?></button>
         </div><br/>
-            <?php } ?>
+            <?php //}
+ ?>
+	<input type="hidden" id="base_url" value= "<?php echo base_url(); ?>" />
     </div>
 
 
     <script>
+
+
+// Set the date we're counting down to
+//var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
+
+var isTestProctored = <?php echo $_SESSION['isTestProctored']; ?>
+
+if (undefined !== isTestProctored) {
+
+var testDate = <?php echo "'".$_SESSION['testDate']."'"; ?>;
+var testTime = <?php echo "'".$_SESSION['testTime']."'"; ?>;
+
+var meetingUrl = <?php echo "'".$_SESSION['joinUrl']."'"; ?>;
+
+//var countDownDate = new Date ("2020-04-06 08:23").getTime();
+
+//var testTime = "09:22";
+var testData = testDate + " "+ testTime;
+//alert(testData);
+var countDownDate = new Date(testData).getTime();
+alert(testData);
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  if (days > 0 ) {
+  document.getElementById("demo").innerHTML = "Your test will start in "+ days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+  } else if (hours > 0) {
+    document.getElementById("demo").innerHTML = "Your test will start in "+ hours + "h "
+  + minutes + "m " + seconds + "s ";
+  } else if (minutes > 0) {
+    document.getElementById("demo").innerHTML = "Your test will start in "
+  + minutes + "m " + seconds + "s ";
+  }else {
+    document.getElementById("demo").innerHTML = "Your test will start in "+ seconds + "s ";
+  }
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "";
+    var startBtn = document.getElementById("startTest");
+
+	startBtn.style.display = "block";
+	
+startBtn.onclick = joinMeeting;
+
+  }
+}, 1000);
+
+}
+
+function joinMeeting() {
+	var meetingUrl = <?php echo "'".$_SESSION['joinUrl']."'"; ?>;
+
+         window.open(meetingUrl);
+}
+
         function enterCode() {
+	    var id = <?php echo $_SESSION['assessId']; ?>;
             var isChrome = !!window.chrome; // "!!" converts the object to a boolean value
             console.log(isChrome); // Just to visualize what's happening
 
             /** Example: User uses Firefox, therefore isChrome is false; alert get's triggered */
-            if (isChrome !== true) { 
-              alert("Please use Google Chrome to access this site.\nSome key features do not work in browsers other than Chrome.");
-            } else {
+            //if (isChrome !== true) { 
+             //alert("Please use Google Chrome to access this site.\nSome key features do not work in browsers other than Chrome.");
+          // } else {
 
                 var remember = document.getElementById("checkbox-1");
                 if (remember.checked) {
+
+		var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"admin/startTest",
+
+                    type: 'post',
+
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "assessId" : id} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+
+                                      // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+			//alert(data);
+
+			if (data == "1") {
+				 var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+                    win.onbeforeunload = function(){
+                        console.log('unload');
+                        window.location.href="user/view-results";
+                    }
+
+
+			} else {
+				 alert("Test not Active, Please contact support.");
+			}
+                        // document.getElementById("code").disabled = true;
+
+                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
                 //window.location.href='mcq-question';
-                var win = window.open("mcq-question", "","toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=4000,height=4000");
+               /* var win = window.open("mcq-question", "","toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=4000,height=4000");
 
                     // var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
                     win.onbeforeunload = function(){
                         console.log('unload');
                         window.location.href="user/view-results";
-                    }  
+                    }*/ 
                 } else {
                     alert("Please accept the instructions");
                 }
             }            
-        }
+       // }
     </script>
     
 </body>

@@ -125,8 +125,8 @@
                     <th>Password</th>
                      <!-- <th>Total Section</th>
                      <th>Total Question</th> -->
-                     <th>view</th>
-                      <th>Download</th>
+                     <!-- <th>view</th>
+                      <th>Download</th> -->
                       
                        <th>Send Invite</th>
                    </thead>
@@ -144,9 +144,9 @@
           }
 
           
-            echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td> 
-      <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
-      <td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
+            echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td>';
+     // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
+      //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
 
       if ($sendInvite) {
         echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">

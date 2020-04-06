@@ -254,7 +254,6 @@ class QuestionBank extends MyController {
                 $mcqId = $_POST['mcq_id'];
 
                 $sql = "SELECT * FROM `mcq_test_question` WHERE student_id = '$studentId' AND section_id = '$sectionId' AND mcq_test_id = '$mcqId'";
-
                 $query = $this->db->query($sql);
 
                 $i = 0;
@@ -267,7 +266,7 @@ class QuestionBank extends MyController {
                         //$i++;
                 }
 
-
+//print_r($questionData); die;
                 $sql = "SELECT * FROM `mcq_time` WHERE mcq_test_id = '$mcqId' AND  section_id = '$sectionId'";
 
                 $query = $this->db->query($sql);
@@ -361,6 +360,7 @@ class QuestionBank extends MyController {
 
                 $this->db->insert('student_register', $data);
                 $this->session->set_flashdata('success', 'Registration successfull. Please Login');
+
                 redirect('user/new-login', 'refresh');
             }
             
@@ -674,15 +674,50 @@ class QuestionBank extends MyController {
                     $_SESSION['username'] = $user->username;
 
                      $assessId = $user->id;
+		     $_SESSION['assessId']= $assessId;
 
                      $sql = "SELECT * FROM `student_register` WHERE assess_usr_pwd_id = $assessId";
 
                      $user = $this->db->query($sql)->row();
-
-                    // if (null == $user) {
-                         $this->session->set_flashdata('success', 'Complete your profile');
-                            redirect('user/profile');
+			//print_r($user); die;
+                     if (null != $user) {
+                        // $this->session->set_flashdata('success', 'Complete your profile');
+                          //  redirect('user/profile');
                     //} else 
+
+	            $this->session->set_userdata('id', $user->id); 
+
+                    $this->session->set_userdata('email', $user->email); 
+
+                    $this->session->set_userdata('contact', $user->contact_no);
+
+                    $this->session->set_userdata('firstName', $user->first_name); 
+
+                    $this->session->set_userdata('lastName', $user->last_name);
+
+                    $this->session->set_userdata('userGender', $user->gender);
+
+                     if ($this->checkProfile()) {
+                        //echo "aa"; die;
+                        ///$this->session->set_flashdata('success', 'Complete your profile');
+                        redirect('user/profile');
+                        return $this->showUserProfile();
+                    } else {
+                        if (strlen(trim($_POST['enter-code'])) > 0) {
+                            $this->session->set_userdata('code', trim($_POST['enter-code']));
+                            redirect('user/enter-code');
+                        }
+                        //redirect('user/enter-code');
+                        redirect('user/home');
+                    }
+
+		} else {
+
+		  $this->session->set_flashdata('success', 'Complete your profile');
+                         redirect('user/profile');
+
+}
+
 
                      
                    } else {
@@ -739,11 +774,11 @@ class QuestionBank extends MyController {
             $userData['tenth_board'] = $_POST['tenth_branch'];
             $userData['twelveth_board'] = $_POST['twelveth_branch'];
 
-            $userData['assess_usr_pwd_id'] = $_SESSION['assess_id'];
+            $userData['assess_usr_pwd_id'] = $_SESSION['assessId'];
 
             $userData['degree_college_name'] = $_POST['college'];
 
-
+//print_r($userData); die;
             if (isset($_POST['gap'])) {
                 $userData['year_gap'] = $_POST['gap'];
             }
@@ -825,7 +860,7 @@ class QuestionBank extends MyController {
         public function showUserProfile($user = false) {
 
             $userId = $this->session->id;
-
+	
             $sql = "SELECT first_name,last_name,email,contact_no,state, city, dob, gender, tenth_passing_year, tenth_percentage,tenth_board, twelveth_board, twelveth_passing_year, twelveth_percentage, degree, degree_college_name, degree_passing_year, degree_percentage, stream, work_location, profile_image,degree_university, pg_college, pg_passing_year, pg_branch,
             pg_university, pg_percentage, pg_degree FROM `student_register` Where id = '$userId'" ;
 
@@ -834,7 +869,7 @@ class QuestionBank extends MyController {
             $isEmpty = 0;
 
             $userData = array();
-           
+           //echo $query->num_rows(); die;
             if($query->num_rows() > 0)  {
 
                 foreach ($query->result() as $row) {
@@ -876,7 +911,7 @@ class QuestionBank extends MyController {
                 return $userData;
 
             } else {
-
+//print_r($userData); die;
                 $this->load->view('user-header');
                 $this->load->view('update-profile', array('userData' => $userData));
                 $this->load->view('codefooter');
@@ -931,11 +966,12 @@ class QuestionBank extends MyController {
 
         public function isTestProctored() {
              $userId = $_SESSION['id'];
+		$assessId = $_SESSION['assessId'];
             //echo $userId; die;
             $mcqId = $_SESSION['mcqCode'];
             $userEmail = $_SESSION['email'];
 
-            $sql = "SELECT * FROM `proctored_mcq` WHERE user_email = '".$userEmail."' AND mcq_test_id = $mcqId AND is_active = 1";
+            $sql = "SELECT * FROM `proctored_mcq` WHERE assess_usr_pwd_id = '".$assessId."' AND mcq_test_id = $mcqId AND is_active = 1";
 
             $result = $this->db->query($sql)->row();
  
@@ -947,7 +983,11 @@ class QuestionBank extends MyController {
                 $userStatus = (array) $result;
                 $userStatus['proctored'] = 1;
                 $userStatus['start_test'] = $result->start_test;
-                 $_SESSION['startTest'] = $result->start_test;
+                $_SESSION['startTest'] = $result->start_test;
+		$_SESSION['testDate'] = $result->test_date;
+		$_SESSION['testTime'] = $result->test_time;
+		$_SESSION['joinUrl'] = $result->user_join_url;
+		$_SESSION['isTestProctored'] = 1;
             }
 
             return $userStatus;
@@ -956,7 +996,7 @@ class QuestionBank extends MyController {
 
         public function isTestResume() {
 
-            print_r($_SESSION); die;
+           // print_r($_SESSION); die;
             $userId = $_SESSION['id'];
             //echo $userId; die;
             //$mcqId = $_SESSION['mcqId'];

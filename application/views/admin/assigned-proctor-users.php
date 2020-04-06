@@ -15,7 +15,7 @@
       <div class="row">
          <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
           <div class="col-md-12">
-            <h4>MCQs Roles</h4>
+            <h4>Users List</h4>
             <div class="container">
               <div class="searchBox">
 <!--                 <div class="row">
@@ -98,9 +98,21 @@
         foreach($users as $key => $value) { 
           //print_r($value);
             $i++;
-            echo '<tr><td>'.$i.'</td><td>'.$value->user_email.'</td> <td>'.$value->test_date.'</td> <td>'.$value->test_time.'</td> <td>'.$value->start_test.' </td><td><button> Create Meeting </button><button> Start Meeting </button><button> Activate Test </button></td> 
-      
-   </tr>';
+            echo '<tr><td>'.$i.'</td><td>'.$value->user_email.'</td> <td>'.$value->test_date.'</td> <td>'.$value->test_time.'</td> <td>'.$value->start_test.' </td><td>
+<button class="btn btn-default"  id="joinMeeting" onclick="joinMeeting('.$value->assess_usr_pwd_id.')"> Join Meeting </button>';
+
+
+
+if ($value->start_test == "1") { echo '
+<button class="btn btn-default" disabled onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Meeting </button>
+<button  class="btn btn-default" disabled onclick="activateTest('.$value->assess_usr_pwd_id.')"> Activate Test </button>'; 
+ 
+ } else {
+echo '
+<button class= "btn btn-info"  onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Meeting </button>
+<button  class="btn btn-primary" onclick="activateTest('.$value->assess_usr_pwd_id.')"> Activate Test </button>';
+}
+echo '</td> </tr>';
         }
         ?>
 <!--     <td><a href="view-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
@@ -254,24 +266,114 @@
                 </main>
 
 <script>
-               function createRole() {
+
+
+		//function createMeeting(id) {
+
+		//alert(id);
+		//}
+
+ 		function startMeeting(id) {
                 var baseUrl = document.getElementById("base_url").value;
-                
-                var role = document.getElementById("role-name").value;
+
+                //var role = document.getElementById("role-name").value;
                 //var mcqId = document.getElementById("mcqTestId").value ;
-                var baseUrl = document.getElementById("base_url").value;
+                //var baseUrl = document.getElementById("base_url").value;
                   $.ajax({
-                    url: baseUrl+"admin/saveRole",
-                   
+                    url: baseUrl+"admin/startMeeting",
+
                     type: 'post',
-                    
+
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "role" : role} ,
+                    data: { "assessId" : id} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
+			window.open(data);
+			//alert(data);
+                         //document.getElementById("joinMeeting").style.display = "block";
+
+			var element = document.getElementById("joinMeeting");
+  			element.classList.add("btn-warning");
+			element.classList.remove("btn-default");
+                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+			error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
+
+
+               function joinMeeting(id) {
+                var baseUrl = document.getElementById("base_url").value;
+                
+                //var role = document.getElementById("role-name").value;
+                //var mcqId = document.getElementById("mcqTestId").value ;
+                //var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"admin/joinMeeting",
+                   
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "assessId" : id} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                  	      // document.getElementById("code").disabled = true;
+					window.open(data);
+	                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
+
+              function activateTest(id) {
+                var baseUrl = document.getElementById("base_url").value;
+
+                //var role = document.getElementById("role-name").value;
+                //var mcqId = document.getElementById("mcqTestId").value ;
+                //var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"admin/activateTest",
+
+                    type: 'post',
+
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "assessId" : id} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+
+		                      // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+
+			alert("Test Activated");
                         // document.getElementById("code").disabled = true;
 
                         // document.getElementById("codeSubmit").disabled = true;
@@ -290,4 +392,5 @@
 
 
              }
+
 </script>

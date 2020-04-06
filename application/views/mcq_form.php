@@ -3,13 +3,13 @@ $resumeTest  = 0;
  $sectionIdResume =  0;
  $questionIdResume = 0;
  $timeTaken = 0;
-if (count($testData) > 0) {
-    print_r($testData);
+/*if (count($testData) > 0) {
+   // print_r($testData);
     $sectionIdResume =  $testData['section_id'];
     $questionIdResume = $testData['question_id'];
     $timeTaken = $testData['time_left'];
     $resumeTest = 1;
-}
+}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -919,7 +919,8 @@ function loadIframe() {
         var mcqId = document.getElementById("mcqSessionId").value;
         var userId  = document.getElementById("studentSessionId").value;
         var codeId = document.getElementById("codeTestId").value;
-        var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/"+codeId+"/"+mcqId;
+        //var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/"+codeId+"/"+mcqId;
+        var url = "https://code.skillrary.com/url_assessment/"+userId+"/"+id+"/"+codeId+"/"+mcqId+"/assess";
         //var win = window.open(url, "_self", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
         // document.getElementById('myIframe').src = "https://code.skillrary.com/url_assessm"+userId+"/"+id+"/9";
 

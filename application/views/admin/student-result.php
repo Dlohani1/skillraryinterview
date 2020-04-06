@@ -209,7 +209,7 @@
                         <td class="tdborder"><b>English</b></td>
                         <!-- <td class="tdborder">98%</td> -->
                         <td class="tdborder">99%</td>
-                        <td class="tdborder">735</td>
+                        <td class="tdborder">36/40</td>
                         <td class="tdborder">Grammer</td>
                         <td class="tdborder grade">A</td>
                         <td class="tdborder">Vocabulary</td>
@@ -221,7 +221,7 @@
                         <td class="tdborder"><b>Quantitaive Ability</b></td>
                         <!-- <td class="tdborder">98%</td> -->
                         <td class="tdborder">58%</td>
-                        <td class="tdborder">520</td>
+                        <td class="tdborder">19/30</td>
                         <td class="tdborder">Engineering Mathematics</td>
                         <td class="tdborder grade">B</td>
                         <td class="tdborder">Basic Mathematics</td>
@@ -233,7 +233,7 @@
                         <td class="tdborder"><b>Computer Programming</b></td>
                         <!-- <td class="tdborder">98%</td> -->
                         <td class="tdborder">90%</td>
-                        <td class="tdborder">555</td>
+                        <td class="tdborder">23/30</td>
                         <td class="tdborder">OOP and Complexity Theory</td>
                         <td class="tdborder grade">A</td>
                         <td class="tdborder">Data Structures</td>

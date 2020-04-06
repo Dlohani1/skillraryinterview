@@ -10,7 +10,7 @@ class AdminController extends CI_Controller {
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
 
-    //$db2 = $this->load->database('database2', TRUE);
+    $this->db2 = $this->load->database('database2', TRUE);
 
      $getUrl = $this->uri->segment(2);
      $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'logout');
@@ -22,6 +22,211 @@ class AdminController extends CI_Controller {
      }
 
   }
+
+ public function createMeeting ($startDate, $startTime, $assessId) {
+        //echo "test";
+  //$sql = "SELECT * FROM `bse_citrix` limit 2";
+//
+//$time = date("m/d/Y h:i:s a", strtotime("+30 seconds"));
+
+//$startTime =+ ":00";
+
+
+//$time = date("m/d/Y h:i:s a", strtotime("+30 seconds"));
+
+   $timestamp = strtotime($startTime) + 60; // 3 hours
+
+        $startTime = date('H:i:s', $timestamp);
+
+
+
+ $startTestTime = $startDate.'T'.$startTime.'.000Z';
+
+ 
+
+	$timestamp = strtotime($startTime) + 180*60; // 3 hours
+
+        $endTime = date('H:i:s', $timestamp);
+
+	$endTestTime = $startDate.'T'.$endTime.'.000Z';
+
+        $sql = "SELECT access_token FROM `bse_citrix` where email='trainer130@qspiders.com'";
+//echo var_dump($startTime); 
+//echo $startTestTime , "</br>";
+//echo $endTestTime;
+//die;
+
+       $meeting = $this->db2->query($sql)->result();
+
+        foreach($meeting as $key => $value) {
+
+                $token = $value->access_token;
+                $timeZone = "Asia/Calcutta";
+                $headers = array(
+                        'Content-Type: application/json',
+                        "accept: application/json",
+                        "Authorization: ".$token,
+                );
+
+              $url = 'https://api.getgo.com/G2M/rest/meetings';
+               // $meetdes=preg_replace("/[^a-zA-Z]/", "", $course->description);
+                //$meettit=preg_replace("/[^a-zA-Z]/", "", $course->course_title);
+
+                $fields = array(
+                    'subject' => "test",
+                    'starttime'=> $startTestTime,
+                     'endtime' => $endTestTime,
+                    'conferencecallinfo'=>'Free',
+                    'timezonekey'=> $timeZone,
+                    "passwordrequired" => FALSE,
+                    "meetingtype" =>  "scheduled",
+                );
+//              echo '<pre>';print_r($fields);
+// print_r(json_encode($fields)); die;
+
+
+		$ch = curl_init();
+               curl_setopt($ch,CURLOPT_HTTPHEADER, $headers );
+                curl_setopt($ch,CURLOPT_URL, $url);
+                curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch,CURLOPT_POST, true);
+                curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($fields));
+
+
+                $result = curl_exec($ch);
+
+                curl_close($ch);
+                $webinars = json_decode($result);
+//print_r($webinars);
+                if($webinars!=''){
+                  if(isset($webinars->int_error_code) || isset($webinars->int_err_code)){
+                    continue;
+                  }else{
+			//print_r($webinars); die;
+			 $data = array(
+      				'meeting_id' => $webinars[0]->meetingid,
+      				'user_join_url' => $webinars[0]->joinURL
+    			);
+
+			 $this->db->where('assess_usr_pwd_id', $assessId);
+        		 $this->db->update('proctored_mcq',$data);
+			 echo "Success";
+                        //start meeting
+                        //$this->startMeeting($webinars->meetingid, $headers);
+                        break;
+                  }
+                 }
+}
+//          echo "<pre>";
+//print_r($mcq); die;
+  }
+
+public function startMeeting() {
+
+
+//$sql = "SELECT * FROM `bse_citrix` limit 3";
+
+ $sql = "SELECT * FROM `bse_citrix` where email='trainer130@qspiders.com'";
+
+       $meeting = $this->db2->query($sql)->result();
+
+        foreach($meeting as $key => $value) {
+
+                $token = $value->access_token;
+                $timeZone = "Asia/Calcutta";
+                $headers = array(
+                        'Content-Type: application/json',
+                        "accept: application/json",
+                        "Authorization: ".$token,
+                );
+
+	
+
+            $sql = "SELECT meeting_id FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_POST['assessId'];
+
+            $meetingDetails = $this->db->query($sql)->row();
+
+	    $meetingId = $meetingDetails->meeting_id;
+
+
+	     $start_url = "https://api.getgo.com/G2M/rest/meetings/".$meetingId."/start";
+
+
+
+                      $ch1 = curl_init();
+                      curl_setopt($ch1,CURLOPT_HTTPHEADER, $headers );
+                      curl_setopt($ch1,CURLOPT_URL, $start_url);
+                      curl_setopt($ch1,CURLOPT_RETURNTRANSFER, 1);
+                      curl_setopt($ch1, CURLOPT_CUSTOMREQUEST, "GET");
+                      $startmeeting = curl_exec($ch1);
+                      curl_close($ch1);
+                      $start_meetings=json_decode($startmeeting);   
+                      $message = '';
+//echo $token;
+		     //print_r($start_meetings); die;
+
+			if(isset($start_meetings->int_error_code) || isset($start_meetings->int_err_code)){
+$start_meeting_url = $key." ".$start_meetings->int_err_code;
+
+                    continue;
+}
+$start_meeting_url = "No meeting assigned";
+                      if(isset($start_meetings->hostURL))
+                      {
+                          $start_meeting_url = $start_meetings->hostURL;
+
+			   $data = array(
+                                'proctor_meeting_url' => $start_meeting_url
+                        );
+
+                         $this->db->where('assess_usr_pwd_id', $_POST['assessId']);
+                         $this->db->update('proctored_mcq',$data);
+			echo $start_meeting_url; die;
+                        // echo "Success"; die;
+				break;
+                      }
+                      else{
+
+                          $start_meeting_url = '';
+                        $message = isset($start_meetings->message) ? $start_meetings->message : '';
+continue;
+                      }
+}
+			echo $start_meeting_url;
+}
+
+public function activateTest() {
+ $data = array(
+      'start_test' => 1
+    );
+
+ $this->db->where('assess_usr_pwd_id', $_POST['assessId']);
+        $this->db->update('proctored_mcq',$data);
+
+echo "success";
+}
+
+
+public function startTest() {
+              $sql = "SELECT start_test FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_POST['assessId'];
+
+              $result = $this->db->query($sql)->row();
+
+
+               echo $result->start_test;
+
+}
+
+public function joinMeeting() {
+
+$sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_POST['assessId'];
+
+              $result = $this->db->query($sql)->row();
+
+
+               echo $result->joinUrl;
+}
+
 
   public function saveUser() {
 
@@ -250,7 +455,12 @@ print_r($mcq); die;
         "username" => $result->username,
         "password" => $result->password
       );
+
+
+      $this->createMeeting($testDate, $testTime, $assessId);
       $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
+
+	//$this->createMeeting($testDate, $testTime);
 
     //send email
  }
@@ -1672,8 +1882,20 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
 
   public function createUserProfile () {
+	//print_r($_SESSION); die;
+	$userData = array();
+	if (isset($_SESSION['assessId'])) {
+		              $sql = "SELECT user_email FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_SESSION['assessId'];
+
+              $userEmail = $this->db->query($sql)->row();
+	      if (isset($userEmail->user_email)) {
+		$userData['email']=  $userEmail->user_email;
+	     }
+	}
+
+
     $this->load->view('user-header');
-    $this->load->view('user-profile');
+    $this->load->view('user-profile', array('userData' => $userData));
     $this->load->view('codefooter');
   }
 

@@ -414,7 +414,7 @@ function Upload() {
                                         </div>
                                         <div class="col-md-6">
                                             <label>Email<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                            <input type="email" name="email" value="<?php echo set_value('email'); ?>"  id="emaillogin" class="form-control"  autocomplete="off"><br/>
+                                            <input type="email" name="email"  <?php if (isset($userData['email'])) { echo "readonly";}?> value="<?php if (isset($userData['email'])) { echo $userData['email'];} else {echo set_value('email');} ?>"  id="emaillogin" class="form-control"  autocomplete="off"><br/>
                                             <p id="erremail" class="errMessage"></p>
                                             <?php echo "<span style='color:red'>".form_error('email')."</span>"; ?>
                                         </div>

@@ -211,3 +211,13 @@ $route['proctor/assignedUsers'] = 'AdminController/proctoredUsers';
 $route['admin/contact'] = 'AdminController/contact'; 
 
 $route['admin/sendMail'] ['POST']= 'AdminController/sendMail';
+
+$route['admin/createMeeting'] ['POST']= 'AdminController/createMeeting';
+
+$route['admin/startMeeting'] ['POST']= 'AdminController/startMeeting';
+
+$route['admin/activateTest'] ['POST']= 'AdminController/activateTest';
+
+$route['admin/startTest'] ['POST']= 'AdminController/startTest';
+
+$route['admin/joinMeeting']['POST'] = 'AdminController/joinMeeting';
