@@ -471,9 +471,9 @@ print_r($mcq); die;
 
       $sql = "SELECT * from `assess_login` where id =".$proctorId;
 
-       $result = $this->db->query($sql)->row();
+      $result = $this->db->query($sql)->row();
 
-             $data = array(
+      $data = array(
         "username" => $result->username,
         "password" => $result->password
       );
@@ -497,7 +497,9 @@ print_r($mcq); die;
 
          $mcqData['mcq-details'] = $mcq;
 
-        $sql = "SELECT * from `assess_usr_pwd` where mcq_test_id= ".$mcqId;
+        $sql = "SELECT  assess_usr_pwd.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
+               LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
+        where mcq_test_id= ".$mcqId;
 
         $query = $this->db->query($sql);
          $mcqData['mcq-users'] = $query->result();
@@ -537,6 +539,7 @@ print_r($mcq); die;
 
         $mcqData['proctoredIds'] = $proctoredIds;
 
+        //print_r($mcqData); die;
 
         $this->load->view('admin/header');
         $this->load->view('admin/sidenav');

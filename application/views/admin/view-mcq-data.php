@@ -121,6 +121,9 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+                                      <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact-no</th>
                    <th>Username</th>
                     <th>Password</th>
                      <!-- <th>Total Section</th>
@@ -144,7 +147,7 @@
           }
 
           
-            echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td>';
+            echo '<tr><td>'.$value->first_name." ".$value->last_name.'</td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
 
