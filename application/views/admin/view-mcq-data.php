@@ -269,7 +269,7 @@
 
         if (count($mcq['mcq-proctor']) > 0) {
         foreach($mcq['mcq-proctor'] as $key => $value) { ?>
-        <option value=<?php echo $value->id; ?>> <?php echo $value->username;?> </option>
+        <option value=<?php echo $value->id; ?>> <?php echo $value->first_name." | ".$value->email." | ".$value->contact_no;?> </option>
         <?php } }?>                       
                     </select>
         </div>

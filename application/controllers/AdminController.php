@@ -469,6 +469,17 @@ print_r($mcq); die;
       $this->createMeeting($testDate, $testTime, $assessId);
       $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 
+      $sql = "SELECT * from `assess_login` where id =".$proctorId;
+
+       $result = $this->db->query($sql)->row();
+
+             $data = array(
+        "username" => $result->username,
+        "password" => $result->password
+      );
+
+      $this->sendMail($from,$result->email, "SkillRary Assessment Details", $data);
+
 	//$this->createMeeting($testDate, $testTime);
 
     //send email
