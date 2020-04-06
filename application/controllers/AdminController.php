@@ -10,7 +10,7 @@ class AdminController extends CI_Controller {
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
 
-    $this->db2 = $this->load->database('database2', TRUE);
+   // $this->db2 = $this->load->database('database2', TRUE);
 
      $getUrl = $this->uri->segment(2);
      $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'logout');
@@ -230,7 +230,16 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
 
   public function saveUser() {
 
-    $data  = array ('role' => $_POST['roleId'],'username' => $_POST['username'],'password' => $_POST['password']);
+
+    $data  = array (
+      'first_name' => $_POST['first-name'],
+      'last_name' => $_POST['last-name'],
+      'email' => $_POST['user-email'],
+      'contact_no' => $_POST['user-cno'],
+      'role' => $_POST['roleId'],
+      'username' => $_POST['username'],
+      'password' => $_POST['password']
+    );
 
     $this->db->insert('assess_login', $data);
 

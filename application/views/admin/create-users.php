@@ -17,6 +17,27 @@
             <h4>MCQs Roles</h4>
             <div class="container">
               <div class="searchBox">
+                          <div class="row">
+                  <div class="col-md-3 offset-md-1">
+                    <label>First Name</label>
+                    <input type="text" id="first-name" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
+                  </div>
+                  <div class="col-md-3 offset-md-1">
+                    <label>Last Name</label>
+                    <input type="text" id="last-name" class="form-control inputBox">
+                  </div>
+                  <div class="col-md-2 offset-md-1">
+                    <label>Email </label>
+                    <input type="text" id="user-email" class="form-control inputBox">
+                    
+                  </div>
+                  <!-- <div class="col-md-2 offset-md-1">
+                    <br/>
+                   <button onclick="createUser()">Create User</button>
+                  </div> -->
+                <div>
+             </div>
+          </div>
                 <div class="row">
                   <div class="col-md-3 offset-md-1">
                     <label>User Name</label>
@@ -39,6 +60,29 @@
         <?php } }?>                       
                     </select>
                   </div>
+                  <!-- <div class="col-md-2 offset-md-1">
+                    <br/>
+                   <button onclick="createUser()">Create User</button>
+                  </div> -->
+                <div>
+             </div>
+          </div>
+
+
+          <div class="row">
+                  <div class="col-md-3 offset-md-1">
+                    <label>Contact No</label>
+                    <input type="number" id="user-cno" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
+                  </div>
+                  <!-- <div class="col-md-3 offset-md-1">
+                    <label>Last Name</label>
+                    <input type="text" id="last-name" class="form-control inputBox">
+                  </div>
+                  <div class="col-md-2 offset-md-1">
+                    <label>Email </label>
+                    <input type="text" id="user-email" class="form-control inputBox">
+                    
+                  </div> -->
                   <div class="col-md-2 offset-md-1">
                     <br/>
                    <button onclick="createUser()">Create User</button>
@@ -266,6 +310,10 @@
                 var roleId = document.getElementById("roleId").value;
                 var username = document.getElementById("username").value.trim();
                 var password = document.getElementById("password").value.trim();
+                var firstName = document.getElementById("first-name").value.trim();
+                var lastName = document.getElementById("last-name").value.trim();
+                var userEmail = document.getElementById("user-email").value.trim();
+                var userCno = document.getElementById("user-cno").value.trim();
 
                 if (roleId > 0 && username.length > 0 && password.length > 0) {
 
@@ -276,7 +324,7 @@
                       type: 'post',
                       
                       // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                      data: { "roleId" : roleId, "username":username, "password":password} ,
+                      data: { "first-name": firstName,"last-name": lastName,"user-email": userEmail,"user-cno": userCno,"roleId" : roleId, "username":username, "password":password} ,
                       success: function( data, textStatus, jQxhr ){
                           //window.location.reload(true);
                          // window.location.href="admin/view-mcq";
