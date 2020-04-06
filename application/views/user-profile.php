@@ -575,7 +575,9 @@ function Upload() {
                                                 <label>Year Gap in Degree
                                                    <!--  <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
                                                 </label><br/>
-                                                <input type="radio" name="gap" autocomplete="off" onclick=" showField1(1)"> Yes &nbsp;&nbsp;&nbsp;<input type="radio" name="gap" autocomplete="off" onclick="showField1()"> No
+                                                <input type="radio" name="gap" selected autocomplete="off" onclick="showField1()"> No
+                                                 &nbsp;&nbsp;&nbsp;
+                                                <input type="radio" name="gap" autocomplete="off" onclick=" showField1(1)"> Yes
                                           
                                             </div>
                                             <div class="col-md-8" style="display: none;" id="hManyYUser">

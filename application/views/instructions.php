@@ -339,14 +339,22 @@
 // Set the date we're counting down to
 //var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
 
-var isTestProctored = <?php echo $_SESSION['isTestProctored']; ?>
+var isTestProctored = <?php if (isset($_SESSION['isTestProctored'])) { echo $_SESSION['isTestProctored'];} else { echo "0";}  ; ?>;
 
-if (undefined !== isTestProctored) {
 
-var testDate = <?php echo "'".$_SESSION['testDate']."'"; ?>;
-var testTime = <?php echo "'".$_SESSION['testTime']."'"; ?>;
+if (isTestProctored == "1") {
 
-var meetingUrl = <?php echo "'".$_SESSION['joinUrl']."'"; ?>;
+//var testDate = <?php //echo "'".$_SESSION['testDate']."'"; ?>;
+
+var testDate = <?php if (isset($_SESSION['testDate'])) { echo "'".$_SESSION['testDate']."'";} else { echo "''";}   ?>;
+
+//var testTime = <?php //echo "'".$_SESSION['testTime']."'"; ?>;
+
+var testTime = <?php if (isset($_SESSION['testTime'])) { echo "'".$_SESSION['testTime']."'";} else { echo "''";}  ?>;
+
+//var meetingUrl = <?php //echo "'".$_SESSION['joinUrl']."'"; ?>;
+
+var meetingUrl = <?php if (isset($_SESSION['joinUrl'])) { echo "'".$_SESSION['joinUrl']."'";} else { echo "''";}   ?>;
 
 //var countDownDate = new Date ("2020-04-06 08:23").getTime();
 
@@ -401,7 +409,7 @@ startBtn.onclick = joinMeeting;
 }
 
 function joinMeeting() {
-	var meetingUrl = <?php echo "'".$_SESSION['joinUrl']."'"; ?>;
+	var meetingUrl = <?php if (isset($_SESSION['joinUrl'])) { echo "'".$_SESSION['joinUrl']."'";} else { echo "''";}   ?>;
 
          window.open(meetingUrl);
 }

@@ -443,12 +443,15 @@ print_r($mcq); die;
       'assess_usr_pwd_id' => $assessId
     );
 
+     //print_r($data); die;
     $this->db->insert('proctored_mcq', $data);
 
     $data  = array (
       'assess_usr_pwd_id' => $assessId,
       'email' => $email
     );
+
+
 
     $this->db->insert('student_register', $data);
 
@@ -480,8 +483,7 @@ print_r($mcq); die;
 
       $this->sendMail($from,$result->email, "SkillRary Assessment Details", $data);
 
-	//$this->createMeeting($testDate, $testTime);
-
+      echo "success";
     //send email
  }
   
@@ -499,7 +501,8 @@ print_r($mcq); die;
 
         $sql = "SELECT  assess_usr_pwd.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
                LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
-        where mcq_test_id= ".$mcqId;
+        where mcq_test_id= $mcqId
+        order by assess_usr_pwd.id asc";
 
         $query = $this->db->query($sql);
          $mcqData['mcq-users'] = $query->result();
@@ -538,7 +541,7 @@ print_r($mcq); die;
         }
 
         $mcqData['proctoredIds'] = $proctoredIds;
-
+//echo "<pre>";
         //print_r($mcqData); die;
 
         $this->load->view('admin/header');
