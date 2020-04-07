@@ -137,8 +137,8 @@
                     <th>Password</th>
                      <th>Role</th>
                      <!-- <th>Total Question</th> -->
-                     <th>Delete</th>
-                      <th>Download</th>
+                    <!--  <th>Delete</th>
+                      <th>Download</th> -->
                       
                        <!-- <th>Delete</th> -->
                    </thead>
@@ -150,12 +150,12 @@
         foreach($user as $key => $value) { 
           //print_r($value);
             echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td> <td>'.$value->roles.'</td> 
-      <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
-      <td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td>
+      
    </tr>';
         }
         ?>
-    
+<!--     <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
+      <td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> -->
     <!-- <tr>
     <th><input type="checkbox" id="checkall" /></th>
     <td>Mohsin</td>

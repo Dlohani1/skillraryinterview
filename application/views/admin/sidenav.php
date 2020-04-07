@@ -8,7 +8,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <?php 
-                            if ($roleId != 7) {?>
+                            if ($roleId == 1) {?>
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts"
                                 >
@@ -38,7 +38,7 @@
                                 </nav>
                             </div>
                         <?php } 
-                        if ($roleId != 7) {?>
+                        if ($roleId == 1 ) {?>
                              <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsQ" aria-expanded="false" aria-controls="collapseLayoutsQ"
                                 >
@@ -64,6 +64,22 @@
                                     <a class="nav-link" href=<?php echo base_url()."admin/view-results";?>>View</a>
                                 </nav>
                             </div>
+
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsI" aria-expanded="false" aria-controls="collapseLayouts"
+                                >
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                INTERVIEW
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayoutsI" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href=<?php echo base_url()."admin/create-interview";?>>Create</a>
+                                    <!-- <a class="nav-link" href=<?php //echo base_url()."admin/view-interview";?>>View</a> -->
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
                         <?php } else {/*?>
                              <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsQ" aria-expanded="false" aria-controls="collapseLayoutsQ"
@@ -81,8 +97,8 @@
 
                             <?php 
 				*/ }?>
-                        </div>
-                    </div>
+
+                    
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
                         SkillRary Admin

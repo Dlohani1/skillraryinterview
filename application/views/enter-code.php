@@ -26,12 +26,36 @@ button.close{
     }
 }
 </style>
+<?php //print_r($interviewData); ?>
 <!------ Include the above in your HEAD tag ---------->
 <br/><br/>
         <div class="container" style="padding: 90px 40px;">
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <div class="card">
+                    <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Interview Date </th>
+        <th>Interview Time</th>
+        <th>Interview Mode</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        <?php 
+        if (!count($interviewData)) {
+            echo "<tr><td> No Interview Schedule.</td></tr>";
+        } else {
+            foreach ($interviewData as $key => $value) {
+                echo '<tr><td>'.$value->interview_date.'</td><td>'.$value->interview_time.'</td><td>'.$value->interview_mode.'</td><td><button>Join Interview </button></tr>';
+            }
+        }
+        ?>
+      
+      
+    </tbody>
+  </table>
+                   <!--  <div class="card">
                         <div class="card-header" style="background-color: #33A478;font-weight: 600">Enter Code :</div>
                         <div class="card-body">
 
@@ -39,36 +63,34 @@ button.close{
 
                                 <div class="form-group">
                                     <label for="email" class="cols-sm-2 control-label"></label>
-                                    <p style="color:red"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'] ; }?> </p>
+                                    <p style="color:red"> <?php //if (isset($_SESSION['success'])) { echo $_SESSION['success'] ; }?> </p>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
-                                            <!--  <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span> -->
-                                            <input type="text" 
-                                            value = "<?php if (isset($_SESSION['code'])) { echo $_SESSION['code'] ; } else { echo set_value('code');}?> "
+                                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span> -->
+                                            <!-- <input type="text" 
+                                            value = "<?php //if (isset($_SESSION['code'])) { echo $_SESSION['code'] ; } else { echo set_value('code');}?> "
                                             class="form-control" name="code" id="code" autocomplete="off"/>
                                         </div>
                                     </div>
                                 </div>
             
                                 <div class="form-group ">
-                                    <!-- <button onclick="checkCode()" type="submit" style="background-color: #33A478;font-weight: 600" class="btn  btn-md login-button"  data-toggle="modal" data-target="#myModal">
+                                    <button onclick="checkCode()" type="submit" style="background-color: #33A478;font-weight: 600" class="btn  btn-md login-button"  data-toggle="modal" data-target="#myModal">
 
-                                    Take Test</button> -->
+                                    Take Test</button>
                                     <button type="submit" style="background-color: #33A478;font-weight: 600" class="btn  btn-md login-button" >
                                         Take Test
                                     </button>
                                 </div>
-                                <!-- The Modal -->
                                 <div class="modal" id="myModal">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                    <!-- Modal body -->
+                                   
                                     <div class="modal-body">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         With our online editor, you can edit the code, and click on a button to view the result.
                                     </div>
 
-                                    <!-- Modal footer -->
                                     <div class="modal-footer" align="center">
                                         <a href="checkCode"><button type="button" class="btn closeBtn">Proceed</button></a>
                                     </div>
@@ -79,7 +101,7 @@ button.close{
                 
                             </form>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

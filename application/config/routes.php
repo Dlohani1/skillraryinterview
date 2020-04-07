@@ -221,3 +221,16 @@ $route['admin/activateTest'] ['POST']= 'AdminController/activateTest';
 $route['admin/startTest'] ['POST']= 'AdminController/startTest';
 
 $route['admin/joinMeeting']['POST'] = 'AdminController/joinMeeting';
+
+//interview
+
+$route['admin/create-interview'] = 'AdminController/createInterview'; 
+
+
+$route['admin/generateInterviewUsrPwd']['POST'] = 'AdminController/generateInterviewUsrPwd';
+
+$route['admin/sendInterviewInvite'] ['POST']= 'AdminController/sendInterviewInvite';
+
+$route['interviewer/assignedInterviews'] = 'AdminController/assignedInterviews'; 
+
+$route['user/interview'] = 'questionBank/activeInterview';

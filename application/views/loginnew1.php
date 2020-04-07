@@ -166,6 +166,15 @@ font-size: 16px;
           </div>
 
           <div class="row">
+            <div class="col-md-9">           
+              <select class="form-control inputSocial" style="height: 50px;" id="login-for" name="login-for">
+                <option value="1" selected> Take Assessment </option>
+                <option value="2"> Take Interview </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
             <div class="col-md-9">
             <input type="submit" value="Login" class="loginBtn">
             </div>

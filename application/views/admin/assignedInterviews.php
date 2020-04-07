@@ -1,30 +1,8 @@
-<style>
-  /* Style the container/contact section */
-#detail {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 10px;
-}
-
-/* Create two columns that float next to eachother */
-.column {
-  float: left;
-  width: 50%;
-  margin-top: 6px;
-  padding: 20px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-</style>
+<input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
 <div id="layoutSidenav_content">
   <main>
     <div class="container-fluid">
-      <h1 class="mt-4">Assessment Details</h1>
+      <h1 class="mt-4">Interview Details</h1>
       <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
         <li class="breadcrumb-item active">Details</li>
@@ -36,32 +14,11 @@
       <div class="container">
       <div class="row">
          <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
-         <input type="hidden" id="assessId" name="assessId"  />
           <div class="col-md-12">
-            <h4>MCQs</h4>
-            <div class="container"  id="detail">
-            <div class="row">
-              <div class="column">
-                <label>User Count</label>
-                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>
-
-              </div>
-              <div class="column">
-                <input type="hidden" id="mcqTestId" value= "<?php echo $mcq['mcq-details']->id;?>">
-                 <label for="fname">Assessment : </label> <strong><?php echo $mcq['mcq-details']->title;?></strong> <br/>
-                  <label for="fname">Assessment Code : </label> <strong><?php echo $mcq['mcq-details']->code;?></strong> <br/>
-
-                  <label for="fname">Student Count : </label> <strong><?php echo $mcq['mcq-details']->totalStudent?></strong><br/>
-           
-                  <label for="fname">Pass Count : </label> <strong>0</strong><br/>
-
-                  <label for="lname">Fail Count : </label> <strong>0</strong><br/> 
-              </div>
-            </div>
-          </div>
+            <h4>Users List</h4>
             <div class="container">
-              <!-- <div class="searchBox"> -->
-                <!-- <div class="row">
+              <div class="searchBox">
+<!--                 <div class="row">
                   <div class="col-md-3 offset-md-1">
                     <label>MCQ Name</label>
                     <input type="text" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
@@ -78,15 +35,15 @@
                 <div>
              </div>
           </div> -->
-          <!-- <div class="row">
+<!--           <div class="row">
                             <div class="col-md-3 offset-md-1">
-                                <label>User Count</label>
-                                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>
+                                <label>Add Roles</label>
+                                <input type="text" name="role-name" class="form-control" id="role-name" placeholder="Enter Role" autocomplete="off"><br/><button onclick="createRole()">Create Role</button>
                             </div>
 
                         </div> -->
 
-        <!-- </div> -->
+        </div>
 
                            
         <!-- <div class="container">
@@ -121,53 +78,49 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                                      <th>Name</th>
+                   <th>Id</th>
                     <th>Email</th>
-                    <th>Contact-no</th>
-                   <th>Username</th>
-                    <th>Password</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Mode</th>
+                    <!-- <th>Test Started </th> -->
                      <!-- <th>Total Section</th>
                      <th>Total Question</th> -->
-                     <!-- <th>view</th>
+                    <!--  <th>Delete</th>
                       <th>Download</th> -->
                       
-                       <th>Send Invite</th>
+                    <th>Action</th>
                    </thead>
     <tbody>
 
         <?php 
+        $i = 0;
+        if (count($users) > 0)
+        foreach($users as $key => $value) { 
+          //print_r($value);
+            $i++;
+            echo '<tr><td>'.$i.'</td><td>'.$value->user_email.'</td> <td>'.$value->interview_date.'</td> <td>'.$value->interview_time.'</td><td>'.$value->interview_mode.'</td> <td>';
+//             <button class="btn btn-primary"  id="joinMeeting"> Start Interview </button>
+// <button class="btn btn-info"  id="addFeedback"> Add Feedback </button>
+// <button class="btn btn-warning"  id="closeInterview"> Close Interview </button>
 
-        if (count($mcq['mcq-users']) > 0)
-        foreach($mcq['mcq-users'] as $key => $value) {
 
-          $sendInvite = 0;
-
-          if (in_array($value->id, $mcq['proctoredIds'])) {
-            $sendInvite = 1;
-          }
-
-          
-            echo '<tr><td>'.$value->first_name." ".$value->last_name.'</td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
-     // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
-      //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
-
-      if ($sendInvite) {
-        echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
-
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button><span class="glyphicon glyphicon-ok"></span>
-
-      </p></td>';
-    } else {
-      echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
-
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button></span>
-
-      </p></td>';
-    }
-    echo '</tr>';
+if ($value->is_active == "0") { echo '
+<button class="btn btn-default" disabled onclick="startMeeting('.$value->id.')"> Start Interview </button>
+<button class="btn btn-default" disabled id="addFeedback"> Add Feedback </button>
+<button  class="btn btn-default" disabled onclick="activateTest('.$value->id.')">  Close Interview </button>'; 
+ 
+ } else {
+echo '
+<button class= "btn btn-info"  onclick="startMeeting('.$value->id.')"> Start Interview </button>
+<button class="btn btn-success"  id="addFeedback"> Add Feedback </button>
+<button  class="btn btn-danger" onclick="activateTest('.$value->id.')"> Close Interview </button>';
+}
+echo '</td> </tr>';
         }
         ?>
-    
+<!--     <td><a href="view-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
+      <td><a href="download-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> -->
     <!-- <tr>
     <th><input type="checkbox" id="checkall" /></th>
     <td>Mohsin</td>
@@ -258,33 +211,24 @@
     <div class="modal-content">
           <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-        <h4 class="modal-title custom_align" id="Heading">Invitation Detail</h4>
+        <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
       </div>
           <div class="modal-body">
           <div class="form-group">
-        <input class="form-control " id="userEmail" type="text" placeholder="Enter Email">
+        <input class="form-control " type="text" placeholder="Mohsin">
         </div>
         <div class="form-group">
-        <select  class="form-control inputBox" id="proctorId">
-                      <option value=0> Select Proctor</option>
-                      
-        <?php 
-
-        if (count($mcq['mcq-proctor']) > 0) {
-        foreach($mcq['mcq-proctor'] as $key => $value) { ?>
-        <option value=<?php echo $value->id; ?>> <?php echo $value->first_name." | ".$value->email." | ".$value->contact_no;?> </option>
-        <?php } }?>                       
-                    </select>
+        
+        <input class="form-control " type="text" placeholder="Irshad">
         </div>
         <div class="form-group">
-          <label> Schedule Test</label>
-
-          <input type="date" id="testDate" /> <input type="time" id="testTime"/>    
+        <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+    
         
         </div>
       </div>
           <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;" onclick="sendTestInvite()"><span class="glyphicon glyphicon-ok-sign"></span>Send Invite</button>
+        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
       </div>
         </div>
     <!-- /.modal-content --> 
@@ -328,27 +272,112 @@
 <script>
 
 
-                function setUserId(id) {
-                  document.getElementById("assessId").value = id;                  
-                }
+		//function createMeeting(id) {
 
-               function generateUsrPwd() {
-                
-                var num = document.getElementById("generate").value;
-                var mcqId = document.getElementById("mcqTestId").value ;
+		//alert(id);
+		//}
+
+ 		function startMeeting(id) {
                 var baseUrl = document.getElementById("base_url").value;
+
+                //var role = document.getElementById("role-name").value;
+                //var mcqId = document.getElementById("mcqTestId").value ;
+                //var baseUrl = document.getElementById("base_url").value;
                   $.ajax({
-                    url: baseUrl+"generateUsrPwd",
-                   
+                    url: baseUrl+"admin/startMeeting",
+
                     type: 'post',
-                    
+
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "mcqId" : mcqId, "num":num} ,
+                    data: { "assessId" : id} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
+			window.open(data);
+			//alert(data);
+                         //document.getElementById("joinMeeting").style.display = "block";
+
+			var element = document.getElementById("joinMeeting");
+  			element.classList.add("btn-warning");
+			element.classList.remove("btn-default");
+                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+			error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
+
+
+               function joinMeeting(id) {
+                var baseUrl = document.getElementById("base_url").value;
+                
+                //var role = document.getElementById("role-name").value;
+                //var mcqId = document.getElementById("mcqTestId").value ;
+                //var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"admin/joinMeeting",
+                   
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "assessId" : id} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                  	      // document.getElementById("code").disabled = true;
+					window.open(data);
+	                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
+
+              function activateTest(id) {
+                var baseUrl = document.getElementById("base_url").value;
+
+                //var role = document.getElementById("role-name").value;
+                //var mcqId = document.getElementById("mcqTestId").value ;
+                //var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"admin/activateTest",
+
+                    type: 'post',
+
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "assessId" : id} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+
+		                      // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+
+			alert("Test Activated");
                         // document.getElementById("code").disabled = true;
 
                         // document.getElementById("codeSubmit").disabled = true;
@@ -368,37 +397,4 @@
 
              }
 
-
-             function sendTestInvite() {
-               // alert('send');
-                var proctorId = document.getElementById("proctorId").value ;
-                var userEmail = document.getElementById("userEmail").value ;
-                var testDate = document.getElementById("testDate").value ;
-                var testTime = document.getElementById("testTime").value ;
-                var mcqId = document.getElementById("mcqTestId").value ;
-                var baseUrl = document.getElementById("base_url").value;
-                var assessId = document.getElementById("assessId").value;
-
-                  $.ajax({
-                    url: baseUrl+"admin/sendInvite",
-                   
-                    type: 'post',
-                    
-                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "assessId" : assessId, "mcqId" : mcqId, "email":userEmail, "testDate":testDate, "testTime":testTime, "proctorId" : proctorId} ,
-                    success: function( data, textStatus, jQxhr ){
-                        //window.location.reload(true);
-                       // window.location.href="admin/view-mcq";
-                        //$('#response pre').html( JSON.stringify( data ) );
-                        console.log('data', data);
-                        // document.getElementById("code").disabled = true;
-
-                        // document.getElementById("codeSubmit").disabled = true;
-                        window.location.reload();
-                    },
-                    error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
-                    }
-                });
-             }
 </script>

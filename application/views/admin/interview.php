@@ -24,7 +24,7 @@
 <div id="layoutSidenav_content">
   <main>
     <div class="container-fluid">
-      <h1 class="mt-4">Assessment Details</h1>
+      <h1 class="mt-4">Schedule Interview </h1>
       <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
         <li class="breadcrumb-item active">Details</li>
@@ -38,25 +38,48 @@
          <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
          <input type="hidden" id="assessId" name="assessId"  />
           <div class="col-md-12">
-            <h4>MCQs</h4>
+            <h4>INTERVIEWs</h4>
             <div class="container"  id="detail">
             <div class="row">
               <div class="column">
                 <label>User Count</label>
-                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>
+                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off">
+
+              </div>
+
+               <div class="column">
+
+                <input type="hidden" id="mcqTestId" value= "<?php// echo $mcq['mcq-details']->id;?>">
+                 <!-- <label for="fname">Assessment : </label> <strong><?php //echo $mcq['mcq-details']->title;?></strong> <br/>
+                  <label for="fname">Assessment Code : </label> <strong><?php //echo $mcq['mcq-details']->code;?></strong> <br/>
+ -->  
+
+                    <label>Select MCQs</label>
+                    <select  class="form-control inputBox" id="mcqId">
+                      <option value=0> Select </option>
+                      
+        <?php 
+
+        if (count($interviewData['mcqs-list']) > 0) {
+        foreach($interviewData['mcqs-list'] as $key => $value) {?>
+        <option value=<?php echo $value->id; ?>> <?php echo $value->title;?> </option>
+        <?php } }?>                       
+                    </select>
+             
+
 
               </div>
               <div class="column">
-                <input type="hidden" id="mcqTestId" value= "<?php echo $mcq['mcq-details']->id;?>">
-                 <label for="fname">Assessment : </label> <strong><?php echo $mcq['mcq-details']->title;?></strong> <br/>
-                  <label for="fname">Assessment Code : </label> <strong><?php echo $mcq['mcq-details']->code;?></strong> <br/>
+                   <label>Interview Code (if any) </label>
+                <input type="text" name="code" class="form-control" id="interview-code" placeholder="Enter code" autocomplete="off">
 
-                  <label for="fname">Student Count : </label> <strong><?php echo $mcq['mcq-details']->totalStudent?></strong><br/>
-           
-                  <label for="fname">Pass Count : </label> <strong>0</strong><br/>
+                    <br/><button onclick="generateUsrPwd()">Generate IDs</button>
+                  </div>
+            </div>
 
-                  <label for="lname">Fail Count : </label> <strong>0</strong><br/> 
-              </div>
+
+
+
             </div>
           </div>
             <div class="container">
@@ -121,7 +144,7 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                                      <th>Name</th>
+                    <th>Name</th>
                     <th>Email</th>
                     <th>Contact-no</th>
                    <th>Username</th>
@@ -137,17 +160,35 @@
 
         <?php 
 
-        if (count($mcq['mcq-users']) > 0)
-        foreach($mcq['mcq-users'] as $key => $value) {
+        if (count($interviewData['users']) > 0)
+        foreach($interviewData['users'] as $key => $value) {
 
           $sendInvite = 0;
 
-          if (in_array($value->id, $mcq['proctoredIds'])) {
-            $sendInvite = 1;
+          // if (in_array($value->id, $mcq['proctoredIds'])) {
+          //   $sendInvite = 1;
+          // }
+
+          $firstname = "";
+          if (isset($value->first_name)) {
+            $firstname = $value->first_name;
+          }
+          $lastname = "";
+          if (isset($value->last_name)) {
+            $lastname = $value->last_name;
+          }
+          $email = "";
+          if (isset($value->email)) {
+            $email = $value->email;
+          }
+          $contactNo = "";
+          if (isset($value->contact_no)) {
+            $contactNo = $value->contact_no;
           }
 
-          
-            echo '<tr><td>'.$value->first_name." ".$value->last_name.'</td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
+
+          echo '<tr><td>'.$firstname." ".$lastname.'</td><td>'.$email.'</td><td>'.$contactNo.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
+           // echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
 
@@ -264,27 +305,78 @@
           <div class="form-group">
         <input class="form-control " id="userEmail" type="text" placeholder="Enter Email">
         </div>
-        <div class="form-group">
-        <select  class="form-control inputBox" id="proctorId">
-                      <option value=0> Select Proctor</option>
+ <div class="form-group">
+       
+
+                    <label>Select MCQs</label>
+                    <select  class="form-control inputBox" id="testId">
+                      <option value=0> Select </option>
                       
         <?php 
 
-        if (count($mcq['mcq-proctor']) > 0) {
-        foreach($mcq['mcq-proctor'] as $key => $value) { ?>
+        if (count($interviewData['mcqs-list']) > 0) {
+        foreach($interviewData['mcqs-list'] as $key => $value) {?>
+        <option value=<?php echo $value->id; ?>> <?php echo $value->title;?> </option>
+        <?php } }?>                       
+                    </select>
+        </div>
+
+        <div class="form-group">
+          <label>Interviewer</label>
+        <select  class="form-control inputBox" id="interviewerId">
+                      <option value=0> Select</option>
+                      
+        <?php 
+
+        if (count($interviewData['interviewer-list']) > 0) {
+        foreach($interviewData['interviewer-list'] as $key => $value) { ?>
         <option value=<?php echo $value->id; ?>> <?php echo $value->first_name." | ".$value->email." | ".$value->contact_no;?> </option>
         <?php } }?>                       
                     </select>
         </div>
         <div class="form-group">
-          <label> Schedule Test</label>
+          <label> Interview Schedule </label>
 
-          <input type="date" id="testDate" /> <input type="time" id="testTime"/>    
+          <br/>
+
+         Date: <input type="date" id="testDate" /> Time : <input type="time" id="testTime"/>    
+         Mode : <select class="form-group inputBox" id="interviewMode">
+                      <option value=0> Select</option>
+                       <option value=1> Online</option>
+                        <option value=2> Offline</option>
+              </select>
         
         </div>
+
+        <!-- <div class="form-group">
+          <label> Interview Mode</label>
+
+             <select  class="form-control inputBox" id="interviewerMode">
+                      <option value=0> Select</option>
+                       <option value=1> Online</option>
+                        <option value=2> Offline</option>
+              </select>
+
+             
+        
+        </div> -->
+
+                <div class="form-group">
+          <label> Interview Venue </label>
+
+          <input type="text" id="interviewVenue" />   
+        
+        </div>
+
+       <!--  <div class="form-group">
+          <label> Comment </label>
+          <textarea id= "comment"></textarea> 
+        
+        </div> -->
+
       </div>
           <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;" onclick="sendTestInvite()"><span class="glyphicon glyphicon-ok-sign"></span>Send Invite</button>
+        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;" onclick="sendInterviewInvite()"><span class="glyphicon glyphicon-ok-sign"></span>Schedule</button>
       </div>
         </div>
     <!-- /.modal-content --> 
@@ -335,15 +427,16 @@
                function generateUsrPwd() {
                 
                 var num = document.getElementById("generate").value;
-                var mcqId = document.getElementById("mcqTestId").value ;
+                var mcqId = document.getElementById("mcqId").value ;
                 var baseUrl = document.getElementById("base_url").value;
+                var code = document.getElementById("interview-code").value
                   $.ajax({
-                    url: baseUrl+"generateUsrPwd",
+                    url: baseUrl+"admin/generateInterviewUsrPwd",
                    
                     type: 'post',
                     
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "mcqId" : mcqId, "num":num} ,
+                    data: { "num":num,"mcqId":mcqId, "code":code} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";
@@ -369,23 +462,26 @@
              }
 
 
-             function sendTestInvite() {
+             function sendInterviewInvite() {
                // alert('send');
-                var proctorId = document.getElementById("proctorId").value ;
+                var interviewerId = document.getElementById("interviewerId").value ;
                 var userEmail = document.getElementById("userEmail").value ;
                 var testDate = document.getElementById("testDate").value ;
                 var testTime = document.getElementById("testTime").value ;
-                var mcqId = document.getElementById("mcqTestId").value ;
+                var interviewVenue = document.getElementById("interviewVenue").value ;
+                var interviewMode = document.getElementById("interviewMode").value ;
+                var testId = document.getElementById("testId").value ;
                 var baseUrl = document.getElementById("base_url").value;
-                var assessId = document.getElementById("assessId").value;
+
+                var userId = document.getElementById("assessId").value;
 
                   $.ajax({
-                    url: baseUrl+"admin/sendInvite",
-                   
+                    url: baseUrl+"admin/sendInterviewInvite",
                     type: 'post',
                     
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "assessId" : assessId, "mcqId" : mcqId, "email":userEmail, "testDate":testDate, "testTime":testTime, "proctorId" : proctorId} ,
+                    data: { "userId" : userId, "mcqId" : testId, "email":userEmail, "testDate":testDate, "testTime":testTime, 
+                    "interviewerId" : interviewerId, "interviewMode" : interviewMode, "interviewVenue" : interviewVenue} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";

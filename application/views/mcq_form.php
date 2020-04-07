@@ -678,7 +678,7 @@ $resumeTest  = 0;
                                     Start Test
                                 </button>
 
-                                <a href="admin/code-test"> Start Test </a>
+                                <!-- <a href="admin/code-test"> Start Test </a> -->
                             </div>
                         </div>
                     </div>

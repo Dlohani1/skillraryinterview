@@ -486,6 +486,153 @@ print_r($mcq); die;
       echo "success";
     //send email
  }
+
+
+ public function sendInterviewInvite() {
+
+ // print_r($_POST); die;
+  $mcqId = $_POST['mcqId'];
+  $email = $_POST['email'];
+  $testDate = $_POST['testDate'];
+  $testTime = $_POST['testTime'];
+  $interviewerId = $_POST['interviewerId'];
+  $userId = $_POST['userId'];
+  $interviewMode = $_POST['interviewMode'];
+  $interviewVenue = $_POST['interviewVenue'];
+
+  if ($interviewMode == "1") {
+    $interviewMode = "online";
+  } else if ($interviewMode == "1") {
+    $interviewMode = "offline";
+  }
+  
+    $data  = array (
+      'interview_users_id' => $userId,
+      'mcq_test_id' => $mcqId,
+      'interviewer_id' => $interviewerId,
+      'user_email' => $email,
+      'interview_date' => $testDate,
+      'interview_time' => $testTime,
+      'interview_mode' => $interviewMode,
+      'interview_venue' => $interviewVenue
+    );
+
+     //print_r($data); die;
+    $this->db->insert('interview_details', $data);
+//echo "d"; die;
+     $sql = "SELECT id FROM `student_register` where email = '".$email."'";
+
+
+        $result = $this->db->query($sql)->row();
+
+        if (null == $result) {
+        $data  = array (
+          'interview_users_id' => $userId,
+          'email' => $email
+        );
+
+      $this->db->insert('student_register', $data);
+
+    } else {
+      $this->db->where('email', $email);
+      $data  = array (
+          'interview_users_id' => $userId
+        );
+
+      $this->db->update('student_register',$data);
+    }
+
+    $sql = "SELECT username, password from interview_users where id = ".$userId;
+
+    $result = $this->db->query($sql)->row();
+
+  // print_r(var_dump($result)); die;
+
+      $from = "info@skillrary.com";
+
+      $data = array(
+        "username" => $result->username,
+        "password" => $result->password
+      );
+
+
+      // $this->createMeeting($testDate, $testTime, $assessId);
+      // $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
+
+      $sql = "SELECT * from `assess_login` where id =".$interviewerId;
+
+      $result = $this->db->query($sql)->row();
+
+      $data = array(
+        "username" => $result->username,
+        "password" => $result->password
+      );
+
+      // $this->sendMail($from,$result->email, "SkillRary Assessment Details", $data);
+
+      echo "success";
+    //send email
+ }
+
+public function generateInterviewUsrPwd() {
+
+  $num = $_POST['num'];
+  $mcqId = $_POST['mcqId'];
+  for ($i=1; $i<=$num; $i++) {
+    $username = $this->random_strings(4,"alphaNuMCaps");
+    $password = $this->random_strings(4,"numeric");
+    if (isset($_POST['code']) && $_POST['code'] != "") {
+      $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $_POST['code']);
+    } else {
+      $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId);  
+    }
+    
+  }
+
+   
+
+   //print_r($data); die;
+
+  $this->db->insert_batch('interview_users', $data);
+}
+
+ public function createInterview() {
+    $sql = "SELECT  interview_users.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
+    LEFT JOIN student_register ON interview_users.id=student_register.interview_user_id
+    order by interview_users.id asc";
+
+    $sql = "SELECT  * from `interview_users` 
+    order by interview_users.id asc";
+
+
+    $query = $this->db->query($sql);
+    $interview['users'] = $query->result();
+
+      $sql = "SELECT * FROM mcq_test ";
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+
+    $interview['mcqs-list'] = $query->result();
+
+     $sql = "SELECT * from `assess_login` where role= 6"; //proctor role
+
+        $query = $this->db->query($sql);
+
+        //   echo "<pre>";
+        //   print_r($query->result());
+
+        // print_r($mcq); die;
+
+        $interview['interviewer-list'] = $query->result();
+
+    //print_r($interview); die;
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/interview',array('interviewData'=> $interview));
+    $this->load->view('admin/footer');  
+ }
   
   public function viewMcqData() {
      $mcqId = $this->uri->segment(3);   
@@ -562,6 +709,20 @@ print_r($mcq); die;
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
     $this->load->view('admin/assigned-proctor-users', array("users"=>$result));
+    $this->load->view('admin/footer');
+  }
+
+  public function assignedInterviews() {
+    $sql = "SELECT * FROM interview_details where interviewer_id = ".$_SESSION['admin_id'];
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+    // echo '<pre>';
+    // print_r($result); die;
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/assignedInterviews', array("users"=>$result));
     $this->load->view('admin/footer');
   }
 
@@ -2029,14 +2190,16 @@ foreach ($sectionDetails['section'] as $key => $value) {
           $this->session->set_userdata('admin_id', $id);
           $this->session->set_userdata('role_id', $query[0]->role);
         // $SessionId = $this->session->userdata('id');
-          if ($_SESSION['role_id'] != 7) {
+          if ($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2) {
            redirect('admin/create-test');
           
-          }else{
+          } else if ($_SESSION['role_id'] == 7) {
             redirect('proctor/assignedUsers');
+          } else if ($_SESSION['role_id'] == 6) {
+            redirect('interviewer/assignedInterviews');
           }
 
-         } else{
+        } else{
             redirect('admin/login');
          }
 

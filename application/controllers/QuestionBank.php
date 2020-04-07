@@ -660,12 +660,28 @@ class QuestionBank extends MyController {
                   }
                 } else {
                    // echo "test"; die;
-                    $sql = "SELECT * FROM `assess_usr_pwd` WHERE username='$email' AND password = '$pwd'";
+                    if (isset($_POST['login-for'])) {
+                        if ($_POST['login-for'] == "1") {
+                            $userTable = "assess_usr_pwd";
+                        } else {
+                            $userTable = "interview_users";
+                        }
+                    }
+
+                    $sql = "SELECT * FROM $userTable WHERE username='$email' AND password = '$pwd'";
 
                    $user = $this->db->query($sql)->row();
 
 
                    if (null != $user) {
+
+                    if (isset($_POST['login-for'])) {
+                        if ($_POST['login-for'] == "1") {
+                            $_SESSION['loginType'] = "test";
+                        } else {
+                            $_SESSION['loginType'] = "interview";
+                        }
+                    }
 
                     $mcqId = $user->mcq_test_id;
 
@@ -927,6 +943,19 @@ class QuestionBank extends MyController {
                 $this->load->view('update-profile', array('userData' => $userData));
                 $this->load->view('codefooter');
             }
+        }
+
+
+        public function activeInterview() {
+
+              $sql = "SELECT * FROM interview_details where interview_users_id = ".$_SESSION['assessId'];
+
+                $query = $this->db->query($sql);
+
+                $result = $query->result();
+            $this->load->view('user-header');
+            $this->load->view('enter-code', array('interviewData' => $result));
+            $this->load->view('codefooter');
         }
 
         public function createUserProfile () {
@@ -1333,6 +1362,12 @@ class QuestionBank extends MyController {
                 $this->session->set_flashdata('success', 'Update Profile to start test');
 
                 redirect('user/profile');
+            }
+
+            if (null == $code) {
+                if (isset($_SESSION['loginType']) && $_SESSION['loginType'] == "interview") {
+                    redirect('user/interview');
+                }
             }
 
 
