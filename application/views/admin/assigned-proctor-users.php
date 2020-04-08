@@ -285,7 +285,7 @@ echo '</td> </tr>';
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "assessId" : id} ,
+                    data: { "call":"test","assessId" : id} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";

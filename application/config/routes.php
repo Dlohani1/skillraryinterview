@@ -234,3 +234,7 @@ $route['admin/sendInterviewInvite'] ['POST']= 'AdminController/sendInterviewInvi
 $route['interviewer/assignedInterviews'] = 'AdminController/assignedInterviews'; 
 
 $route['user/interview'] = 'questionBank/activeInterview';
+
+$route['admin/closeInterview'] ['POST']= 'AdminController/closeInterview';
+
+$route['admin/interviewFeedback'] ['POST']= 'AdminController/interviewFeedback';

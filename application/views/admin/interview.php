@@ -144,6 +144,7 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+		   <th>Sl. no </th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Contact-no</th>
@@ -160,9 +161,11 @@
 
         <?php 
 
+	$i = 0;
+
         if (count($interviewData['users']) > 0)
         foreach($interviewData['users'] as $key => $value) {
-
+	  $i++;
           $sendInvite = 0;
 
           // if (in_array($value->id, $mcq['proctoredIds'])) {
@@ -187,8 +190,8 @@
           }
 
 
-          echo '<tr><td>'.$firstname." ".$lastname.'</td><td>'.$email.'</td><td>'.$contactNo.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
-           // echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td>';
+          echo '<tr><td>'.$i.'</td><td>'.$firstname." ".$lastname.'</td><td>'.$email.'</td><td>'.$contactNo.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
+          	 // echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
 

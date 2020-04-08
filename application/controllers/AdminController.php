@@ -10,7 +10,7 @@ class AdminController extends CI_Controller {
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
 
-   // $this->db2 = $this->load->database('database2', TRUE);
+    $this->db2 = $this->load->database('database2', TRUE);
 
      $getUrl = $this->uri->segment(2);
      $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'logout');
@@ -23,7 +23,7 @@ class AdminController extends CI_Controller {
 
   }
 
- public function createMeeting ($startDate, $startTime, $assessId) {
+ public function createMeeting ($startDate, $startTime, $assessId , $call = NULL) {
         //echo "test";
   //$sql = "SELECT * FROM `bse_citrix` limit 2";
 //
@@ -50,7 +50,17 @@ class AdminController extends CI_Controller {
 
 	$endTestTime = $startDate.'T'.$endTime.'.000Z';
 
-        $sql = "SELECT access_token FROM `bse_citrix` where email='trainer130@qspiders.com'";
+
+	if ($call == "test") {
+		$meetingEmail = "trainer130@qspiders.com";
+        } else if ($call == "interview") {
+		$meetingEmail = "trainer131@qspiders.com";
+
+        } else {
+		$meetingEmail = "trainer132@qspiders.com";
+	}
+
+        $sql = "SELECT access_token FROM `bse_citrix` where email='".$meetingEmail."'";
 //echo var_dump($startTime); 
 //echo $startTestTime , "</br>";
 //echo $endTestTime;
@@ -107,9 +117,14 @@ class AdminController extends CI_Controller {
       				'meeting_id' => $webinars[0]->meetingid,
       				'user_join_url' => $webinars[0]->joinURL
     			);
-
-			 $this->db->where('assess_usr_pwd_id', $assessId);
+			if ($call == "test") {
+			 $this->db->where('id', $assessId);
         		 $this->db->update('proctored_mcq',$data);
+			} else if ($call == "interview") { echo "test", $assessId;
+				$this->db->where('id', $assessId);
+                               $this->db->update('interview_details',$data);
+
+			}
 			 echo "Success";
                         //start meeting
                         //$this->startMeeting($webinars->meetingid, $headers);
@@ -126,6 +141,8 @@ public function startMeeting() {
 
 //$sql = "SELECT * FROM `bse_citrix` limit 3";
 
+$call = $_POST['call'];
+
  $sql = "SELECT * FROM `bse_citrix` where email='trainer130@qspiders.com'";
 
        $meeting = $this->db2->query($sql)->result();
@@ -140,9 +157,18 @@ public function startMeeting() {
                         "Authorization: ".$token,
                 );
 
-	
+		if ($call == "test") {
 
-            $sql = "SELECT meeting_id FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_POST['assessId'];
+		$tableName = "proctored_mcq";
+		$fieldName = "assess_usr_pwd_id";
+		} else if ($call == "interview") {
+		$tableName = "interview_details";
+		$fieldName = "id";
+		}
+
+
+		
+            $sql = "SELECT meeting_id FROM $tableName WHERE $fieldName  = ".$_POST['assessId'];
 
             $meetingDetails = $this->db->query($sql)->row();
 
@@ -175,12 +201,25 @@ $start_meeting_url = "No meeting assigned";
                       {
                           $start_meeting_url = $start_meetings->hostURL;
 
+			 if ($call == "test") { 
+
 			   $data = array(
                                 'proctor_meeting_url' => $start_meeting_url
                         );
 
                          $this->db->where('assess_usr_pwd_id', $_POST['assessId']);
                          $this->db->update('proctored_mcq',$data);
+
+			} else if ($call == "interview") {
+			      $data = array(
+                                'interviewer_meeting_url' => $start_meeting_url
+                        );
+
+                         $this->db->where('id', $_POST['assessId']);
+                         $this->db->update('interview_details',$data);
+
+			}
+
 			echo $start_meeting_url; die;
                         // echo "Success"; die;
 				break;
@@ -206,6 +245,16 @@ public function activateTest() {
 echo "success";
 }
 
+public function closeInterview() {
+ $data = array(
+      'is_active' => 0
+    );
+
+ $this->db->where('id', $_POST['assessId']);
+        $this->db->update('interview_details',$data);
+
+echo "success";
+}
 
 public function startTest() {
               $sql = "SELECT start_test FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_POST['assessId'];
@@ -446,6 +495,8 @@ print_r($mcq); die;
      //print_r($data); die;
     $this->db->insert('proctored_mcq', $data);
 
+	$proctoredMcqId = $this->db->insert_id();
+
     $data  = array (
       'assess_usr_pwd_id' => $assessId,
       'email' => $email
@@ -469,7 +520,7 @@ print_r($mcq); die;
       );
 
 
-      $this->createMeeting($testDate, $testTime, $assessId);
+      $this->createMeeting($testDate, $testTime, $proctoredMcqId, "test");
       $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 
       $sql = "SELECT * from `assess_login` where id =".$proctorId;
@@ -519,6 +570,9 @@ print_r($mcq); die;
 
      //print_r($data); die;
     $this->db->insert('interview_details', $data);
+
+	$interviewDetailsId =  $this->db->insert_id();
+
 //echo "d"; die;
      $sql = "SELECT id FROM `student_register` where email = '".$email."'";
 
@@ -556,17 +610,17 @@ print_r($mcq); die;
       );
 
 
-      // $this->createMeeting($testDate, $testTime, $assessId);
-      // $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
+      $this->createMeeting($testDate, $testTime, $interviewDetailsId , $call="interview");
+      $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 
-      $sql = "SELECT * from `assess_login` where id =".$interviewerId;
+      //$sql = "SELECT * from `assess_login` where id =".$interviewerId;
 
-      $result = $this->db->query($sql)->row();
+     // $result = $this->db->query($sql)->row();
 
-      $data = array(
-        "username" => $result->username,
-        "password" => $result->password
-      );
+      //$data = array(
+        //"username" => $result->username,
+        //"password" => $result->password
+      //);
 
       // $this->sendMail($from,$result->email, "SkillRary Assessment Details", $data);
 
@@ -725,6 +779,18 @@ public function generateInterviewUsrPwd() {
     $this->load->view('admin/assignedInterviews', array("users"=>$result));
     $this->load->view('admin/footer');
   }
+
+
+public function interviewFeedback() {
+ $data = array(
+      'comment' => $_POST['feedback']
+    );
+
+ $this->db->where('id', $_POST['assessId']);
+        $this->db->update('interview_details',$data);
+
+echo "success";
+}
 
   public function viewQuestion() {
 
@@ -976,6 +1042,8 @@ public function generateInterviewUsrPwd() {
 
                 $this->db->insert_batch('mcq_test_pattern', $patternData);
         }
+
+
 
         public function viewCodeTest() {
           $this->load->view('codeframe');
@@ -2207,7 +2275,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
 
 
-  }
+  } else { redirect('admin/login'); }
 }
  
 

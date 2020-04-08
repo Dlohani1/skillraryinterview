@@ -107,14 +107,14 @@
 
 if ($value->is_active == "0") { echo '
 <button class="btn btn-default" disabled onclick="startMeeting('.$value->id.')"> Start Interview </button>
-<button class="btn btn-default" disabled id="addFeedback"> Add Feedback </button>
-<button  class="btn btn-default" disabled onclick="activateTest('.$value->id.')">  Close Interview </button>'; 
+<button class="btn btn-default" disabled onclick="setUser('.$value->id.')"  data-title="Edit" data-toggle="modal" data-target="#edit" >Add Feedback</button>
+<button  class="btn btn-default" disabled onclick="closeInterview('.$value->id.')">  Close Interview </button>'; 
  
  } else {
 echo '
 <button class= "btn btn-info"  onclick="startMeeting('.$value->id.')"> Start Interview </button>
-<button class="btn btn-success"  id="addFeedback"> Add Feedback </button>
-<button  class="btn btn-danger" onclick="activateTest('.$value->id.')"> Close Interview </button>';
+<button class="btn btn-success " onclick="setUser('.$value->id.')" data-title="Edit" data-toggle="modal" data-target="#edit" >Add Feedback</button>
+<button  class="btn btn-danger" onclick="closeInterview('.$value->id.')"> Close Interview </button>';
 }
 echo '</td> </tr>';
         }
@@ -210,25 +210,27 @@ echo '</td> </tr>';
       <div class="modal-dialog">
     <div class="modal-content">
           <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-        <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
+        <button type="button" class="close" id="closebox" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Add Comment</h4>
       </div>
           <div class="modal-body">
-          <div class="form-group">
+          <!-- <div class="form-group">
         <input class="form-control " type="text" placeholder="Mohsin">
         </div>
         <div class="form-group">
         
         <input class="form-control " type="text" placeholder="Irshad">
-        </div>
+        </div> -->
         <div class="form-group">
-        <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+
     
-        
+         <input type="hidden" id="commentId" />
+        <textarea rows="2" class="form-control" id = "feedback" placeholder="Enter Feedback"></textarea>
+
         </div>
       </div>
           <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+        <button type="button" onclick="saveComment()" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Save </button>
       </div>
         </div>
     <!-- /.modal-content --> 
@@ -289,7 +291,7 @@ echo '</td> </tr>';
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "assessId" : id} ,
+                    data: {"call":"interview", "assessId" : id} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";
@@ -357,14 +359,14 @@ echo '</td> </tr>';
 
              }
 
-              function activateTest(id) {
+              function closeInterview(id) {
                 var baseUrl = document.getElementById("base_url").value;
 
                 //var role = document.getElementById("role-name").value;
                 //var mcqId = document.getElementById("mcqTestId").value ;
                 //var baseUrl = document.getElementById("base_url").value;
                   $.ajax({
-                    url: baseUrl+"admin/activateTest",
+                    url: baseUrl+"admin/closeInterview",
 
                     type: 'post',
 
@@ -377,7 +379,7 @@ echo '</td> </tr>';
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
 
-			alert("Test Activated");
+			alert("Interview Closed");
                         // document.getElementById("code").disabled = true;
 
                         // document.getElementById("codeSubmit").disabled = true;
@@ -396,5 +398,50 @@ echo '</td> </tr>';
 
 
              }
+
+              function saveComment() {
+                var baseUrl = document.getElementById("base_url").value;
+
+                var id = document.getElementById("commentId").value;
+                var comment = document.getElementById("feedback").value;
+                  $.ajax({
+                    url: baseUrl+"admin/interviewFeedback",
+
+                    type: 'post',
+
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "feedback":comment, "assessId" : id} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+
+                          // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+
+      alert("Comment Added");
+                        document.getElementById("feedback").value = "";
+                        document.getElementById("closebox").click();
+
+                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
+
+
+              function setUser(id) {
+                document.getElementById("commentId").value = id;
+              }
 
 </script>
