@@ -358,11 +358,11 @@ var meetingUrl = <?php if (isset($_SESSION['joinUrl'])) { echo "'".$_SESSION['jo
 
 //var countDownDate = new Date ("2020-04-06 08:23").getTime();
 
-//var testTime = "09:22";
+var testTime = "06:18";
 var testData = testDate + " "+ testTime;
 //alert(testData);
 var countDownDate = new Date(testData).getTime();
-alert(testData);
+//alert(testData);
 
 // Update the count down every 1 second
 var x = setInterval(function() {

@@ -967,7 +967,7 @@ class QuestionBank extends MyController {
         public function enterCode() {
 
             //$resume = $this->isTestResume();
-
+//echo "dd"; die;
 
             $resume = $this->isTestProctored();
 
@@ -1009,7 +1009,8 @@ class QuestionBank extends MyController {
             $userId = $_SESSION['id'];
 		    $assessId = $_SESSION['assessId'];
             $userEmail = $_SESSION['email'];
-
+            $mcqId = $_SESSION['mcqId'];
+            
             $sql = "SELECT * FROM `proctored_mcq` WHERE assess_usr_pwd_id = '".$assessId."' AND mcq_test_id = $mcqId AND is_active = 1";
 
             $result = $this->db->query($sql)->row();
@@ -1397,12 +1398,16 @@ class QuestionBank extends MyController {
 
 
                     $this->session->set_userdata('mcqId', $mcqId);
+
+                    $this->isTestProctored();
                     
                     if ($attempt > 0) {
                         $attemptCount = $this->isMcqTaken(true,$attempt);
                     } else {
                         $attemptCount = $this->isMcqTaken();
                     }
+
+
 
                     if ($attemptCount == $attempt) {
                         $this->session->set_flashdata('success', 'You have crossed the number of attempts to take test. Please contact admin');
@@ -1411,6 +1416,7 @@ class QuestionBank extends MyController {
                     } else {
                            //++$attemptCount;
 //echo $this->isMcqTaken() ;die;
+
                         $attemptCount = $this->isMcqTaken() + 1;
 
                         $this->session->set_userdata('attempt', $attemptCount);
