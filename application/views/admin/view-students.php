@@ -1,3 +1,6 @@
+<?php
+error_reporting(0);
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -164,7 +167,7 @@
                     <th>email</th>
                      <th>contact</th>
                      <!-- <th>Total Question</th> -->
-                     <th>Download Report</th>
+                     <th>View Report</th>
                       <!-- <th>Edit</th>
                       
                        <th>Delete</th> -->
@@ -178,7 +181,9 @@
         $url = base_url();
        
         foreach($studentData as $key => $value) {
+
             $id = $value->id;
+
             echo '<tr><td>'.$value->first_name." ".$value->last_name.'</td><td>'.$value->email.'</td> <td>'.$value->contact_no.'</td>
 
      <td><a href="'.$url.'download-pdf/'.$mcqId.'/'.$id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>

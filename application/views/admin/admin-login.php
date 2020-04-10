@@ -291,9 +291,9 @@ input[type=text]:placeholder {
 
       <form id="myForm" autocomplete='off' enctype="multipart/form-data" name="myForm" method="POST" action=<?php echo base_url()."admin/checklogin";?> onsubmit="return validateForm()">
 
-        <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+        <input type="text" id="login" class="fadeIn second" name="login" placeholder="Username">
          <p id="login_error_check"></p>
-        <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+        <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password">
          <p id="password_error_check"></p>
         <input type="submit" class="fadeIn fourth" value="Log In">
       </form>

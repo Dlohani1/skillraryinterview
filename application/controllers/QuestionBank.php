@@ -234,6 +234,13 @@ class QuestionBank extends MyController {
                  // }
         }
 
+ 	public function interviewLogin() {
+                // $this->load->view('login');
+                $this->load->view('codheader');      
+                $this->load->view('interview-login');
+                $this->load->view('codefooter');      
+        }
+
         public function registration() {
                 // $this->load->view('registration');
                 $this->load->view('codheader');

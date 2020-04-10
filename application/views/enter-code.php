@@ -47,7 +47,15 @@ button.close{
             echo "<tr><td> No Interview Schedule.</td></tr>";
         } else {
             foreach ($interviewData as $key => $value) {
-                echo '<tr><td>'.$value->interview_date.'</td><td>'.$value->interview_time.'</td><td>'.$value->interview_mode.'</td><td>';
+  		
+		$a = $value->interview_date;
+          	$d = date_parse_from_format("Y-m-d", $a);
+	
+         	 $day = $d['day'];
+          	$year = $d['year'];
+
+          	$month = date("F",strtotime($value->interview_date));
+                echo '<tr><td>'.$day." ".$month.",".$year.'</td><td>'.$value->interview_time.'</td><td>'.$value->interview_mode.'</td><td>';
 		if ($value->is_active == "1") {
 		echo '<a href="'.$value->user_join_url.'" target="_blank" >Join Interview </a>';
 		} else {

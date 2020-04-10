@@ -358,7 +358,7 @@ var meetingUrl = <?php if (isset($_SESSION['joinUrl'])) { echo "'".$_SESSION['jo
 
 //var countDownDate = new Date ("2020-04-06 08:23").getTime();
 
-var testTime = "06:18";
+//var testTime = "06:18";
 var testData = testDate + " "+ testTime;
 //alert(testData);
 var countDownDate = new Date(testData).getTime();

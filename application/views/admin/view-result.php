@@ -65,7 +65,7 @@
         foreach($mcq as $key => $value) { 
             echo '<tr><td>'.$value['title'].'</td><td>'.$value['students'].'</td> 
       <td><a href="view-students/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
-      <td><a href="download-students/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td>
+      <td><a disabled href="#"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td>
    </tr>';
         }
         ?>

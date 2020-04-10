@@ -52,7 +52,7 @@ class AdminController extends CI_Controller {
 
 
 	if ($call == "test") {
-		$meetingEmail = "trainer130@qspiders.com";
+		$meetingEmail = "trainer134@qspiders.com";
         } else if ($call == "interview") {
 		$meetingEmail = "trainer131@qspiders.com";
 
@@ -82,6 +82,7 @@ class AdminController extends CI_Controller {
                // $meetdes=preg_replace("/[^a-zA-Z]/", "", $course->description);
                 //$meettit=preg_replace("/[^a-zA-Z]/", "", $course->course_title);
 
+
                 $fields = array(
                     'subject' => "test",
                     'starttime'=> $startTestTime,
@@ -91,6 +92,12 @@ class AdminController extends CI_Controller {
                     "passwordrequired" => FALSE,
                     "meetingtype" =>  "scheduled",
                 );
+/*
+if ($call = "interview") {
+
+$fields['subject'] = "DXC Interview";
+
+}*/
 //              echo '<pre>';print_r($fields);
 // print_r(json_encode($fields)); die;
 
@@ -120,9 +127,28 @@ class AdminController extends CI_Controller {
 			if ($call == "test") {
 			 $this->db->where('id', $assessId);
         		 $this->db->update('proctored_mcq',$data);
-			} else if ($call == "interview") { echo "test", $assessId;
-				$this->db->where('id', $assessId);
+			} else if ($call == "interview") {
+				//echo "test", $assessId;
+				//$this->db->where('id', $assessId);
+                               //$this->db->update('interview_details',$data);
+
+  foreach ($assessId as $key => $value) {
+                                  /*$data[]  =array(
+                                      'id' => $value,
+                                      'meeting_id' => $webinars[0]->meetingid,
+                                      'user_join_url' => $webinars[0]->joinURL
+                                  );*/
+			 $data = array(
+                                'meeting_id' => $webinars[0]->meetingid,
+                                'user_join_url' => $webinars[0]->joinURL
+                        );
+
+				$this->db->where('id', $value);
                                $this->db->update('interview_details',$data);
+                                }
+
+                               //$this->db->updateBatch('interview_details',$data, 'id');
+
 
 			}
 			 echo "Success";
@@ -143,7 +169,7 @@ public function startMeeting() {
 
 $call = $_POST['call'];
 
- $sql = "SELECT * FROM `bse_citrix` where email='trainer130@qspiders.com'";
+ $sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
 
        $meeting = $this->db2->query($sql)->result();
 
@@ -232,6 +258,152 @@ continue;
                       }
 }
 			echo $start_meeting_url;
+}
+
+public function saveInterviewStatus() {
+ $data = array(
+      'interview_status' => $_POST['status']
+    );
+
+ $this->db->where('id', $_POST['userId']);
+        $this->db->update('interview_users',$data);
+
+echo "success";
+}
+
+public function studentDetail() {
+  $id = $_POST['id'];
+
+  $sql = "SELECT  first_name,
+last_name,
+gender,
+dob,
+email,
+contact_no,
+state,
+city,
+tenth_board,
+tenth_passing_year,
+tenth_percentage,
+twelveth_board,
+twelveth_passing_year,
+twelveth_percentage,
+degree,
+degree_college_name,
+degree_university,
+degree_percentage,
+degree_passing_year,
+-- pg_college,
+-- pg_passing_year,
+-- pg_branch,
+-- pg_university,
+-- pg_percentage,
+-- pg_degree,
+stream,
+work_location from `student_register` where id = $id";
+
+
+    $result = $this->db->query($sql)->row();
+    $studentData = array();
+
+    foreach ($result as $key => $value) {
+      switch ($key) {
+        case 'first_name':
+          $studentData['Name'] = $value;
+          # code...
+          break;
+          case 'last_name':
+          $studentData['Name'] = $studentData['Name']." ".$value;
+          # code...
+          break;
+          case 'gender':
+          # code...
+          $studentData['Gender'] = $value == "1" ? "Male" : "Female";
+          break;
+          case 'dob':
+          # code...
+          $studentData['Date of Birth'] = $value;
+          break;
+          case 'email':
+          # code...
+          $studentData['Email'] = $value;
+          break;
+          case 'contact_no':
+          # code...
+          $studentData['Contact No'] = $value;
+          break;
+          case 'state':
+          # code...
+          $studentData['State'] = $value;
+          break;
+          case 'city':
+          # code...
+          $studentData['City'] = $value;
+          break;
+          case 'tenth_board':
+          # code...
+          $studentData['10th Board'] = $value;
+          break;
+          case 'tenth_passing_year':
+          # code...
+          $studentData['10th Passing Year'] = $value;
+          break;
+          case 'tenth_percentage':
+          # code...
+          $studentData['10th Percentage'] = $value;
+          break;
+          case 'twelveth_board':
+          # code...
+          $studentData['12th Board'] = $value;
+          break;
+          case 'twelveth_passing_year':
+          # code...
+          $studentData['12th Passing Year'] = $value;
+          break;
+          case 'twelveth_percentage':
+          # code...
+          $studentData['12th Percentage'] = $value;
+          break;
+          case 'degree':
+          # code...
+          $studentData['Degree'] = $value;
+          break;
+          case 'degree_college_name':
+          # code...
+          $studentData['College'] = $value;
+          break;
+
+          case 'degree_university':
+          # code...
+          $studentData['Unitversity'] = $value;
+          break;
+            case 'degree_percentage':
+          # code...
+          $studentData['Degree Percentage'] = $value;
+          break;
+          case 'degree_passing_year':
+          # code...
+          $studentData['Degree Passing Year'] = $value;
+          break;
+          case 'stream':
+          # code...
+          $studentData['Stream/Branch'] = $value;
+          break;
+          case 'work_location':
+          # code...
+          $studentData['Work Location Preferred'] = $value;
+          break;
+
+        
+        default:
+          # code...
+          break;
+      }
+
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode( $studentData );
 }
 
 public function activateTest() {
@@ -556,7 +728,7 @@ print_r($mcq); die;
   } else if ($interviewMode == "1") {
     $interviewMode = "offline";
   }
-  
+/*
     $data  = array (
       'interview_users_id' => $userId,
       'mcq_test_id' => $mcqId,
@@ -567,12 +739,37 @@ print_r($mcq); die;
       'interview_mode' => $interviewMode,
       'interview_venue' => $interviewVenue
     );
+*/
+
+ foreach ($interviewerId as $key => $value) {
+    $data[]  = array (
+       'interview_users_id' => $userId,
+       'mcq_test_id' => $mcqId,
+      'interviewer_id' => $value,
+       'user_email' => $email,
+       'interview_date' => $testDate,
+       'interview_time' => $testTime,
+       'interview_mode' => $interviewMode,
+       'interview_venue' => $interviewVenue
+     );
+  }
+
 
      //print_r($data); die;
-    $this->db->insert('interview_details', $data);
+    //$this->db->insert('interview_details', $data);
+
+	$this->db->insert_batch('interview_details', $data);
 
 	$interviewDetailsId =  $this->db->insert_id();
 
+	$ids = array();
+  	for ($i = 0; $i < count($interviewerId); $i++) {
+     		if (!$i) {
+      			$ids[] = $interviewDetailsId;
+     		} else {
+      			$ids[] =  $interviewDetailsId + $i;
+     		}
+  	}
 //echo "d"; die;
      $sql = "SELECT id FROM `student_register` where email = '".$email."'";
 
@@ -610,7 +807,8 @@ print_r($mcq); die;
       );
 
 
-      $this->createMeeting($testDate, $testTime, $interviewDetailsId , $call="interview");
+      //$this->createMeeting($testDate, $testTime, $interviewDetailsId , $call="interview");
+      $this->createMeeting($testDate, $testTime, $ids , $call="interview");
       $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 
       //$sql = "SELECT * from `assess_login` where id =".$interviewerId;
@@ -651,12 +849,15 @@ public function generateInterviewUsrPwd() {
 }
 
  public function createInterview() {
-    $sql = "SELECT  interview_users.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
+    /*$sql = "SELECT  interview_users.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
     LEFT JOIN student_register ON interview_users.id=student_register.interview_user_id
     order by interview_users.id asc";
-
-    $sql = "SELECT  * from `interview_users` 
+*/
+    $sql = "SELECT  interview_users.*, student_register.id as studentId, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
+    LEFT JOIN student_register ON interview_users.id=student_register.interview_users_id
     order by interview_users.id asc";
+   // $sql = "SELECT  * from `interview_users` 
+    //order by interview_users.id asc";
 
 
     $query = $this->db->query($sql);
@@ -783,7 +984,8 @@ public function generateInterviewUsrPwd() {
 
 public function interviewFeedback() {
  $data = array(
-      'comment' => $_POST['feedback']
+      'comment' => $_POST['feedback'],
+      'interview_status' => $_POST['status']
     );
 
  $this->db->where('id', $_POST['assessId']);

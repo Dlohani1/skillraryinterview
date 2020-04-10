@@ -78,7 +78,7 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                   <th>Id</th>
+                   <th>Sl.no</th>
                     <th>Email</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -99,7 +99,16 @@
         foreach($users as $key => $value) { 
           //print_r($value);
             $i++;
-            echo '<tr><td>'.$i.'</td><td>'.$value->user_email.'</td> <td>'.$value->interview_date.'</td> <td>'.$value->interview_time.'</td><td>'.$value->interview_mode.'</td> <td>';
+
+		 $a = $value->interview_date;
+          $d = date_parse_from_format("Y-m-d", $a);
+
+          $day = $d['day'];
+          $year = $d['year'];
+
+          $month = date("F",strtotime($value->interview_date));
+
+            echo '<tr><td>'.$i.'</td><td>'.$value->user_email.'</td> <td>'.$day." ".$month.",".$year.'</td> <td>'.$value->interview_time.'</td><td>'.$value->interview_mode.'</td> <td>';
 //             <button class="btn btn-primary"  id="joinMeeting"> Start Interview </button>
 // <button class="btn btn-info"  id="addFeedback"> Add Feedback </button>
 // <button class="btn btn-warning"  id="closeInterview"> Close Interview </button>
@@ -113,7 +122,7 @@ if ($value->is_active == "0") { echo '
  } else {
 echo '
 <button class= "btn btn-info"  onclick="startMeeting('.$value->id.')"> Start Interview </button>
-<button class="btn btn-success " onclick="setUser('.$value->id.')" data-title="Edit" data-toggle="modal" data-target="#edit" >Add Feedback</button>
+<button class="btn btn-success " onclick="setUser('.$value->id.')" data-title="Edit" data-toggle="modal" data-target="#myModal" >Add Feedback</button>
 <button  class="btn btn-danger" onclick="closeInterview('.$value->id.')"> Close Interview </button>';
 }
 echo '</td> </tr>';
@@ -228,6 +237,15 @@ echo '</td> </tr>';
         <textarea rows="2" class="form-control" id = "feedback" placeholder="Enter Feedback"></textarea>
 
         </div>
+
+  <div class="form-group">
+            <label> Interview Status </label>
+
+            <input type="radio" name="status" value="1"> PASS
+            <input type="radio" name="status" value="2"> FAIL
+            <input type="radio" name="status" value="3"> HOLD
+
+        </div>
       </div>
           <div class="modal-footer ">
         <button type="button" onclick="saveComment()" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Save </button>
@@ -264,6 +282,99 @@ echo '</td> </tr>';
                                 </div>
                             </div>
                         </div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Feedback</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+                
+                <div class="col-md-9">
+                <table class="tableWidth">
+                    <tr><th class="thborder thMainBorder" colspan="4">DIFFERENT AREAS</th></tr>
+                    <tr>
+                        <th class="thborder thMainBorder">Areas</th>
+                        <th class="thborder thMainBorder">Good</th>
+                        <th class="thborder thMainBorder">Average</th>
+                        <th class="thborder thMainBorder">Not Acceptable</th>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Communication Skills</b></td>
+                        <td  class="thborder"><input type="checkbox" class="cs"></td>
+                        <td  class="thborder"><input type="checkbox" class="cs"></td>
+                        <td  class="thborder"><input type="checkbox" class="cs"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Problem Solving Skills</b></td>
+                        <td  class="tdborder"><input type="checkbox" class="pss"></td>
+                        <td  class="tdborder"><input type="checkbox" class="pss"></td>
+                        <td  class="tdborder"><input type="checkbox" class="pss"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Job Specific Skills</b></td>
+                        <td  class="tdborder"><input type="checkbox" class="jss"></td>
+                        <td  class="tdborder"><input type="checkbox" class="jss"></td>
+                        <td  class="tdborder"><input type="checkbox" class="jss"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Experience</b></td>
+                        <td  class="tdborder"><input type="checkbox" class="exp"></td>
+                        <td  class="tdborder"><input type="checkbox" class="exp"></td>
+                        <td  class="tdborder"><input type="checkbox" class="exp"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Overall Personality</b></td>
+                        <td  class="tdborder"><input type="checkbox" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox" class="op"></td>
+                    </tr>
+                </table>
+                </div>
+                <div class="col-md-3">
+                    <table class="tableWidth">
+                        <tr><th class="thborder thMainBorder" colspan="2">Overall Evaluation</th></tr>
+                        <tr>
+                            <td class="thborder thMainBorder">Performance</td>
+                            <td class="thborder thMainBorder">Tick Any one</td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Excellent</td>
+                            <td  class="thborder"><input type="checkbox" class="oe"></td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Good</td>
+                            <td  class="thborder"><input type="checkbox"  class="oe"></td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Average</td>
+                            <td  class="thborder"><input type="checkbox" class="oe"></td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Below Average</td>
+                            <td  class="thborder"><input type="checkbox"  class="oe"></td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Poor</td>
+                            <td  class="thborder"><input type="checkbox" class="oe"></td>
+                        </tr>
+                    </table>
+                </div>
+        </div><br/>
+   
+        <p>Final Decision:  Hired <input type="checkbox" class="fs">&nbsp;&nbsp;&nbsp; Rejected <input type="checkbox" class="fs">&nbsp;&nbsp;&nbsp; On hold <input type="checkbox" class="fs"></p>
+        
+        Additional Comments: <textarea id="addfeedback"> </textarea><br/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
                         <div style="height: 100vh;"></div>
                         <div class="card mb-4">
                             <!-- <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div> -->
@@ -404,13 +515,24 @@ echo '</td> </tr>';
 
                 var id = document.getElementById("commentId").value;
                 var comment = document.getElementById("feedback").value;
+
+		var ele = document.getElementsByName('status'); 
+                 var status = 0;
+                  for(var i = 0; i < ele.length; i++) { 
+                      if(ele[i].checked) {
+                        status = ele[i].value;
+                        break;
+                      } 
+                       
+                  } 
+
                   $.ajax({
                     url: baseUrl+"admin/interviewFeedback",
 
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "feedback":comment, "assessId" : id} ,
+                    data: {"status":status,  "feedback":comment, "assessId" : id} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
 
@@ -443,5 +565,41 @@ echo '</td> </tr>';
               function setUser(id) {
                 document.getElementById("commentId").value = id;
               }
+
+              $(".cs").change(function()
+                                  {
+                                      $(".cs").prop('checked',false);
+                                      $(this).prop('checked',true);
+                                  });
+               $(".pss").change(function()
+                                  {
+                                      $(".pss").prop('checked',false);
+                                      $(this).prop('checked',true);
+                                  });
+                $(".jss").change(function()
+                                  {
+                                      $(".jss").prop('checked',false);
+                                      $(this).prop('checked',true);
+                                  });
+                 $(".exp").change(function()
+                                  {
+                                      $(".exp").prop('checked',false);
+                                      $(this).prop('checked',true);
+                                  });
+                  $(".op").change(function()
+                                  {
+                                      $(".op").prop('checked',false);
+                                      $(this).prop('checked',true);
+                                  });
+                   $(".oe").change(function()
+                                  {
+                                      $(".oe").prop('checked',false);
+                                      $(this).prop('checked',true);
+                                  });
+                    $(".fs").change(function()
+                                  {
+                                      $(".fs").prop('checked',false);
+                                      $(this).prop('checked',true);
+                                  });
 
 </script>

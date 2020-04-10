@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css" />
 <style>
   /* Style the container/contact section */
 #detail {
@@ -37,6 +39,7 @@
       <div class="row">
          <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
          <input type="hidden" id="assessId" name="assessId"  />
+ <input type="hidden" id="round" name="round"  />
           <div class="col-md-12">
             <h4>INTERVIEWs</h4>
             <div class="container"  id="detail">
@@ -155,9 +158,10 @@
                      <!-- <th>view</th>
                       <th>Download</th> -->
                       
-                       <th>Send Invite</th>
+                       <th  colspan = 4>Interview actions</th>
                    </thead>
     <tbody>
+  <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><strong>Round1</strong></td><td><strong>Round2</strong></td><td><strong>Round3</strong></td><td><strong>Status</strong></td></tr>
 
         <?php 
 
@@ -190,12 +194,12 @@
           }
 
 
-          echo '<tr><td>'.$i.'</td><td>'.$firstname." ".$lastname.'</td><td>'.$email.'</td><td>'.$contactNo.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
+          echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$firstname." ".$lastname.'</a></td><td>'.$email.'</td><td>'.$contactNo.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
           	 // echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
 
-      if ($sendInvite) {
+      /*if ($sendInvite) {
         echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
 
       <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button><span class="glyphicon glyphicon-ok"></span>
@@ -207,6 +211,53 @@
       <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button></span>
 
       </p></td>';
+    }*/
+
+if ($sendInvite) {
+        echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
+
+      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button><span class="glyphicon glyphicon-ok"></span>
+
+      </p></td>';
+    } else {
+      echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
+
+      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(1,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
+      <button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
+
+      
+      <button class="btn btn-primary btn-xs" onclick="nextRound(2,'.$value->id.')"><span class="glyphicon glyphicon-ok">
+      </p></td><td><p data-placement="top" data-toggle="tooltip" title="Invite">
+
+      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(2,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
+
+      <button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
+
+      
+      <button class="btn btn-primary btn-xs" onclick="nextRound(3,'.$value->id.')"><span class="glyphicon glyphicon-ok">
+
+      </p></td><td><p data-placement="top" data-toggle="tooltip" title="Invite">
+
+      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(3,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
+
+      
+      <button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>
+      &nbsp;
+
+      
+      <button class="btn btn-primary btn-xs" onclick="nextRound(4,'.$value->id.')"><span class="glyphicon glyphicon-ok"></span></button>
+      </p></td>';
+
+      if ($value->interview_status == "1") {
+        echo '<td><strong>PASSED</strong></td>';
+      } else if ($value->interview_status == "2") {
+        echo '<td><strong>REJECTED</strong></td>';
+      } else if ($value->interview_status == "3") {
+        echo '<td><strong>ON HOLD</strong></td>';
+      } else {
+        echo '<td>NA</td>';  
+      }
+      
     }
     echo '</tr>';
         }
@@ -308,7 +359,7 @@
           <div class="form-group">
         <input class="form-control " id="userEmail" type="text" placeholder="Enter Email">
         </div>
- <div class="form-group">
+ <div class="form-group" style="display:none">
        
 
                     <label>Select MCQs</label>
@@ -326,15 +377,17 @@
 
         <div class="form-group">
           <label>Interviewer</label>
-        <select  class="form-control inputBox" id="interviewerId">
+       <!-- <select  class="form-control inputBox" id="interviewerId"> -->
+<select id="interviewerId" multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100">
                       <option value=0> Select</option>
                       
         <?php 
 
         if (count($interviewData['interviewer-list']) > 0) {
         foreach($interviewData['interviewer-list'] as $key => $value) { ?>
-        <option value=<?php echo $value->id; ?>> <?php echo $value->first_name." | ".$value->email." | ".$value->contact_no;?> </option>
-        <?php } }?>                       
+        <option value=<?php echo $value->id; ?>> <?php echo $value->first_name." ".$value->last_name;?> </option>
+
+	<?php } }?>                       
                     </select>
         </div>
         <div class="form-group">
@@ -413,6 +466,32 @@
                                 </div>
                             </div>
                         </div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Interviewee Detail</h4>
+        </div>
+        <div class="modal-body">
+                  <table id="classTable" class="table table-bordered">
+          <thead>
+          </thead>
+          <tbody id="student">
+           
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
                         <div style="height: 100vh;"></div>
                         <div class="card mb-4">
                             <!-- <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div> -->
@@ -421,11 +500,100 @@
                 </main>
 
 <script>
+function showStudentDetails(userId) {
+    var baseUrl = document.getElementById("base_url").value;
+     $('#student').empty();
+    $.ajax({
+                    url: baseUrl+"admin/showStudentData",
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                  data: { "id":userId} ,
+                    success: function( data, textStatus, jQxhr ){
 
-
-                function setUserId(id) {
-                  document.getElementById("assessId").value = id;                  
+                       $.each(data, function (index, item) {
+                        //console.log(item, index);
+                        if (null !== item) {
+                        var eachrow = 
+                               '<tr><td><strong>'+index+': </strong>'+item+ '</td></tr>';
+                   $('#student').append(eachrow);
                 }
+                  });
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        // document.getElementById("code").disabled = true;
+
+                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+  }
+
+function saveInterviewStatus(userId, status) {
+    var baseUrl = document.getElementById("base_url").value;
+
+    $.ajax({
+                    url: baseUrl+"admin/saveInterviewStatus",
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "userId":userId,"status":status} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        // document.getElementById("code").disabled = true;
+
+                        // document.getElementById("codeSubmit").disabled = true;
+                        window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+  }
+
+ function nextRound(id,userId) {
+                  //alert(round);
+                  // document.getElementById("assessId").value = id;
+                  // document.getElementById("round").value = round;
+                  if (id !=4) {
+                  var pass = confirm("Pass to next Round ?");       
+
+                  if (pass) {
+                    alert ('Moved to next round');
+                  } else {
+                     var status = prompt("Enter Round Status (Type 1 for PASS, 2 for REJECT, 3 for ON HOLD)");
+                     if (status !== null) {
+                      saveInterviewStatus(userId,status);
+                      alert('Saved');
+                      window.location.reload();
+                     }
+                  }
+                  } else {
+                    var status = prompt("Enter Round Status (Type 1 for PASS, 2 for REJECT, 3 for ON HOLD)");
+                     if (status !== null) {
+                      saveInterviewStatus(userId,status);
+                      alert('Saved');
+                      window.location.reload();
+                     }
+                  }          
+                }
+
+
+                function setUserId(round,id) {
+                  //alert(round);
+                  document.getElementById("assessId").value = id;
+                  document.getElementById("round").value = round;                  
+                }
+
+
 
                function generateUsrPwd() {
                 
@@ -465,6 +633,20 @@
              }
 
 
+function getSelectValues(select) {
+  var result = [];
+  var options = select && select.options;
+  var opt;
+
+  for (var i=0, iLen=options.length; i<iLen; i++) {
+    opt = options[i];
+ 
+    if (opt.selected) {
+      result.push(opt.value || opt.text);
+    }
+ }
+  return result;
+}
              function sendInterviewInvite() {
                // alert('send');
                 var interviewerId = document.getElementById("interviewerId").value ;
@@ -478,13 +660,18 @@
 
                 var userId = document.getElementById("assessId").value;
 
+		var round = document.getElementById("round").valu
+
+		var interview = document.getElementById("interviewerId");
+                var interviewerIds = getSelectValues(interview);
+
                   $.ajax({
                     url: baseUrl+"admin/sendInterviewInvite",
                     type: 'post',
-                    
+
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "userId" : userId, "mcqId" : testId, "email":userEmail, "testDate":testDate, "testTime":testTime, 
-                    "interviewerId" : interviewerId, "interviewMode" : interviewMode, "interviewVenue" : interviewVenue} ,
+                    data: {"round":round, "userId" : userId, "mcqId" : testId, "email":userEmail, "testDate":testDate, "testTime":testTime, 
+                    "interviewerId" : interviewerIds, "interviewMode" : interviewMode, "interviewVenue" : interviewVenue} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";

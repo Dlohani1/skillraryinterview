@@ -238,3 +238,10 @@ $route['user/interview'] = 'questionBank/activeInterview';
 $route['admin/closeInterview'] ['POST']= 'AdminController/closeInterview';
 
 $route['admin/interviewFeedback'] ['POST']= 'AdminController/interviewFeedback';
+
+
+$route['interview/login'] = 'questionBank/interviewLogin';
+
+$route['admin/saveInterviewStatus'] ['POST']= 'AdminController/saveInterviewStatus';
+
+$route['admin/showStudentData'] ['POST']= 'AdminController/studentDetail';

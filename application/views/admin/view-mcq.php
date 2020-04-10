@@ -40,7 +40,8 @@
               <table id="mytable" class="table table-bordred table-striped">
                    <thead>
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                        <th>MCQ Name</th>
+                       <th>Sl.no</th>
+			<th>MCQ Name</th>
                         <th>MCQ Code</th>
                         <th>Total Section</th>
                         <th>Total Question</th>
@@ -51,9 +52,10 @@
     <tbody>
 
         <?php 
-
+		$i = 0;
         foreach($mcq as $key => $value) {
-            echo '<tr><td>'.$value['title'].'</td><td>'.$value['code'].'</td> <td>3</td>
+		$i++;
+            echo '<tr><td>'.$i.'</td><td>'.$value['title'].'</td><td>'.$value['code'].'</td> <td>3</td>
     <td>'.$value['question'].'</td>
       <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="view-mcq-data/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>
     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>

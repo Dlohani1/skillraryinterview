@@ -133,6 +133,7 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+		  <th> Sl.no </th>
                    <th>Username</th>
                     <th>Password</th>
                      <th>Role</th>
@@ -145,11 +146,12 @@
     <tbody>
 
         <?php 
-
+	$i = 0;
         if (count($user) > 0)
         foreach($user as $key => $value) { 
           //print_r($value);
-            echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td> <td>'.$value->roles.'</td> 
+		$i++;
+            echo '<tr><td>'.$i.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td> <td>'.$value->roles.'</td> 
       
    </tr>';
         }
