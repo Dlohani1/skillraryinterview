@@ -253,3 +253,5 @@ $route['admin/saveActiveRound'] ['POST']= 'AdminController/saveActiveRound';
 $route['admin/getToken'] = 'AdminController/getAccessToken';
 
 $route['admin/updateToken'] = 'AdminController/updateAccessToken';
+
+$route['skillrary/whiteboard'] = 'welcome/showWhiteBoard';

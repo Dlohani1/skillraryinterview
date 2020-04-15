@@ -42,6 +42,10 @@ class Welcome extends CI_Controller {
 		//$this->load->view('codefooter');
 	}
 
+    public function showWhiteBoard() {
+        $this->load->view('whiteboard');
+    }
+
 public function mypdf(){
     $studentId = $this->uri->segment(3);
     $sql = "SELECT * FROM `student_register` WHERE id=".$studentId;
