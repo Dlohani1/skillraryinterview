@@ -245,3 +245,11 @@ $route['interview/login'] = 'questionBank/interviewLogin';
 $route['admin/saveInterviewStatus'] ['POST']= 'AdminController/saveInterviewStatus';
 
 $route['admin/showStudentData'] ['POST']= 'AdminController/studentDetail';
+
+$route['admin/showInterviewFeedback'] ['POST']= 'AdminController/showInterviewFeedback';
+
+$route['admin/saveActiveRound'] ['POST']= 'AdminController/saveActiveRound';
+
+$route['admin/getToken'] = 'AdminController/getAccessToken';
+
+$route['admin/updateToken'] = 'AdminController/updateAccessToken';

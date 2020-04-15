@@ -51,14 +51,18 @@
               </div>
 
                <div class="column">
+                <label>Interview Code (if any) </label>
+                <input type="text" name="code" class="form-control" id="interview-code" placeholder="Enter code" autocomplete="off">
+
+
 
                 <input type="hidden" id="mcqTestId" value= "<?php// echo $mcq['mcq-details']->id;?>">
                  <!-- <label for="fname">Assessment : </label> <strong><?php //echo $mcq['mcq-details']->title;?></strong> <br/>
                   <label for="fname">Assessment Code : </label> <strong><?php //echo $mcq['mcq-details']->code;?></strong> <br/>
  -->  
 
-                    <label>Select MCQs</label>
-                    <select  class="form-control inputBox" id="mcqId">
+                    <label style="display: none">Select MCQs</label>
+                    <select  style="display: none" class="form-control inputBox" id="mcqId">
                       <option value=0> Select </option>
                       
         <?php 
@@ -73,10 +77,7 @@
 
               </div>
               <div class="column">
-                   <label>Interview Code (if any) </label>
-                <input type="text" name="code" class="form-control" id="interview-code" placeholder="Enter code" autocomplete="off">
-
-                    <br/><button onclick="generateUsrPwd()">Generate IDs</button>
+                                       <br/><button onclick="generateUsrPwd()">Generate IDs</button>
                   </div>
             </div>
 
@@ -212,6 +213,146 @@
 
       </p></td>';
     }*/
+    $intervieweeId = $value->id;
+    $round1 = "";
+    $round1Status = "";
+    $round2Status = "";
+    $round3Status = "";
+    $round2 = "disabled";
+    $round3 = "disabled";
+    $textClass1 ="text-success";
+    $textClass2 ="text-success";
+    $textClass3 ="text-success";
+
+    // if ($interviewData['round-result'][$intervieweeId]['round1']) {
+    //   $round1 = "";
+    // }
+
+    // if ($interviewData['round-result'][$intervieweeId]['round2']) {
+    //   $round2 = "";
+    // }
+
+    // if ($interviewData['round-result'][$intervieweeId]['round3']) {
+    //   $round3 = "";
+    // }
+
+    if ($value->active_round == "1") {
+      $round1 = "";
+      $round2 = "disabled";
+      $round3 = "disabled";
+
+      $round1Status = "";
+      $round2Status = "";
+      $round3Status = "";
+    }
+
+    if ($value->active_round == "2") {
+      $round1 = "disabled";
+      $round2 = "";
+      $round3 = "disabled";
+
+      $round1Status = "PASSED";
+
+      $round2Status = "";
+      $round3Status = "";
+    }
+
+    if ($value->active_round == "3") {
+      $round2 = "disabled";
+      $round1 = "disabled";
+      $round3="";
+      $round1Status = "PASSED";      
+      $round2Status = "PASSED";
+      $round3Status = "";
+    }
+
+    if ($value->interview_status == "1") {
+        
+      $round2 = "disabled";
+      $round1 = "disabled";
+      $round3 = "disabled";
+      $round1Status = "PASSED";      
+      $round2Status = "PASSED";
+      $round3Status = "PASSED";
+
+      // if ($value->active_round == "1") {
+      //   $round1Status = "PASSED";      
+      //   $round2Status = "";
+      //   $round3Status = "";
+      // } else if ($value->active_round == "2") {
+      //   $round1Status = "PASSED";      
+      //   $round2Status = "PASSED";
+      //   $round3Status = "";
+      // } else if ($value->active_round == "3") {
+      //   $round1Status = "PASSED";      
+      //   $round2Status = "";
+      //   $round3Status = "";
+      // }
+
+    } else if ($value->interview_status == "2") {
+    
+      $round2 = "disabled";
+      $round1 = "disabled";
+      $round3 = "disabled";
+      $round1Status = "PASSED";      
+      $round2Status = "PASSED";
+      $round3Status = "PASSED";
+
+     
+      if ($value->active_round == "1") {
+        $round1Status = "REJECTED";      
+        $round2Status = "";
+        $round3Status = "";
+        $textClass1 ="text-danger";
+      } else if ($value->active_round == "2") {
+        $round1Status = "PASSED";      
+        $round2Status = "REJECTED";
+        $round3Status = "";
+        $textClass2 ="text-danger";
+      } else if ($value->active_round == "3") {
+        $round1Status = "PASSED";      
+        $round2Status = "PASSED";
+        $round3Status = "REJECTED";
+        $textClass3 ="text-danger";
+      }
+
+    } else if ($value->interview_status == "3") {
+     
+      $round1 = "disabled";
+      $round2 = "disabled";
+      $round3 = "disabled";
+      $round1Status = "PASSED";      
+      $round2Status = "PASSED";
+      $round3Status = "On HOLD";
+
+      
+      if ($value->active_round == "1") {
+        $round1Status = "ON HOLD";      
+        $round2Status = "";
+        $round3Status = "";
+        $textClass1 ="text-warning";
+      } else if ($value->active_round == "2") {
+        $round1Status = "PASSED";      
+        $round2Status = "ON HOLD";
+        $round3Status = "";
+        $textClass2 ="text-warning";
+      } else if ($value->active_round == "3") {
+        $round1Status = "PASSED";      
+        $round2Status = "PASSED";
+        $round3Status = "ON HOLD";
+        $textClass3 ="text-warning";
+      }
+    }
+    // if ($value->active_round == "4") {
+    //   $round3 =  "disabled";
+    //   $round2 =  "disabled";
+    //   $round1 = "disabled";
+    //   $round1Status = "PASSED";
+    //   $round2Status = "PASSED";
+    //   $round3Status = "PASSED";
+    // }
+
+      
 
 if ($sendInvite) {
         echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
@@ -220,33 +361,40 @@ if ($sendInvite) {
 
       </p></td>';
     } else {
-      echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
+      echo '<td><span data-placement="top" data-toggle="tooltip" title="Invite">
 
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(1,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
-      <button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
+      <button '.$round1.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(1,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;</span>
+<span data-placement="top" data-toggle="tooltip" title="Comment">
 
-      
-      <button class="btn btn-primary btn-xs" onclick="nextRound(2,'.$value->id.')"><span class="glyphicon glyphicon-ok">
-      </p></td><td><p data-placement="top" data-toggle="tooltip" title="Invite">
+      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(1,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
+      </span>
+      <span data-placement="top" data-toggle="tooltip" title="Round">
+      <button '.$round1.' class="btn btn-primary btn-xs" onclick="nextRound(2,'.$value->id.')"><span class="glyphicon glyphicon-ok">
+      </span></button> <p class="'.$textClass1.'">'.$round1Status.'</p></td>
 
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(2,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
+      <td>
 
-      <button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
+      <button '.$round2.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(2,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
 
-      
-      <button class="btn btn-primary btn-xs" onclick="nextRound(3,'.$value->id.')"><span class="glyphicon glyphicon-ok">
-
-      </p></td><td><p data-placement="top" data-toggle="tooltip" title="Invite">
-
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(3,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
+      <button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(2,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
 
       
-      <button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>
+      <button '.$round2.' class="btn btn-primary btn-xs" onclick="nextRound(3,'.$value->id.')"><span class="glyphicon glyphicon-ok">
+
+      </button><p class="'.$textClass2.'">'.$round2Status.'</p></td>
+
+
+      <td>
+
+      <button '.$round3.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(3,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
+
+      
+      <button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(3,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>
       &nbsp;
 
       
-      <button class="btn btn-primary btn-xs" onclick="nextRound(4,'.$value->id.')"><span class="glyphicon glyphicon-ok"></span></button>
-      </p></td>';
+      <button '.$round3.' class="btn btn-primary btn-xs" onclick="nextRound(4,'.$value->id.')"><span class="glyphicon glyphicon-ok"></span></button>
+      <p class="'.$textClass3.'">'.$round3Status.'</p></td>';
 
       if ($value->interview_status == "1") {
         echo '<td><strong>PASSED</strong></td>';
@@ -352,7 +500,11 @@ if ($sendInvite) {
       <div class="modal-dialog">
     <div class="modal-content">
           <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top: -5%;
+
+margin-right: -30%;
+
+color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
         <h4 class="modal-title custom_align" id="Heading">Invitation Detail</h4>
       </div>
           <div class="modal-body">
@@ -397,10 +549,13 @@ if ($sendInvite) {
 
          Date: <input type="date" id="testDate" /> Time : <input type="time" id="testTime"/>    
          Mode : <select class="form-group inputBox" id="interviewMode">
-                      <option value=0> Select</option>
-                       <option value=1> Online</option>
-                        <option value=2> Offline</option>
+                      <option value=0 disabled> Select</option>
+                       <option value=1 selected=> Online</option>
+                        <option value=2 disabled> Offline</option>
               </select>
+              <span id="error" style="color:red"></span></br>
+               <label> Duration (in hrs) </label>
+                <input type="number" id="duration" name="duration" min="1" max="5">
         
         </div>
 
@@ -418,7 +573,7 @@ if ($sendInvite) {
         </div> -->
 
                 <div class="form-group">
-          <label> Interview Venue </label>
+          <label> Venue </label>
 
           <input type="text" id="interviewVenue" />   
         
@@ -432,7 +587,7 @@ if ($sendInvite) {
 
       </div>
           <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;" onclick="sendInterviewInvite()"><span class="glyphicon glyphicon-ok-sign"></span>Schedule</button>
+        <button type="button" class="btn btn-success btn-lg" style="width: 100%;" onclick="sendInterviewInvite()"><span class="glyphicon glyphicon-ok-sign"></span>Schedule</button>
       </div>
         </div>
     <!-- /.modal-content --> 
@@ -473,7 +628,11 @@ if ($sendInvite) {
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" class="close" data-dismiss="modal" style="margin-top: -5%;
+
+margin-right: -33%;
+
+color: red;">&times;</button>
           <h4 class="modal-title">Interviewee Detail</h4>
         </div>
         <div class="modal-body">
@@ -492,6 +651,144 @@ if ($sendInvite) {
       
     </div>
   </div>
+
+
+   <!-- Modal -->
+  <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" style="margin-top: -3%;
+    margin-right: -17%;
+    color: red;">&times;</button>
+          <h4 class="modal-title">View Feedback</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+                
+                <div class="col-md-9">
+                <table class="tableWidth" id="">
+                     <thead id="feedbackTblHead">
+          </thead>
+          <tbody id="feedbackTbl">
+         
+            <tr id = "test1">
+            <!-- <td class="tdborder thMainBorder"><b>Communication Skills</b></td> -->
+            </tr>
+             <tr id = "test2">
+          <!--   <td class="tdborder thMainBorder"><b>Problem Solving Skills</b></td> -->
+            </tr>
+
+ <tr id = "test3">
+           <!--  <td class="tdborder thMainBorder"><b>Job Specific Skills</b></td> -->
+            </tr>
+ <tr id = "test4">
+           <!--  <td class="tdborder thMainBorder"><b>Experience</b></td> -->
+            </tr>
+ <tr id = "test5">
+          <!--   <td class="tdborder thMainBorder"><b>Overall Personality</b></td> -->
+            </tr>
+ <tr id = "test6">
+           <!--  <td class="tdborder thMainBorder"><b>Overall Evaluation</b></td> -->
+            </tr>
+ <tr id = "test7">
+          <!--   <td class="tdborder thMainBorder"><b>Status</b></td> -->
+            </tr>
+
+          </tbody>
+                    <!-- <tr>
+                        <td class="tdborder thMainBorder"><b>Communication Skills</b></td>
+                        <td  class="thborder"><input type="checkbox" value="1" name="cs[]" class="cs"></td>
+                        <td  class="thborder"><input type="checkbox" value="2" name="cs[]" class="cs"></td>
+                        <td  class="thborder"><input type="checkbox" value="3" name="cs[]" class="cs"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Problem Solving Skills</b></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="pss[]" class="pss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="pss[]" class="pss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="pss[]" class="pss"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Job Specific Skills</b></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="jss[]" class="jss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="jss[]" class="jss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="jss[]" class="jss"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Experience</b></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="exp[]" class="exp"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="exp[]" class="exp"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="exp[]" class="exp"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Overall Personality</b></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="op[]" class="op"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Overall Evaluation</b></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="op[]" class="op"></td>
+                    </tr>
+                     <tr>
+                        <td class="tdborder thMainBorder"><b>Final Decision</b></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="op[]" class="op"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdborder thMainBorder"><b>Comment</b></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="op[]" class="op"></td>
+                    </tr> -->
+                </table>
+                </div>
+                <!-- <div class="col-md-3">
+                    <table class="tableWidth">
+                        <tr><th class="thborder thMainBorder" colspan="2">Overall Evaluation</th></tr>
+                        <tr>
+                            <td class="thborder thMainBorder">Performance</td>
+                            <td class="thborder thMainBorder">Tick Any one</td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Excellent</td>
+                            <td  class="thborder"><input type="checkbox" value="1" name="oe[]" class="oe"></td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Good</td>
+                            <td  class="thborder"><input type="checkbox"  value="2" name="oe[]" class="oe"></td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Average</td>
+                            <td  class="thborder"><input type="checkbox" value="3" name="oe[]" class="oe"></td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Below Average</td>
+                            <td  class="thborder"><input type="checkbox"  value="4" name="oe[]" class="oe"></td>
+                        </tr>
+                        <tr>
+                            <td  class="thborder thMainBorder">Poor</td>
+                            <td  class="thborder"><input type="checkbox" value="5" name="oe[]" class="oe"></td>
+                        </tr>
+                    </table>
+                </div> -->
+        </div><br/>
+   
+        <!-- <p>Final Decision:  Hired <input type="checkbox" value="1" name="fs[]" class="fs">&nbsp;&nbsp;&nbsp; Rejected <input type="checkbox" name="fs[]" class="fs" value="2" >&nbsp;&nbsp;&nbsp; On hold <input type="checkbox" name="fs[]" class="fs" value="3" ></p>
+        
+        Additional Comments: <textarea id="addfeedback" > </textarea><br/>
+ -->        </div>
+        <div class="modal-footer">
+<!--           <button type="button" onclick="saveComment()" class="btn btn-warning btn-lg" ><span class="glyphicon glyphicon-ok-sign"></span>Save </button> -->
+          <button type="button" id="closeboxx" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
                         <div style="height: 100vh;"></div>
                         <div class="card mb-4">
                             <!-- <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div> -->
@@ -500,6 +797,176 @@ if ($sendInvite) {
                 </main>
 
 <script>
+// $(document).ready(function () {
+// $("#testDate").datepicker({
+// minDate: 0
+// });
+// });
+
+function showInterviewFeedback(round,id) {
+    var baseUrl = document.getElementById("base_url").value;
+    $('#feedbackTblHead').empty();
+    //$('#feedbackTbl').empty();
+
+    $('#test1').empty();
+    $('#test2').empty();
+    $('#test3').empty();
+    $('#test4').empty();
+    $('#test5').empty();
+    $('#test6').empty();
+    $('#test7').empty();
+
+   
+    $.ajax({
+                    url: baseUrl+"admin/showInterviewFeedback",
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                  data: { "id":id, "round": round} ,
+                    success: function( data, textStatus, jQxhr ){
+
+                    //   <tr><th class="thborder thMainBorder" colspan="4">DIFFERENT AREAS</th></tr>
+                    // <tr>
+                    //     <th class="thborder thMainBorder">Areas</th>
+                        // <th class="thborder thMainBorder">Good</th>
+                        // <th class="thborder thMainBorder">Average</th>
+                        // <th class="thborder thMainBorder">Not Acceptable</th>
+                    // </tr>
+                    console.log('d', typeof(data))
+                    if (data.length > 0) {
+                     var eachrow = 
+                               '<tr><th  style="font-size:18px" class="thborder thMainBorder" colspan="'+(data.length+1)+'">Feedback Details</th></tr><tr><th class="thborder thMainBorder"> Areas </th>';
+                    
+                   //$('#feedbackTblHead').append(eachrow);
+
+                    for (i=1;i<= data.length;i++){
+
+                       eachrow += '<th class="thborder thMainBorder"> Interviewer'+i+'</th>';
+
+                               
+                       
+                    }
+                    eachrow += '</tr>'
+                    $('#feedbackTblHead').append(eachrow);
+
+                    var tst1 = '<td  class="thborder">Communication Skill</td>'
+                    var tst2 = '<td  class="thborder">Problem Solving Skill</td>'
+                    var tst3 = '<td  class="thborder">Job Specific Skill</td>'
+                    var tst4 = '<td  class="thborder">Experience</td>'
+                    var tst5 = '<td  class="thborder">Overall Personality</td>'
+                    var tst6 = '<td  class="thborder">Overall Evaluation</td>'
+                    var tst7 = '<td  class="thborder">Status</td>'
+
+                    $('#test1').append(tst1);
+                    $('#test2').append(tst2);
+                    $('#test3').append(tst3);
+                    $('#test4').append(tst4);
+                    $('#test5').append(tst5);
+                    $('#test6').append(tst6);
+                    $('#test7').append(tst7);
+
+
+                     // for (i=0;i<data.length;i++){
+                     //    console.log('dd', data[i])
+                     //    if (data[i].communication_skill)
+                     // }
+
+                        $.each(data, function (index, item) {
+                     //    console.log('a',item, index);
+
+                        var ProblemSolvingSkill = "Good";
+                        var JobSpecificSkill = "Good";
+                        var Experience = "Good";
+                        var OverallPersonality = "Good";
+                        var OverallEvaluation = "Good";
+                        var FinalDecision = "Hired";
+
+                        switch(item.communication_skill) {
+                          case "1" : var CommunicationSkill = "Good";break;
+                          case "2" : var CommunicationSkill = "Average";break;
+                          default : var CommunicationSkill = "Not Acceptable";break;
+                         }
+                        switch(item.problem_solving_skill) {
+                          case "1" : var ProblemSolvingSkill = "Good";break;
+                          case "2" : var ProblemSolvingSkill = "Average";break;
+                          default : var ProblemSolvingSkill = "Not Acceptable";break;
+                         }
+                        switch(item.job_specific_skill) {
+                          case "1" : var JobSpecificSkill = "Good";break;
+                          case "2" : var JobSpecificSkill = "Average";break;
+                          default : var JobSpecificSkill = "Not Acceptable";break;
+                         }
+                         switch(item.experience) {
+                          case "1" : var Experience = "Good";break;
+                          case "2" : var Experience = "Average";break;
+                          default : var Experience = "Not Acceptable";break;
+                         }
+                         switch(item.overall_personality) {
+                          case "1" : var OverallPersonality = "Good";break;
+                          case "2" : var OverallPersonality = "Average";break;
+                          default : var OverallPersonality = "Not Acceptable";break;
+                         }
+                         switch(item.overall_evaluation) {
+                          case "1" : var OverallEvaluation = "Excellent";break;
+                          case "2" : var OverallEvaluation = "Good";break;
+                          case "3" : var OverallEvaluation = "Average";break;
+                          case "4" : var OverallEvaluation = "Below Average";break;
+                          default : var OverallEvaluation = "Poor";break;
+                         }
+
+                         switch(item.final_decision) {
+                          case "1" : var FinalDecision = "Hired";break;
+                          case "2" : var FinalDecision = "Rejected";break;
+                          default : var FinalDecision = "On Hold";break;
+                         }
+                         
+
+                        
+                          // var eachrow = 
+                          //        '<tr><td class="tdborder thMainBorder"><b>Communication Skills</b></td><td  class="thborder">'+CommunicationSkill+'</td></tr><tr><td class="tdborder thMainBorder"><b>Problem Solving Skills</b></td><td  class="thborder">'+ProblemSolvingSkill+'</td></tr><tr><td class="tdborder thMainBorder"><b>Job Specific Skills</b></td><td  class="thborder">'+JobSpecificSkill+'</td></tr><tr><td class="tdborder thMainBorder"><b>Experience</b></td><td  class="thborder">'+Experience+'</td></tr><tr><td class="tdborder thMainBorder"><b>Overall Personality</b></td><td  class="thborder">'+OverallPersonality+'</td></tr><tr><td class="tdborder thMainBorder"><b>Overall Evaluation</b></td><td  class="thborder">'+OverallEvaluation+'</td></tr><tr><td class="tdborder thMainBorder"><b>Final Status</b></td><td  class="thborder">'+FinalDecision+'</td></tr>';
+
+
+                          //      $('#feedbackTbl').append(eachrow);
+
+                               var tst1 = '<td  class="thborder">'+CommunicationSkill+'</td>'
+                               var tst2 = '<td  class="thborder">'+ProblemSolvingSkill+'</td>'
+                               var tst3 = '<td  class="thborder">'+JobSpecificSkill+'</td>'
+                               var tst4 = '<td  class="thborder">'+Experience+'</td>'
+                               var tst5 = '<td  class="thborder">'+OverallPersonality+'</td>'
+                               var tst6 = '<td  class="thborder">'+OverallEvaluation+'</td>'
+                               var tst7 = '<td  class="thborder">'+FinalDecision+'</td>'
+
+                                $('#test1').append(tst1);
+                                $('#test2').append(tst2);
+                                $('#test3').append(tst3);
+                                $('#test4').append(tst4);
+                                $('#test5').append(tst5);
+                                $('#test6').append(tst6);
+                                $('#test7').append(tst7);
+                        
+                     });
+                      } else {
+                           var eachrow = 
+                               '<tr><th class="thborder thMainBorder">No Comments Found</th></tr>';
+                    
+                   $('#feedbackTblHead').append(eachrow);
+
+                      }
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        // document.getElementById("code").disabled = true;
+
+                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+  }
+
 function showStudentDetails(userId) {
     var baseUrl = document.getElementById("base_url").value;
      $('#student').empty();
@@ -560,6 +1027,7 @@ function saveInterviewStatus(userId, status) {
   }
 
  function nextRound(id,userId) {
+  var baseUrl = document.getElementById("base_url").value;
                   //alert(round);
                   // document.getElementById("assessId").value = id;
                   // document.getElementById("round").value = round;
@@ -567,6 +1035,28 @@ function saveInterviewStatus(userId, status) {
                   var pass = confirm("Pass to next Round ?");       
 
                   if (pass) {
+
+                    $.ajax({
+                      url: baseUrl+"admin/saveActiveRound",
+                      type: 'post',
+                      
+                      // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                      data: { "userId":userId,"round":id} ,
+                      success: function( data, textStatus, jQxhr ){
+                          //window.location.reload(true);
+                         // window.location.href="admin/view-mcq";
+                          //$('#response pre').html( JSON.stringify( data ) );
+                          console.log('data', data);
+                          // document.getElementById("code").disabled = true;
+
+                          // document.getElementById("codeSubmit").disabled = true;
+                          window.location.reload();
+                      },
+                      error: function( jqXhr, textStatus, errorThrown ){
+                          console.log( errorThrown );
+                      }
+                    });
+
                     alert ('Moved to next round');
                   } else {
                      var status = prompt("Enter Round Status (Type 1 for PASS, 2 for REJECT, 3 for ON HOLD)");
@@ -648,7 +1138,7 @@ function getSelectValues(select) {
   return result;
 }
              function sendInterviewInvite() {
-               // alert('send');
+               //alert('send');
                 var interviewerId = document.getElementById("interviewerId").value ;
                 var userEmail = document.getElementById("userEmail").value ;
                 var testDate = document.getElementById("testDate").value ;
@@ -660,9 +1150,10 @@ function getSelectValues(select) {
 
                 var userId = document.getElementById("assessId").value;
 
-		var round = document.getElementById("round").valu
+            		var round = document.getElementById("round").value;
+                var duration = document.getElementById("duration").value;
 
-		var interview = document.getElementById("interviewerId");
+            		var interview = document.getElementById("interviewerId");
                 var interviewerIds = getSelectValues(interview);
 
                   $.ajax({
@@ -670,17 +1161,22 @@ function getSelectValues(select) {
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: {"round":round, "userId" : userId, "mcqId" : testId, "email":userEmail, "testDate":testDate, "testTime":testTime, 
+                    data: {"duration":duration,"round":round, "userId" : userId, "mcqId" : testId, "email":userEmail, "testDate":testDate, "testTime":testTime, 
                     "interviewerId" : interviewerIds, "interviewMode" : interviewMode, "interviewVenue" : interviewVenue} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
+                        console.log('dd', data.status);
+                        console.log('de',JSON.stringify( data ))
                         // document.getElementById("code").disabled = true;
-
-                        // document.getElementById("codeSubmit").disabled = true;
-                        window.location.reload();
+                        if (data.status == "400") {
+                            document.getElementById("error").innerHTML = data.data;
+                        } else {
+                        //document.getElementById("codeSubmit").disabled = true;
+                       window.location.reload();
+                      }
                     },
                     error: function( jqXhr, textStatus, errorThrown ){
                         console.log( errorThrown );

@@ -287,7 +287,9 @@ echo '</td> </tr>';
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" class="close" data-dismiss="modal" style="margin-top: -3%;
+    margin-right: -17%;
+    color: red;">&times;</button>
           <h4 class="modal-title">Add Feedback</h4>
         </div>
         <div class="modal-body">
@@ -304,33 +306,33 @@ echo '</td> </tr>';
                     </tr>
                     <tr>
                         <td class="tdborder thMainBorder"><b>Communication Skills</b></td>
-                        <td  class="thborder"><input type="checkbox" class="cs"></td>
-                        <td  class="thborder"><input type="checkbox" class="cs"></td>
-                        <td  class="thborder"><input type="checkbox" class="cs"></td>
+                        <td  class="thborder"><input type="checkbox" value="1" name="cs[]" class="cs"></td>
+                        <td  class="thborder"><input type="checkbox" value="2" name="cs[]" class="cs"></td>
+                        <td  class="thborder"><input type="checkbox" value="3" name="cs[]" class="cs"></td>
                     </tr>
                     <tr>
                         <td class="tdborder thMainBorder"><b>Problem Solving Skills</b></td>
-                        <td  class="tdborder"><input type="checkbox" class="pss"></td>
-                        <td  class="tdborder"><input type="checkbox" class="pss"></td>
-                        <td  class="tdborder"><input type="checkbox" class="pss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="pss[]" class="pss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="pss[]" class="pss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="pss[]" class="pss"></td>
                     </tr>
                     <tr>
                         <td class="tdborder thMainBorder"><b>Job Specific Skills</b></td>
-                        <td  class="tdborder"><input type="checkbox" class="jss"></td>
-                        <td  class="tdborder"><input type="checkbox" class="jss"></td>
-                        <td  class="tdborder"><input type="checkbox" class="jss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="jss[]" class="jss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="jss[]" class="jss"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="jss[]" class="jss"></td>
                     </tr>
                     <tr>
                         <td class="tdborder thMainBorder"><b>Experience</b></td>
-                        <td  class="tdborder"><input type="checkbox" class="exp"></td>
-                        <td  class="tdborder"><input type="checkbox" class="exp"></td>
-                        <td  class="tdborder"><input type="checkbox" class="exp"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="exp[]" class="exp"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="exp[]" class="exp"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="exp[]" class="exp"></td>
                     </tr>
                     <tr>
                         <td class="tdborder thMainBorder"><b>Overall Personality</b></td>
-                        <td  class="tdborder"><input type="checkbox" class="op"></td>
-                        <td  class="tdborder"><input type="checkbox" class="op"></td>
-                        <td  class="tdborder"><input type="checkbox" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="1" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="2" name="op[]" class="op"></td>
+                        <td  class="tdborder"><input type="checkbox"  value="3" name="op[]" class="op"></td>
                     </tr>
                 </table>
                 </div>
@@ -343,34 +345,35 @@ echo '</td> </tr>';
                         </tr>
                         <tr>
                             <td  class="thborder thMainBorder">Excellent</td>
-                            <td  class="thborder"><input type="checkbox" class="oe"></td>
+                            <td  class="thborder"><input type="checkbox" value="1" name="oe[]" class="oe"></td>
                         </tr>
                         <tr>
                             <td  class="thborder thMainBorder">Good</td>
-                            <td  class="thborder"><input type="checkbox"  class="oe"></td>
+                            <td  class="thborder"><input type="checkbox"  value="2" name="oe[]" class="oe"></td>
                         </tr>
                         <tr>
                             <td  class="thborder thMainBorder">Average</td>
-                            <td  class="thborder"><input type="checkbox" class="oe"></td>
+                            <td  class="thborder"><input type="checkbox" value="3" name="oe[]" class="oe"></td>
                         </tr>
                         <tr>
                             <td  class="thborder thMainBorder">Below Average</td>
-                            <td  class="thborder"><input type="checkbox"  class="oe"></td>
+                            <td  class="thborder"><input type="checkbox"  value="4" name="oe[]" class="oe"></td>
                         </tr>
                         <tr>
                             <td  class="thborder thMainBorder">Poor</td>
-                            <td  class="thborder"><input type="checkbox" class="oe"></td>
+                            <td  class="thborder"><input type="checkbox" value="5" name="oe[]" class="oe"></td>
                         </tr>
                     </table>
                 </div>
         </div><br/>
    
-        <p>Final Decision:  Hired <input type="checkbox" class="fs">&nbsp;&nbsp;&nbsp; Rejected <input type="checkbox" class="fs">&nbsp;&nbsp;&nbsp; On hold <input type="checkbox" class="fs"></p>
+        <p>Final Decision:  Hired <input type="checkbox" value="1" name="fs[]" class="fs">&nbsp;&nbsp;&nbsp; Rejected <input type="checkbox" name="fs[]" class="fs" value="2" >&nbsp;&nbsp;&nbsp; On hold <input type="checkbox" name="fs[]" class="fs" value="3" ></p>
         
-        Additional Comments: <textarea id="addfeedback"> </textarea><br/>
+        Additional Comments: <textarea id="addfeedback" > </textarea><br/>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" onclick="saveComment()" class="btn btn-warning btn-lg" ><span class="glyphicon glyphicon-ok-sign"></span>Save </button>
+          <button type="button" id="closeboxx" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -514,17 +517,125 @@ echo '</td> </tr>';
                 var baseUrl = document.getElementById("base_url").value;
 
                 var id = document.getElementById("commentId").value;
-                var comment = document.getElementById("feedback").value;
+                //var comment = document.getElementById("feedback").value;
 
-		var ele = document.getElementsByName('status'); 
-                 var status = 0;
-                  for(var i = 0; i < ele.length; i++) { 
-                      if(ele[i].checked) {
-                        status = ele[i].value;
-                        break;
-                      } 
-                       
-                  } 
+                var comment = document.getElementById("addfeedback").value;
+
+                
+                var error = 0;
+                if (comment.trim().length > 0 ) {
+                  error = 1;
+                }
+
+		            // var ele = document.getElementsByName('status'); 
+                
+                //   var status = 0;
+
+                //   for(var i = 0; i < ele.length; i++) { 
+                //       if(ele[i].checked) {
+                //         status = ele[i].value;
+                //         break;
+                //       }                       
+                //   }
+                
+                var ele = document.getElementsByName('cs[]'); 
+                
+                var cs = 0;
+
+                for(var i = 0; i < ele.length; i++) { 
+                    if(ele[i].checked) {
+                      cs = ele[i].value;
+                      break;
+                    }
+                                          
+                }
+
+                
+                var ele = document.getElementsByName('pss[]'); 
+                
+                var pss = 0;
+
+                for(var i = 0; i < ele.length; i++) { 
+                    if(ele[i].checked) {
+                      //error = 0;
+                      pss = ele[i].value;
+                      break;
+                    }                  
+                }
+
+                
+                var ele = document.getElementsByName('jss[]'); 
+                
+                var jss = 0;
+
+                for(var i = 0; i < ele.length; i++) { 
+                    if(ele[i].checked) {
+                      //error = 0;
+                      jss = ele[i].value;
+                      break;
+                    }                    
+                }
+
+                
+                var ele = document.getElementsByName('exp[]'); 
+                
+                var exp = 0;
+
+                for(var i = 0; i < ele.length; i++) { 
+                    if(ele[i].checked) {
+                      //error = 0;
+                      exp = ele[i].value;
+                      break;
+                    }                  
+                }
+
+
+                var ele = document.getElementsByName('op[]'); 
+                
+                var op = 0;
+
+                for(var i = 0; i < ele.length; i++) { 
+                    if(ele[i].checked) {
+                      //error = 0;
+                      op = ele[i].value;
+                      break;
+                    }                     
+                }
+
+                
+                var ele = document.getElementsByName('fs[]'); 
+                
+                var fs = 0;
+
+                for(var i = 0; i < ele.length; i++) { 
+                    if(ele[i].checked) {
+                      //error = 0;
+                      fs = ele[i].value;
+                      break;
+                    }                   
+                }
+
+                var ele = document.getElementsByName('oe[]'); 
+                
+                var oe = 0;
+
+                for(var i = 0; i < ele.length; i++) { 
+                    if(ele[i].checked) {
+                      //error = 0;
+                      oe = ele[i].value;
+                      break;
+                    }                  
+                }
+
+
+                if (!cs || !pss || !jss || !exp || !op || !oe || !fs || !error )  {
+                  alert ("Please fill all the values");
+                } else {
+
+                
+
+                 
+
 
                   $.ajax({
                     url: baseUrl+"admin/interviewFeedback",
@@ -532,7 +643,19 @@ echo '</td> </tr>';
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: {"status":status,  "feedback":comment, "assessId" : id} ,
+                    data: {
+                      "CommunicationSkill" : cs,
+                      "ProblemSolvingSkill" : pss,
+                      "JobSpecificSkill" : jss,
+                      "exp":exp,
+                      "OverallPersonality": op,
+                      "OverallEvaluation" : oe,
+                      "FinalStatus":fs,
+                      "feedback":comment.trim(),
+                      "assessId" : id
+                    },
+
+
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
 
@@ -540,10 +663,10 @@ echo '</td> </tr>';
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
 
-      alert("Comment Added");
+                        alert("Comment Added");
                         document.getElementById("feedback").value = "";
-                        document.getElementById("closebox").click();
-
+                        document.getElementById("closeboxx").click();
+                        window.location.reload();
                         // document.getElementById("codeSubmit").disabled = true;
                         //window.location.reload();
                     },
@@ -551,6 +674,7 @@ echo '</td> </tr>';
                         console.log( errorThrown );
                     }
                 });
+                }
 
 
                         // $.alert({

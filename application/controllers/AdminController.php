@@ -10,16 +10,100 @@ class AdminController extends CI_Controller {
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
 
-    $this->db2 = $this->load->database('database2', TRUE);
+    //$this->db2 = $this->load->database('database2', TRUE);
 
      $getUrl = $this->uri->segment(2);
-     $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'logout');
+     $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'create-interview','logout');
 
      if (in_array($getUrl, $checkUrl)) {
         if (!isset($_SESSION['admin_id'])) {
             redirect('admin/login');
         }
      }
+
+  }
+
+  public function getRefreshedToken($refreshToken) {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://api.getgo.com/oauth/v2/token');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=refresh_token&refresh_token=".$refreshToken);
+
+    $headers = array();
+    $headers[] = 'Authorization: Basic QXN3a2o2QTRSS0dVMG5BeldEMGNtMWFUbFc3R0xVZFk6SFMwQW1XT0lHYVZrbTB2VA==';
+    $headers[] = 'Content-Type: application/x-www-form-urlencoded';
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+    if (curl_errno($ch)) {
+      echo 'Error:' . curl_error($ch);
+    }
+    curl_close($ch);
+
+    return json_decode($result);
+  }
+
+  public function updateAccessToken() {
+
+    $sql = "SELECT id,refresh_token from gotomeeting_token_details";
+
+    $result = $this->db->query($sql)->result();
+
+    foreach ($result as $key => $value) {
+      $token = $this->getRefreshedToken($value->refresh_token);
+      //print_r($token); die;
+      $data = array(
+        'access_token' => $token->access_token,
+        'refresh_token' => $token->refresh_token
+      );
+
+      $this->db->where('id', $value->id);
+      $this->db->update('gotomeeting_token_details',$data);
+    }
+    
+    echo "success";
+  }
+
+  public function getAccessToken() {
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://api.getgo.com/oauth/v2/token');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=password&username=trainer112@qspiders.com&password=SuperAdmin112");
+
+    $headers = array();
+    $headers[] = 'Authorization: Basic QXN3a2o2QTRSS0dVMG5BeldEMGNtMWFUbFc3R0xVZFk6SFMwQW1XT0lHYVZrbTB2VA==';
+    $headers[] = 'Content-Type: application/x-www-form-urlencoded';
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+
+    // echo "<pre>";
+
+    // print_r(json_decode($result));
+    $result = json_decode($result);
+    if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
+    }
+    curl_close($ch);
+    $data  = array (
+      'first_name' => $result->firstName,
+      'last_name' => $result->lastName,
+      'email' => $result->email,
+      'access_token' => $result->access_token,
+      'refresh_token' => $result->refresh_token,
+      'token_type' => $result->token_type,
+      'account_key' => $result->account_key,
+      'organizer_key' => $result->organizer_key
+    );
+
+    $this->db->insert('gotomeeting_token_details', $data);
+
+    echo "success";
 
   }
 
@@ -51,22 +135,28 @@ class AdminController extends CI_Controller {
 	$endTestTime = $startDate.'T'.$endTime.'.000Z';
 
 
-	if ($call == "test") {
-		$meetingEmail = "trainer134@qspiders.com";
-        } else if ($call == "interview") {
-		$meetingEmail = "trainer131@qspiders.com";
+	// if ($call == "test") {
+	// 	$meetingEmail = "trainer134@qspiders.com";
+ //        } else if ($call == "interview") {
+	// 	$meetingEmail = "trainer131@qspiders.com";
 
-        } else {
-		$meetingEmail = "trainer132@qspiders.com";
-	}
+ //        } else {
+	// 	$meetingEmail = "trainer132@qspiders.com";
+	// }
 
-        $sql = "SELECT access_token FROM `bse_citrix` where email='".$meetingEmail."'";
+  $meetingEmail = "trainer111@qspiders.com";
+
+        //$sql = "SELECT access_token FROM `bse_citrix` where email='".$meetingEmail."'";
+
+        $sql = "SELECT access_token FROM `gotomeeting_token_details` where email='".$meetingEmail."'";
 //echo var_dump($startTime); 
 //echo $startTestTime , "</br>";
 //echo $endTestTime;
 //die;
 
-       $meeting = $this->db2->query($sql)->result();
+       // $meeting = $this->db2->query($sql)->result();
+
+        $meeting = $this->db->query($sql)->result();
 
         foreach($meeting as $key => $value) {
 
@@ -152,9 +242,9 @@ $fields['subject'] = "DXC Interview";
 
 			}
 			 echo "Success";
-                        //start meeting
-                        //$this->startMeeting($webinars->meetingid, $headers);
-                        break;
+            //start meeting
+            //$this->startMeeting($webinars->meetingid, $headers);
+            break;
                   }
                  }
 }
@@ -164,111 +254,130 @@ $fields['subject'] = "DXC Interview";
 
 public function startMeeting() {
 
+    //$sql = "SELECT * FROM `bse_citrix` limit 3";
 
-//$sql = "SELECT * FROM `bse_citrix` limit 3";
+    $call = $_POST['call'];
 
-$call = $_POST['call'];
+    //$sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
 
- $sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
+    $sql = "SELECT * FROM `gotomeeting_token_details` where email='trainer111@qspiders.com'";
 
-       $meeting = $this->db2->query($sql)->result();
+    // $meeting = $this->db2->query($sql)->result();
+    $meeting = $this->db->query($sql)->result();
 
-        foreach($meeting as $key => $value) {
+    foreach($meeting as $key => $value) {
 
-                $token = $value->access_token;
-                $timeZone = "Asia/Calcutta";
-                $headers = array(
-                        'Content-Type: application/json',
-                        "accept: application/json",
-                        "Authorization: ".$token,
-                );
+    $token = $value->access_token;
+    $timeZone = "Asia/Calcutta";
+    $headers = array(
+      "Content-Type: application/json",
+      "accept: application/json",
+      "Authorization: ".$token,
+    );
 
-		if ($call == "test") {
+    if ($call == "test") {
+      $tableName = "proctored_mcq";
+      $fieldName = "assess_usr_pwd_id";
+    } else if ($call == "interview") {
+      $tableName = "interview_details";
+      $fieldName = "id";
+    }
 
-		$tableName = "proctored_mcq";
-		$fieldName = "assess_usr_pwd_id";
-		} else if ($call == "interview") {
-		$tableName = "interview_details";
-		$fieldName = "id";
-		}
+    $sql = "SELECT meeting_id FROM $tableName WHERE $fieldName  = ".$_POST['assessId'];
 
+    $meetingDetails = $this->db->query($sql)->row();
 
-		
-            $sql = "SELECT meeting_id FROM $tableName WHERE $fieldName  = ".$_POST['assessId'];
-
-            $meetingDetails = $this->db->query($sql)->row();
-
-	    $meetingId = $meetingDetails->meeting_id;
-
-
-	     $start_url = "https://api.getgo.com/G2M/rest/meetings/".$meetingId."/start";
+    $meetingId = $meetingDetails->meeting_id;
 
 
+    $start_url = "https://api.getgo.com/G2M/rest/meetings/".$meetingId."/start";
 
-                      $ch1 = curl_init();
-                      curl_setopt($ch1,CURLOPT_HTTPHEADER, $headers );
-                      curl_setopt($ch1,CURLOPT_URL, $start_url);
-                      curl_setopt($ch1,CURLOPT_RETURNTRANSFER, 1);
-                      curl_setopt($ch1, CURLOPT_CUSTOMREQUEST, "GET");
-                      $startmeeting = curl_exec($ch1);
-                      curl_close($ch1);
-                      $start_meetings=json_decode($startmeeting);   
-                      $message = '';
-//echo $token;
-		     //print_r($start_meetings); die;
+    $ch1 = curl_init();
+    curl_setopt($ch1,CURLOPT_HTTPHEADER, $headers );
+    curl_setopt($ch1,CURLOPT_URL, $start_url);
+    curl_setopt($ch1,CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch1, CURLOPT_CUSTOMREQUEST, "GET");
+    $startmeeting = curl_exec($ch1);
+    curl_close($ch1);
+    $start_meetings=json_decode($startmeeting);   
+    $message = '';
 
-			if(isset($start_meetings->int_error_code) || isset($start_meetings->int_err_code)){
-$start_meeting_url = $key." ".$start_meetings->int_err_code;
+    //echo $token;
+    //print_r($start_meetings); die;
 
-                    continue;
-}
-$start_meeting_url = "No meeting assigned";
-                      if(isset($start_meetings->hostURL))
-                      {
-                          $start_meeting_url = $start_meetings->hostURL;
+    if(isset($start_meetings->int_error_code) || isset($start_meetings->int_err_code)){
+      $start_meeting_url = $key." ".$start_meetings->int_err_code;
+      continue;
+    }
 
-			 if ($call == "test") { 
+    $start_meeting_url = "No meeting assigned";
+    
+    if(isset($start_meetings->hostURL)) {
+      $start_meeting_url = $start_meetings->hostURL;
 
-			   $data = array(
-                                'proctor_meeting_url' => $start_meeting_url
-                        );
+      if ($call == "test") { 
 
-                         $this->db->where('assess_usr_pwd_id', $_POST['assessId']);
-                         $this->db->update('proctored_mcq',$data);
+        $data = array(
+        'proctor_meeting_url' => $start_meeting_url
+        );
 
-			} else if ($call == "interview") {
-			      $data = array(
-                                'interviewer_meeting_url' => $start_meeting_url
-                        );
+        $this->db->where('assess_usr_pwd_id', $_POST['assessId']);
+        $this->db->update('proctored_mcq',$data);
 
-                         $this->db->where('id', $_POST['assessId']);
-                         $this->db->update('interview_details',$data);
+        } else if ($call == "interview") {
+        $data = array(
+        'interviewer_meeting_url' => $start_meeting_url
+        );
 
-			}
+        $this->db->where('id', $_POST['assessId']);
+        $this->db->update('interview_details',$data);
+      }
 
-			echo $start_meeting_url; die;
-                        // echo "Success"; die;
-				break;
-                      }
-                      else{
-
-                          $start_meeting_url = '';
-                        $message = isset($start_meetings->message) ? $start_meetings->message : '';
-continue;
-                      }
-}
-			echo $start_meeting_url;
+      echo $start_meeting_url; die;
+      // echo "Success"; die;
+      break;
+    }  else{
+        $start_meeting_url = '';
+        $message = isset($start_meetings->message) ? $start_meetings->message : '';
+        continue;
+    }
+  }
+    echo $start_meeting_url;
 }
 
 public function saveInterviewStatus() {
  $data = array(
-      'interview_status' => $_POST['status']
-    );
+    'interview_status' => $_POST['status']
+  );
 
- $this->db->where('id', $_POST['userId']);
-        $this->db->update('interview_users',$data);
+  $this->db->where('id', $_POST['userId']);
+  $this->db->update('interview_users',$data);
 
 echo "success";
+}
+
+public function saveActiveRound() {
+  $data = array(
+    'active_round' => $_POST['round']
+  );
+
+  $this->db->where('id', $_POST['userId']);
+  $this->db->update('interview_users',$data);
+
+echo "success";
+}
+
+public function showInterviewFeedback() {
+   $id = $_POST['id'];
+   $round = $_POST['round'];
+   $sql = "Select * from interview_details where interview_users_id = $id and round = $round and final_decision IS NOT NULL";
+
+   $result = $this->db->query($sql)->result();
+
+   //print_r($result); die;
+    header('Content-Type: application/json');
+    echo json_encode( $result );
+
 }
 
 public function studentDetail() {
@@ -704,12 +813,27 @@ print_r($mcq); die;
         "password" => $result->password
       );
 
-      $this->sendMail($from,$result->email, "SkillRary Assessment Details", $data);
+      //$this->sendMail($from,$result->email, "SkillRary Assessment Details", $data);
 
       echo "success";
     //send email
  }
 
+ public function getTimeStamp($date, $time, $duration = null) {
+//   $date = "2020-04-13";
+// $time = "15:00";
+
+$x = strtotime($date." ".$time);
+
+// $new_time = strtotime("+3hours",$x);
+// echo $new_time;
+// echo "<br>";
+// echo $x;
+if (null !== $duration) {
+  $x = strtotime("+".$duration."hours",$x);
+}
+return $x;
+ }
 
  public function sendInterviewInvite() {
 
@@ -722,12 +846,25 @@ print_r($mcq); die;
   $userId = $_POST['userId'];
   $interviewMode = $_POST['interviewMode'];
   $interviewVenue = $_POST['interviewVenue'];
+  $round = $_POST['round'];
+  $duration = $_POST['duration'];
+
+  $interviewTimeStamp = $this->getTimeStamp($testDate, $testTime);
+  $durationTimeStamp = $this->getTimeStamp($testDate, $testTime, ($duration*2)); 
 
   if ($interviewMode == "1") {
     $interviewMode = "online";
   } else if ($interviewMode == "1") {
     $interviewMode = "offline";
   }
+
+
+  $sql = "SELECT * from `interview_details` where interview_date = '".$testDate."' AND duration_timestamp >='".$interviewTimeStamp."' order by duration_timestamp DESC";
+ // echo $sql; 
+
+  $interviewSchedule = $this->db->query($sql)->row();
+//print_r(var_dump($interviewSchedule)); die;
+
 /*
     $data  = array (
       'interview_users_id' => $userId,
@@ -741,16 +878,21 @@ print_r($mcq); die;
     );
 */
 
+if (null == $interviewSchedule) {
  foreach ($interviewerId as $key => $value) {
     $data[]  = array (
        'interview_users_id' => $userId,
        'mcq_test_id' => $mcqId,
-      'interviewer_id' => $value,
+       'interviewer_id' => $value,
        'user_email' => $email,
        'interview_date' => $testDate,
        'interview_time' => $testTime,
        'interview_mode' => $interviewMode,
-       'interview_venue' => $interviewVenue
+       'interview_venue' => $interviewVenue,
+       'round' => $round,
+       'duration' => $duration,
+       'interview_timestamp' => $interviewTimeStamp,
+       'duration_timestamp' => $durationTimeStamp
      );
   }
 
@@ -807,9 +949,9 @@ print_r($mcq); die;
       );
 
 
-      //$this->createMeeting($testDate, $testTime, $interviewDetailsId , $call="interview");
-      $this->createMeeting($testDate, $testTime, $ids , $call="interview");
-      $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
+      //$this->createMeeting($testDate, $testTime, $ids , $call="interview");
+    //  $this->createMeeting($testDate, $testTime, $ids , $call="interview");
+      //$this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 
       //$sql = "SELECT * from `assess_login` where id =".$interviewerId;
 
@@ -822,8 +964,87 @@ print_r($mcq); die;
 
       // $this->sendMail($from,$result->email, "SkillRary Assessment Details", $data);
 
-      echo "success";
+      //echo "success";
+      $response = array ('status' => "200", "data" => "success" );
+
+      print_r(json_encode($response));
+    } else {
+
+      $interviewTime = explode(":",$interviewSchedule->interview_time);
+
+      $interviewTimeHour = $interviewTime[0] + ($interviewSchedule->duration*2);
+
+      $timeA = "am";
+
+      if ($interviewTimeHour >= 12) {
+        $interviewTimeHour = $this->getTimein12Hour($interviewTimeHour);
+        $timeA = "pm";
+      }
+      //echo $interviewTimeHour; die;
+
+      $response = array ('status' => "400", "data" => "Interview slot free after ".$interviewTimeHour.":".$interviewTime[1]." ".$timeA );
+        header('Content-Type: application/json');
+    echo json_encode( $response );
+
+     // print_r(json_encode($response));
+
+    }
     //send email
+ }
+
+ public function getTimein12Hour($hr) {
+   switch ($hr) {
+     case '13':
+     $hr = '01';
+       # code...
+       break;
+ 
+case '14':
+$hr = '02';
+       # code...
+       break;
+       case '15':
+$hr = '03';
+       # code...
+       break;     
+       case '16':
+$hr = '04';
+       # code...
+       break;
+       case '17':
+$hr = '05';
+       # code...
+       break;
+       case '18':
+$hr = '06';
+       # code...
+       break;
+       case '19':
+$hr = '07';
+       # code...
+       break;
+       case '20':
+$hr = '08';
+       # code...
+       break;
+       case '21':
+$hr = '09';
+       # code...
+       break;
+       case '22':
+$hr = '10';
+       # code...
+       break;
+       case '23':
+$hr = '11';
+       # code...
+       break;
+     default:
+       $hr = '12';
+       break;
+   }
+   return $hr;
+
  }
 
 public function generateInterviewUsrPwd() {
@@ -863,7 +1084,36 @@ public function generateInterviewUsrPwd() {
     $query = $this->db->query($sql);
     $interview['users'] = $query->result();
 
-      $sql = "SELECT * FROM mcq_test ";
+    $roundResult = array();
+
+    foreach ($interview['users'] as $key => $value) {
+          $intervieweeId = $value->id;
+          for ($i = 1; $i<4;$i++) {
+              $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+
+              $result = $this->db->query($sql)->row();
+              $round = "round".$i;
+              if (isset($result->interview_status)) {
+                
+                $roundResult[$intervieweeId][$round] = $result->interview_status;
+              } else {
+                if ($i == "1") {
+                  $roundResult[$intervieweeId][$round] = 1;
+                } else {
+                  $roundResult[$intervieweeId][$round] = 0;  
+                }
+                
+              }
+          }
+              
+    }
+    // echo "<pre>";
+
+    // print_r($roundResult); die;
+
+    $interview['round-result'] = $roundResult;
+
+    $sql = "SELECT * FROM mcq_test ";
 
     $query = $this->db->query($sql);
 
@@ -871,9 +1121,13 @@ public function generateInterviewUsrPwd() {
 
     $interview['mcqs-list'] = $query->result();
 
-     $sql = "SELECT * from `assess_login` where role= 6"; //proctor role
+    $sql = "SELECT * from `assess_login` where role= 6"; //interviewer role
 
-        $query = $this->db->query($sql);
+    $query = $this->db->query($sql);
+
+        // $sql = "SELECT interview_status from `interview_details` where role= 6"; //round status
+
+        // $query = $this->db->query($sql);
 
         //   echo "<pre>";
         //   print_r($query->result());
@@ -983,10 +1237,21 @@ public function generateInterviewUsrPwd() {
 
 
 public function interviewFeedback() {
+
  $data = array(
       'comment' => $_POST['feedback'],
-      'interview_status' => $_POST['status']
+      //'interview_status' => $_POST['status']
+      'communication_skill' => $_POST['CommunicationSkill'],
+      'problem_solving_skill' => $_POST['ProblemSolvingSkill'],
+      'job_specific_skill' => $_POST['JobSpecificSkill'],
+      'experience' => $_POST['exp'],
+      'overall_personality' => $_POST['OverallPersonality'],
+      'overall_evaluation' => $_POST['OverallEvaluation'],
+      'final_decision' => $_POST['FinalStatus']
+
     );
+
+
 
  $this->db->where('id', $_POST['assessId']);
         $this->db->update('interview_details',$data);
