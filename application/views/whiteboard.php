@@ -326,19 +326,19 @@ $(document).ready(function() {
                <!-- Wrapper for carousel items -->
                <div class="carousel-inner bigbanner">
                   <div class="item active">     
-                     <img src="/whiteboard/images/live-video-chat.jpg" title="Live Video Chat">
+                     <img src="/images/live-video-chat.jpg" title="Live Video Chat">
                   </div>
                   <div class="item">  
-                     <img src="/whiteboard/images/upload_presentations.jpg" title="Upload Presentations">
+                     <img src="/images/upload_presentations.jpg" title="Upload Presentations">
                   </div>
                   <div class="item">  
-                     <img src="/whiteboard/images/online_presentation.jpg" title="Online Presentations">
+                     <img src="/images/online_presentation.jpg" title="Online Presentations">
                   </div>
                   <div class="item">
-                     <img src="/whiteboard/images/upload-download-presentation.jpg" title="Upload/Download Presentation">
+                     <img src="/images/upload-download-presentation.jpg" title="Upload/Download Presentation">
                   </div>
                   <div class="item active">     
-                     <img src="/whiteboard/images/change-background.jpg" title="Change Background Color">
+                     <img src="/images/change-background.jpg" title="Change Background Color">
                   </div>
                   <!-- Carousel controls -->
                   <a class="carousel-control left" href="#myCarousel" data-slide="prev">
@@ -398,7 +398,7 @@ $(document).ready(function() {
                <div class="sub-default-lft"><i class="fa-circle wbitem"></i></div>
              </a>
              <a href="javascript:void(0);" id="ancPattern" title="Pattern">
-               <div class="sub-default-lft" ><img src="whiteboard/images/pattern-icon.png" style="border:1px solid #ccc;border-radius:60px;"/></div>
+               <div class="sub-default-lft" ><img src="images/pattern-icon.png" style="border:1px solid #ccc;border-radius:60px;"/></div>
              </a>
              <a href="javascript:void(0);" id="ancPencil" title="Pencil">
                <div class="sub-default-lft" style="border-right:none;"><i class="fa-pencil wbitem" style="font-size:120%;"></i></div>
@@ -407,7 +407,7 @@ $(document).ready(function() {
                <div class="sub-default-lft"><i class="fa-eraser"></i></div>
              </a>
              <a href="javascript:void(0);" id="ancShape" title="Shapes">
-               <div class="sub-default-lft" style="border-right:none;"><img src="whiteboard/images/shape-sm.png" /></div>
+               <div class="sub-default-lft" style="border-right:none;"><img src="images/shape-sm.png" /></div>
              </a>
              <a href="javascript:void(0);" id="ancText" title="Text">
                <div class="sub-default-lft" style="border-right:none;"><i class="fa-text-height"></i></div>
@@ -416,7 +416,7 @@ $(document).ready(function() {
                <div class="sub-default-lft" style="border-right:none;"><i class="fa-file-image-o"></i></div>
              </a>                         
               <a href="javascript:void(0);" id="ancDownload" title="Download/Upload">
-               <div class="sub-default-lft" style="border-right:none;"><img src="whiteboard/images/up-down.png" /></div>
+               <div class="sub-default-lft" style="border-right:none;"><img src="images/up-down.png" /></div>
               </a> 
             <!-- <a href="javascript:void(0);" id="ancTutorConnect" title="Tutor Connect Content Presentation">
                <div class="sub-default-lft" style="border-right:none;"><img src="theme/css/icons/image-editor.png" /></div>
@@ -453,7 +453,7 @@ $(document).ready(function() {
             <div class="sub-default-lft" style="border-right:none;"><i class="fa-repeat wbitem"></i></div>
          </a>
          <a href='javascript:void(0)'  title="Clear all" class="clrDynamicCanvas">
-            <div class="sub-default-lft wbitem" style="border-right:none;"><img src="whiteboard/images/clear.png" style="vertical-align:bottom; height:17px;"/></div>
+            <div class="sub-default-lft wbitem" style="border-right:none;"><img src="images/clear.png" style="vertical-align:bottom; height:17px;"/></div>
          </a>
          <a href='javascript:void(0)' id="maximize" title="Maximize" >
             <div class="sub-default-lft" ><i class="fa-expand wbitem"></i></div>
@@ -566,22 +566,22 @@ $(document).ready(function() {
             <div class="icon-curve icon-bgpattern"></div>
            <div class="sub-tools items">
               <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(7)" title="Guidelines">
-                 <div class="bgclpkr bgpatterns"><img src="whiteboard/images/transparent-guidelines.png" /></div>
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-guidelines.png" /></div>
               </a>
               <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(8)" title="Book Guidelines">
-                 <div class="bgclpkr bgpatterns"><img src="whiteboard/images/transparent-booklines.png" /></div>
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-booklines.png" /></div>
               </a>
               <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(9)" title="Transparent Background">
-                 <div class="bgclpkr bgpatterns"><img src="whiteboard/images/transparent.png" /></div>
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent.png" /></div>
               </a>
               <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(10)" title="Guidelines">
-                 <div class="bgclpkr bgpatterns"><img src="whiteboard/images/transparent-diamond.png" /></div>
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-diamond.png" /></div>
               </a>
               <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(11)" title="Book Guidelines">
-                 <div class="bgclpkr bgpatterns"><img src="whiteboard/images/transparent-lgap.png" /></div>
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-lgap.png" /></div>
               </a>
               <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(12)" title="Transparent Background">
-                 <div class="bgclpkr bgpatterns"><img src="whiteboard/images/transparent-checkered.png" /></div>
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-checkered.png" /></div>
               </a>   
               <a href="javascript:void(0);" class='bgcrcle' onclick="return mousePointer(13)" title="Transparent Background" style="padding:3px 5px 4px 7px!important;">
                 <form method="post" enctype="multipart/form-data">       
@@ -630,17 +630,17 @@ $(document).ready(function() {
                 <input type="color" id="txtFillClrVal" class="form-control picker" value="">
              </a>                              
              <a href="javascript:void(0)" class="" id="shapeRect" title="Rectangle" data-style='rectangle' onclick="return mousePointer(22)">
-               <img src="whiteboard/images/rectangle-sm.png" title="Rectangle"/></a> 
+               <img src="images/rectangle-sm.png" title="Rectangle"/></a> 
              <a href="javascript:void(0)" class="" id="shapeSquare" title="Square" data-style='square' onclick="return mousePointer(23)">
-               <img src="whiteboard/images/square-sm.png" title="Square"/></a>
+               <img src="images/square-sm.png" title="Square"/></a>
              <a href="javascript:void(0)" class="" id="shapeCircle" title="Circle" data-style='circle' onclick="return mousePointer(24)">
-               <img src="whiteboard/images/circle-sm.png" title="Circle"/></a>
+               <img src="images/circle-sm.png" title="Circle"/></a>
              <a href="javascript:void(0)" class="" id="shapeTriangle" title="Triangle" data-style='triangle' onclick="return mousePointer(25)">
-                <img src="whiteboard/images/triangle-sm.png" title="Triangle"/></a>
+                <img src="images/triangle-sm.png" title="Triangle"/></a>
              <a href="javascript:void(0)" class="" id="shapeLine" title="Line" data-style='line' onclick="return mousePointer(26)">
-                <img src="whiteboard/images/line-sm.png" title="Line"/></a>
+                <img src="images/line-sm.png" title="Line"/></a>
              <a href="javascript:void(0)" class="" id="shapeEllipse" title="Ellipse" data-style='ellipse' onclick="return mousePointer(27)">
-                <img src="whiteboard/images/ellipse-sm.png" title="Ellipse"/></a>               
+                <img src="images/ellipse-sm.png" title="Ellipse"/></a>               
              <a href='javascript:void(0)' class="eraser" id="btnRemoveShape" title="delete" onclick="return mousePointer(28)"><div class="trash-bgpicker" style="border:none!important;">
              <i class="fa-trash"></i></div></a>
            </div>                     
@@ -685,9 +685,9 @@ $(document).ready(function() {
             <div class="icon-curve icon-dwnldoptions"></div>
             <div class="sub-tools items">
               <a href='javascript:void(0)' id="ancDwnJson" title="Download as Board" onclick="return mousePointer(34)">
-                  <img src="whiteboard/images/download_board.png" class="fa-dwnload" style="width:21px; height:22px;border-radius:0px;"/></a>
+                  <img src="images/download_board.png" class="fa-dwnload" style="width:21px; height:22px;border-radius:0px;"/></a>
               <a href='javascript:void(0)' id="ancDwnJpeg" title="Download as JPEG" onclick="return mousePointer(35)">
-                  <img src="whiteboard/images/download_jpeg.png" class="fa-dwnload" style="width:21px; height:22px;border-radius:0px;"/></a>                           
+                  <img src="images/download_jpeg.png" class="fa-dwnload" style="width:21px; height:22px;border-radius:0px;"/></a>                           
               <a href='javascript:void(0)'>
                 <form method="post" enctype="multipart/form-data" id="uploadForm" onclick="return mousePointer(36)">       
                    <input type="file" id="fileJson" name="fileJson" title="Upload Board from Computer">
@@ -2137,7 +2137,7 @@ $(document).ready(function(event) {
     $('.ancHelp').click(function(event) {
         event.stopPropagation();
         $('#helpWindow').window('close');
-        var imgsrc = 'http://www.skillrary.com/whiteboard/images/help/' + $(this).attr('alt') + '.jpg';
+        var imgsrc = 'http://www.skillrary.com/images/help/' + $(this).attr('alt') + '.jpg';
         $('#helpWindow img').attr('src', imgsrc);
         $('#helpWindow').window('open');
     });
