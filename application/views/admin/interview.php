@@ -1,5 +1,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+
 <style>
   /* Style the container/contact section */
 #detail {
@@ -148,11 +158,11 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-		   <th>Sl. no </th>
+		                <th>Sl. no </th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Contact-no</th>
-                   <th>Username</th>
+                    <th>Username</th>
                     <th>Password</th>
                      <!-- <th>Total Section</th>
                      <th>Total Question</th> -->
@@ -546,8 +556,15 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           <label> Interview Schedule </label>
 
           <br/>
+           <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' id="date-time" class="form-control"  />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <br/>
 
-         Date: <input type="date" id="testDate" /> Time : <input type="time" id="testTime"/>    
+         <!-- Date: <input type="date" id="testDate" /> Time : <input type="time" id="testTime"/> -->    
          Mode : <select class="form-group inputBox" id="interviewMode">
                       <option value=0 disabled> Select</option>
                        <option value=1 selected=> Online</option>
@@ -556,6 +573,10 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
               <span id="error" style="color:red"></span></br>
                <label> Duration (in hrs) </label>
                 <input type="number" id="duration" name="duration" min="1" max="5">
+
+                
+
+         
         
         </div>
 
@@ -802,7 +823,10 @@ color: red;">&times;</button>
 // minDate: 0
 // });
 // });
-
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+        
 function showInterviewFeedback(round,id) {
     var baseUrl = document.getElementById("base_url").value;
     $('#feedbackTblHead').empty();
@@ -1137,6 +1161,36 @@ function getSelectValues(select) {
  }
   return result;
 }
+
+function getHour(hour) {
+  switch(hour) {
+    case "1" : hour = "13";
+               break;
+    case "2" : hour = "14";
+               break;
+    case "3" : hour = "15";
+               break;
+    case "4" : hour = "16";
+               break;
+    case "5" : hour = "17";
+               break;
+    case "6" : hour = "18";
+               break;
+    case "7" : hour = "19";
+               break;
+    case "8" : hour = "20";
+               break;
+    case "9" : hour = "21";
+               break;
+    case "10" : hour = "22";
+               break;
+    case "11" : hour = "23";
+               break;
+    case "default" : hour = "12";
+               break;
+  }
+  return hour;
+}
              function sendInterviewInvite() {
                //alert('send');
                 var interviewerId = document.getElementById("interviewerId").value ;
@@ -1156,11 +1210,24 @@ function getSelectValues(select) {
             		var interview = document.getElementById("interviewerId");
                 var interviewerIds = getSelectValues(interview);
 
+                var interviewDateTime =  document.getElementById("date-time").value;
+
+                var res = interviewDateTime.split(" ");
+                testDate = res[0];
+                var timeSplit = res[1].split(":");
+                var hour = timeSplit[0];
+                if (res[2] == "PM") {
+                  var hour = getHour(hour);
+
+                }
+                testTime = hour+":"+timeSplit[1];
+
                   $.ajax({
                     url: baseUrl+"admin/sendInterviewInvite",
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                
                     data: {"duration":duration,"round":round, "userId" : userId, "mcqId" : testId, "email":userEmail, "testDate":testDate, "testTime":testTime, 
                     "interviewerId" : interviewerIds, "interviewMode" : interviewMode, "interviewVenue" : interviewVenue} ,
                     success: function( data, textStatus, jQxhr ){

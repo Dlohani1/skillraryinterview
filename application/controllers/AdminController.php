@@ -858,6 +858,10 @@ return $x;
     $interviewMode = "offline";
   }
 
+  $testDate = explode("/",$testDate);
+
+  $testDate = $testDate[2]."-".$testDate[0]."-".$testDate[1];
+
 
   $sql = "SELECT * from `interview_details` where interview_date = '".$testDate."' AND duration_timestamp >='".$interviewTimeStamp."' order by duration_timestamp DESC";
  // echo $sql; 
