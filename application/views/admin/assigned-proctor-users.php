@@ -104,7 +104,7 @@
 
 
 if ($value->start_test == "1") { echo '
-<button class="btn btn-default" disabled onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Meeting </button>
+<button class="btn btn-default" disabled onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Assessment </button>
 <button  class="btn btn-default" disabled onclick="activateTest('.$value->assess_usr_pwd_id.')"> Activate Test </button>'; 
  
  } else {

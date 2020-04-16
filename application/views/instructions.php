@@ -313,18 +313,17 @@
             </div>
         </div><br/>
         <p id="demo" style="text-align:center;color:red;font-weight:600"></p>
-	<center><button id="startTest" style="display:none"> Join Meeting </button></center>
+	<center><button id="startTest" style="display:none"> Join Test </button></center>
         <?php 
         //if ($_SESSION['startTest']) {
 ?>
-        <div align="center">
+        <div align="center" id="startAssessment" style="display: none">
             <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
             <label for="checkbox-1" class="checkbox-custom-label">I agree and follow all the instructions mentioned by SkillRary</label>
             <!-- <input id="checkbox-1" name="checkbox-1" type="checkbox">
             <label for="checkbox-1" >I agree and follow all the instructions mentioned by SkillRary</label> -->
-        </div><br/>
-
-        <div align="center">
+        
+            <br/>
             <button class="startBtn" onclick="enterCode()"><?php if (isset($_SESSION['resumeTest']) && $_SESSION['resumeTest'] == 1) { echo "Resume Assessment";} else {echo "Start Assessment"; } ?></button>
         </div><br/>
             <?php //}
@@ -398,8 +397,10 @@ var x = setInterval(function() {
     clearInterval(x);
     document.getElementById("demo").innerHTML = "";
     var startBtn = document.getElementById("startTest");
+    var startAssessment = document.getElementById("startAssessment");
 
 	startBtn.style.display = "block";
+    startAssessment.style.display = "block";
 	
 startBtn.onclick = joinMeeting;
 
