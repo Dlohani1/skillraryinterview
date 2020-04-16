@@ -795,9 +795,25 @@ print_r($mcq); die;
 
       $from = "info@skillrary.com";
 
+
+      $interviewTime = explode(":",$testTime);
+
+      $interviewTimeHour = $interviewTime[0];
+
+
+      $timeA = "am";
+
+      if ($interviewTimeHour >= 12) {
+        $interviewTimeHour = $this->getTimein12Hour($interviewTimeHour);
+        $timeA = "pm";
+      }
+
+
       $data = array(
         "username" => $result->username,
-        "password" => $result->password
+        "password" => $result->password,
+        "testDateTime" => $testDate." ". $testTime,
+        "testTime" => $interviewTimeHour.":".$interviewTime[1]." ".$timeA
       );
 
 

@@ -173,7 +173,19 @@ div.footer a.Cbtn-danger:hover{
 
                         <div class="dates">
                             <div class="start">
-                                <strong>STARTS</strong> 12:30 MAR 2020
+                                <strong>STARTS</strong> 
+                                <?php 
+                                          $d = date_parse_from_format("Y-m-d", $testDateTime);
+
+                                          $day = $d['day'];
+                                          $year = $d['year'];
+
+                                          $month = date("F",strtotime($testDateTime));
+
+                                          $time = explode(" ",$testDateTime);
+
+
+                                echo $day," ",$month,",",$year, " at ", $testTime; ?>
                                 <span></span>
                             </div>
                             <div class="ends">
