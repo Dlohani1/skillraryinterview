@@ -49,7 +49,9 @@ class MyController extends CI_Controller {
     public function loginOpt() {
       //$this->load->view('codheader');
       //$this->load->view('loginviacode');
-
+      if (isset($_SESSION['id'])) {
+        redirect('user/home');
+      }
       $this->load->view('codheader');
       $this->load->view('loginnew1');
       $this->load->view('codefooter');

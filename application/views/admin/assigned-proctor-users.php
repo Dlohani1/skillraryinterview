@@ -99,20 +99,20 @@
           //print_r($value);
             $i++;
             echo '<tr><td>'.$i.'</td><td>'.$value->user_email.'</td> <td>'.$value->test_date.'</td> <td>'.$value->test_time.'</td> <td>'.$value->start_test.' </td><td>
-<button class="btn btn-default"  id="joinMeeting" onclick="joinMeeting('.$value->assess_usr_pwd_id.')"> Join Meeting </button>';
-
+';
+// <button class="btn btn-default"  id="joinMeeting" onclick="joinMeeting('.$value->assess_usr_pwd_id.')"> Join Meeting </button>
 
 
 if ($value->start_test == "1") { echo '
 <button class="btn btn-default" disabled onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Assessment </button>
-<button  class="btn btn-default" disabled onclick="activateTest('.$value->assess_usr_pwd_id.')"> Activate Test </button>'; 
+<button  class="btn btn-default" disabled onclick="activateTest('.$value->assess_usr_pwd_id.',1)"> Activate Test </button>'; 
  
  } else {
 echo '
-<button class= "btn btn-info"  onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Meeting </button>
-<button  class="btn btn-primary" onclick="activateTest('.$value->assess_usr_pwd_id.')"> Activate Test </button>';
+<button class= "btn btn-info"  onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Assessment </button>
+<button  class="btn btn-primary" onclick="activateTest('.$value->assess_usr_pwd_id.',1)"> Activate Test </button>';
 }
-echo '</td> </tr>';
+echo '</td><td><button class="btn btn-warning"  id="pauseTest" onclick="activateTest('.$value->assess_usr_pwd_id.',2)"> Pause Test </button></td></tr>';
         }
         ?>
 <!--     <td><a href="view-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
@@ -353,7 +353,8 @@ echo '</td> </tr>';
 
              }
 
-              function activateTest(id) {
+              function activateTest(id,status) {
+
                 var baseUrl = document.getElementById("base_url").value;
 
                 //var role = document.getElementById("role-name").value;
@@ -365,15 +366,19 @@ echo '</td> </tr>';
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "assessId" : id} ,
+                    data: { "assessId" : id, "status" : status} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
 
 		                      // window.location.href="admin/view-mcq";
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
-
-			alert("Test Activated");
+                        if (status == "1") {
+                          alert("Test Activated");
+                        } else if (status == "2") {
+                          alert("Test Pause");
+                        }
+			
                         // document.getElementById("code").disabled = true;
 
                         // document.getElementById("codeSubmit").disabled = true;
@@ -390,7 +395,11 @@ echo '</td> </tr>';
                         //     content: 'Username Password Generated',
                         // });
 
-
+                        // var checkTick = document.getElementsByClassName('tick');
+                        // if (checkTick.length > 0) {
+                        //   checkTick[0].style.color="red";
+                        //   //alert('class exist');
+                        // }
              }
 
 </script>

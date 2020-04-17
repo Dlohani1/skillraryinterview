@@ -516,15 +516,26 @@ work_location from `student_register` where id = $id";
 }
 
 public function activateTest() {
+ 
  $data = array(
-      'start_test' => 1
-    );
+      'start_test' => $_POST['status']
+  );
 
  $this->db->where('assess_usr_pwd_id', $_POST['assessId']);
-        $this->db->update('proctored_mcq',$data);
-
-echo "success";
+ $this->db->update('proctored_mcq',$data);
+ echo "success";
 }
+
+// public function pauseTest() {
+//  $data = array(
+//       'start_test' => 1
+//   );
+
+//  $this->db->where('assess_usr_pwd_id', $_POST['assessId']);
+//  $this->db->update('proctored_mcq',$data);
+//  echo "success";
+// }
+
 
 public function closeInterview() {
  $data = array(
@@ -1322,6 +1333,8 @@ echo "success";
         foreach ($query->result() as $row) {
 
             $mcq[$i]['id'] = $row->id;
+            $sectionDetails = $this->getMcqSection($row->id);
+            $mcq[$i]['sectionCount'] = count($sectionDetails['section']);
             $mcq[$i]['title'] = $row->title;
             $mcq[$i]['code'] = $row->code;
             $mcq[$i]['question'] = $row->totalQuestion;
@@ -1329,7 +1342,8 @@ echo "success";
         }
     }
 
-        $this->load->view('admin/header');
+
+    $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
     $this->load->view('admin/view-mcq', array('mcq' => $mcq));
     //$this->load->view('admin/view-mcq-data');

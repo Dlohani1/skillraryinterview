@@ -97,7 +97,7 @@
                                 }
 
 
-                                    echo "<tr><td>Code Test</td><td>Question".$key."</td><td>".$value->time_taken."</td><td>".$value->time_taken."</td></tr>";
+                                    // echo "<tr><td>Code Test</td><td>Question".$key."</td><td>".$value->time_taken."</td><td>".$value->time_taken."</td></tr>";
 
                                 }  
                             }

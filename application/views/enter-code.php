@@ -38,7 +38,7 @@ button.close{
         <th>Interview Date </th>
         <th>Interview Time</th>
         <th>Interview Mode</th>
-        <th>Action</th>
+        <!-- <th>Action</th> -->
       </tr>
     </thead>
     <tbody>
@@ -57,7 +57,7 @@ button.close{
           	$month = date("F",strtotime($value->interview_date));
                 echo '<tr><td>'.$day." ".$month.",".$year.'</td><td>'.$value->interview_time.'</td><td>'.$value->interview_mode.'</td><td>';
 		if ($value->is_active == "1") {
-		echo '<a href="'.$value->user_join_url.'" target="_blank" >Join Interview </a>';
+		echo '<a href="'.$value->user_join_url.'" target="_blank" style="display:none" >Join Interview </a>';
 		} else {
 		echo '<strong>Closed</strong';
 		}

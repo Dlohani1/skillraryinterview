@@ -55,7 +55,7 @@
 		$i = 0;
         foreach($mcq as $key => $value) {
 		$i++;
-            echo '<tr><td>'.$i.'</td><td>'.$value['title'].'</td><td>'.$value['code'].'</td> <td>3</td>
+            echo '<tr><td>'.$i.'</td><td>'.$value['title'].'</td><td>'.$value['code'].'</td> <td>'.$value['sectionCount'].'</td>
     <td>'.$value['question'].'</td>
       <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="view-mcq-data/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>
     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button disabled class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>

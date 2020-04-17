@@ -329,7 +329,7 @@
             <?php //}
  ?>
 	<input type="hidden" id="base_url" value= "<?php echo base_url(); ?>" />
-    </div>
+   </div>
 
 
     <script>
@@ -448,12 +448,36 @@ function joinMeeting() {
 				 var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
                     win.onbeforeunload = function(){
                         console.log('unload');
-                        window.location.href="user/view-results";
+                        var baseUrl = document.getElementById("base_url").value;
+                          $.ajax({
+                            url: baseUrl+"admin/startTest",
+
+                            type: 'post',
+
+                            // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                            data: { "assessId" : id} ,
+                            success: function( data, textStatus, jQxhr ){
+                                if (data == "2") {
+                                    var startBtn = document.getElementById("startTest");
+                                    var startAssessment = document.getElementById("startAssessment");
+
+                                    startBtn.style.display = "none";
+                                    startAssessment.style.display = "none";
+                                   document.getElementById("demo").innerHTML = "Test has HALTED, Please contact support";
+                                } else {
+                                    window.location.href="user/view-results";
+                                }
+                            }
+                        });
+
+                        //
                     }
 
 
-			} else {
-				 alert("Test not Active, Please contact support.");
+			} else if (data == "2") {
+                alert("Test has HALTED, Please contact support to resume.");
+            } else {
+				alert("Test not ACTIVE, Please contact support.");
 			}
                         // document.getElementById("code").disabled = true;
 

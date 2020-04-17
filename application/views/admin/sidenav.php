@@ -101,7 +101,16 @@
                     
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        SkillRary Admin
+                        <?php 
+                if ($roleId == "7") {
+                    echo "SkillRary Proctor";
+                } else if ($roleId == "6") {
+                    echo "SkillRary Interviewer";
+                } else {
+                    echo "SkillRary Admin";
+                }
+                ?>
+                       
                     </div>
                 </nav>
             </div>

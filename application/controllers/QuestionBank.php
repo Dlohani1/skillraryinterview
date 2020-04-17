@@ -726,8 +726,8 @@ class QuestionBank extends MyController {
 
                     $this->session->set_userdata('mcqCode', $result->code); 
 
-                    $this->checkCode($result->code);
-
+                    //$this->checkCode($result->code);
+                    $this->enterCode();
                      
                     if ($this->checkProfile()) {
                         //echo "aa"; die;
@@ -972,13 +972,19 @@ class QuestionBank extends MyController {
         }
 
         public function enterCode() {
-
+           // print_r($_SESSION); die;
             //$resume = $this->isTestResume();
 //echo "dd"; die;
 
             $resume = $this->isTestProctored();
 
-            
+              if($resume['proctored']) {
+                $resumeTest = 1;
+                $_SESSION['proctoredTest'] = 1;
+            }
+           // echo "d"; die;
+
+            $this->checkCode($_SESSION['mcqCode']);
             $resumeTest = 0;
 
             // if($resume['resume']) {
@@ -992,7 +998,22 @@ class QuestionBank extends MyController {
 
             //$_SESSION['resumeTest'] = 1;
             $_SESSION['proctoredTest'] = 1;
+
+                    // if ($attempt > 0) {
+                    //     $attemptCount = $this->isMcqTaken(true,$attempt);
+                    // } else {
+                    //     $attemptCount = $this->isMcqTaken();
+                    // }
+
+
+
+                    // if ($attemptCount == $attempt) {
+                    //     $this->session->set_flashdata('success', 'You have crossed the number of attempts to take test. Please contact admin');
+
+                    //     redirect('user/enter-code');
+                    // } else {
             redirect('read-instructions');
+      //  }
 
             //$this->load->view('user-header');
             //$this->load->view('instructions',array('resume'=>$resumeTest));
@@ -1229,7 +1250,7 @@ class QuestionBank extends MyController {
             $sql = $sqlTime;
 
             $attempt = $this->session->attempt;
-           
+
             $query = $this->db->query($sql);
            
             $sqlAns = "";
@@ -1320,7 +1341,7 @@ class QuestionBank extends MyController {
             }
            // echo "<pre>";
            // print_r($a); die;
-
+            $_SESSION['attempt'] = 2;
             $this->load->view('user-header');
             $this->load->view('results', array("results"=>$a, "codeTestResult" => $codeTest));
             $this->load->view('codefooter');
@@ -1406,7 +1427,7 @@ class QuestionBank extends MyController {
 
                     $this->session->set_userdata('mcqId', $mcqId);
 
-                    $this->isTestProctored();
+                    //$this->isTestProctored();
                     
                     if ($attempt > 0) {
                         $attemptCount = $this->isMcqTaken(true,$attempt);
@@ -1414,12 +1435,12 @@ class QuestionBank extends MyController {
                         $attemptCount = $this->isMcqTaken();
                     }
 
-
+//echo $attemptCount,$attempt; die;
 
                     if ($attemptCount == $attempt) {
                         $this->session->set_flashdata('success', 'You have crossed the number of attempts to take test. Please contact admin');
 
-                        redirect('user/enter-code');
+                        redirect('user/interview');
                     } else {
                            //++$attemptCount;
 //echo $this->isMcqTaken() ;die;
@@ -1933,6 +1954,10 @@ class QuestionBank extends MyController {
         }
 
         public function showInstructions() {
+           
+            if ($_SESSION['attempt'] > 1) {
+                 redirect('user/home', 'refresh');
+            }
             $this->load->view('user-header');
             $this->load->view('instructions');
         }
@@ -1944,6 +1969,31 @@ class QuestionBank extends MyController {
         public function searchTest() {
             echo "hello"; die;
         }
+
+        public function startTest($userId) {
+              $sql = "SELECT assess_usr_pwd_id FROM `student_register` WHERE id= ".$userId;
+
+              $result = $this->db->query($sql)->row();
+
+
+               $id = $result->assess_usr_pwd_id;
+
+               if ($id > 0) {
+                     $sql = "SELECT start_test FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$id;
+
+              $result = $this->db->query($sql)->row();
+
+
+              // return  $result->start_test;
+                   header('Content-Type: application/json');
+    echo json_encode( $result->start_test );
+               } else {
+                //return $id;
+                 header('Content-Type: application/json');
+    echo json_encode( $result->start_test );
+               }
+
+}
 
         public function saveTestStatus() {
             //print_r(var_dump($_POST)); die;
@@ -1971,5 +2021,7 @@ class QuestionBank extends MyController {
 
                 $this->db->insert('user_status', $userData);
             }
+
+            $this->startTest($_POST['student_id']);
         }
 }
