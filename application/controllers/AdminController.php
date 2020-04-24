@@ -1485,7 +1485,7 @@ echo "success";
 
             $mcq[$i]['id'] = $row->id;
             $sectionDetails = $this->getMcqSection($row->id);
-            $mcq[$i]['sectionCount'] = count($sectionDetails['section']);
+            $mcq[$i]['sectionCount'] = isset($sectionDetails['section']) ? count($sectionDetails['section']) : 0;
             $mcq[$i]['title'] = $row->title;
             $mcq[$i]['code'] = $row->code;
             $mcq[$i]['question'] = $row->totalQuestion;

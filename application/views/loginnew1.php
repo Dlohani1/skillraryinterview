@@ -154,6 +154,7 @@ font-size: 16px;
         </div>
     
         <form class="form-horizontal" method="post" action="signin">
+           <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
           <div class="row">
             <div class="col-md-9">
                 <input type="text" name="email" id="email" autocomplete="off" placeholder="User name" class="form-control inputSocial">
@@ -165,7 +166,7 @@ font-size: 16px;
             </div>
           </div>
 
-          <div class="row">
+          <div class="row" style="display: none">
             <div class="col-md-9">           
               <select class="form-control inputSocial" style="height: 50px;" id="login-for" name="login-for">
                 <option value="1" selected> Take Assessment </option>
@@ -214,6 +215,7 @@ font-size: 16px;
       <!-- Modal body -->
       <div class="modal-body">
          <form method="post" action="<?php echo base_url().'admin/checkCode'; ?>">
+           <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
           <input type="text" id = "code" name = "code" placeholder="Type Code Here" class="form-control" required autocomplete="off"/><br/>
           <input type="submit" class="btn proceedBtn" value="Proceed">
         </form>

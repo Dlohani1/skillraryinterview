@@ -3,7 +3,7 @@
 <head>  
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Free Online Whiteboard</title>
-<meta name="Description" content="Free Online Whiteboard and Collaboration - A Free web whiteboard loaded with great functionalities like online presentation, setup customize background, different pen sizes, millions of colors, adding text with beautiful fonts, simple Do and Undo functions, eraser, add various shapes, add customize images and finally save your work as an image or whiteboard itself which can be uploaded later iwhen and as needed. This is ideal for teaching online or presentation online." />
+<meta name="Description" content="SkillRary's whiteboard comes with added functionalites making it an ideal platform to teach or make a presentation online. The varies features include online presentation, customised background setup, variable pen sizes, lots of colours, varied fonts, erasers, easy do and undo functions, customisable images along with an option to save your work in the form of an image or whiteboard itself. Thus, giving you the liberty to upload the same later as and when needed!!." />
 <meta name="Keywords" content="Free, Online, Whiteboard, Teaching, Students, Presentation., Background, Fonts, text, Eraser, Pencil, Shapes"/>
 <base href= "<?php echo base_url().'whiteboard/';?>" />
 <link rel="shortcut icon" href="https://skillrary.com/uploads/images/fav-sr-64x64-logo.png" type="image/x-icon">
