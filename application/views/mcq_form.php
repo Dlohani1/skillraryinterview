@@ -1,15 +1,22 @@
 <?php
-$resumeTest  = 0;
- $sectionIdResume =  0;
- $questionIdResume = 0;
- $timeTaken = 0;
-/*if (count($testData) > 0) {
-   // print_r($testData);
+    $resumeTest  = 0;
+    $sectionIdResume =  0;
+    $questionIdResume = 0;
+    $timeTaken = 0;
+    $totalTime = 0;
+
+    $studentId = 0;
+    $mcqTestId= 0;
+if (count($testData) > 0) {
+   print_r($testData);
     $sectionIdResume =  $testData['section_id'];
     $questionIdResume = $testData['question_id'];
     $timeTaken = $testData['time_left'];
+    $totalTime = $testData['total_time'];
     $resumeTest = 1;
-}*/
+    $studentId = $testData['user_id'];
+    $mcqTestId= $testData['mcq_test_id'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +28,8 @@ $resumeTest  = 0;
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <title>MCQ Form</title>
     <style type="text/css">
 
@@ -626,6 +634,7 @@ $resumeTest  = 0;
                     </div> -->
 
                     <input type="hidden" id="sectionIdValue" />
+                    <input type="hidden" id="questionSequence" />
 
                    <?php 
                    if ($codeId) {?> 
@@ -840,6 +849,11 @@ $resumeTest  = 0;
     </div>
 
 <script>
+ $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
 
 setInterval(function(){ saveTestStatus();}, 60000);
 
@@ -878,35 +892,81 @@ $( document ).ready(function() {
     var resumeTest = <?php echo $resumeTest; ?>;
     console.log('resumee', resumeTest)
     var sectionResumeId = "<?php echo $sectionIdResume; ?>";
+
     var res = sectionResumeId.split(",");
      if (resumeTest == "1") {
                     
-                    var questionId = <?php echo $questionIdResume; ?>;
+                    var questionId = "<?php echo $questionIdResume; ?>";
+                   var ques = questionId.split(",");
                     //resumeQuestion();
                      
                      //resumeQuestion(res[0],res[1],questionId);
-                     fetchQuestion(questionId, res[1], res[0]);
+                     //fetchQuestion(questionId, res[1], res[0]);
                      var sectionCount = "<?php echo $countSection; ?>";
                      console.log('sectionCount', sectionCount)
-                     for (var i=1; i<=(sectionCount); i++) {
-                        if (i == res[1]) { console.log('addSec');
-                            document.getElementById("section"+i).disabled = false;
-                        } else { console.log('addSec1', res[1],'s',sectionCount);
-                            document.getElementById("section"+i).disabled = true;
-                        }
-                     }
+                     //alert(sectionCount)
+                     // for (var i=1; i<=(sectionCount); i++) {
+                     //    if (i == res[1]) { console.log('addSec');
+                     //        document.getElementById("section"+i).disabled = false;
+                     //    } else { console.log('addSec1', res[1],'s',sectionCount);
+                     //        document.getElementById("section"+i).disabled = true;
+                     //    }
+                     // }
                      
                     var timeTaken = "<?php echo $timeTaken; ?>";
+                    //alert(timeTaken);']]'
+                    document.getElementById("totalTime").value = "<?php echo $totalTime; ?>"; 
+                    window.totalsec = parseInt(document.getElementById("totalTime").value)-parseInt(timeTaken); 
+                    //alert(window.totalsec);
+                    document.getElementById("sectionIdValue").value = res[1];
 
-                    window.totalsec = parseInt(document.getElementById("totalTime").value)-parseInt(timeTaken);   
+                    fetchQuestion(ques[0], ques[1], res[0], true);
+
+                    resumeQuestion(res[1]);
+                    //getQuestion(res[0]);
+                    starttime();
 } else {
 
     getQuestion(firstSection);
 }
 });
 
-function resumeQuestion() {
+function resumeQuestion(sectionId) {
+var student = "<?php echo $studentId;?>";
+var mcqId = "<?php echo $mcqTestId;?>";
+$.ajax({
+            type: "POST",
+            url: "getQuestion",
+            data:{"id":student, "section_id":sectionId, "mcq_id":mcqId},
+            success: function(data){
+                var opts = $.parseJSON(data);
+                console.log('total', opts[0].total);
+                console.log('data', opts[0].questions);
 
+                document.getElementById("totalQuestion").value = opts[0].total;
+                
+                document.getElementById("notViewed").innerHTML = parseInt(opts[0].total)-1;
+                document.getElementById("notViewed").style.visibility = "visible";
+                document.getElementById("viewedCount").style.visibility = "visible";
+                document.getElementById("totalTime").value = opts[0].time;
+                document.getElementById("markedCount").style.visibility = "visible";
+                document.getElementById("ansCount").style.visibility = "visible";
+                // Parse the returned json data
+                // var opts = $.parseJSON(data);
+                // // Use jQuery's each to iterate over the opts value
+                // $.each(opts, function(i, d) { console.log('d',d);
+                //     // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                //     $('#section').append('<option value="' + d.id + '">' + d.name + '</option>');
+                // });
+                $('#question_no').empty()
+                $.each(opts[0].questions, function(i, d) { console.log('d',d);
+                    // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                    var j = i;
+                    var k = i;
+                    $('#question_no').append("<p class='child'><span class='badge badge-secondary iconAnswered' id='iconAnswered"+ ++k + "' onclick='fetchQuestion("+d+","+ ++j +")'>"+ ++i +"</span></p>");
+                });
+            }
+        });
 
 }
 
@@ -962,6 +1022,7 @@ function getQuestion(sectionId, codeTest = false) {
 
         setTime();
     }
+
     if (codeTest) {
         document.getElementById("code-test").style.display = 'block';
         document.getElementById("questionId").style.display = 'none';    
@@ -1052,9 +1113,9 @@ function getQuestion(sectionId, codeTest = false) {
     }
 }
 
-function fetchQuestion(id, no, sectionIdno = 0) {
+function fetchQuestion(id, no, sectionIdno = 0, resume = false) {
 
-
+alert(sectionIdno)
     clearTime();
     console.log('sectionIdno ', no)
     // if (no == 1) {
@@ -1062,7 +1123,9 @@ function fetchQuestion(id, no, sectionIdno = 0) {
 
         setTime();
    // }
+   document.getElementById("questionSequence").value = no;
 
+    if (!resume){
     if (document.getElementById("iconAnswered"+no).style.backgroundColor != "purple" && document.getElementById("iconAnswered"+no).style.backgroundColor != "green" ) {
         if (document.getElementById("iconAnswered"+no).style.backgroundColor != "lightblue") {
               var val = document.getElementById("notViewed").innerHTML ;
@@ -1075,6 +1138,7 @@ function fetchQuestion(id, no, sectionIdno = 0) {
                 document.getElementById("viewedCount").innerHTML = parseInt(viewedCount) + 1;       
         }
     }
+}
     
     var totalQ = document.getElementById("totalQuestion").value;
 
@@ -1120,6 +1184,8 @@ console.log('colo')
                     console.log('opts',opts.userAnswer.id)
                     if (undefined !== opts.userAnswer.id) {
                         if (d.id == opts.userAnswer.id) {
+                            //answerId
+                            document.getElementById("saveAnsId").value = d.id;
                             sel = "checked";
                             backColor = "radiBackground1";
                             console.log('acolor')
@@ -1138,7 +1204,10 @@ console.log('colo')
 }
 
 function saveAns(ans) {
+    //alert(ans)
     console.log('ans', ans.value)
+    $(".radiBackground1").addClass("radiBackground");
+    $(".radiBackground1").removeClass("radiBackground1");
 
     document.getElementById("saveAnsId").value = ans.value;
 }
@@ -1257,6 +1326,21 @@ function saveNext(isMarked, timeUp = false) {
                 if (document.getElementById("saveNxt").innerHTML =="Save") {
 
                     var yes = confirm("Do you want to sumbit test? Once submit you will be move to next section and cannot come back");
+
+                    // $.confirm({
+                    //     title: 'SkillRary Alert!',
+                    //     content: 'Do you want to sumbit test? Once submit you will be move to next section and cannot come back',
+                    //     buttons: {
+                    //         confirm: function () {
+                    //             yes = true;
+                    //             nextSec = true;
+                    //     document.getElementById("saveNxt").innerHTML = "Save & Next";
+                    //         },
+                    //         cancel: function () {
+                    //             yes = false;
+                    //         }
+                    //     }
+                    // });
                    
                     if (yes){
                         nextSec = true;
@@ -1412,7 +1496,10 @@ function lastSave() {
     }
 
     function clearResponse() {
+        $(".radiBackground").removeClass("radiBackground1");
+        $(".radiBackground1").removeClass("radiBackground1");
         $('input[name="answer"]').prop('checked', false);
+
     } 
 
 
@@ -1432,17 +1519,21 @@ setInterval( checkFocus, 200 );
 function checkFocus() {
 
 
-if (! document.hasFocus() ) {
-alert("Please dont change the window");
-//info.innerHTML = "The document doesn't have the focus.";
-}
+// if (! document.hasFocus() ) {
+// //alert("Please dont change the window");
+//  $.alert({
+//                     title: 'SkillRary Alert',
+//                     content: 'Please do not change the window' ,
+//                 });
+// //info.innerHTML = "The document doesn't have the focus.";
+// }
 }
 
 window.onload = InitializeMap;
 
 // function disableF5(e) { if ((e.which || e.keyCode) == 116 || 82) e.preventDefault(); };
 // $(document).on("keydown", disableF5);
-
+/*
  window.onload = function() {
      document.addEventListener("contextmenu", function(e){
        e.preventDefault();
@@ -1488,7 +1579,7 @@ window.onload = InitializeMap;
        return false;
      }
    };
-
+*/
     var countdownTimer;
 
     function setTime() {
@@ -1683,13 +1774,21 @@ window.onload = InitializeMap;
         var timeTaken = document.getElementById("countdown").value;
         var sectionIdValue = document.getElementById("sectionIdValue").value;
         var sectionId = document.getElementById("sectionId").value;
+        var totalTime = document.getElementById("totalTime").value;
+        var questionSequence = document.getElementById("questionSequence").value;
+        //alert('dd')
+        //alert(sectionIdValue);
+
         $.ajax({
             type: "POST",
             url: "saveTestStatus",
-            data:{"student_id":student, "answer_id":ansId, "section_id": sectionIdValue+","+sectionId, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken,"is_completed":0},
+            data:{"student_id":student, "answer_id":ansId, "section_id": sectionIdValue+","+sectionId, "mcq_id":mcqId, "question_id":questionId+","+questionSequence,"time_taken":timeTaken,"is_completed":0,"total_time":totalTime},
 
             success: function(data){
                 console.log('ansr', data)
+                if (data == "2") {
+                    window.close();
+                }
             }
         });
         console.log('tst');
@@ -1724,7 +1823,11 @@ window.onload = InitializeMap;
                 
                 clearCount();
 
-                alert("Time Up");
+                //alert("Time Up");
+                $.alert({
+                    title: 'SkillRary Alert',
+                    content: 'Time Up !',
+                });
                 //saveNext(2);
                 // lastSave();
                 console.log('aa', document.getElementById("sectionId").value, "bb", document.getElementById("sectionCount").value)

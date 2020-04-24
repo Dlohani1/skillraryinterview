@@ -255,3 +255,13 @@ $route['admin/getToken'] = 'AdminController/getAccessToken';
 $route['admin/updateToken'] = 'AdminController/updateAccessToken';
 
 $route['skillrary/whiteboard'] = 'welcome/showWhiteBoard';
+
+
+$route['admin/startGotoMeeting'] = 'AdminController/startMeetingIframe';
+
+$route['admin/view-meeting'] = 'AdminController/gotomeetingView';
+
+$route['user/join-meeting'] = 'AdminController/gotomeetingJoin';
+
+$route['deleteUsrPwd']['POST'] = 'AdminController/deleteUsrPwd';
+$route['printUsrPwd'] = 'welcome/printUsrPwd';

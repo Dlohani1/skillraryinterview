@@ -19,6 +19,7 @@
 <div class="container">
   <h2>Question Bank</h2>
   <form class="form-horizontal" method="post" action="save">
+     <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
    <div class="form-group">
       <label class="control-label col-sm-2" for="section">Section:</label>
       <div class="col-sm-10">
@@ -74,7 +75,12 @@
 </div>
 <script>
 $( document ).ready(function() {
-    
+     $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
 //$('#section').empty()
     //var dropDown = document.getElementById("carId");
     //var carId = dropDown.options[dropDown.selectedIndex].value;

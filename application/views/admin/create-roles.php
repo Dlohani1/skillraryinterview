@@ -251,6 +251,12 @@
                 </main>
 
 <script>
+   $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
                function createRole() {
                 var baseUrl = document.getElementById("base_url").value;
                 

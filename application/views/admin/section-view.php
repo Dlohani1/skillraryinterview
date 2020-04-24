@@ -369,7 +369,7 @@ if ($sectionIdValue == 2) {
                         <h4 align="center">Enter Section Details</h4>
                     <br />
                     <form method="post" action = <?php echo base_url().'addPatern';?> />
-
+                         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                     <input type="hidden" id="mcqTestId" name="mcq" value='<?php echo $mcqTestId;?>'/>
                     <input type="hidden" id="sectionId" name="section" value='<?php echo $sectionIdValue;?>'/>
                     <input type="hidden" id="testId" name="test" value='<?php echo "0";?>'/>
@@ -493,6 +493,12 @@ if ($sectionIdValue == 2) {
 
 
         <script>
+             $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
             function firstForm() {
 
                 console.log('ll', window.location.host)

@@ -11,6 +11,7 @@
                             <div class="card-body">
 
                                 <form class="form-horizontal" method="post" action="register">
+                                     <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
 
                                     <div class="form-group">
                                         <label for="name" class="cols-sm-2 control-label">Full Name</label>

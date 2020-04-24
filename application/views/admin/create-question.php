@@ -221,6 +221,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form method="post" action="uploadQuestion" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
+                                             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                                             <div class="form-group">
                                                 
                                                     <span class="btn_lbl">Select Type</span>
@@ -252,6 +253,7 @@
   <h2>Question Bank</h2>
   <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
   <form class="form-horizontal" method="post" action="save" enctype="multipart/form-data">
+    <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
    <div class="form-group">
       <label class="control-label col-sm-2" for="section">Section:</label>
       <div class="col-md-8">
@@ -336,6 +338,12 @@
 </div>
 <script>
 $( document ).ready(function() {
+     $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
     
 //$('#section').empty()
     //var dropDown = document.getElementById("carId");

@@ -1,4 +1,9 @@
 <script>
+ $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
 
 function validateUpdateProfile(){
 
@@ -478,6 +483,7 @@ function Upload() {
                                     </div>
                                     <div class="modal-body">
                                         <form action="upload/do_upload" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
+                                             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                                             <div class="form-group">
                                                 <button class="resume_upload" type="button">
                                                     <span class="btn_lbl">Browse</span>
@@ -505,6 +511,7 @@ function Upload() {
                         <hr/>
                         <p class="updatedText"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?> </p>
                         <form name="regform" method="post" action="update-profile"  onsubmit="return validateUpdateProfile();" >
+                             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                             <fieldset>
                                 <legend id="sectionHeading">Personal Details:</legend>
                                     <div class="row rowGap">

@@ -290,10 +290,12 @@ input[type=text]:placeholder {
       <!-- <form> -->
 
       <form id="myForm" autocomplete='off' enctype="multipart/form-data" name="myForm" method="POST" action=<?php echo base_url()."admin/checklogin";?> onsubmit="return validateForm()">
+        <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
 
-        <input type="text" id="login" class="fadeIn second" name="login" placeholder="Username">
+
+        <input type="text" id="login" class="fadeIn second" name="login" placeholder="Username"  autocomplete="off">
          <p id="login_error_check"></p>
-        <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" style="background-color: #f6f6f6;
+        <input type="password" id="password" class="fadeIn third" autocomplete="off" name="password" placeholder="Password" style="background-color: #f6f6f6;
     border: none;
     color: #0d0d0d;
     padding: 15px 32px;

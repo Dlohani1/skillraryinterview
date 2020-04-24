@@ -108,8 +108,9 @@ if ($value->start_test == "1") { echo '
 <button  class="btn btn-default" disabled onclick="activateTest('.$value->assess_usr_pwd_id.',1)"> Activate Test </button>'; 
  
  } else {
+//echo '<button class= "btn btn-info"  onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Assessment </button>';
+  echo '<a target="_blank" href="'.base_url().'admin/startGotoMeeting?call=test&assessId='.$value->assess_usr_pwd_id.'"> Start Assessment </a>';
 echo '
-<button class= "btn btn-info"  onclick="startMeeting('.$value->assess_usr_pwd_id.')"> Start Assessment </button>
 <button  class="btn btn-primary" onclick="activateTest('.$value->assess_usr_pwd_id.',1)"> Activate Test </button>';
 }
 echo '</td><td><button class="btn btn-warning"  id="pauseTest" onclick="activateTest('.$value->assess_usr_pwd_id.',2)"> Pause Test </button></td></tr>';
@@ -267,6 +268,11 @@ echo '</td><td><button class="btn btn-warning"  id="pauseTest" onclick="activate
 
 <script>
 
+ $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
 
 		//function createMeeting(id) {
 
@@ -291,13 +297,13 @@ echo '</td><td><button class="btn btn-warning"  id="pauseTest" onclick="activate
                        // window.location.href="admin/view-mcq";
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
-			window.open(data);
+			                  window.open(data);
 			//alert(data);
                          //document.getElementById("joinMeeting").style.display = "block";
 
-			var element = document.getElementById("joinMeeting");
-  			element.classList.add("btn-warning");
-			element.classList.remove("btn-default");
+                        var element = document.getElementById("joinMeeting");
+                        element.classList.add("btn-warning");
+                        element.classList.remove("btn-default");
                         // document.getElementById("codeSubmit").disabled = true;
                         //window.location.reload();
                     },
@@ -390,16 +396,16 @@ echo '</td><td><button class="btn btn-warning"  id="pauseTest" onclick="activate
                 });
 
 
-                        // $.alert({
-                        //     title: 'SkillRary Alert!',
-                        //     content: 'Username Password Generated',
-                        // });
+                // $.alert({
+                //     title: 'SkillRary Alert!',
+                //     content: 'Username Password Generated',
+                // });
 
-                        // var checkTick = document.getElementsByClassName('tick');
-                        // if (checkTick.length > 0) {
-                        //   checkTick[0].style.color="red";
-                        //   //alert('class exist');
-                        // }
+                // var checkTick = document.getElementsByClassName('tick');
+                // if (checkTick.length > 0) {
+                //   checkTick[0].style.color="red";
+                //   //alert('class exist');
+                // }
              }
 
 </script>

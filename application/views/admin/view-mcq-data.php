@@ -1,3 +1,8 @@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <style>
   /* Style the container/contact section */
 #detail {
@@ -43,7 +48,7 @@
             <div class="row">
               <div class="column">
                 <label>User Count</label>
-                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>
+                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>&nbsp;&nbsp;<button onclick="deleteUsrPwd()">Delete IDs</button>&nbsp;&nbsp;<button onclick="printUsrPwd()">Print IDs</button>
 
               </div>
               <div class="column">
@@ -51,7 +56,7 @@
                  <label for="fname">Assessment : </label> <strong><?php echo $mcq['mcq-details']->title;?></strong> <br/>
                   <label for="fname">Assessment Code : </label> <strong><?php echo $mcq['mcq-details']->code;?></strong> <br/>
 
-                  <label for="fname">Student Count : </label> <strong><?php echo $mcq['mcq-details']->totalStudent?></strong><br/>
+                  <label for="fname">Student Appeared : </label> <strong><?php echo $mcq['mcq-details']->totalStudent?></strong><br/>
            
                   <label for="fname">Pass Count : </label> <strong>0</strong><br/>
 
@@ -258,14 +263,19 @@
       <div class="modal-dialog">
     <div class="modal-content">
           <div class="modal-header">
-        <button type="button" class="close" id="closebox" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <button type="button" class="close" id="closebox" data-dismiss="modal" aria-hidden="true" style="margin-top: -5%;
+    margin-right: -30%;
+    color: red;
+    font-size: 16px;"><span class="glyphicon glyphicon-remove" aria-hidden="true" ></span></button>
         <h4 class="modal-title custom_align" id="Heading">Invitation Detail</h4>
       </div>
           <div class="modal-body">
           <div class="form-group">
+            <label>User Email </label>
         <input class="form-control " id="userEmail" type="text" placeholder="Enter Email">
         </div>
         <div class="form-group">
+          <label>Proctor</label>
         <select  class="form-control inputBox" id="proctorId">
                       <option value=0> Select Proctor</option>
                       
@@ -277,15 +287,19 @@
         <?php } }?>                       
                     </select>
         </div>
+
         <div class="form-group">
           <label> Schedule Test</label>
-
-          <input type="date" id="testDate" /> <input type="time" id="testTime"/>    
-        
+          <div class='input-group date' id='datetimepicker1'>
+            <input type='text' id="date-time" class="form-control"  />
+            <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
         </div>
       </div>
           <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;" onclick="sendTestInvite()"><span class="glyphicon glyphicon-ok-sign"></span>Send Invite</button>
+        <button type="button" class="btn btn-success btn-lg" style="width: 100%;" onclick="sendTestInvite()"><span class="glyphicon glyphicon-ok-sign"></span>Send Invite</button>
       </div>
         </div>
     <!-- /.modal-content --> 
@@ -327,8 +341,15 @@
                 </main>
 
 <script>
+    $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
 
-
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
                 function setUserId(id) {
                   document.getElementById("assessId").value = id;                  
                 }
@@ -368,17 +389,132 @@
 
 
              }
+             function deleteUsrPwd() {
+                
+                // var num = document.getElementById("generate").value;
+                var mcqId = document.getElementById("mcqTestId").value ;
+                var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"deleteUsrPwd",
+                   
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "mcqId" : mcqId} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        // document.getElementById("code").disabled = true;
 
+                        // document.getElementById("codeSubmit").disabled = true;
+                        window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
+
+             function printUsrPwd() {
+                
+                // var num = document.getElementById("generate").value;
+                var mcqId = document.getElementById("mcqTestId").value ;
+
+                var baseUrl = document.getElementById("base_url").value;
+                var url = baseUrl+"printUsrPwd?mcqId="+mcqId;
+                window.open(url);
+                //   $.ajax({
+                //     url: baseUrl+"printUsrPwd",
+                   
+                //     type: 'post',
+                    
+                //     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                //     data: { "mcqId" : mcqId} ,
+                //     success: function( data, textStatus, jQxhr ){
+                //         //window.location.reload(true);
+                //        // window.location.href="admin/view-mcq";
+                //         //$('#response pre').html( JSON.stringify( data ) );
+                //         console.log('data', data);
+                //         // document.getElementById("code").disabled = true;
+
+                //         // document.getElementById("codeSubmit").disabled = true;
+                //         window.location.reload();
+                //     },
+                //     error: function( jqXhr, textStatus, errorThrown ){
+                //         console.log( errorThrown );
+                //     }
+                // });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
+function getHour(hour) {
+  switch(hour) {
+    case "1" : hour = "13";
+               break;
+    case "2" : hour = "14";
+               break;
+    case "3" : hour = "15";
+               break;
+    case "4" : hour = "16";
+               break;
+    case "5" : hour = "17";
+               break;
+    case "6" : hour = "18";
+               break;
+    case "7" : hour = "19";
+               break;
+    case "8" : hour = "20";
+               break;
+    case "9" : hour = "21";
+               break;
+    case "10" : hour = "22";
+               break;
+    case "11" : hour = "23";
+               break;
+    case "default" : hour = "12";
+               break;
+  }
+  return hour;
+}
+     
 
              function sendTestInvite() {
                // alert('send');
                 var proctorId = document.getElementById("proctorId").value ;
                 var userEmail = document.getElementById("userEmail").value ;
-                var testDate = document.getElementById("testDate").value ;
-                var testTime = document.getElementById("testTime").value ;
+                // var testDate = document.getElementById("testDate").value ;
+                // var testTime = document.getElementById("testTime").value ;
                 var mcqId = document.getElementById("mcqTestId").value ;
                 var baseUrl = document.getElementById("base_url").value;
                 var assessId = document.getElementById("assessId").value;
+
+                  var interviewDateTime =  document.getElementById("date-time").value;
+
+                var res = interviewDateTime.split(" ");
+                testDate = res[0];
+                var timeSplit = res[1].split(":");
+                var hour = timeSplit[0];
+                if (res[2] == "PM") {
+                  var hour = getHour(hour);
+
+                }
+                testTime = hour+":"+timeSplit[1];
 
                   $.ajax({
                     url: baseUrl+"admin/sendInvite",

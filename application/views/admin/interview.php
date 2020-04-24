@@ -823,6 +823,12 @@ color: red;">&times;</button>
 // minDate: 0
 // });
 // });
+ $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
             $(function () {
                 $('#datetimepicker1').datetimepicker();
             });

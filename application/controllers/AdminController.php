@@ -204,7 +204,7 @@ $fields['subject'] = "DXC Interview";
 
                 curl_close($ch);
                 $webinars = json_decode($result);
-//print_r($webinars);
+
                 if($webinars!=''){
                   if(isset($webinars->int_error_code) || isset($webinars->int_err_code)){
                     continue;
@@ -333,6 +333,7 @@ public function startMeeting() {
         $this->db->update('interview_details',$data);
       }
 
+
       echo $start_meeting_url; die;
       // echo "Success"; die;
       break;
@@ -344,6 +345,112 @@ public function startMeeting() {
   }
     echo $start_meeting_url;
 }
+
+public function startMeetingIframe() {
+
+    //$sql = "SELECT * FROM `bse_citrix` limit 3";
+
+    $call = $_GET['call'];
+
+    //$sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
+
+    $sql = "SELECT * FROM `gotomeeting_token_details` where email='trainer111@qspiders.com'";
+
+    // $meeting = $this->db2->query($sql)->result();
+    $meeting = $this->db->query($sql)->result();
+
+    foreach($meeting as $key => $value) {
+
+    $token = $value->access_token;
+    $timeZone = "Asia/Calcutta";
+    $headers = array(
+      "Content-Type: application/json",
+      "accept: application/json",
+      "Authorization: ".$token,
+    );
+
+    if ($call == "test") {
+      $tableName = "proctored_mcq";
+      $fieldName = "assess_usr_pwd_id";
+    } else if ($call == "interview") {
+      $tableName = "interview_details";
+      $fieldName = "id";
+    }
+
+    $sql = "SELECT meeting_id FROM $tableName WHERE $fieldName  = ".$_GET['assessId'];
+
+    $meetingDetails = $this->db->query($sql)->row();
+
+    $meetingId = $meetingDetails->meeting_id;
+
+
+    $start_url = "https://api.getgo.com/G2M/rest/meetings/".$meetingId."/start";
+
+    $ch1 = curl_init();
+    curl_setopt($ch1,CURLOPT_HTTPHEADER, $headers );
+    curl_setopt($ch1,CURLOPT_URL, $start_url);
+    curl_setopt($ch1,CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch1, CURLOPT_CUSTOMREQUEST, "GET");
+    $startmeeting = curl_exec($ch1);
+    curl_close($ch1);
+    $start_meetings=json_decode($startmeeting);   
+    $message = '';
+
+    //echo $token;
+    //print_r($start_meetings); die;
+
+    if(isset($start_meetings->int_error_code) || isset($start_meetings->int_err_code)){
+      $start_meeting_url = $key." ".$start_meetings->int_err_code;
+      continue;
+    }
+
+    $start_meeting_url = "No meeting assigned";
+    
+    if(isset($start_meetings->hostURL)) {
+      $start_meeting_url = $start_meetings->hostURL;
+
+      if ($call == "test") { 
+
+        $data = array(
+        'proctor_meeting_url' => $start_meeting_url
+        );
+
+        $this->db->where('assess_usr_pwd_id', $_POST['assessId']);
+        $this->db->update('proctored_mcq',$data);
+
+        } else if ($call == "interview") {
+        $data = array(
+        'interviewer_meeting_url' => $start_meeting_url
+        );
+
+        $this->db->where('id', $_POST['assessId']);
+        $this->db->update('interview_details',$data);
+      }
+
+      $_SESSION['startMeetingUrl'] = $start_meeting_url;
+      redirect("admin/view-meeting");
+      echo $start_meeting_url; die;
+      // echo "Success"; die;
+      break;
+    }  else{
+        $start_meeting_url = '';
+        $message = isset($start_meetings->message) ? $start_meetings->message : '';
+        continue;
+    }
+  }
+  $_SESSION['startMeetingUrl'] = $start_meeting_url;
+    echo $start_meeting_url;
+
+}
+
+public function gotomeetingView() {
+  $this->load->view('admin/meeting');
+}
+
+public function gotomeetingJoin() {
+  $this->load->view('user-gotomeeting');
+}
+
 
 public function saveInterviewStatus() {
  $data = array(
@@ -635,6 +742,47 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
 
   }
 
+public function deleteUsrPwd() {
+   $mcqId = $_POST['mcqId'];
+
+   $sql = "SELECT id FROM assess_usr_pwd   WHERE mcq_test_id = $mcqId AND NOT EXISTS (SELECT 1 FROM student_register  WHERE assess_usr_pwd.id = student_register.assess_usr_pwd_id)";
+   $result = $this->db->query($sql)->result_array();
+
+   $ids = "";
+   foreach ($result as $key => $value) {
+
+     if (count($result)-$key > 1) {
+      $ids .= $value['id'].","; 
+     } else {
+        $ids .= $value['id'];
+     }
+     
+   }
+   $sql = "Delete from assess_usr_pwd where id in (".$ids.")";
+   //echo $sql; die;
+   $result = $this->db->query($sql);
+   
+// Delete from Customers
+// WHERE Country IN ('Spain');
+
+        
+
+//    $sql = $this->db->where_in(["id" => $ids])->delete("assess_usr_pwd");
+    print_r($result);
+    //print_r($ids);
+    // $data = array();
+    // $mcqId = $_POST['mcqId'];
+    // for ($i=1; $i<=$num; $i++) {
+    //   $username = $this->random_strings(4,"alphaNuMCaps");
+    //   $password = $this->random_strings(4,"numeric");
+    //   $data[]  = array ('mcq_test_id' => $mcqId,'username' => $username, 'password' => $password);
+    // }
+
+    //print_r($data);
+    //$this->db->insert_batch('assess_usr_pwd', $data);
+
+  }
+
   public function generateUsernamePwd($size) {
 
     //$params = $this->input->post();
@@ -774,6 +922,9 @@ print_r($mcq); die;
   $proctorId = $_POST['proctorId'];
   $assessId = $_POST['assessId'];
 
+    $testDate = explode("/",$testDate);
+
+  $testDate = $testDate[2]."-".$testDate[0]."-".$testDate[1];
 
     $data  = array (
       'mcq_test_id' => $mcqId,

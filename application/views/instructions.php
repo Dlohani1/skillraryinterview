@@ -1,4 +1,5 @@
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <style type="text/css">
         .MainHead{
             font-size: 24px;
@@ -313,7 +314,7 @@
             </div>
         </div><br/>
         <p id="demo" style="text-align:center;color:red;font-weight:600"></p>
-	<center><button id="startTest" style="display:none"> Join Test </button></center>
+	<center><a style="text-decoration: none;" target="_blank" href="<?php echo base_url().'user/join-meeting';?>" ><button id="startTest" class="btn btn-success" style="display:none"> Join Test </button></a></center>
         <?php 
         //if ($_SESSION['startTest']) {
 ?>
@@ -324,7 +325,7 @@
             <label for="checkbox-1" >I agree and follow all the instructions mentioned by SkillRary</label> -->
         
             <br/>
-            <button class="startBtn" onclick="enterCode()"><?php if (isset($_SESSION['resumeTest']) && $_SESSION['resumeTest'] == 1) { echo "Resume Assessment";} else {echo "Start Assessment"; } ?></button>
+            <button style="color:green" class="startBtn" onclick="enterCode()"><?php if (isset($_SESSION['resumeTest']) && $_SESSION['resumeTest'] == 1) { echo "Resume Assessment";} else {echo "Start Assessment"; } ?></button>
         </div><br/>
             <?php //}
  ?>
@@ -334,6 +335,11 @@
 
     <script>
 
+ $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
 
 // Set the date we're counting down to
 //var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
@@ -398,11 +404,11 @@ var x = setInterval(function() {
     document.getElementById("demo").innerHTML = "";
     var startBtn = document.getElementById("startTest");
     var startAssessment = document.getElementById("startAssessment");
-
+    enterCode(true);
 	startBtn.style.display = "block";
     startAssessment.style.display = "block";
 	
-startBtn.onclick = joinMeeting;
+//startBtn.onclick = joinMeeting;
 
   }
 }, 1000);
@@ -415,7 +421,7 @@ function joinMeeting() {
          window.open(meetingUrl);
 }
 
-        function enterCode() {
+        function enterCode(check = null) {
 	    var id = <?php echo $_SESSION['assessId']; ?>;
             var isChrome = !!window.chrome; // "!!" converts the object to a boolean value
             console.log(isChrome); // Just to visualize what's happening
@@ -426,9 +432,9 @@ function joinMeeting() {
           // } else {
 
                 var remember = document.getElementById("checkbox-1");
-                if (remember.checked) {
+                if (remember.checked || check) {
 
-		var baseUrl = document.getElementById("base_url").value;
+	              var baseUrl = document.getElementById("base_url").value;
                   $.ajax({
                     url: baseUrl+"admin/startTest",
 
@@ -444,7 +450,7 @@ function joinMeeting() {
                         console.log('data', data);
 			//alert(data);
 
-			if (data == "1") {
+			if (data == "1" && null == check) {
 				 var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
                     win.onbeforeunload = function(){
                         console.log('unload');
@@ -464,7 +470,7 @@ function joinMeeting() {
                                     startBtn.style.display = "none";
                                     startAssessment.style.display = "none";
                                    document.getElementById("demo").innerHTML = "Test has HALTED, Please contact support";
-                                } else {
+                                } else if (data == "3")  {
                                     window.location.href="user/view-results";
                                 }
                             }
@@ -475,9 +481,17 @@ function joinMeeting() {
 
 
 			} else if (data == "2") {
-                alert("Test has HALTED, Please contact support to resume.");
+                 document.getElementById("demo").innerHTML = "Test has HALTED, Please contact support";
+                //alert("Test has HALTED, Please contact support to resume.");
             } else {
-				alert("Test not ACTIVE, Please contact support.");
+                if (!check) {
+
+                       $.alert({
+                            title: 'SkillRary Alert',
+                            content: 'Test not ACTIVE, Please contact support.',
+                        });
+				//alert("Test not ACTIVE, Please contact support.");
+                }
 			}
                         // document.getElementById("code").disabled = true;
 
@@ -499,7 +513,11 @@ function joinMeeting() {
                         window.location.href="user/view-results";
                     }*/ 
                 } else {
-                    alert("Please accept the instructions");
+                    $.alert({
+                            title: 'SkillRary Alert',
+                            content: 'Please accept the instructions',
+                        });
+
                 }
             }            
        // }

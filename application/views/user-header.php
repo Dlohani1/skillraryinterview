@@ -358,6 +358,12 @@
     }
 </style>
 <script>
+     $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
     function openNav() {
         document.getElementById("mySidenavigation").style.width = "250px";
         document.getElementById("main1").style.marginLeft = "250px";

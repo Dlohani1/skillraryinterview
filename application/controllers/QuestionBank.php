@@ -153,13 +153,15 @@ class QuestionBank extends MyController {
 
                     $this->session->set_userdata('codeTestId', $codeId);
 
-                     $resumeTest = $this->isTestResume();
-                     $testData = array();
-                     if ($resumeTest['resume']) {
-                         $sql = "SELECT * FROM `user_status` WHERE user_id= ".$_SESSION['id']." AND mcq_test_id = ".$_SESSION['mcqId'];
+                    $resumeTest = $this->isTestResume();
 
-                        $testData = (array)$this->db->query($sql)->row();            
-                     }
+                    $testData = array();
+
+                    if ($resumeTest['resume']) {
+                    $sql = "SELECT * FROM `user_status` WHERE user_id= ".$_SESSION['id']." AND mcq_test_id = ".$_SESSION['mcqId'];
+
+                    $testData = (array)$this->db->query($sql)->row();
+                    }
 
                     $this->load->view('mcq_form', array('userData'=>$userData,'codeId'=>$codeId, 'sections' => $mcqSection, 'testData' => $testData));      
                 // }
@@ -972,65 +974,17 @@ class QuestionBank extends MyController {
         }
 
         public function enterCode() {
-           // print_r($_SESSION); die;
-            //$resume = $this->isTestResume();
-//echo "dd"; die;
 
             $resume = $this->isTestProctored();
 
               if($resume['proctored']) {
-                $resumeTest = 1;
                 $_SESSION['proctoredTest'] = 1;
             }
-           // echo "d"; die;
 
             $this->checkCode($_SESSION['mcqCode']);
-            $resumeTest = 0;
-
-            // if($resume['resume']) {
-            //     $resumeTest = 1;
-            // }
-
-            if($resume['proctoed']) {
-                $resumeTest = 1;
-                $_SESSION['proctoredTest'] = 1;
-            }
-
-            //$_SESSION['resumeTest'] = 1;
-            $_SESSION['proctoredTest'] = 1;
-
-                    // if ($attempt > 0) {
-                    //     $attemptCount = $this->isMcqTaken(true,$attempt);
-                    // } else {
-                    //     $attemptCount = $this->isMcqTaken();
-                    // }
-
-
-
-                    // if ($attemptCount == $attempt) {
-                    //     $this->session->set_flashdata('success', 'You have crossed the number of attempts to take test. Please contact admin');
-
-                    //     redirect('user/enter-code');
-                    // } else {
+           
             redirect('read-instructions');
-      //  }
 
-            //$this->load->view('user-header');
-            //$this->load->view('instructions',array('resume'=>$resumeTest));
-
-           // print_r ($resume); die('t');
-
-
-            // if ($this->checkProfile()) {
-            //     redirect('user/profile', 'refresh');
-                    
-            // } else {
-                // $this->load->view('user-header');
-                // $this->load->view('enter-code', array('resume' => $resume));
-                // $this->load->view('codefooter');
-           // }
-            
-            //$this->load->view('html/index.html'); 
         }
 
         public function isTestProctored() {
@@ -1393,7 +1347,7 @@ class QuestionBank extends MyController {
                 redirect('user/profile');
             }
 
-            if (null == $code) {
+            if (null == $code) {echo "dd";
                 if (isset($_SESSION['loginType']) && $_SESSION['loginType'] == "interview") {
                     redirect('user/interview');
                 }
@@ -1955,9 +1909,9 @@ class QuestionBank extends MyController {
 
         public function showInstructions() {
            
-            if ($_SESSION['attempt'] > 1) {
-                 redirect('user/home', 'refresh');
-            }
+            // if ($_SESSION['attempt'] > 1) {
+            //      redirect('user/home', 'refresh');
+            // }
             $this->load->view('user-header');
             $this->load->view('instructions');
         }
@@ -2006,7 +1960,8 @@ class QuestionBank extends MyController {
                 'question_id' => $_POST['question_id'],
                 'answer_id' => $_POST['answer_id'],
                 'time_left' => $_POST['time_taken'],
-                'is_completed' => $_POST['is_completed']
+                'is_completed' => $_POST['is_completed'],
+                'total_time' => $_POST['total_time']
             );
 
 

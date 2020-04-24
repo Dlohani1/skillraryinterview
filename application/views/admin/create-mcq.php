@@ -96,6 +96,7 @@
    <h4 align="center">Enter Section Details</h4>
    <br />
    <form method="post" id="insert_form">
+     <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
     <div class="table-repsonsive">
      <span id="error"></span>
      <table class="table table-bordered" id="item_table">
@@ -188,6 +189,12 @@
 
 
         <script>
+             $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
             //document.getElementById("mcq-link").click();
 
              function generateUsrPwd() {

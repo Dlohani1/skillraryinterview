@@ -437,6 +437,12 @@
         <script src=<?php echo base_url()."admin/admin-css-js/js/scripts.js"; ?>></script>
 
 <script>
+     $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
     function populateData() {
         var i = 0;
         var a = i;

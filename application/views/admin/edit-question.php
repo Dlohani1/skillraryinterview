@@ -167,6 +167,7 @@
   <h2>Question Bank</h2>
   <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
   <form class="form-horizontal" method="post" action=<?php echo base_url()."admin/save";?> enctype="multipart/form-data">
+     <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
    <div class="form-group">
       <input type="hidden" name="questionId" value = <?php echo $questionData['question_id'];?> />
       <label class="control-label col-sm-2" for="section">Section:</label>
@@ -275,6 +276,12 @@ if ($questionType == 1) { ?>
 </div>
 <script>
 $( document ).ready(function() {
+     $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
     
 //$('#section').empty()
     //var dropDown = document.getElementById("carId");

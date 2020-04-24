@@ -307,6 +307,12 @@
                 </main>
 
 <script>
+   $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
                function createUser() {
                 
                 var roleId = document.getElementById("roleId").value;

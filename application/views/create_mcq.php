@@ -129,6 +129,7 @@ button:hover {
 <body>
 
 <form id="regForm" method="post" action="addMcq">
+   <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
     <input type="hidden" id="mcqTestId" name="mcqTestId">
   <h1>Create Test:</h1>
   <!-- One "tab" for each step in the form: -->
@@ -358,7 +359,12 @@ function fixStepIndicator(n) {
 <script>
 
 $( document ).ready(function() {
-    
+   $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+  
 test(1);
   
 });
