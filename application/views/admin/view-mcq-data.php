@@ -390,79 +390,41 @@
 
              }
              function deleteUsrPwd() {
-                
-                // var num = document.getElementById("generate").value;
                 var mcqId = document.getElementById("mcqTestId").value ;
                 var baseUrl = document.getElementById("base_url").value;
-                  $.ajax({
-                    url: baseUrl+"deleteUsrPwd",
-                   
-                    type: 'post',
-                    
-                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "mcqId" : mcqId} ,
-                    success: function( data, textStatus, jQxhr ){
-                        //window.location.reload(true);
-                       // window.location.href="admin/view-mcq";
-                        //$('#response pre').html( JSON.stringify( data ) );
-                        console.log('data', data);
-                        // document.getElementById("code").disabled = true;
+                $.confirm({
+                  title: 'SkillRary Alert!',
+                  content: 'Do you want to delete generated username & password ?',
+                  buttons: {
+                      confirm: function () {
+                        $.ajax({
+                          url: baseUrl+"deleteUsrPwd",
+                          type: 'post',
+                          data: { "mcqId" : mcqId} ,
+                          success: function( data, textStatus, jQxhr ){
 
-                        // document.getElementById("codeSubmit").disabled = true;
-                        window.location.reload();
-                    },
-                    error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
-                    }
+                            console.log('data', data);
+
+                            window.location.reload();
+                          },
+                          error: function( jqXhr, textStatus, errorThrown ){
+                            console.log( errorThrown );
+                          }
+                        });
+                      },
+                      cancel: function () {
+                        
+                      }
+                  }
                 });
-
-
-                        // $.alert({
-                        //     title: 'SkillRary Alert!',
-                        //     content: 'Username Password Generated',
-                        // });
-
-
              }
 
-             function printUsrPwd() {
-                
-                // var num = document.getElementById("generate").value;
-                var mcqId = document.getElementById("mcqTestId").value ;
-
-                var baseUrl = document.getElementById("base_url").value;
-                var url = baseUrl+"printUsrPwd?mcqId="+mcqId;
-                window.open(url);
-                //   $.ajax({
-                //     url: baseUrl+"printUsrPwd",
-                   
-                //     type: 'post',
-                    
-                //     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                //     data: { "mcqId" : mcqId} ,
-                //     success: function( data, textStatus, jQxhr ){
-                //         //window.location.reload(true);
-                //        // window.location.href="admin/view-mcq";
-                //         //$('#response pre').html( JSON.stringify( data ) );
-                //         console.log('data', data);
-                //         // document.getElementById("code").disabled = true;
-
-                //         // document.getElementById("codeSubmit").disabled = true;
-                //         window.location.reload();
-                //     },
-                //     error: function( jqXhr, textStatus, errorThrown ){
-                //         console.log( errorThrown );
-                //     }
-                // });
-
-
-                        // $.alert({
-                        //     title: 'SkillRary Alert!',
-                        //     content: 'Username Password Generated',
-                        // });
-
-
-             }
+            function printUsrPwd() {
+              var mcqId = document.getElementById("mcqTestId").value;
+              var baseUrl = document.getElementById("base_url").value;
+              var url = baseUrl+"printUsrPwd?mcqId="+mcqId;
+              window.open(url);
+            }
 function getHour(hour) {
   switch(hour) {
     case "1" : hour = "13";
