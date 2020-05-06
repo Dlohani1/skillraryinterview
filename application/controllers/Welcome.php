@@ -46,6 +46,10 @@ class Welcome extends CI_Controller {
         $this->load->view('whiteboard');
     }
 
+    public function showEditor() {
+         $this->load->view('editor/editor');
+    }
+
 public function mypdf(){
     $mcqId = $this->uri->segment(2);
     $studentId = $this->uri->segment(3);
