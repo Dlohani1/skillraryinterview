@@ -194,20 +194,42 @@
         <div class="row">
             <div class="col-md-10 offset-md-1">
                 <table class="table tableWidth">
-                    <tr><th colspan="4" style="text-align: center;background: #D0CFCF ;border: 1px solid black;">Engineering</th></tr>
+                    <tr><th colspan="4" style="text-align: center;background: #D0CFCF ;border: 1px solid black;">Aptitude</th></tr>
                     <tr>
                         <th class="thborder">Section</th>
                         <th class="thborder">Module</th>
                         <th class="thborder">Total Questions</th>
                         <th class="thborder">Total Time</th>
                     </tr>
+                    <?php 
+                    if (isset($_SESSION['instructionData'])) {
+                        $instruction = $_SESSION['instructionData'];
+                        $isCodeTest = $instruction['isCodeId'];
+                        unset($instruction['isCodeId']);
+                        $rowSpan= count($instruction);
+                        $i = 0;
+                    foreach ($instruction as $key => $value) {
+                       $value['section'];
+                       $value['total'];
+                       $value['time'];
+
+
+                    ?>
                     <tr>
-                        <td class="tdborder" rowspan="3" style="vertical-align: middle;">Engineering</td>
-                        <td class="tdborder">Javascript</td>
-                        <td class="tdborder">10</td>
-                        <td class="tdborder">10 Minutes</td>
+                        <?php 
+                        if ($i < 1) {?>
+                        <td class="tdborder" rowspan=<?=$rowSpan;?> style="vertical-align: middle;">Aptitude</td>
+                    <?php } ?>
+                        <td class="tdborder"><?=$value['section']
+                        ;?></td>
+                        <td class="tdborder"><?=$value['total']
+                        ;?></td>
+                        <td class="tdborder"><?=$value['time']." Minutes"
+                        ;?></td>
                     </tr>
-                    <tr>
+                    <?php  $i++;
+                }}?>
+                    <!-- <tr>
                         <td class="tdborder">C Programming</td>
                         <td class="tdborder">10</td>
                         <td class="tdborder">10 Minutes</td>
@@ -216,15 +238,17 @@
                         <td class="tdborder">C++</td>
                         <td class="tdborder">10</td>
                         <td class="tdborder">10 Minutes</td>
-                    </tr>
+                    </tr> -->
                    
                 </table>
             </div>
         </div><br/>
+        <?php
+        if ($isCodeTest > 0){?>
         <div class="row">
                 <div class="col-md-10 offset-md-1">
                     <table class="table tableWidth">
-                        <tr><th colspan="4" style="text-align: center;background: #D0CFCF ;border: 1px solid black;">Cognitive</th></tr>
+                        <tr><th colspan="4" style="text-align: center;background: #D0CFCF ;border: 1px solid black;">Programming</th></tr>
                         <tr>
                             <th class="thborder">Section</th>
                             <th class="thborder">Module</th>
@@ -232,26 +256,26 @@
                             <th class="thborder">Total Time</th>
                         </tr>
                         <tr>
-                            <td class="tdborder" rowspan="3" style="vertical-align: middle;">Cognitive</td>
-                            <td class="tdborder">English</td>
-                            <td class="tdborder">10</td>
-                            <td class="tdborder">10 Minutes</td>
+                            <td class="tdborder" rowspan="2" style="vertical-align: middle;">Programming</td>
+                            <td class="tdborder">Program 1</td>
+                            <td class="tdborder">1</td>
+                            <td class="tdborder">15 Minutes</td>
                         </tr>
                         <tr>
-                            <td class="tdborder">Reasoning</td>
-                            <td class="tdborder">10</td>
-                            <td class="tdborder">10 Minutes</td>
+                            <td class="tdborder">Program 2</td>
+                            <td class="tdborder">1</td>
+                            <td class="tdborder">15 Minutes</td>
                         </tr>
-                        <tr>
+                       <!--  <tr>
                             <td class="tdborder">Quantitative</td>
                             <td class="tdborder">10</td>
                             <td class="tdborder">10 Minutes</td>
-                        </tr>
+                        </tr> -->
                        
                     </table>
                 </div>
             </div><br/><br/>
-        
+        <?php } ?>
         <div class="row">
             <div class="col-md-10 offset-md-1">
                 <h5 class="subHead">General Instructions:</h5> 
@@ -318,7 +342,7 @@
         <?php 
         //if ($_SESSION['startTest']) {
 ?>
-        <div align="center" id="startAssessment" style="display: none">
+        <div align="center" id="startAssessment" style="display: block">
             <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
             <label for="checkbox-1" class="checkbox-custom-label">I agree and follow all the instructions mentioned by SkillRary</label>
             <!-- <input id="checkbox-1" name="checkbox-1" type="checkbox">
@@ -449,11 +473,14 @@ function joinMeeting() {
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
 			//alert(data);
-
+//window.open(src, "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
 			if (data == "1" && null == check) {
-				 var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+				 //var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+
+                 var win = window.open("mcq-question", "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
                     win.onbeforeunload = function(){
                         console.log('unload');
+                        window.location.href="user/view-results";
                         var baseUrl = document.getElementById("base_url").value;
                           $.ajax({
                             url: baseUrl+"admin/startTest",

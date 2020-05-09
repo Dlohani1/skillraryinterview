@@ -47,8 +47,6 @@
                         <th>Total Question</th>
                         <th>Proctored</th>
                         <th>view</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
                    </thead>
     <tbody>
 
@@ -62,9 +60,7 @@
     }
             echo '<tr><td>'.$i.'</td><td>'.$value['title'].'</td><td>'.$value['code'].'</td> <td>'.$value['sectionCount'].'</td>
     <td>'.$value['question'].'</td><td>'.$proctored.'</td>
-      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'admin/view-mcq-data/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'admin/edit-test/'.$value['id'].'"><button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td></tr>';
+      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'customer/view-mcq-data/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td></tr>';
         }
         ?>
     

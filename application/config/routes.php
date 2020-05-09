@@ -132,8 +132,9 @@ $route['user/upload/do_upload'] = 'questionBank/uploadProfileImage';
 
 $route['admin/create-test'] = 'AdminController/createTest';
 
-$route['admin/view-mcq'] = 'AdminController/viewTest';
-
+$route['admin/view-mcq/:any'] = 'AdminController/viewTest';
+$route['admin/view-interview/:any'] = 'AdminController/viewInterview';
+$route['admin/interview-customers-list'] = 'AdminController/interviewCustomers';
 $route['admin/view-questions'] = 'AdminController/viewQuestion';
 
 $route['admin/view-results'] = 'AdminController/viewResult';
@@ -142,7 +143,7 @@ $route['admin/view-mcq-data/:any'] = 'AdminController/viewMcqData';
 
 $route['admin/view-students/:any']= 'AdminController/showStudents';
 
-$route['admin/download-students/:any']= 'AdminController/downloadExcel';
+$route['admin/download-students/:any/:any']= 'AdminController/downloadExcel';
 
 $route['admin/add-question'] = 'AdminController/createQuestion';
 
@@ -175,10 +176,6 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 
 $route['translate_uri_dashes'] = FALSE;
-
-
-// Chandan
-
 
 $route['admin/login'] = 'AdminController/adminLogin'; 
 
@@ -223,9 +220,11 @@ $route['admin/startTest'] ['POST']= 'AdminController/startTest';
 $route['admin/joinMeeting']['POST'] = 'AdminController/joinMeeting';
 
 //interview
+$route['admin/add-interview']['POST'] = 'AdminController/addInterviewGroup'; 
+//$route['admin/create-interview'] = 'AdminController/createInterview'; 
+$route['admin/create-interview/:any/:any'] = 'AdminController/createInterview'; 
 
-$route['admin/create-interview'] = 'AdminController/createInterview'; 
-
+$route['admin/create-interview-customers'] = 'AdminController/createInterviewCustomers'; 
 
 $route['admin/generateInterviewUsrPwd']['POST'] = 'AdminController/generateInterviewUsrPwd';
 
@@ -265,3 +264,39 @@ $route['user/join-meeting'] = 'AdminController/gotomeetingJoin';
 
 $route['deleteUsrPwd']['POST'] = 'AdminController/deleteUsrPwd';
 $route['printUsrPwd'] = 'welcome/printUsrPwd';
+
+
+$route['admin/create-customers'] = 'AdminController/createCustomer';
+$route['admin/mcq-customers'] = 'AdminController/mcqCustomer'; 
+
+$route['admin/fetch-customers']['POST'] = 'AdminController/fetchCustomer'; 
+$route['admin/save-customers']['POST'] = 'AdminController/saveCustomer'; 
+
+
+$route['admin/uploadGotomeeting'] = 'AdminController/uploadGotomeeting';
+
+$route['html-editor'] = 'welcome/showEditor';
+
+
+//typing-test
+
+$route['typing-test'] = 'welcome/typingTest';
+
+$route['typing-test/start'] = 'welcome/typingTestStart';
+
+$route['typing-test/result'] = 'welcome/typingTestResult';
+
+$route['customer/login'] = 'CustomerController/login';
+$route['customer/checklogin']['POST'] = 'CustomerController/checkLogin';
+
+$route['customer/dashboard'] = 'CustomerController/viewDashboard';
+
+$route['customer/mcq-list'] = 'CustomerController/viewMcqList';
+$route['customer/view-mcq-data/:any'] = 'CustomerController/viewMcqData';
+$route['customer/view-interview'] = 'CustomerController/viewInterview';
+$route['customer/interview-result/:any'] = 'CustomerController/interviewResult'; 
+$route['customer/logout'] = 'CustomerController/logout';
+$route['admin/add-meeting-credentials'] = 'AdminController/createMeetingCredentials'; 
+$route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentials'; 
+
+$route['admin/result/:any'] = 'AdminController/updateResult';

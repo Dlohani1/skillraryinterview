@@ -1,6 +1,6 @@
  <?php
-     $adminId = $_SESSION['admin_id'];
-     $roleId = $_SESSION['role_id'];
+     $customerId = $_SESSION['customerId'];
+     $roleId = 1;
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,8 +10,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>SkillRary Admin</title>
+        <title>SkillRary Customer</title>
         <link href=<?php echo base_url()."admin/admin-css-js/css/styles.css";?> rel="stylesheet" />
+        <link rel="shortcut icon" href="https://skillrary.com/uploads/images/fav-sr-64x64-logo.png" type="image/x-icon">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
@@ -81,15 +82,7 @@
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a class="navbar-brand" href="/">
-                <?php 
-                if ($roleId == "7") {
-                    echo "SkillRary Proctor";
-                } else if ($roleId == "6") {
-                    echo "SkillRary Interviewer";
-                } else {
-                    echo "SkillRary Admin";
-                }
-                ?></a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
+                Hi, <?php echo $_SESSION['customerName'];?></a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
             ><!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"> -->
                <!--  <div class="input-group">
@@ -106,7 +99,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
 <!--                         <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>
                         <div class="dropdown-divider"></div> -->
-                        <a class="dropdown-item" href="<?php echo base_url().'admin/logout';?>">Logout</a>
+                        <a class="dropdown-item" href="<?php echo base_url().'customer/logout';?>">Logout</a>
                     </div>
                 </li>
             </ul>

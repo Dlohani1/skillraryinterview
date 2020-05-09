@@ -36,7 +36,7 @@
 <div id="layoutSidenav_content">
   <main>
     <div class="container-fluid">
-      <h1 class="mt-4">Schedule Interview </h1>
+      <h1 class="mt-4">Interview Result</h1>
       <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
         <li class="breadcrumb-item active">Details</li>
@@ -52,18 +52,18 @@
  <input type="hidden" id="round" name="round"  />
           <div class="col-md-12">
             <h4>INTERVIEWs</h4>
-            <div class="container"  id="detail">
+           <!--  <div class="container"  id="detail">
             <div class="row">
               <div class="column">
                 <label>User Count</label>
                 <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off">
                 <span id ="generate_error" style="color:red"></span>
-              </div>
+              </div> -->
 
               <!--  <div class="column">
                 <label>Interview Code (if any) </label> -->
-                <input type="hidden" name="code" class="form-control" id="interview-code" placeholder="Enter code" autocomplete="off">
-
+                <!-- <input type="hidden" name="code" class="form-control" id="interview-code" placeholder="Enter code" autocomplete="off">
+ -->
 
 
                 <input type="hidden" id="mcqTestId" value= "<?php// echo $mcq['mcq-details']->id;?>">
@@ -86,7 +86,7 @@
 
 
               </div> -->
-              <div class="column">
+              <!-- <div class="column">
                <button style="margin-top:30px" onclick="generateUsrPwd()">Generate IDs</button>
               </div>
             </div>
@@ -94,7 +94,7 @@
 
 
 
-            </div>
+            </div> -->
           </div>
             <div class="container">
               <!-- <div class="searchBox"> -->
@@ -541,7 +541,7 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           <label>Interviewer</label>
        <!-- <select  class="form-control inputBox" id="interviewerId"> -->
 <select id="interviewerId" multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100">
-                      <!-- <option value=0> Select</option> -->
+                      <option value=0> Select</option>
                       
         <?php 
 

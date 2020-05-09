@@ -1,73 +1,112 @@
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid">
-                        <h1 class="mt-4">MCQs</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">MCQs</li>
-                        </ol>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
-                                <!-- <div class="container-fluid">
-                                    <div class="container">
-                                    <div class="searchBox">
-                                        <div class="row">
-                                            <div class="col-md-3 offset-md-1">
-                                                <label>MCQ Name</label>
-                                                <input type="text" class="form-control inputBox">
-                                            </div>
-                                            <div class="col-md-3 offset-md-1">
-                                                <label>Total Questions</label>
-                                                <input type="text" class="form-control inputBox">
-                                            </div>
-                                            <div class="col-md-2 offset-md-1">
-                                                <label>Code</label>
-                                                <input type="text" class="form-control inputBox">
-                                            </div>
-                                        </div><br/>
-                                        <div>
-                                            <div align="right"> -->
-                                                <!-- <button class="searchBtn">Search</button> -->
-                                                <!-- <input type="submit" value="search" />
-                                            </div>
-                                        </div>
-                                    </div><br/> -->
-  <div class="row">
-        <div class="col-md-12">
-        <h4>MCQs</h4>
+<input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
+<div id="layoutSidenav_content">
+  <main>
+    <div class="container-fluid">
+      <h1 class="mt-4">Customer Details</h1>
+      <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item active">Details</li>
+      </ol>
+    <div class="card mb-4">
+      <div class="card-body">
+      <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
+      <div class="container-fluid">
+      <div class="container">
+      <div class="row">
+         <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
+          <div class="col-md-12">
+            <h4>SkillRary Interviews</h4>
+            <div class="container">
+<!--               <div class="searchBox">
+                <div class="row">
+                  <div class="col-md-3 offset-md-1">
+                    <label>Name</label>
+                    <input type="text" id="customer_name" name="customer_name" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
+                   
+                  </div>
+                  <div class="col-md-3 offset-md-1">
+                    <label>Email</label>
+                    <input type="text" id="customer_email" name="customer_email" class="form-control inputBox">
+                  </div>
+                  <div class="col-md-2 offset-md-1">
+                    <label>Contact No</label>
+                    <input type="text" id="customer_contactno" name="customer_contactno" class="form-control inputBox">
+                  </div>
+                <div>
+             </div>
+          </div>
+<div class="row">
+                  <div class="col-md-3 offset-md-1">
+                    <label>Address</label>
+                    <input type="text" id="customer_address" name="customer_address" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
+                  </div>
+                
+          </div>
+
+                <div align="right">
+                    <button class="searchBtn" onclick="saveCustomer()">ADD</button>
+                </div>
+            
+
+        </div> -->
+
+                           
+        <!-- <div class="container">
+        <div class="searchBox">
+            <div class="row">
+                <div class="col-md-3 offset-md-1">
+                    <label>MCQ Name</label>
+                    <input type="text" class="form-control inputBox">
+                </div>
+                <div class="col-md-3 offset-md-1">
+                    <label>Total Questions</label>
+                    <input type="text" class="form-control inputBox">
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <label>Code</label>
+                    <input type="text" class="form-control inputBox">
+                </div>
+            </div><br/>
+            <div>
+                <div align="right">
+                    <button class="searchBtn">Search</button>
+                </div>
+            </div>
+        </div><br/>
+        </div>
+ -->
         <div class="table-responsive">
+
+                
               <table id="mytable" class="table table-bordred table-striped">
+                   
                    <thead>
+                   
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                       <th>Sl.no</th>
-			<th>MCQ Name</th>
-                        <th>MCQ Code</th>
-                        <th>Total Section</th>
-                        <th>Total Question</th>
-                        <th>Proctored</th>
-                        <th>view</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                  <th>Id</th>                    
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Contact No</th>
+                  <th>Action</th>
+                      
+                       <!-- <th>Delete</th> -->
                    </thead>
     <tbody>
 
         <?php 
-		$i = 0;
-        foreach($mcq as $key => $value) {
-		$i++;
-    $proctored = "No";
-    if ($value['proctored'] == 1) {
-      $proctored = "Yes";
-    }
-            echo '<tr><td>'.$i.'</td><td>'.$value['title'].'</td><td>'.$value['code'].'</td> <td>'.$value['sectionCount'].'</td>
-    <td>'.$value['question'].'</td><td>'.$proctored.'</td>
-      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'admin/view-mcq-data/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'admin/edit-test/'.$value['id'].'"><button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td></tr>';
+        $i = 0;
+        if (count($customers) > 0)
+        foreach($customers as $key => $value) { 
+          //print_r($value);
+            $i++;
+            echo '<tr><td>'.$i.'</td><td>'.$value->customer_code.'</td><td>'.$value->customer_name.'</td><td>'.$value->customer_email.'</td><td>'.$value->customer_contactno.'</td> <td><a href="view-interview/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
+      
+   </tr>';
         }
         ?>
-    
+<!--     <td><a href="view-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
+      <td><a href="download-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> -->
     <!-- <tr>
     <th><input type="checkbox" id="checkall" /></th>
     <td>Mohsin</td>
@@ -216,3 +255,58 @@
                     </div>
                 </main>
 
+<script>
+   $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
+
+               function saveCustomer() {
+                var baseUrl = document.getElementById("base_url").value;
+                
+                //var role = document.getElementById("role-name").value;
+                //var mcqId = document.getElementById("mcqTestId").value ;
+                var baseUrl = document.getElementById("base_url").value;
+
+                var name = document.getElementById("customer_name").value;
+                var email = document.getElementById("customer_email").value;
+                var contact = document.getElementById("customer_contactno").value;
+                var address = document.getElementById("customer_address").value;
+
+                  $.ajax({
+                    url: baseUrl+"admin/save-customers",
+                   
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: {
+                      "customer_name":name,
+                      "customer_email":email,
+                      "customer_contactno":contact,
+                      "customer_address": address
+                    } ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        // document.getElementById("code").disabled = true;
+
+                        // document.getElementById("codeSubmit").disabled = true;
+                        window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+                        // $.alert({
+                        //     title: 'SkillRary Alert!',
+                        //     content: 'Username Password Generated',
+                        // });
+
+
+             }
+</script>

@@ -8,7 +8,7 @@
     $studentId = 0;
     $mcqTestId= 0;
 if (count($testData) > 0) {
-   print_r($testData);
+  // print_r($testData);
     $sectionIdResume =  $testData['section_id'];
     $questionIdResume = $testData['question_id'];
     $timeTaken = $testData['time_left'];
@@ -181,7 +181,7 @@ if (count($testData) > 0) {
             margin-top: 4%;
             display: flex;
             flex-wrap: wrap;
-            height: 300px;
+            /*height: 300px;*/
             overflow: hidden;
             overflow-y: auto;
         }
@@ -1115,7 +1115,7 @@ function getQuestion(sectionId, codeTest = false) {
 
 function fetchQuestion(id, no, sectionIdno = 0, resume = false) {
 
-alert(sectionIdno)
+//alert(sectionIdno)
     clearTime();
     console.log('sectionIdno ', no)
     // if (no == 1) {
@@ -1496,7 +1496,8 @@ function lastSave() {
     }
 
     function clearResponse() {
-        $(".radiBackground").removeClass("radiBackground1");
+        //$(".radiBackground").removeClass("radiBackground1");
+        $(".radiBackground1").addClass("radiBackground");
         $(".radiBackground1").removeClass("radiBackground1");
         $('input[name="answer"]').prop('checked', false);
 

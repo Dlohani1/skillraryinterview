@@ -1,10 +1,13 @@
+            <?php 
+              $customerId = $this->uri->segment(3);
+            ?>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid">
-                        <h1 class="mt-4">MCQs</h1>
+                    <di3 class="container-fluid">
+                        <h1 class="mt-4">Interviews</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">MCQs</li>
+                            <li class="breadcrumb-item active"><?=ucfirst($customer);?></li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
@@ -35,38 +38,29 @@
                                     </div><br/> -->
   <div class="row">
         <div class="col-md-12">
-        <h4>MCQs</h4>
+        <h4>Interview Group</h4>
         <div class="table-responsive">
               <table id="mytable" class="table table-bordred table-striped">
                    <thead>
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
                        <th>Sl.no</th>
-			<th>MCQ Name</th>
-                        <th>MCQ Code</th>
-                        <th>Total Section</th>
-                        <th>Total Question</th>
-                        <th>Proctored</th>
+			
+                        <th>Interview Code</th>
+                        <th>Total Students</th>
+                        <!-- <th>Total Question</th> -->
                         <th>view</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <!-- <th>Edit</th>
+                        <th>Delete</th> -->
                    </thead>
-    <tbody>
+                    <tbody>
 
-        <?php 
-		$i = 0;
-        foreach($mcq as $key => $value) {
-		$i++;
-    $proctored = "No";
-    if ($value['proctored'] == 1) {
-      $proctored = "Yes";
-    }
-            echo '<tr><td>'.$i.'</td><td>'.$value['title'].'</td><td>'.$value['code'].'</td> <td>'.$value['sectionCount'].'</td>
-    <td>'.$value['question'].'</td><td>'.$proctored.'</td>
-      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'admin/view-mcq-data/'.$value["id"].'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'admin/edit-test/'.$value['id'].'"><button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td></tr>';
-        }
-        ?>
+                        <?php
+                          $i = 0;
+                          foreach($interview as $key => $value) {
+                            $i++;
+                            echo "<tr><td>$i</td><td>$value->interview_code</td><td>$value->total_students</td><td><a href=".base_url()."admin/create-interview/$customerId/$value->interview_code><button class='btn btn-primary btn-xs' ><span class='glyphicon glyphicon-eye-open'></span></button></a></td></tr>";
+                          }
+                        ?>
     
     <!-- <tr>
     <th><input type="checkbox" id="checkall" /></th>

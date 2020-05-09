@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Vimeo\Vimeo;
 class AdminController extends CI_Controller {
 
   public function __construct()
@@ -10,19 +11,58 @@ class AdminController extends CI_Controller {
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
 
+    $uri = $this->uri->segment(2);
+    //echo $uri; die;
+    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin'))) {
+      redirect('admin/login');
+    }
+
     //$this->db2 = $this->load->database('database2', TRUE);
+    // $client = new Vimeo("dfe4d40e1b610f1fc70286ddc017e53e039e7984", "0tyi2RmRxGpejcv3bcsnRFE/b3HT7Y9LOBYJnkODQlSOXuj/StlNqbevYWBThVZMeNd7qKH6Gkjb+AYfNuRJzHSTZimT3QYpj3ubkwFPM68q106nh3j/znAo26wGBMUq", "d598a2fbacd583051d3b80065915e95d");
+    
+    //3a1186d4de292af3e94c232d87fe6d3e
+    //7972fa1e01c364e40690ffcbc2489f33
+//81dd9df6320cd89f942caf7dbf87b4ce
+// $response = $client->request('/tutorial', array(), 'GET');
+// print_r($response);
+
+//for check progress
+//     $uri = "/videos/412211063";
+//     $response = $client->request($uri . '?fields=transcode.status');
+// if ($response['body']['transcode']['status'] === 'complete') {
+//   print 'Your video finished transcoding.';
+// } elseif ($response['body']['transcode']['status'] === 'in_progress') {
+//   print 'Your video is still transcoding.';
+// } else {
+//   print 'Your video encountered an error during transcoding.';
+// }
+// die;
+
+
+// $file_name = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+// //echo $file_name;
+// //print_r(var_dump(is_file($file_name))); die;
+// //echo $file_name;
+// $uri = $client->upload($file_name, array(
+//   "name" => "test-assess",
+//   "description" => "The description goes here."
+// ));
+
+// echo "Your video URI is: " . $uri;
 
      $getUrl = $this->uri->segment(2);
      $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'create-interview','logout');
 
-     if (in_array($getUrl, $checkUrl)) {
-        if (!isset($_SESSION['admin_id'])) {
-            redirect('admin/login');
-        }
-     }
+    if (in_array($getUrl, $checkUrl)) {
+      if (!isset($_SESSION['admin_id'])) {
+        redirect('admin/login');
+      }
+    }
 
   }
-
+  public function testlogin() {
+    echo "da"; die;
+  }
   public function getRefreshedToken($refreshToken) {
     $ch = curl_init();
 
@@ -118,50 +158,38 @@ class AdminController extends CI_Controller {
 
 //$time = date("m/d/Y h:i:s a", strtotime("+30 seconds"));
 
-   $timestamp = strtotime($startTime) + 60; // 3 hours
+  $timestamp = strtotime($startTime); // 3 hours
+  $startTime1 = date('H:i:s', $timestamp);
 
-        $startTime = date('H:i:s', $timestamp);
-
-
-
- $startTestTime = $startDate.'T'.$startTime.'.000Z';
-
- 
-
-	$timestamp = strtotime($startTime) + 180*60; // 3 hours
-
-        $endTime = date('H:i:s', $timestamp);
-
-	$endTestTime = $startDate.'T'.$endTime.'.000Z';
+  $timestamp = strtotime("-6 hours 30 minutes", $timestamp); 
+  $startTime = date('H:i:s', $timestamp);
 
 
-	// if ($call == "test") {
-	// 	$meetingEmail = "trainer134@qspiders.com";
- //        } else if ($call == "interview") {
-	// 	$meetingEmail = "trainer131@qspiders.com";
 
- //        } else {
-	// 	$meetingEmail = "trainer132@qspiders.com";
-	// }
+  $startTestTime = $startDate.'T'.$startTime.'.000Z';
+
+  $startTestTime1 = $startDate.'T'.$startTime1.'.000Z';
+
+  $timestamp = strtotime($startTime) + 180*60; // 3 hours
+  $timestamp2 = strtotime($startTime1) + 180*60; // 3 hours
+  $endTime = date('H:i:s', $timestamp);
+  $endTime2 = date('H:i:s', $timestamp2);
+  $endTestTime = $startDate.'T'.$endTime.'.000Z';
+  $endTestTime1 = $startDate.'T'.$endTime2.'.000Z';
 
   $meetingEmail = "trainer111@qspiders.com";
 
-        //$sql = "SELECT access_token FROM `bse_citrix` where email='".$meetingEmail."'";
+        
+  $sql = "SELECT access_token FROM `gotomeeting_token_details` where email='".$meetingEmail."'";
 
-        $sql = "SELECT access_token FROM `gotomeeting_token_details` where email='".$meetingEmail."'";
-//echo var_dump($startTime); 
-//echo $startTestTime , "</br>";
-//echo $endTestTime;
-//die;
 
-       // $meeting = $this->db2->query($sql)->result();
-
-        $meeting = $this->db->query($sql)->result();
+  $meeting = $this->db->query($sql)->result();
 
         foreach($meeting as $key => $value) {
 
                 $token = $value->access_token;
-                $timeZone = "Asia/Calcutta";
+               // $timeZone = "Asia/Calcutta";
+                $timeZone = "";
                 $headers = array(
                         'Content-Type: application/json',
                         "accept: application/json",
@@ -212,7 +240,9 @@ $fields['subject'] = "DXC Interview";
 			//print_r($webinars); die;
 			 $data = array(
       				'meeting_id' => $webinars[0]->meetingid,
-      				'user_join_url' => $webinars[0]->joinURL
+      				'user_join_url' => $webinars[0]->joinURL,
+              'starttime'=> $startTestTime1,
+              'endtime' => $endTestTime1
     			);
 			if ($call == "test") {
 			 $this->db->where('id', $assessId);
@@ -228,10 +258,12 @@ $fields['subject'] = "DXC Interview";
                                       'meeting_id' => $webinars[0]->meetingid,
                                       'user_join_url' => $webinars[0]->joinURL
                                   );*/
-			 $data = array(
-                                'meeting_id' => $webinars[0]->meetingid,
-                                'user_join_url' => $webinars[0]->joinURL
-                        );
+			 // $data = array(
+    //                             'meeting_id' => $webinars[0]->meetingid,
+    //                             'user_join_url' => $webinars[0]->joinURL,
+    //                             'starttime'=> $startTestTime,
+    //                             'endtime' => $endTestTime,
+    //                     );
 
 				$this->db->where('id', $value);
                                $this->db->update('interview_details',$data);
@@ -656,13 +688,15 @@ echo "success";
 }
 
 public function startTest() {
-              $sql = "SELECT start_test FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_POST['assessId'];
+  $sql = "SELECT start_test FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_POST['assessId'];
 
-              $result = $this->db->query($sql)->row();
-
-
-               echo $result->start_test;
-
+  $result = $this->db->query($sql)->row();
+  if (null !== $result) {
+    echo $result->start_test;
+  } else {
+    //check for non proctored mcq
+    echo 1;
+  }
 }
 
 public function joinMeeting() {
@@ -719,6 +753,92 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
     
   }
 
+  public function saveCustomer() {
+    $sql = "SELECT MAX(id) as id FROM customers";
+    $result = $this->db->query($sql)->row();
+    $customerId = 1;
+
+    if (null !== $result->id) {
+      $customerId += $result->id;
+    }
+
+   $data  = $this->input->post();
+
+   $data['customer_code'] = ucfirst(substr($data['customer_name'],0,1)).$customerId;
+   $data['username'] = substr($data['customer_name'],0,2)."_".$customerId;
+   $data['password'] = $this->generatePassword();
+   $this->db->insert('customers', $data);
+   echo "success";
+  }
+
+  public function mcqCustomer() {
+    $sql = "SELECT distinct(customer_id) FROM mcq_test order by customer_id asc";
+
+    $result = $this->db->query($sql)->result_array();
+
+    $ids = "";
+
+    foreach ($result as $key => $value) {
+      if (count($result)-$key > 1) {
+        $ids .= $value['customer_id'].","; 
+      } else {
+        $ids .= $value['customer_id'];
+      }
+    }
+
+   $sql = "select * from customers where id in (".$ids.")";
+   //echo $sql; die;
+   $result = $this->db->query($sql)->result_object();
+
+//    print_r($result); die;
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/mcq-customers', array("customers"=>$result));
+    $this->load->view('admin/footer');
+  }
+
+  public function createCustomer() {
+    $sql = "SELECT * FROM customers ";
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-customers', array("customers"=>$result));
+    $this->load->view('admin/footer');
+  }
+
+  public function interviewCustomers() {
+    $sql = "SELECT DISTINCT(interview_customer_id) FROM `interview_users` WHERE interview_customer_id is NOT NULL";
+    $result = $this->db->query($sql)->result_array();
+    $customers = array();
+
+    if (count($result) > 0) {
+      $customerIds = "";
+
+      foreach ($result as $key => $value) {
+        if ($key == (count($result) - 1)) {
+          $customerIds .= $value['interview_customer_id'];
+        } else {
+          $customerIds .= $value['interview_customer_id'].",";  
+        }
+      }
+      
+      $sql = "SELECT * FROM customers WHERE id IN ($customerIds)";
+      $customers = $this->db->query($sql)->result_object();
+    }
+
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/interview-customers-view', array("customers"=>$customers));
+    $this->load->view('admin/footer');
+  }
+
   public function addRoles() {
     $sql = "SELECT * FROM roles ";
 
@@ -734,7 +854,7 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
   }
 
   public function saveRole() {
-     $data  = array ('roles' => $_POST['role']);
+    $data  = array ('roles' => $_POST['role']);
 
     $this->db->insert('roles', $data);
 
@@ -831,8 +951,156 @@ public function deleteUsrPwd() {
 
   }
 
+public function viewResult($mcqId, $sId) {
+//echo $mcqId; echo $sId; die;
+            // $mcqId = $this->session->mcqId;
+            // $studentId = $this->session->id;
 
- public function viewResult() {
+            $mcqId = $mcqId;
+            $studentId = $sId;
+
+             $sql = "SELECT mcq_test_pattern.section_id , section.section_name FROM `mcq_test_pattern` inner join section on section.id = mcq_test_pattern.section_id where mcq_test_id =".$mcqId;
+
+
+            $query = $this->db->query($sql);
+            $sectionData = array();
+            $sectionDetail = array();
+            $countSection = 0;
+
+            $sqlTotal = "";
+            $sqlTime = "";
+            $i = 0;
+
+            $sectionId  = array();
+            foreach ($query->result() as $row) {
+                if ($i > 0) {
+                    $sqlTotal .= " UNION AlL ";
+                    $sqlTime .= " UNION ALL ";
+                }
+                $sqlTotal .= "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = ". $row->section_id;
+
+                $sqlTime .= "SELECT completion_time FROM `mcq_time` where mcq_test_id =".$mcqId." and section_id =".$row->section_id;
+
+                $sectionId['id'][$i] = $row->section_id;
+                $sectionId['name'][$i] = $row->section_name;
+                $i++;
+
+                
+            }
+//             echo "<pre>";
+// print_r($sectionId); die;
+            $sql = $sqlTotal;
+
+            $query = $this->db->query($sql);
+                $i = 0;
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+
+                    $resultQ['qno'][$i] = $row->total;
+                    $resultQ['name'][$i] = $sectionId['name'][$i];
+                    $i++;
+                }
+            }
+
+            $sql = $sqlTime;
+
+            //$attempt = $this->session->attempt;
+            $attempt = 1;
+            $query = $this->db->query($sql);
+           
+            $sqlAns = "";
+            $i = 0;
+
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+
+                    $result2[] = $row->completion_time;
+
+                    if ($i > 0) {
+                        $sqlAns .= " UNION ALL ";
+
+                    }
+
+                    $sqlAns .= "SELECT sum(correct_ans) as user_ans FROM `student_answers` WHERE mcq_test_id = ".$mcqId." and student_id =".$studentId." and section_id=".$sectionId['id'][$i]." and test_attempt=".$attempt;
+
+                    $i++;
+                }
+            }
+
+            $sql = $sqlAns;           
+
+            $query = $this->db->query($sql);
+           
+            if($query->num_rows() > 0)  {
+
+                foreach ($query->result() as $row) {
+
+                    $result1[] = $row->user_ans;
+                }
+            }
+
+            $codeTest = 0;
+
+            // if (isset($_SESSION['codeTestId'])) {
+            //     $codeResult = $this->codeTestResult();
+
+            //     $codeTest = $codeResult[3]; 
+            // }
+            //print_r($codeResult[3][1]); die;
+
+            $result = array ($resultQ, $result2, $result1);
+
+            $a = array();
+            $i = 0;
+            foreach ($result2 as $key => $value) {
+               $a[$i]['total_question'] = $resultQ['qno'][$i];
+               $a[$i]['section'] = $resultQ['name'][$i];
+               
+               // if ($value > 60 ) {
+               //  $min = intval($value / 60);
+               //  $sec = $value % 60;
+
+               //  $totaltime = $min." min ";
+
+               //  if ($sec > 0) {
+               //      $totaltime .= $sec." sec";
+               //  }
+               // } else {
+
+               //  $totaltime = $value." sec";
+               // }
+
+               // $a[$i]['total_time'] = $totaltime;
+               
+               // if ($result1[$i] > 60 ) {
+               //  $min = intval($result1[$i] / 60);
+               //  $sec = $result1[$i] % 60;
+               //  $time = $min." min ".$sec. " sec";
+               // } else {
+               //  if ($result1[$i] > 0) {
+               //      $time = $result1[$i]." sec";    
+               //  } else {
+               //      $time = "NA";
+               //  }
+                
+               // }
+               //print_r($result1); die;
+               $a[$i]['user_ans'] = $result1[$i];
+               $i++;
+            }
+
+            //$_SESSION['attempt'] = 2;
+            $result = array("Aptitude"=>$a, "Programming" => $codeTest);
+            return $result; die;
+            // $this->load->view('user-header');
+            // $this->load->view('results', array("results"=>$a, "codeTestResult" => $codeTest));
+            // $this->load->view('codefooter');
+
+        }
+
+ public function viewResult1() {
   $sql = "SELECT DISTINCT(mcq_test_id),count(DISTINCT(student_id)) as total_students FROM `student_answers` GROUP BY mcq_test_id";
 
     $query = $this->db->query($sql);
@@ -922,7 +1190,7 @@ print_r($mcq); die;
   $proctorId = $_POST['proctorId'];
   $assessId = $_POST['assessId'];
 
-    $testDate = explode("/",$testDate);
+  $testDate = explode("/",$testDate);
 
   $testDate = $testDate[2]."-".$testDate[0]."-".$testDate[1];
 
@@ -975,10 +1243,11 @@ print_r($mcq); die;
         "username" => $result->username,
         "password" => $result->password,
         "testDateTime" => $testDate." ". $testTime,
-        "testTime" => $interviewTimeHour.":".$interviewTime[1]." ".$timeA
+        "testTime" => $interviewTimeHour.":".$interviewTime[1]." ".$timeA,
+        "link" => "https://assess.skillrary.com/user/new-login"
       );
 
-
+      $this->updateAccessToken();
       $this->createMeeting($testDate, $testTime, $proctoredMcqId, "test");
       $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 
@@ -1014,8 +1283,6 @@ return $x;
  }
 
  public function sendInterviewInvite() {
-
- // print_r($_POST); die;
   $mcqId = $_POST['mcqId'];
   $email = $_POST['email'];
   $testDate = $_POST['testDate'];
@@ -1042,114 +1309,104 @@ return $x;
 
 
   $sql = "SELECT * from `interview_details` where interview_date = '".$testDate."' AND duration_timestamp >='".$interviewTimeStamp."' order by duration_timestamp DESC";
- // echo $sql; 
 
   $interviewSchedule = $this->db->query($sql)->row();
-//print_r(var_dump($interviewSchedule)); die;
 
-/*
-    $data  = array (
-      'interview_users_id' => $userId,
-      'mcq_test_id' => $mcqId,
-      'interviewer_id' => $interviewerId,
-      'user_email' => $email,
-      'interview_date' => $testDate,
-      'interview_time' => $testTime,
-      'interview_mode' => $interviewMode,
-      'interview_venue' => $interviewVenue
-    );
-*/
+  if (null == $interviewSchedule) {
+    foreach ($interviewerId as $key => $value) {
+      $data[]  = array (
+        'interview_users_id' => $userId,
+        'mcq_test_id' => $mcqId,
+        'interviewer_id' => $value,
+        'user_email' => $email,
+        'interview_date' => $testDate,
+        'interview_time' => $testTime,
+        'interview_mode' => $interviewMode,
+        'interview_venue' => $interviewVenue,
+        'round' => $round,
+        'duration' => $duration,
+        'interview_timestamp' => $interviewTimeStamp,
+        'duration_timestamp' => $durationTimeStamp
+      );
+    }
 
-if (null == $interviewSchedule) {
- foreach ($interviewerId as $key => $value) {
-    $data[]  = array (
-       'interview_users_id' => $userId,
-       'mcq_test_id' => $mcqId,
-       'interviewer_id' => $value,
-       'user_email' => $email,
-       'interview_date' => $testDate,
-       'interview_time' => $testTime,
-       'interview_mode' => $interviewMode,
-       'interview_venue' => $interviewVenue,
-       'round' => $round,
-       'duration' => $duration,
-       'interview_timestamp' => $interviewTimeStamp,
-       'duration_timestamp' => $durationTimeStamp
-     );
-  }
+    $this->db->insert_batch('interview_details', $data);
 
+    $interviewDetailsId =  $this->db->insert_id();
 
-     //print_r($data); die;
-    //$this->db->insert('interview_details', $data);
-
-	$this->db->insert_batch('interview_details', $data);
-
-	$interviewDetailsId =  $this->db->insert_id();
-
-	$ids = array();
-  	for ($i = 0; $i < count($interviewerId); $i++) {
+    $ids = array();
+  	
+    for ($i = 0; $i < count($interviewerId); $i++) {
      		if (!$i) {
       			$ids[] = $interviewDetailsId;
      		} else {
       			$ids[] =  $interviewDetailsId + $i;
      		}
   	}
-//echo "d"; die;
-     $sql = "SELECT id FROM `student_register` where email = '".$email."'";
+
+    // $sql = "SELECT id FROM `student_register` where email = '".$email."'";
 
 
-        $result = $this->db->query($sql)->row();
+    //     $result = $this->db->query($sql)->row();
 
-        if (null == $result) {
-        $data  = array (
-          'interview_users_id' => $userId,
-          'email' => $email
-        );
+    //     if (null == $result) {
+    //     $data  = array (
+    //       'interview_users_id' => $userId,
+    //       'email' => $email
+    //     );
 
-      $this->db->insert('student_register', $data);
+    //   $this->db->insert('student_register', $data);
 
-    } else {
-      $this->db->where('email', $email);
-      $data  = array (
-          'interview_users_id' => $userId
-        );
+    // } else {
+    //   $this->db->where('email', $email);
+    //   $data  = array (
+    //       'interview_users_id' => $userId
+    //     );sendInter
 
-      $this->db->update('student_register',$data);
-    }
+    //   $this->db->update('student_register',$data);
+    // }
+
+    $data  = array (
+      'interview_users_id' => $userId,
+      'email' => $email
+    );
+
+    $this->db->insert('student_register', $data);
 
     $sql = "SELECT username, password from interview_users where id = ".$userId;
 
     $result = $this->db->query($sql)->row();
 
-  // print_r(var_dump($result)); die;
+    $from = "info@skillrary.com";
+    $interviewTime = explode(":",$testTime);
 
-      $from = "info@skillrary.com";
+    $interviewTimeHour = $interviewTime[0];
 
-      $data = array(
-        "username" => $result->username,
-        "password" => $result->password
+
+    $timeA = "am";
+
+    if ($interviewTimeHour >= 12) {
+      $interviewTimeHour = $this->getTimein12Hour($interviewTimeHour);
+      $timeA = "pm";
+    }
+
+    $data = array(
+      "username" => $result->username,
+      "password" => $result->password,
+      "testDateTime" => $testDate." ". $testTime,
+      "testTime" => $interviewTimeHour.":".$interviewTime[1]." ".$timeA,
+      "link" => "https://assess.skillrary.com/interview/login"
       );
 
+      $this->updateAccessToken();
+      $this->createMeeting($testDate, $testTime, $ids , $call="interview");
+      
+      $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 
-      //$this->createMeeting($testDate, $testTime, $ids , $call="interview");
-    //  $this->createMeeting($testDate, $testTime, $ids , $call="interview");
-      //$this->sendMail($from,$email, "SkillRary Assessment Details", $data);
-
-      //$sql = "SELECT * from `assess_login` where id =".$interviewerId;
-
-     // $result = $this->db->query($sql)->row();
-
-      //$data = array(
-        //"username" => $result->username,
-        //"password" => $result->password
-      //);
-
-      // $this->sendMail($from,$result->email, "SkillRary Assessment Details", $data);
-
-      //echo "success";
       $response = array ('status' => "200", "data" => "success" );
-
-      print_r(json_encode($response));
+      print_r($response);
+      //header('Content-Type: application/json');
+      //echo json_encode( $response );
     } else {
 
       $interviewTime = explode(":",$interviewSchedule->interview_time);
@@ -1165,13 +1422,9 @@ if (null == $interviewSchedule) {
       //echo $interviewTimeHour; die;
 
       $response = array ('status' => "400", "data" => "Interview slot free after ".$interviewTimeHour.":".$interviewTime[1]." ".$timeA );
-        header('Content-Type: application/json');
-    echo json_encode( $response );
-
-     // print_r(json_encode($response));
-
+      header('Content-Type: application/json');
+      echo json_encode( $response );
     }
-    //send email
  }
 
  public function getTimein12Hour($hr) {
@@ -1229,17 +1482,23 @@ $hr = '11';
 
  }
 
-public function generateInterviewUsrPwd() {
-
-  $num = $_POST['num'];
-  $mcqId = $_POST['mcqId'];
+public function generateInterviewUsrPwd($internalCall = false, $user=0, $customer=0, $group=0) {
+  if (!$internalCall) {
+    $num = $_POST['num'];
+    $mcqId = $_POST['mcqId'];
+    $group = $_POST['code'];
+    $customer = $_POST['customer'];
+  } else {
+    $num = $user;
+    $mcqId = 0;
+  }
   for ($i=1; $i<=$num; $i++) {
     $username = $this->random_strings(4,"alphaNuMCaps");
     $password = $this->random_strings(4,"numeric");
     if (isset($_POST['code']) && $_POST['code'] != "") {
-      $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $_POST['code']);
+      $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $group,'interview_customer_id' => $customer);
     } else {
-      $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId);  
+      $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $group,'interview_customer_id' => $customer);  
     }
     
   }
@@ -1251,17 +1510,51 @@ public function generateInterviewUsrPwd() {
   $this->db->insert_batch('interview_users', $data);
 }
 
+  public function createInterviewCustomers() {
+    $sql = "SELECT DISTINCT(interview_customer_id) FROM `interview_users` WHERE interview_customer_id is NOT NULL";
+    $result = $this->db->query($sql)->result_array();
+    $customers = array();
+
+    if (count($result) > 0) {
+      $customerIds = "";
+
+      foreach ($result as $key => $value) {
+        if ($key == (count($result) - 1)) {
+          $customerIds .= $value['interview_customer_id'];
+        } else {
+          $customerIds .= $value['interview_customer_id'].",";  
+        }
+      }
+      
+      $sql = "SELECT * FROM customers WHERE id IN ($customerIds)";
+      $customers = $this->db->query($sql)->result_object();
+    }
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/interview-customers',array('customers'=> $customers));
+    $this->load->view('admin/footer');
+  }
+
+
  public function createInterview() {
     /*$sql = "SELECT  interview_users.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
     LEFT JOIN student_register ON interview_users.id=student_register.interview_user_id
     order by interview_users.id asc";
 */
+      $customerId = $this->uri->segment(3);
+      $interviewCode = $this->uri->segment(4);
+
     $sql = "SELECT  interview_users.*, student_register.id as studentId, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
-    LEFT JOIN student_register ON interview_users.id=student_register.interview_users_id
-    order by interview_users.id asc";
+    LEFT JOIN student_register ON interview_users.id=student_register.interview_users_id";
+
+    if ($customerId > 0) {
+       $sql.=" where interview_users.interview_customer_id = $customerId and interview_users.interview_code = '".$interviewCode."'";
+    }
+  
+    $sql.=" order by interview_users.id asc";
    // $sql = "SELECT  * from `interview_users` 
     //order by interview_users.id asc";
-
 
     $query = $this->db->query($sql);
     $interview['users'] = $query->result();
@@ -1326,26 +1619,88 @@ public function generateInterviewUsrPwd() {
  }
   
   public function viewMcqData() {
-     $mcqId = $this->uri->segment(3);   
+    $mcqId = $this->uri->segment(3);
+    $pageNo = 1;
+    if (isset($_GET['page'])) {
+      $pageNo = $_GET['page'];
+    } 
+    $offset = $pageNo*10; 
+    $page = $offset - 10;
+
+    $sql = "SELECT mcq_test.id as id,title, mcq_test.is_proctored as proctoredTest,mcq_code.code FROM `mcq_test` 
+     LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
+     WHERE mcq_test.id=".$mcqId;
+
+    $mcq = $this->db->query($sql)->row();
+
+    $mcqData['mcq-details'] = $mcq;
+
+    $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
+       LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
+      where mcq_test_id= $mcqId
+      order by assess_usr_pwd.id asc
+      limit $page, $offset";
 
 
-        $sql = "SELECT mcq_test.id as id,title, mcq_code.code FROM `mcq_test` 
-         LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
-         WHERE mcq_test.id=".$mcqId;
+        $mcqData['mcq-users'] = $this->db->query($sql)->result();
+        $student = $this->updateResult($mcqId);
 
-        $mcq = $this->db->query($sql)->row();
+        $failCount = $passCount = 0;
+        foreach ($mcqData['mcq-users'] as $key => $value) {
+          
+          if (null === $value->studentId) {
+            continue;
+          }
+          $result = $this->viewResult($mcqId,$value->studentId);
 
-         $mcqData['mcq-details'] = $mcq;
+          $totalAptitudeMarks = 0;
+          $totalAptitudeQualifyingMarks = 0;
+          $totalUserAptitudeMarks = 0;
+          for ($i =0; $i < count($result['Aptitude']); $i++) {
+          
+            
+          $totalMarks = $result['Aptitude'][$i]['total_question'];                   
+          $minMarks =  $result['Aptitude'][$i]['total_question']/2;
+          $userMarks = $result['Aptitude'][$i]['user_ans'];
 
-        $sql = "SELECT  assess_usr_pwd.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
-               LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
-        where mcq_test_id= $mcqId
-        order by assess_usr_pwd.id asc";
+          if ($totalMarks < 10 ) {
+              $totalMarks *= 10;
+              $minMarks *= 10;    
+              $userMarks *= 10;
+          }
+          $totalAptitudeMarks += $totalMarks;
+          $totalAptitudeQualifyingMarks += $minMarks;
+          $totalUserAptitudeMarks += $userMarks;
+        }
+        //echo $totalAptitudeQualifyingMarks,",",$totalUserAptitudeMarks; die;
+        if ($totalAptitudeQualifyingMarks > $totalUserAptitudeMarks) {
+          $mcqData['mcq-users'][$key]->status = "FAIL";
+          ++$failCount;
+          if (isset($_GET['passed'])) {
+            $passed = $_GET['passed'];
 
-        $query = $this->db->query($sql);
-         $mcqData['mcq-users'] = $query->result();
+            if ($passed == "1") {
+              if (in_array($value->studentId, $student['fail'])) {
+                unset($mcqData['mcq-users'][$key]);
+              }
+            } 
+          }
+        } else {
+          $mcqData['mcq-users'][$key]->status = "PASS";
+          ++$passCount;
+          if (isset($_GET['passed'])) {
+            $passed = $_GET['passed'];
+            if ($passed == "2") {
+              if (in_array($value->studentId, $student['pass'])) {
+                unset($mcqData['mcq-users'][$key]);
+              }
+            }
+          } 
+        }
+        }
+      $mcqData['mcq-users'] = array_values($mcqData['mcq-users']);
 
-         $sql = "SELECT * from `assess_login` where role= 7"; //proctor role
+       $sql = "SELECT * from `assess_login` where role= 7"; //proctor role
 
         $query = $this->db->query($sql);
 
@@ -1365,7 +1720,8 @@ public function generateInterviewUsrPwd() {
 
         $mcqData['mcq-details']->totalStudent = $totalStudent->total;
 
-
+        $mcqData['mcq-details']->failCount = $failCount;
+        $mcqData['mcq-details']->passCount = $passCount;
 
         $sql = "SELECT assess_usr_pwd_id as assessIds FROM `proctored_mcq` where mcq_test_id = $mcqId";
 
@@ -1379,8 +1735,8 @@ public function generateInterviewUsrPwd() {
         }
 
         $mcqData['proctoredIds'] = $proctoredIds;
-//echo "<pre>";
-        //print_r($mcqData); die;
+// echo "<pre>";
+//         print_r($mcqData); die;
 
         $this->load->view('admin/header');
         $this->load->view('admin/sidenav');
@@ -1389,6 +1745,12 @@ public function generateInterviewUsrPwd() {
         $this->load->view('admin/footer');
   }
 
+  public function addInterviewGroup() {
+    $customerId = explode('-',$_POST['customer']);
+
+   $this->generateInterviewUsrPwd(true,$_POST['generate'],$customerId[1], $_POST['code']);
+   redirect('admin/view-interview/'.$customerId[1]);
+  }
   public function proctoredUsers() {
     $sql = "SELECT * FROM proctored_mcq where proctor_id = ".$_SESSION['admin_id'];
 
@@ -1452,38 +1814,44 @@ echo "success";
 
 
     //print_r($query->result_object()); die;
-
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+   
 
     $this->load->view('admin/view-questions', array("questionData" => $query->result_object()));
+    $this->load->view('admin/footer');
   }
 
   public function viewTest() {
 
     $adminId = $_SESSION['admin_id'];
+    $customerId = $this->uri->segment(3); 
 
-
-    $sql = "SELECT mcq_test.id, mcq_test.title, mcq_code.code, SUM(mcq_test_pattern.total_question) as totalQuestion
+    $sql = "SELECT mcq_test.id,mcq_test.is_proctored, mcq_test.title, mcq_code.code, SUM(mcq_test_pattern.total_question) as totalQuestion
             FROM mcq_test
             LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
             LEFT JOIN mcq_test_pattern on mcq_test.id=mcq_test_pattern.mcq_test_id";
 
-    if ($adminId > 1) {
-      $sql .= " WHERE mcq_test.created_by = $adminId ";
-    }
-            
+    // if ($adminId > 1) {
+    //   $sql .= " WHERE mcq_test.created_by = $adminId ";
+    // }
+    $sql .= " WHERE mcq_test.customer_id = $customerId";
+
     $sql .= " GROUP by mcq_test.id, mcq_test.title, mcq_code.code";
 
+    //echo $sql; die;
     $query = $this->db->query($sql);
 
     $result = array();
 
     $i = 0;
-          
+     $mcq = array();     
     if($query->num_rows() > 0)  {
 
         foreach ($query->result() as $row) {
 
             $mcq[$i]['id'] = $row->id;
+            $mcq[$i]['proctored'] = $row->is_proctored;
             $sectionDetails = $this->getMcqSection($row->id);
             $mcq[$i]['sectionCount'] = isset($sectionDetails['section']) ? count($sectionDetails['section']) : 0;
             $mcq[$i]['title'] = $row->title;
@@ -1493,15 +1861,31 @@ echo "success";
         }
     }
 
-
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
     $this->load->view('admin/view-mcq', array('mcq' => $mcq));
+    $this->load->view('admin/footer');
+  }
+
+public function viewInterview() {
+//echo "dd";
+   // $adminId = $_SESSION['admin_id'];
+    $customerId = $this->uri->segment(3); 
+
+    $sql  = "SELECT customer_name from customers where id = $customerId";
+    $customerName = $this->db->query($sql)->row();
+
+    $sql = "SELECT DISTINCT(interview_code),count(DISTINCT(id)) as total_students FROM `interview_users` where interview_customer_id=$customerId and interview_code is not null GROUP BY interview_code";
+
+    $result = $this->db->query($sql)->result_object();
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/view-interview', array('customer'=> $customerName->customer_name,'interview' => $result));
     //$this->load->view('admin/view-mcq-data');
     $this->load->view('admin/footer');
    // $this->load->view('admin/view-mcq.php', array('mcq'=>$mcq));
   }
-
 
   private function getCode() {
 
@@ -1568,9 +1952,13 @@ echo "success";
     
     $data = array();
     $mcqId = $_POST['mcqId'];
+    $sql = "SELECT customer_code from customers where id = (SELECT customer_id from mcq_test where id = $mcqId)";
+    $result = $this->db->query($sql)->row();
+    $customerCode = $result->customer_code;
+    $instance = INSTANCE;
     $num = $_POST['num'];
     for ($i=1; $i<=$num; $i++) {
-      $username = $this->random_strings(4,"alphaNuMCaps");
+      $username = $customerCode."_".$instance."_".$this->random_strings(4,"alphaNuMCaps");
       $password = $this->random_strings(4,"numeric");
       $data[]  = array ('mcq_test_id' => $mcqId,'username' => $username, 'password' => $password);
     }
@@ -1586,10 +1974,14 @@ echo "success";
 
                 $title = $_POST['test-title'];
                 $type = $_POST['test-type'];
+                $isProctored = $_POST['is-proctored'];
+                $customerCode = explode("-",$_POST['customer-code']); //change to customer id
 
                 $data = array(
                         'title' => $title,
                         'type' => $type,
+                        'customer_id' => $customerCode[1],
+                        'is_proctored' => $isProctored,
                         'created_by' => $_SESSION['admin_id']
                 );
 
@@ -1616,7 +2008,7 @@ echo "success";
 
                   );
 
-                  $this->db->insert('drive-details', $data);                  
+                  $this->db->insert('drive_details', $data);                  
                 }
 
 
@@ -1888,8 +2280,10 @@ echo "success";
         }
 
         public function createQuestion() {
+          $this->load->view('admin/header');
+          $this->load->view('admin/sidenav');
           $this->load->view('admin/create-question');
-
+          $this->load->view('admin/footer');
         }
 
         public function editQuestion() {
@@ -2383,10 +2777,13 @@ echo "success"; die;
 
   public function downloadExcel() {
         $mcqId = $this->uri->segment(3);
-    
+
+        $filter = $this->uri->segment(4);
+        
         $sql = "SELECT DISTINCT(student_id) FROM `student_answers` where mcq_test_id =".$mcqId;
 
         $query = $this->db->query($sql);
+
 
         $result = array();
 
@@ -2394,144 +2791,241 @@ echo "success"; die;
 
         $sectionDetails = $this->getMcqSection($mcqId);
 
+        //$codingDetails = $this->getCodingDetails($mcqId);
+
+        $sectionDetails['mcqId'] = $mcqId; 
         $studentData = array();
               
         if($query->num_rows() > 0)  {
-
-            foreach ($query->result() as $row) {
-              $sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
+            //$student = $this->updateResult($mcqId);
+           // print_r($student['fail']); die;
+            
+            if ($filter == "1") {
+              $student = $this->updateResult($mcqId);
+              
+              $studentIds = $student['pass'];
+            } else if ($filter == "2") {
+              $student = $this->updateResult($mcqId);
+              
+              $studentIds = $student['fail'];
+            } else {
+              $studentIds = $query->result();
+            }
+            //foreach ($student['pass'] as $key => $student) {
+            foreach ($studentIds as $row) {
+              if ($filter == "0") {
+                $studentId = $row->student_id;
+              } else {
+                $studentId = $row;
+              }
+              //$studentId = $student;
+              $sql = "SELECT * FROM `student_register` WHERE id=".$studentId;
 
               $student = $this->db->query($sql)->row();
 
               $sectionCount = 0;
               $sqll = "";
+
+              
               foreach ($sectionDetails['section'] as $key => $value) {
-                
 
                 if ($sectionCount > 0) {
                   $sqll .= " UNION ALL ";
                 }
-
-                //$sqll .= "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id =".$value['id']." and correct_ans = 1";
-		$sqll .= "select count(id) as result from `student_answers` where test_attempt = (select max(test_attempt) from student_answers where student_id =".$row->student_id." and mcq_test_id=".$mcqId.") and student_id= ".$row->student_id." and mcq_test_id=".$mcqId." and section_id=".$value['id']." and correct_ans=1";
-                //echo $sqll; die;
-		$sectionCount++;
+                
+                $sqll .= "select count(id) as result from `student_answers` where test_attempt = (select max(test_attempt) from student_answers where student_id =".$studentId." and mcq_test_id=".$mcqId.") and student_id= ".$studentId." and mcq_test_id=".$mcqId." and section_id=".$value['id']." and correct_ans = 1";
+                            
+                $sectionCount++;
               }
 
-                $query = $this->db->query($sqll);
-                //$sub = array("verbal", "reasoning", "quantitative");
-                //print_r($sectionDetails); die;
+              $query = $this->db->query($sqll);
+                
+              foreach ($query->result() as $key => $row) {
 
-                foreach ($query->result() as $key => $row) {
+                $sec = $sectionDetails['section'][$key]['name'];
+                $v = $row->result;
+                $student->$sec = $v;
+              } 
 
-                  $sec = $sectionDetails['section'][$key]['name'];
-                  $v = $row->result;
-                  $student->$sec = $v;
-                }  
+             
 
-            //for ($j =1 ; $j < 4; $j++) {
-                // $sqll = "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 1 and correct_ans = 1";
-
-                // $sqll .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 2 and correct_ans = 1";
+              
+                // $codeSql = "SELECT * from code_results where user_id =".$studentId;
 
 
-                // $sqll .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
+                // $query = $this->db->query($codeSql);
+                // $codeQuestion = 1;
+                // $isCode = 0;
+                // foreach ($query->result() as $key => $row) { 
 
-                // $result = $this->db->query($sqll)->row();
+                //   $status = 'program'.$codeQuestion."status";
+                //   $student->$status = $row->status;
+                  
+                //   $q = 'program'.$codeQuestion."time_taken";
+                //   $student->$q = $row->time_taken;
 
-                // print_r($result); die;
+                //   if($row->lang_id == 1){
+                //       $lng = 'program'.$codeQuestion."language";
+                //       $student->$lng = 'Java';
+                //   }
 
-                // if ($j = 1 ) {
-                //   $sub = "verbal";
-                // } else if ($j = 2) {
-                //   $sub = "reasoning";
-                // } else {
-                //   $sub = "quantitative";
+                //   if($row->lang_id == 2){
+                //       $lng = 'program'.$codeQuestion."language";
+                //       $student->$lng = 'Python';
+                //   }
+
+                //   $lc = 'program'.$codeQuestion."line_count";
+                //   $student->$lc = $row->line_count;
+
+                //   $cc = 'program'.$codeQuestion."compile_count";
+                //   $student->$cc = $row->compilation_counter;
+
+                 
+                //   $codeQuestion++;
+                //   $isCode = 1;
+                // } 
+
+                // if (!$isCode) {
+                //   for ($codeQno = 1; $codeQno <= 2; $codeQno++) {
+
+                //     $status = 'program'.$codeQno."status";  
+                //     $student->$status = 0;
+
+                //     $q = 'program'.$codeQno."time_taken";
+                //     $student->$q = 0;
+
+                //     $lng = 'program'.$codeQno."language";
+                //     $student->$lng = 0;
+
+                //     $lc = 'program'.$codeQno."line_count";
+                //     $student->$lc = 0;
+
+                //     $cc = 'program'.$codeQno."compile_count";
+                //     $student->$cc = 0;
+                    
+                //   }                  
                 // }
-
-                // $query = $this->db->query($sqll);
-                // $sub = array("verbal", "reasoning", "quantitative");
-
-                // foreach ($query->result() as $key => $row) {
-                //     $sec = $sub[$key];
-                //     $v = $row->result;
-                //     $student->$sec = $v;
-                // }  
-                //die;
-            //}
-
-
 
             $studentData[$i] = $student;
             $i++;
             }
         }
 
-//echo "<pre>"; print_r($studentData); die;
-        // $sql = "SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 1 and correct_ans = 1";
-
-        // $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 2 and correct_ans = 1";
-
-
-        // $sql .= " UNION ALL SELECT count(id) as result FROM `student_answers` WHERE mcq_test_id =".$mcqId." and student_id=".$row->student_id." and section_id = 3 and correct_ans = 1";
-
-    
-
-   // print_r($studentData); die;    
-
-        $this->generateXls($studentData, $sectionDetails);
+        
+     
+   $this->generateXls($studentData, $sectionDetails);
       }
 
+
+  //     public function getField($a) {
+
+  //       switch ($a) {
+  //           case 'Q':
+		// return "R";
+		// break;
+ 	//     case 'R':
+  //               return "S"; 
+		// break;
+	 //    case 'S':
+  //               return "T"; 
+		// break;
+	 //    case 'T':
+  //               return "U"; 
+  //               break;
+	 //    case 'U':
+  //               return "V"; 
+		// break;
+	 //    case 'V':
+  //               return "W"; 
+  //               break;
+  //           case 'W':
+  //               return "X"; 
+  //               break;
+
+  //           case 'Q1':
+  //          return "R1";
+  //           break;
+  //           case 'R1':
+  //           return "S1";
+  //           break;
+
+  //           case 'S1':
+  //           return "T1";
+  //           break;
+
+  //           case 'U1':
+  //           return "V1";
+  //           break;
+  //           case 'V1':
+  //           return "W1";
+  //           break;
+  //           case 'W1':
+  //           return "X1";
+  //           break;
+
+          
+  //         default:
+  //           return "Z1";
+  //           break;
+  //       }
+
+  //     }
       public function getField($a) {
 
         switch ($a) {
-            case 'Q':
-		return "R";
-		break;
- 	    case 'R':
-                return "S"; 
-		break;
-	    case 'S':
-                return "T"; 
-		break;
-	    case 'T':
-                return "U"; 
+    case 'Q': return "R";
+              break;
+    case 'R': return "S"; 
+              break;
+    case 'S': return "T"; 
+              break;
+    case 'T':  return "U"; 
+              break;
+    case 'U':  return "V"; 
+              break;
+    case 'V':  return "W"; 
+              break;
+    case 'W':  return "X"; 
+              break;
+    case 'Q2': return "R2";
+              break;
+    case 'R2':  return "S2";
                 break;
-	    case 'U':
-                return "V"; 
-		break;
-	    case 'V':
-                return "W"; 
+    case 'S2':  return "T2";
                 break;
-            case 'W':
-                return "X"; 
+    case 'S':  return "T";
+                break;
+    case 'U':  return "V";
+                break;
+    case 'V':  return "W";
+                break;
+    case 'W':  return "X";
+                break;
+     case 'X':  return "Y";
+                break;
+     case 'Y':  return "Z";
                 break;
 
-            case 'Q1':
-           return "R1";
-            break;
-            case 'R1':
-            return "S1";
-            break;
+       case 'Z':  return "AA";
+                break;
+       case 'AA':  return "AB";
+                break;
 
-            case 'S1':
-            return "T1";
-            break;
 
-            case 'U1':
-            return "V1";
-            break;
-            case 'V1':
-            return "W1";
-            break;
-            case 'W1':
-            return "X1";
-            break;
+       case 'AB':  return "AC";
+                break;
 
+
+       case 'AC':  return "AD";
+                break;
+
+        case 'AD':  return "AE";
+                break;
+        case 'AE':  return "AF";
+                break;
           
-          default:
-            return "Z1";
-            break;
+    default: echo $a; die;return "AG";
+              break;
         }
 
       }
@@ -2568,46 +3062,57 @@ echo "success"; die;
         //$listInfo = $this->export->exportList();
         $objPHPExcel = new PHPExcel();
         $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel->getActiveSheet()->setTitle('SkillRary Result');
 
-        $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setName('Arial');
-$objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setSize( 8);
-        // set Header
-        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Sl No');
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Student Name');
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Test Status');
-
-        $objPHPExcel->getActiveSheet()->getStyle('B1')->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Gender');
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Date of Birth');
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Mobile');
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Email');
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('H1', 'X-Board');
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('I1', 'X-Passing Year');
-
-        $objPHPExcel->getActiveSheet()->SetCellValue('J1', 'X-Marks');
+        $objPHPExcel->getActiveSheet()->mergeCells("A1:Q1");
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Personal Details');
 
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('K1', 'XII-Board');
+      $style = array(
+        'alignment' => array(
+            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+        )
+    );
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('L1', 'XII-Passing Year');
+      $objPHPExcel->getActiveSheet()->getStyle("A1:Q1")->applyFromArray($style);
+      $objPHPExcel->getActiveSheet()->getStyle('A2:AC2')->getFont()->setBold(true);
+      // set Header
+      $objPHPExcel->getActiveSheet()->SetCellValue('A2', 'Sl No');
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('M1', 'XII-Marks');
+      $objPHPExcel->getActiveSheet()->SetCellValue('B2', 'Student Name');
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('N1', 'College');
+      $objPHPExcel->getActiveSheet()->SetCellValue('C2', 'Test Status');
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('O1', 'Batch');
+      $objPHPExcel->getActiveSheet()->SetCellValue('D2', 'Gender');
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Branch, Degree');
+      $objPHPExcel->getActiveSheet()->SetCellValue('E2', 'Date of Birth');
 
-        $objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Degree Marks');
+      $objPHPExcel->getActiveSheet()->SetCellValue('F2', 'Mobile');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('G2', 'Email');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('H2', 'X-Board');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('I2', 'X-Passing Year');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('J2', 'X-Marks');
+
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('K2', 'XII-Board');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('L2', 'XII-Passing Year');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('M2', 'XII-Marks');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('N2', 'College');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('O2', 'Batch');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('P2', 'Branch, Degree');
+
+      $objPHPExcel->getActiveSheet()->SetCellValue('Q2', 'Degree Marks');
+        
 
         // $objPHPExcel->getActiveSheet()->SetCellValue('R1', 'Start Time');
 
@@ -2633,9 +3138,9 @@ $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setSize( 8);
 
         //$objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Preferred Work Location');
 
-        $a = "Q1";
+        $a = "Q2";
 
-
+        $objPHPExcel->getActiveSheet()->mergeCells("G1:I1");
 
         foreach ($sectionDetails['section'] as $key => $value) {
 
@@ -2644,30 +3149,112 @@ $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setSize( 8);
           $objPHPExcel->getActiveSheet()->SetCellValue($fieldName, $value['name']." Marks");
 
           $a = $fieldName;
+
+
         }
+
+
+
+        
+
+         
+// change the cell column ...make it dynamic as per section
+
+        $objPHPExcel->getActiveSheet()->mergeCells("T1:X1");
+         $objPHPExcel->getActiveSheet()->getStyle('T1:X1')->getFont()->setBold(true);
+
+    
+
+      $style = array(
+        'alignment' => array(
+            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+        )
+    );
+
+      $styleArray = array(
+    'borders' => array(
+        'allborders' => array(
+            'style' => PHPExcel_Style_Border::BORDER_THIN,
+            'color' => array('argb' => 'black'),
+        ),
+    ),
+);
+    $objPHPExcel->getActiveSheet()->getStyle('A1:AC6')->applyFromArray($styleArray);
+
+    $codeTest = $this->isCodeTestAvailable($sectionDetails['mcqId']);
+
+    if ($codeTest) {
+    $objPHPExcel->getActiveSheet()->getStyle("T1:X1")->applyFromArray($style);
+
+    $objPHPExcel->getActiveSheet()->SetCellValue('T1', 'Code Test Program 1');
+    $objPHPExcel->getActiveSheet()->SetCellValue('T2', 'Program 1 status');
+    $objPHPExcel->getActiveSheet()->SetCellValue('U2', 'timeTaken');
+    $objPHPExcel->getActiveSheet()->SetCellValue('V2', 'language');
+    $objPHPExcel->getActiveSheet()->SetCellValue('W2', 'lineCount');
+    $objPHPExcel->getActiveSheet()->SetCellValue('X2', 'compilationCounter');
+
+    $objPHPExcel->getActiveSheet()->mergeCells("Y1:AC1");
+    $objPHPExcel->getActiveSheet()->getStyle('Y1:AC1')->getFont()->setBold(true);
+    $objPHPExcel->getActiveSheet()->SetCellValue('Y1', 'Code Test Program 2');
+
+    $objPHPExcel->getActiveSheet()->SetCellValue('Y2', 'Program 2 status');
+    $objPHPExcel->getActiveSheet()->SetCellValue('Z2', 'timeTaken');
+    $objPHPExcel->getActiveSheet()->SetCellValue('AA2', 'language');
+    $objPHPExcel->getActiveSheet()->SetCellValue('AB2', 'lineCount');
+    $objPHPExcel->getActiveSheet()->SetCellValue('AC2', 'compilationCounter');
+          
+    }
+      
+
+
+        
 
         // $objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Verbal Correct Answer');
         // $objPHPExcel->getActiveSheet()->SetCellValue('R1', 'Resoning Correct Answer');
         // $objPHPExcel->getActiveSheet()->SetCellValue('S1', 'Quantitative Correct Answer');
 
         // set Row
-        $rowCount = 2;
+        $rowCount = 3;
         $i = 1;
         foreach ($studentData as $student) {
 
-		if ($student->gender == "1") {
-			$genderValue = "Male";
-		} else {
-			$genderValue = "Female";
-		}
-$marks = 0;
-foreach ($sectionDetails['section'] as $key => $value) {
-          $sectionName = $value['name']; 
+    if ($student->gender == "1") {
+      $genderValue = "Male";
+    } else {
+      $genderValue = "Female";
+    }
+//$marks = 0;
 
-           $marks += $student->$sectionName;
-        }
+// foreach ($sectionDetails['section'] as $key => $value) {
+//           $sectionName = $value['name']; 
+
+//            $marks += $student->$sectionName;
+//         }
+// $status = "Failed";
+// if ($marks >= 15) {
+// $status = "Passed";
+// }
+
+$result = $this->viewResult($sectionDetails['mcqId'],$student->id);
+$totalAptitudeMarks = $totalAptitudeQualifyingMarks = $totalUserAptitudeMarks = 0;
+
+$totalMarks = $result['Aptitude'][0]['total_question'];                   
+$minMarks =  $result['Aptitude'][0]['total_question']/2;
+$userMarks = $result['Aptitude'][0]['user_ans'];
+
+if ($totalMarks < 10 ) {
+    $totalMarks *= 10;
+    $minMarks *= 10;    
+    $userMarks *= 10;
+}
+$totalAptitudeMarks += $totalMarks;
+$totalAptitudeQualifyingMarks += $minMarks;
+$totalUserAptitudeMarks += $userMarks;
+
+//echo $totalAptitudeQualifyingMarks,",",$totalUserAptitudeMarks; die;
+if ($totalAptitudeQualifyingMarks > $totalUserAptitudeMarks) {
 $status = "Failed";
-if ($marks >= 15) {
+} else {
 $status = "Passed";
 }
 
@@ -2694,19 +3281,72 @@ $objPHPExcel->getActiveSheet()->SetCellValue('P' . $rowCount, $student->stream."
 $objPHPExcel->getActiveSheet()->SetCellValue('Q' . $rowCount, $student->degree_percentage);
 
 
+
+                                                    
+
 $a = "Q";
 foreach ($sectionDetails['section'] as $key => $value) {
-	  $sectionName = $value['name']; 
+  $sectionName = $value['name']; 
 
-          $fieldName = $this->getField($a);
+  $fieldName = $this->getField($a);
 
-          $objPHPExcel->getActiveSheet()->SetCellValue($fieldName. $rowCount, $student->$sectionName);
+  $objPHPExcel->getActiveSheet()->SetCellValue($fieldName. $rowCount, $student->$sectionName);
 
-          $a = $fieldName;
-        }
+  $a = $fieldName;
+}
 
-            $rowCount++;
-            $i++;
+
+
+
+
+  // for($k=1;$k<3;$k++){
+  //   $fieldName = $this->getField($a);
+
+
+  //   $a = $fieldName;
+
+  //   $st = "program".$k."status";
+     
+  //   $objPHPExcel->getActiveSheet()->SetCellValue($a. $rowCount, $student->$st);
+  //   $tt = 'program'.$k."time_taken";
+  //   $fieldName = $this->getField($a);
+
+   
+  //   $a = $fieldName;
+  //   $objPHPExcel->getActiveSheet()->SetCellValue($a. $rowCount, $student->$tt);
+  //   $sl = 'program'.$k."language";
+  //   $fieldName = $this->getField($a);
+
+   
+  //   $a = $fieldName;
+   
+  //   $objPHPExcel->getActiveSheet()->SetCellValue($a. $rowCount, $student->$sl);
+  //   $lc = 'program'.$k."line_count";
+  //   $fieldName = $this->getField($a);
+
+   
+  //   $a = $fieldName;
+  //   $objPHPExcel->getActiveSheet()->SetCellValue($a. $rowCount, $student->$lc);
+  //   $coc = 'program'.$k."compile_count";
+  //   $fieldName = $this->getField($a);
+
+   
+  //   $a = $fieldName;
+  //   $objPHPExcel->getActiveSheet()->SetCellValue($a. $rowCount, $student->$coc);
+
+  //   // $objPHPExcel->getActiveSheet()->SetCellValue('Z1', 'timeTaken');
+    
+  //   // $objPHPExcel->getActiveSheet()->SetCellValue('AA1', 'langId');
+    
+  //   // $objPHPExcel->getActiveSheet()->SetCellValue('AB1', 'lineCount');
+    
+  //   // $objPHPExcel->getActiveSheet()->SetCellValue('AC1', 'compilationCounter');
+  // }
+
+//die;
+
+  $rowCount++;
+  $i++;
         }
 
         // $filename = "skillrary_mcq". date("Y-m-d-H-i-s").".csv";
@@ -2716,11 +3356,10 @@ foreach ($sectionDetails['section'] as $key => $value) {
         // $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
         // $objWriter->save('php://output'); 
 
-
-  $object_writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-  header('Content-Type: application/vnd.ms-excel');
-  header('Content-Disposition: attachment;filename="Employee Data.xls"');
-  $object_writer->save('php://output');
+       $object_writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="SkillRary Data.xlsx"');
+      $object_writer->save('php://output');
  
     }
 
@@ -2952,7 +3591,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
         $sql = "SELECT id as drive_id, drive_date as drive_drive_date, drive_time 
                 as drive_drive_time, drive_place as drive_drive_place
-                FROM ci_skillrary_assessment.`drive-details` as drive
+                FROM `drive_details` as drive
                 where  mcq_test_id = $questionId";
 
         $query = $this->db->query($sql);
@@ -2962,9 +3601,9 @@ foreach ($sectionDetails['section'] as $key => $value) {
         $sql = "SELECT mcq_time.id as mcq_time_id, mcq_test_id as mcq_time_mcq_test_id, section_id as mcq_time_section_id , 
                 total_question as mcq_time_total_question , completion_time as mcq_time_completion_time,
                 section.id as section_id, section_name
-                FROM ci_skillrary_assessment.mcq_time 
+                FROM mcq_time 
                 inner join 
-                ci_skillrary_assessment.section section
+                section section
                 on mcq_time.section_id  =  section.id
                 where mcq_test_id= $questionId";
 
@@ -3017,5 +3656,281 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
       echo "string";
     }
+
+  public function fetchCustomer() {
+
+    $customerCode = $_POST['customerCode'];
+
+    $sql = "SELECT * from customers where customer_code like '%".$customerCode."%'";
+    $result = $this->db->query($sql)->result_object();
+
+    $output = '<ul class="auto-customer">';
+    if (count($result) > 0) {    
+      foreach($result as $row) {
+        $output .= '
+        <li>'.ucfirst($row->customer_name).'-'.$row->id.'</li>
+        ';
+      }
+    } 
+    // else {
+    //   $output .= '<li>Invalid Code</li>';
+    // }
+
+    $output .= '</ul>';
+  
+    echo $output;
+  }
+  
+
+  public function uploadGotomeeting() {
+    $sql = "SELECT id,user_email,starttime, endtime, meeting_id from interview_details where is_uploaded = 0 and starttime is not null";
+    $interview = $this->db->query($sql)->result_object();
+    
+    $meetingEmail = "trainer111@qspiders.com"; 
+    
+    $sql = "SELECT access_token FROM `gotomeeting_token_details` where email='".$meetingEmail."'";
+    $meeting = $this->db->query($sql)->row();
+    $headers = array(
+            'Content-Type: application/json',
+            "accept: application/json",
+            "Authorization: ".$meeting->access_token,
+    );
+
+    foreach ($interview as $key => $value ){
+      $fileName = explode("@", $value->user_email);
+      $starttime = $value->starttime;
+      $endtime = $value->endtime;
+      $url = "https://api.getgo.com/G2M/rest/historicalMeetings?startDate=$starttime&endDate=$endtime";
+      $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => $headers,
+      ));
+
+      $response = curl_exec($curl);
+
+      curl_close($curl);
+      echo "<pre>";
+      $result = json_decode($response, true);
+      if (count($result) > 0 && isset($result[0]['recording']['downloadUrl'])) {
+        $client = new Vimeo("dfe4d40e1b610f1fc70286ddc017e53e039e7984", "0tyi2RmRxGpejcv3bcsnRFE/b3HT7Y9LOBYJnkODQlSOXuj/StlNqbevYWBThVZMeNd7qKH6Gkjb+AYfNuRJzHSTZimT3QYpj3ubkwFPM68q106nh3j/znAo26wGBMUq", "d598a2fbacd583051d3b80065915e95d");
+          $file_name = $result[0]['recording']['downloadUrl'];
+          $videoName = $fileName[0]."_skillrary_interview";
+          $video_response = $client->request(
+                            '/me/videos',
+                            [
+                                'upload' => [
+                                    'approach' => 'pull',
+                                    'link' => $videoName
+
+                                ],
+                                "name" => "My video"
+                            ],
+                            'POST'
+                        );
+          $vimeoLink = $video_response['body']['link'];
+
+          $data = array ("vimeo_link" => $vimeoLink, "is_uploaded" => 1);
+          
+
+      } else {
+        //is_uploaded = 2 //  not recorded
+        $data = array ("vimeo_link" => "", "is_uploaded" => 2);
+      }
+      $this->db->where('id', $value->id);
+      $this->db->update('interview_details',$data);
+    }
+    echo "success";
+  }
+
+// public function upload($video_name) {
+//   $configVideo['upload_path'] = 'uploads'; # check path is correct
+// $configVideo['max_size'] = '102400';
+// $configVideo['allowed_types'] = 'mp4'; # add video extenstion on here
+// $configVideo['overwrite'] = FALSE;
+// $configVideo['remove_spaces'] = TRUE;
+// $video_name = random_string('numeric', 5);
+// $configVideo['file_name'] = $video_name;
+
+// $this->load->library('upload', $configVideo);
+// $this->upload->initialize($configVideo);
+
+// if (!$this->upload->do_upload('uploadan')) # form input field attribute
+// {
+//     # Upload Failed
+//     $this->session->set_flashdata('error', $this->upload->display_errors());
+//     redirect('controllerName/method');
+// }
+// else
+// {
+//   echo "success"; die;
+// }
+// }
+// public function download($filename = NULL) {
+
+//   // load download helder
+//     $this->load->helper('download');
+//     // read file contents
+//     //$data = file_get_contents(base_url('/uploads/'.$filename));
+//     $data = file_get_contents($filename);
+
+//     //$data = readfile($filename);
+//     force_download("test.mp4", $data);
+// }
+
+  public function updateResult($mcqId) {
+   // $mcqId = $this->uri->segment(3);
+    $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
+               LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
+        where mcq_test_id= $mcqId
+        order by assess_usr_pwd.id asc";
+
+        $query = $this->db->query($sql);
+        $mcqData['mcq-users'] = $query->result();
+//echo '<pre>'; print_r(var_dump($mcqData)); die;
+        $failCount = $passCount = 0;
+        $failStudent = array();
+        $passStudent = array();
+        foreach ($mcqData['mcq-users'] as $key => $value) {
+          
+          if (null === $value->studentId) {
+            continue;
+          }
+          $result = $this->viewResult($mcqId,$value->studentId);
+
+          $totalAptitudeMarks = 0;
+          $totalAptitudeQualifyingMarks = 0;
+          $totalUserAptitudeMarks = 0;
+          for ($i =0; $i < count($result['Aptitude']); $i++) {
+          
+            
+          $totalMarks = $result['Aptitude'][$i]['total_question'];                   
+          $minMarks =  $result['Aptitude'][$i]['total_question']/2;
+          $userMarks = $result['Aptitude'][$i]['user_ans'];
+
+          if ($totalMarks < 10 ) {
+              $totalMarks *= 10;
+              $minMarks *= 10;    
+              $userMarks *= 10;
+          }
+          $totalAptitudeMarks += $totalMarks;
+          $totalAptitudeQualifyingMarks += $minMarks;
+          $totalUserAptitudeMarks += $userMarks;
+        }
+        //echo $totalAptitudeQualifyingMarks,",",$totalUserAptitudeMarks; die;
+        if ($totalAptitudeQualifyingMarks > $totalUserAptitudeMarks) {
+          $mcqData['mcq-users'][$key]->status = "FAIL";
+          $failStudent[] =  $value->studentId;
+          ++$failCount;
+        } else {
+          $mcqData['mcq-users'][$key]->status = "PASS";
+          ++$passCount;
+          $passStudent[] =  $value->studentId;
+        }
+        }
+
+        $studentResult['pass'] = $passStudent;
+        $studentResult['fail'] = $failStudent;
+        return $studentResult;
+  }
+
+  public function isCodeTestAvailable($mcqId) {
+    $sql = "SELECT id , code_id from mcq_code_test where mcq_test_id = $mcqId";
+
+    $result = $this->db->query($sql)->row();
+    $isAvailable = 0;
+    if (null !== $result ) {
+      if (null !== $result->code_id) {
+        $isAvailable = 1;
+      }
+    }
+    return $isAvailable;
+  }
+
+      public function createMeetingCredentials() {
+    $sql = "SELECT DISTINCT(interview_customer_id) FROM `interview_users` WHERE interview_customer_id is NOT NULL";
+    $result = $this->db->query($sql)->result_array();
+    $customers = array();
+
+    if (count($result) > 0) {
+      $customerIds = "";
+
+      foreach ($result as $key => $value) {
+        if ($key == (count($result) - 1)) {
+          $customerIds .= $value['interview_customer_id'];
+        } else {
+          $customerIds .= $value['interview_customer_id'].",";  
+        }
+      }
+      
+      $sql = "SELECT * FROM gotomeeting_token_details WHERE customer_id IN ($customerIds)";
+      $customers = $this->db->query($sql)->result_object();
+    }
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-meeting-credentials',array('customers'=> $customers));
+    $this->load->view('admin/footer');
+  }
+
+
+  public function saveMeetingCredentials() {
+   // print_r($this->input->post()); die;
+    $customerId = explode('-',$_POST['customer']);
+    $username = $_POST['meeting-email'];
+    $password = $_POST['password'];
+    $this->createCustomerMeetingToken($customerId[1], $username, $password);
+    redirect ('admin/add-meeting-credentials');
+  }
+
+   private function createCustomerMeetingToken($customerId, $username, $password) {
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://api.getgo.com/oauth/v2/token');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=password&username=".$username."&password=".$password);
+
+    $headers = array();
+    $headers[] = 'Authorization: Basic QXN3a2o2QTRSS0dVMG5BeldEMGNtMWFUbFc3R0xVZFk6SFMwQW1XT0lHYVZrbTB2VA==';
+    $headers[] = 'Content-Type: application/x-www-form-urlencoded';
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+
+    // echo "<pre>";
+
+    // print_r(json_decode($result));
+    $result = json_decode($result);
+    if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
+    }
+    curl_close($ch);
+    $data  = array (
+      'customer_id' => $customerId,
+      'first_name' => $result->firstName,
+      'last_name' => $result->lastName,
+      'email' => $result->email,
+      'access_token' => $result->access_token,
+      'refresh_token' => $result->refresh_token,
+      'token_type' => $result->token_type,
+      'account_key' => $result->account_key,
+      'organizer_key' => $result->organizer_key
+    );
+
+    $this->db->insert('gotomeeting_token_details', $data);
+
+    return true;
+
+  }
 
 }

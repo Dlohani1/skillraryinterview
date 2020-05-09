@@ -189,7 +189,8 @@ div.footer a.Cbtn-danger:hover{
                                 <span></span>
                             </div>
                             <div class="ends">
-                                <strong>MODE</strong> ONLINE
+                                <strong>MODE</strong> ONLINE <br/>
+                                <strong>Link</strong> <?=$link;?>
                             </div>
                         </div>
 

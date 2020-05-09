@@ -4,9 +4,6 @@ $proctoredTest = 1;
 if (!$mcq['mcq-details']->proctoredTest) {
   $proctoredTest = 0;
 }  
-
-$search = isset($_GET['passed']) ? $_GET['passed'] : 0;
-
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -56,18 +53,12 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
          <input type="hidden" id="assessId" name="assessId"  />
           <div class="col-md-12">
             <h4>MCQs</h4>
-            <div class="container"  id="detail">
+<!--             <div class="container"  id="detail">
             <div class="row">
               <div class="column">
                 <label>User Count</label>
                 <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>&nbsp;&nbsp;<button onclick="deleteUsrPwd()">Delete IDs</button>&nbsp;&nbsp;<button onclick="printUsrPwd()">Print IDs</button>&nbsp;&nbsp;<button onclick="downloadResult()">Print Result</button>
-                <select id = "resultFilter" onchange="setFilter()">
-                  <option value="0" <?php if ($search == "0") { echo "selected"; }?>> All </option>
-                  <option value="1" <?php if ($search == "1") { echo "selected"; }?>> Passed </option>
-                  <option value="2" <?php if ($search == "2") { echo "selected"; }?>> Failed </option>
-                </select>
-                <input type="hidden" id="student-result" value="0" />
-                <button onclick="search()">Search</button>
+
               </div>
               <div class="column">
                 <input type="hidden" id="mcqTestId" value= "<?php echo $mcq['mcq-details']->id;?>">
@@ -81,7 +72,7 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
                   <label for="lname">Fail Count : </label> <strong><?=$mcq['mcq-details']->failCount;?></strong><br/> 
               </div>
             </div>
-          </div>
+          </div> -->
             <div class="container">
               <!-- <div class="searchBox"> -->
                 <!-- <div class="row">
@@ -219,8 +210,57 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
     <td>+923335586757</td>
     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>-->
-
+    </tr>
+    
+ <tr> -->
+    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+    <!-- <td>Mohsin</td>
+    <td>Irshad</td>
+    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
+    <td>isometric.mohsin@gmail.com</td>
+    <td>+923335586757</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr>
+    
+    
+ <tr> -->
+    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+    <!-- <td>Mohsin</td>
+    <td>Irshad</td>
+    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
+    <td>isometric.mohsin@gmail.com</td>
+    <td>+923335586757</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr>
+    
+    
+    
+ <tr> -->
+    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+   <!--  <td>Mohsin</td>
+    <td>Irshad</td>
+    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
+    <td>isometric.mohsin@gmail.com</td>
+    <td>+923335586757</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr>
+    
+    
+ <tr> -->
+    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+<!--     <td>Mohsin</td>
+    <td>Irshad</td>
+    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
+    <td>isometric.mohsin@gmail.com</td>
+    <td>+923335586757</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr> -->
+    
+   
     
    
     
@@ -229,15 +269,15 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
 </table>
 
 <div class="clearfix"></div>
-<ul class="pagination pull-right">
+<!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-  <li class="active"><a href="?page=1">1</a></li>
-  <li><a href="?page=2">2</a></li>
-  <li><a href="?page=3">3</a></li>
-  <li><a href="?page=4">4</a></li>
-  <li><a href="?page=5">5</a></li>
-  <li><a href="?page=6"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-</ul>
+  <li class="active"><a href="#">1</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+  <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+</ul> -->
                 
             </div>
             
@@ -324,9 +364,7 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
                         <div class="card mb-4">
                             <!-- <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div> -->
                         </div>
-
                     </div>
-
                 </main>
 
 <script>
@@ -425,19 +463,10 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
             }
 
             function downloadResult() {
-              var filter = document.getElementById("student-result").value;
               var mcqId = document.getElementById("mcqTestId").value;
               var baseUrl = document.getElementById("base_url").value;
-              var url = baseUrl+"admin/download-students/"+mcqId+"/"+filter;
+              var url = baseUrl+"admin/download-students/"+mcqId;
               window.open(url);
-            }
-
-            function search() {
-              var filter = document.getElementById("student-result").value;
-              var mcqId = document.getElementById("mcqTestId").value;
-              var baseUrl = document.getElementById("base_url").value;
-              var url = baseUrl+"admin/view-mcq-data/"+mcqId+"?passed="+filter;
-              window.location.href=url;
             }
 
 function getHour(hour) {
@@ -516,9 +545,5 @@ function getHour(hour) {
                 });
 
 		document.getElementById("closebox").click();
-             }
-             function setFilter() {
-              var filterValue = document.getElementById("resultFilter").value;
-              document.getElementById("student-result").value = filterValue;
              }
 </script>
