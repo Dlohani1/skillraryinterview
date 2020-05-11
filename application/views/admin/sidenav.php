@@ -37,6 +37,7 @@
                     <div class="collapse" id="collapseLayoutsCustomer" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href=<?php echo base_url()."admin/create-customers";?>>Create/View</a>
+                              <a class="nav-link" href=<?php echo base_url()."admin/add-meeting-credentials";?>>Add Credentials</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts"
