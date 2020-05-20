@@ -17,7 +17,7 @@
           <div class="col-md-12">
             <h4>Users List</h4>
             <div class="container">
-              <div class="searchBox">
+              <!-- <div class="searchBox"> -->
 <!--                 <div class="row">
                   <div class="col-md-3 offset-md-1">
                     <label>MCQ Name</label>
@@ -43,7 +43,37 @@
 
                         </div> -->
 
-        </div>
+        <!-- </div> -->
+
+    <div class="container">
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."proctor/assignedUsersSearch";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-6 ">
+                        <label>Search Date</label>
+                        <input type="date" id="searchdate" name="searchdate" class="form-control " placeholder="Search Date" value="<?php echo $searchdate; ?>" >
+                      </div>
+
+                      <div class="col-md-2 right" float='right'>
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+                      </div>
+
+                      <div class="col-md-1">
+                         <label></label>
+                         <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+  </div>
 
                            
         <!-- <div class="container">
@@ -78,7 +108,7 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                   <th>Id</th>
+                     <th>Sl.no</th>
                     <th>Email</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -91,9 +121,9 @@
                     <th>Action</th>
                    </thead>
     <tbody>
-
+ 
         <?php 
-        $i = 0;
+         $i = $this->uri->segment(3)+0;
         if (count($users) > 0)
         foreach($users as $key => $value) { 
           //print_r($value);
@@ -184,6 +214,7 @@ echo '</td><td><button class="btn btn-warning"  id="pauseTest" onclick="activate
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
@@ -267,6 +298,13 @@ echo '</td><td><button class="btn btn-warning"  id="pauseTest" onclick="activate
                 </main>
 
 <script>
+
+   $('#back').click(function () {
+
+      let baseUrl = '<?php echo base_url(); ?>';
+      let url =  baseUrl+"proctor/assignedUsers";
+      window.location.href = url;
+    });
 
  $.ajaxSetup({
         data: {

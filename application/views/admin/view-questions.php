@@ -1,154 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>SkillRary Admin</title>
-        <link href=<?php echo base_url()."admin/admin-css-js/css/styles.css"; ?> rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <style>
-        .firstSection{
-            background: white;
-            box-shadow: 2px 2px 10px 0px #aaa;
-            padding: 30px;
-        }
-        .labelColor{
-            color: black;
-            font-size: 17px;
-            line-height: 10px;
-        }
-        .editSubbtn{
-            float:right;
-            margin-right: 120px;
-        }
-        .ESbutn{
-            margin-bottom: 5px;
-            padding: 4px 15px;
-            background: #33a478;
-            border: 1px solid #33A478;
-        }
-        .labelTest{
-            color: #33A478;
-            font-weight: 600;
-            font-size: 20px;
-        }
-        .addBtn{
-            background: #33A478;
-            margin-top: 25px;
-            border: 2px solid #33A478;
-            padding: 3px 8px;
-        }
-        .tdborder,.thborder{
-            border: 1px solid black !important;
-            text-align: center !important;
-            color:black;
-        }
-        .tableWidth {
-            width:100%;
-        }
-
-        .navbar {
-            margin-bottom: 0px;
-        }
-        .searchBox{
-            border: 1px solid #aaaaaa;
-            padding: 10px;
-        }
-        .searchBtn{
-            background: black;
-            color: white;
-            padding: 6px 10px;
-            font-size: 18px;
-            border: 1px solid black;
-        }
-        .inputBox:focus{
-            box-shadow: initial;
-            border: 1px solid black;
-        }
-    </style>
-    </head>
-    <body>
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="index.html">SkillRary Admin</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
-            ><!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-               <!--  <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-                    </div>
-                </div> -->
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ml-auto ml-md-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-<!--                         <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>
-                        <div class="dropdown-divider"></div> -->
-                        <a class="dropdown-item" href="login.html">Logout</a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                                                <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
-                                >
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                MCQs
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href=<?php echo base_url()."admin/create-test";?>>Create</a>
-                                    <a class="nav-link" href=<?php echo base_url()."admin/view-mcq";?>>View</a>
-                                </nav>
-                            </div>
-                             <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsQ" aria-expanded="false" aria-controls="collapseLayouts"
-                                >
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Questions
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
-                                    <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>View</a>
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
-                                >
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Results
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayoutsR" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href=<?php echo base_url()."admin/view-results";?>>View</a>
-                                </nav>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        SkillRary Admin
-                    </div>
-                </nav>
-            </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
@@ -160,11 +10,58 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
+
+ 
+ 
+  <div class="container">
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/view-questions-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-4 ">
+                        <label class="" for="sectionId">Section:</label>
+                        <select id="section" name="section" onchange="getSubSection()">
+                          <option value="0">Select Section</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                          <label class="" for="subsection">Sub Section:</label>
+                          <select id="subsection"   name="subsection" >
+                              <option value="0">Select Sub Section</option>
+                          </select>
+                      </div>
+
+                      <div class="col-md-2">
+                          <label class="" for="difficultylevel">Level:</label>
+                          <select id="difficultylevel" name="difficultylevel" >
+                              <option value="0">Select Level</option>
+                          </select>
+                      </div>
+
+                      <div class="col-md-1">
+                          <!-- <label>Search</label><br> -->
+                          <button type="submit" value="Submit"><i  style="font-size:28px;color:lightblue" class="fa fa-search"></i></button>
+                      </div>               
+
+
+                      <div class="col-md-1">
+                         <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
+                      </div>
+                </div>
+          </div>
+      </form>
+  </div>
+
+
+
                                 <div class="container-fluid">
                                     <div class="container">
   <div class="row">
     
-        
+         
         <div class="col-md-12">
         <!-- <h4>MCQs</h4>
             <div class="container">
@@ -195,6 +92,15 @@
                 </div>
             </div> -->
             <br/>
+
+
+
+
+       
+
+
+
+
         <div class="table-responsive">
 
                 
@@ -203,6 +109,7 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+                    <th>Sl.no</th>
                     <th>Question</th>
                     <th>Section</th>
                     <th>Sub Section</th>
@@ -214,8 +121,9 @@
     <tbody>
 
         <?php
+         $i = $this->uri->segment(3)+0;
         foreach($questionData as $key => $value) {
-
+           $i++;
             $question = $value->question; 
             $section = $value->section_name;
             $subSection = $value->sub_section_name;
@@ -223,7 +131,7 @@
 
             $id = $value->id;
 
-            echo '<tr>
+            echo '<tr><td>'.$i.'</td>
                     <td><span style="height: 18px;
                       width: 140px;
                       overflow: hidden;
@@ -239,7 +147,8 @@
                     <td>'.$section.'</td> <td>'.$subSection.'</td>
                     <td>'.$level.'</td>
                     <td><p data-placement="top" data-toggle="tooltip" title="view"><button disabled onclick="populateData()" class="btn btn-primary btn-xs" data-title="view" data-toggle="modal" data-target="#view"><span class="glyphicon glyphicon-eye-open"></span></button></p></td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="edit-question/'.$id.'"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().
+                    'admin/edit-question/'.$id.'"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
                     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
                 </tr>';
         }
@@ -307,10 +216,11 @@
    
     
    
-    
+     
     </tbody>        
 </table>
 
+  <p><?php echo $links; ?></p>
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
@@ -418,24 +328,7 @@
                         </div>
                     </div>
                 </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; SkillRary Assessment 2020</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src=<?php echo base_url()."admin/admin-css-js/js/scripts.js"; ?>></script>
-
+                
 <script>
      $.ajaxSetup({
         data: {
@@ -451,7 +344,7 @@
     $('#view').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
 
-      console.log('bb', button.data('whatever'))
+      // console.log('bb', button.data('whatever'))
       var recipient = button.data('whatever') // Extract info from data-* attributes
       // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
@@ -459,6 +352,150 @@
       modal.find('#questionDetail').val('New message to ' + recipient)
       //modal.find('.modal-body input').val(recipient)
     })
+
+
+
+
+// for select and auto select section
+
+
+$( document ).ready(function() {
+    var baseUrl = '<?php echo base_url(); ?>';
+
+
+        $.ajax({
+            type: "POST",
+            url: baseUrl+"/question/getSection",
+            success: function(data){
+
+              
+                // Parse the returned json data
+                var opts = $.parseJSON(data);
+                // Use jQuery's each to iterate over the opts value
+                $.each(opts, function(i, d) { 
+                  // console.log('d',d);
+                    // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+
+                  let searchParams = new URLSearchParams(window.location.search)
+                  let section = searchParams.get('section');
+                  
+                  if(section == d.id){
+                    $('#section').append('<option value="' + d.id +'" selected>' + d.name + '</option>');
+                  }else{
+                    $('#section').append('<option value="' + d.id +'">' + d.name + '</option>');
+                  }
+
+                });
+            }
+        });
+
+
+
+
+      $.ajax({
+                type: "POST",
+                url: baseUrl+"/question/getQuestionLevel",
+                success: function(data){
+                    //Parse the returned json data
+                    var opts = $.parseJSON(data);
+                    // Use jQuery's each to iterate over the opts value
+                    $.each(opts, function(i, d) { 
+                      // console.log('d',d);
+                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+
+
+                      let searchParams = new URLSearchParams(window.location.search)
+                      let difficultylevel = searchParams.get('difficultylevel');
+                      
+                      if(difficultylevel == d.id){
+                        $('#difficultylevel').append('<option value="' + d.id +'" selected>' + d.level + '</option>');
+                      }else{
+                        $('#difficultylevel').append('<option value="' + d.id +'">' + d.level + '</option>');
+                      }
+
+                        // $('#difficultylevel').append('<option value="' + d.id + '">' + d.level + '</option>');
+                    });
+                }
+            });
+
+});
+
+
+    let searchParams = new URLSearchParams(window.location.search)
+    let sectionparam = searchParams.get('section');
+
+    if (sectionparam) {
+      getSubSection();
+    }
+
+
+
+  function getSubSection() {
+      let section = document.getElementById("section").value;
+
+      let searchParams = new URLSearchParams(window.location.search)
+      let sectionparam = searchParams.get('section');
+
+        if(section == 0){
+            if(sectionparam != 0){
+              section = sectionparam;
+            }
+        }
+     
+        if (section != 0) {
+
+            $('#subsection').empty()
+
+            var baseUrl = '<?php echo base_url(); ?>';
+
+            $.ajax({
+                type: "POST",
+                url: baseUrl+"/question/getSubSection",
+                data: { 'Id': section },
+                success: function(data){ 
+                    // Parse the returned json data
+                    var opts = $.parseJSON(data);
+                    // Use jQuery's each to iterate over the opts value
+                    $('#subsection').append('<option value="0"> Select option </option>');
+                    $.each(opts, function(i, d) {
+                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                      let searchParams = new URLSearchParams(window.location.search)
+                      let subsection = searchParams.get('subsection');
+                      
+                      if(subsection == d.id){
+                        $('#subsection').append('<option value="' + d.id +'" selected>' + d.name + '</option>');
+                      }else{
+                        $('#subsection').append('<option value="' + d.id +'">' + d.name + '</option>');
+                      }
+
+                  });
+                }
+            });
+        } else {
+            $('#subsection').empty()
+          $('#subsection').append('<option value="0">' + 'Select option' + '</option>');
+        }
+  }
+
+
+    $('#back').click(function () {
+
+      let baseUrl = '<?php echo base_url(); ?>';
+      let url =  baseUrl+"admin/view-questions";
+      window.location.href = url;
+    });
+
+
+
+
+
+
+
+
+
+
+
+
       
 </script>
     </body>

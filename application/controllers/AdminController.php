@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use Vimeo\Vimeo;
 class AdminController extends CI_Controller {
-
+  
   public function __construct()
   {
     parent::__construct();
@@ -11,11 +11,13 @@ class AdminController extends CI_Controller {
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
 
+    $this->load->library("pagination");
+
     $uri = $this->uri->segment(2);
     //echo $uri; die;
     if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin'))) {
       redirect('admin/login');
-    }
+    }  
 
     //$this->db2 = $this->load->database('database2', TRUE);
     // $client = new Vimeo("dfe4d40e1b610f1fc70286ddc017e53e039e7984", "0tyi2RmRxGpejcv3bcsnRFE/b3HT7Y9LOBYJnkODQlSOXuj/StlNqbevYWBThVZMeNd7qKH6Gkjb+AYfNuRJzHSTZimT3QYpj3ubkwFPM68q106nh3j/znAo26wGBMUq", "d598a2fbacd583051d3b80065915e95d");
@@ -105,6 +107,7 @@ class AdminController extends CI_Controller {
     
     echo "success";
   }
+
 
   public function getAccessToken() {
 
@@ -220,7 +223,7 @@ $fields['subject'] = "DXC Interview";
 // print_r(json_encode($fields)); die;
 
 
-		$ch = curl_init();
+    $ch = curl_init();
                curl_setopt($ch,CURLOPT_HTTPHEADER, $headers );
                 curl_setopt($ch,CURLOPT_URL, $url);
                 curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
@@ -237,19 +240,19 @@ $fields['subject'] = "DXC Interview";
                   if(isset($webinars->int_error_code) || isset($webinars->int_err_code)){
                     continue;
                   }else{
-			//print_r($webinars); die;
-			 $data = array(
-      				'meeting_id' => $webinars[0]->meetingid,
-      				'user_join_url' => $webinars[0]->joinURL,
+      //print_r($webinars); die;
+       $data = array(
+              'meeting_id' => $webinars[0]->meetingid,
+              'user_join_url' => $webinars[0]->joinURL,
               'starttime'=> $startTestTime1,
               'endtime' => $endTestTime1
-    			);
-			if ($call == "test") {
-			 $this->db->where('id', $assessId);
-        		 $this->db->update('proctored_mcq',$data);
-			} else if ($call == "interview") {
-				//echo "test", $assessId;
-				//$this->db->where('id', $assessId);
+          );
+      if ($call == "test") {
+       $this->db->where('id', $assessId);
+             $this->db->update('proctored_mcq',$data);
+      } else if ($call == "interview") {
+        //echo "test", $assessId;
+        //$this->db->where('id', $assessId);
                                //$this->db->update('interview_details',$data);
 
   foreach ($assessId as $key => $value) {
@@ -258,22 +261,22 @@ $fields['subject'] = "DXC Interview";
                                       'meeting_id' => $webinars[0]->meetingid,
                                       'user_join_url' => $webinars[0]->joinURL
                                   );*/
-			 // $data = array(
+       // $data = array(
     //                             'meeting_id' => $webinars[0]->meetingid,
     //                             'user_join_url' => $webinars[0]->joinURL,
     //                             'starttime'=> $startTestTime,
     //                             'endtime' => $endTestTime,
     //                     );
 
-				$this->db->where('id', $value);
+        $this->db->where('id', $value);
                                $this->db->update('interview_details',$data);
                                 }
 
                                //$this->db->updateBatch('interview_details',$data, 'id');
 
 
-			}
-			 echo "Success";
+      }
+       echo "Success";
             //start meeting
             //$this->startMeeting($webinars->meetingid, $headers);
             break;
@@ -801,17 +804,138 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
   public function createCustomer() {
     $sql = "SELECT * FROM customers ";
 
-    $query = $this->db->query($sql);
+    // $query = $this->db->query($sql);
 
-    $result = $query->result();
+    // $result = $query->result();
+
+   
+
+    $searchcode = '';
+    $searchname = '';
+    $searchemail = '';
+    $searchcontact = '';
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
 
 
+    $config['base_url'] = base_url() . 'admin/create-customers';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+    
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/create-customers', array("customers"=>$result));
-    $this->load->view('admin/footer');
-  }
 
+    $this->load->view('admin/create-customers', array(
+      "customers"=>$result,
+      "searchcode"=>$searchcode,
+      "searchname"=>$searchname,
+      "searchemail"=>$searchemail,
+      "searchcontact"=>$searchcontact,
+      "links"=>$links
+    ));
+
+    // $this->load->view('admin/create-customers', array("customers"=>$result));
+    $this->load->view('admin/footer');
+  } 
+
+
+
+
+  public function createCustomerSearch() {
+      $searchcode = $_GET['searchcode'];
+      $searchname = $_GET['searchname'];
+      $searchemail = $_GET['searchemail'];
+      $searchcontact = $_GET['searchcontact'];
+
+    $sql = "SELECT * FROM customers
+    where customer_code like '%$searchcode%' 
+    and customer_name like '%$searchname%'
+    and customer_email like '%$searchemail%'
+    and customer_contactno like '%$searchcontact%'";
+
+    // $query = $this->db->query($sql);
+
+    // $result = $query->result();
+
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+    $config['base_url'] = base_url() . 'admin/create-customers-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+    
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+
+    $this->load->view('admin/create-customers', array(
+      "customers"=>$result,
+      "searchcode"=>$searchcode,
+      "searchname"=>$searchname,
+      "searchemail"=>$searchemail,
+      "searchcontact"=>$searchcontact,
+      "links"=>$links
+
+    ));
+    $this->load->view('admin/footer');
+  } 
+
+
+ 
   public function interviewCustomers() {
     $sql = "SELECT DISTINCT(interview_customer_id) FROM `interview_users` WHERE interview_customer_id is NOT NULL";
     $result = $this->db->query($sql)->result_array();
@@ -832,12 +956,66 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
       $customers = $this->db->query($sql)->result_object();
     }
 
+     $searchcode = '';
+
+     $searchname = '';
+
+     $searchemail = '';
+
+     $searchcontact = '';
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/interview-customers-view', array("customers"=>$customers));
+    // $this->load->view('admin/interview-customers-view', array("customers"=>$customers));
+    $this->load->view('admin/interview-customers-view', array(
+         "customers"=>$customers,
+         "searchcode"=>$searchcode,
+         "searchname"=>$searchname,
+           "searchemail"=>$searchemail,
+         "searchcontact"=>$searchcontact
+    ));
     $this->load->view('admin/footer');
   }
+
+
+
+  public function interviewCustomersSearch() {
+
+         $searchcode = $_POST['searchcode'];
+
+         $searchname = $_POST['searchname'];
+
+         $searchemail = $_POST['searchemail'];
+
+         $searchcontact = $_POST['searchcontact'];
+
+         $sql = "SELECT distinct(c.id), c.customer_code, c.username, c.password, c.customer_name,
+                  c.customer_email, c.customer_contactno, c.customer_address, c.is_active
+                  FROM customers as c
+                  inner join interview_users as iu
+                  on c.id = iu.interview_customer_id
+                  where iu.interview_customer_id is not null
+                  and c.customer_code like '%$searchcode%'
+                  and c.customer_name like '%$searchname%'
+                  and c.customer_email like '%$searchemail%'
+                  and c.customer_contactno like '%$searchcontact%'";
+
+         $customers = $this->db->query($sql)->result_object();
+
+
+        $this->load->view('admin/header');
+        $this->load->view('admin/sidenav');
+        $this->load->view('admin/interview-customers-view', array(
+             "customers"=>$customers,
+             "searchcode"=>$searchcode,
+             "searchname"=>$searchname,
+              "searchemail"=>$searchemail,
+             "searchcontact"=>$searchcontact
+        ));
+        $this->load->view('admin/footer');
+  }
+
+
 
   public function addRoles() {
     $sql = "SELECT * FROM roles ";
@@ -1206,7 +1384,7 @@ print_r($mcq); die;
      //print_r($data); die;
     $this->db->insert('proctored_mcq', $data);
 
-	$proctoredMcqId = $this->db->insert_id();
+  $proctoredMcqId = $this->db->insert_id();
 
     $data  = array (
       'assess_usr_pwd_id' => $assessId,
@@ -1335,14 +1513,14 @@ return $x;
     $interviewDetailsId =  $this->db->insert_id();
 
     $ids = array();
-  	
+    
     for ($i = 0; $i < count($interviewerId); $i++) {
-     		if (!$i) {
-      			$ids[] = $interviewDetailsId;
-     		} else {
-      			$ids[] =  $interviewDetailsId + $i;
-     		}
-  	}
+        if (!$i) {
+            $ids[] = $interviewDetailsId;
+        } else {
+            $ids[] =  $interviewDetailsId + $i;
+        }
+    }
 
     // $sql = "SELECT id FROM `student_register` where email = '".$email."'";
 
@@ -1751,33 +1929,223 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
    $this->generateInterviewUsrPwd(true,$_POST['generate'],$customerId[1], $_POST['code']);
    redirect('admin/view-interview/'.$customerId[1]);
   }
+
+  
   public function proctoredUsers() {
+    $searchdate = '';
     $sql = "SELECT * FROM proctored_mcq where proctor_id = ".$_SESSION['admin_id'];
 
-    $query = $this->db->query($sql);
+    // $query = $this->db->query($sql);
 
-    $result = $query->result();
+    // $result = $query->result();
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'proctor/assignedUsers';
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
     //print_r($result); die;
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/assigned-proctor-users', array("users"=>$result));
+    $this->load->view('admin/assigned-proctor-users', array(
+      "users"=>$result,
+      "searchdate"=>$searchdate,
+      "links"=>$links
+
+    ));
     $this->load->view('admin/footer');
   }
 
-  public function assignedInterviews() {
-    $sql = "SELECT * FROM interview_details where interviewer_id = ".$_SESSION['admin_id'];
+
+
+  public function proctoredUsersSearch() {
+    $this->load->library("pagination");
+
+    $searchdate = $_GET['searchdate'];
+
+    $sql = "SELECT * FROM proctored_mcq where proctor_id = ".$_SESSION['admin_id']."  and test_date like '%$searchdate%'" ;
 
     $query = $this->db->query($sql);
 
     $result = $query->result();
-    // echo '<pre>';
-    // print_r($result); die;
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'proctor/assignedUsersSearch';
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+    $config['reuse_query_string'] = true;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    //print_r($result); die;
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/assignedInterviews', array("users"=>$result));
+    $this->load->view('admin/assigned-proctor-users', array(
+      "users"=>$result,
+      "searchdate"=>$searchdate,
+      "links" => $links
+
+    ));
     $this->load->view('admin/footer');
   }
+
+
+  public function assignedInterviews() {
+
+    $this->load->library("pagination");
+    $sql = "SELECT * FROM interview_details where interviewer_id = ".$_SESSION['admin_id'];
+
+    // $query = $this->db->query($sql);
+
+    // $result = $query->result();
+    $searchdate = '';
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'interviewer/assignedInterviews';
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/assignedInterviews', array(
+      "users"=>$result, 
+      'searchdate' => $searchdate,
+      'links' => $links
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+  public function assignedInterviewsSearch() {
+
+    $this->load->library("pagination");
+
+    $searchdate = $_GET['searchdate'];
+
+    $sql = "SELECT * FROM interview_details where interviewer_id = ".$_SESSION['admin_id']."  and interview_date like '%$searchdate%'" ;
+
+    // $query = $this->db->query($sql);
+
+    // $result = $query->result();
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'interviewer/assignedInterviewsSearch';
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+    $config['reuse_query_string'] = true;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+     $this->load->view('admin/assignedInterviews', array(
+      "users"=>$result, 
+      'searchdate' => $searchdate,
+      'links' => $links
+    ));
+    // $this->load->view('admin/assignedInterviews', array("users"=>$result, 'searchdate' => $searchdate));
+    $this->load->view('admin/footer');
+  }
+
 
 
 public function interviewFeedback() {
@@ -1802,25 +2170,188 @@ public function interviewFeedback() {
 
 echo "success";
 }
+ 
 
   public function viewQuestion() {
 
-    $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM `question_bank`
+      $this->load->library("pagination");
+
+      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM `question_bank`
       INNER JOIN section on section.id = question_bank.section_id
       INNER JOIN question_levels on question_levels.id = question_bank.level_id
       INNER JOIN sub_section on sub_section.id = question_bank.sub_section_id";
 
-    $query = $this->db->query($sql);
+      $section = '';
+      $subsection = '';
+      $difficultylevel = '';
+
+            $config['full_tag_open'] = "<ul class='pagination'>";
+            $config['full_tag_close'] = '</ul>';
+            $config['num_tag_open'] = '<li>';
+            $config['num_tag_close'] = '</li>';
+            $config['cur_tag_open'] = '<li class="active"><a href="#">';
+            $config['cur_tag_close'] = '</a></li>';
+            $config['prev_tag_open'] = '<li>';
+            $config['prev_tag_close'] = '</li>';
+            $config['first_tag_open'] = '<li>';
+            $config['first_tag_close'] = '</li>';
+            $config['last_tag_open'] = '<li>';
+            $config['last_tag_close'] = '</li>';
+            $config['prev_link'] = '<i class=""></i>Previous Page';
+            $config['prev_tag_open'] = '<li>';
+            $config['prev_tag_close'] = '</li>';
+            $config['next_link'] = 'Next Page<i class=""></i>';
+            $config['next_tag_open'] = '<li>';
+            $config['next_tag_close'] = '</li>';
+            
+            $config['base_url'] = base_url() . 'admin/view-questions';
+            $config['total_rows'] = $this->getNumberOfRows($sql);
+            $config['per_page'] = 10;
+            $config["uri_segment"] = 3;
+             
+            $this->pagination->initialize($config);
+              $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+         $links = $this->pagination->create_links();
+
+          $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+          $this->load->view('admin/header');
+          $this->load->view('admin/sidenav');
+
+          $this->load->view('admin/view-questions',array(
+            'questionData' => $questionData,
+            'links' => $links,
+            'section' => $section ,
+            'subsection' => $subsection,
+            'difficultylevel' => $difficultylevel,
+
+            ));
 
 
-    //print_r($query->result_object()); die;
-    $this->load->view('admin/header');
-    $this->load->view('admin/sidenav');
-   
-
-    $this->load->view('admin/view-questions', array("questionData" => $query->result_object()));
+      // $this->load->view('admin/view-questions', ($params));
+  
     $this->load->view('admin/footer');
   }
+
+
+  public function viewQuestionSearch() {
+      $this->load->library("pagination");
+      $section = '';
+      $subsection = '';
+      $difficultylevel = '';
+
+    if ( $_GET['section'] != 0){
+      $section = $_GET['section'];
+      $sql = "SELECT * FROM section where id = $section ";
+
+      $query = $this->db->query($sql);
+
+      $result = $query->result();
+      $section  = $result[0]->section_name;
+    }
+
+    if ( $_GET['subsection'] != 0)
+    {
+      $subsection = $_GET['subsection'];
+      $sql = "SELECT * FROM sub_section where id = $subsection";
+      $query = $this->db->query($sql);
+      $result = $query->result();
+      $subsection  = $result[0]->sub_section_name;
+    }
+
+    if (  $_GET['difficultylevel'] != 0) 
+    {
+      $difficultylevel = $_GET['difficultylevel'];
+      $sql = "SELECT * FROM question_levels where id = $difficultylevel";
+      $query = $this->db->query($sql);
+      $result = $query->result();
+      $difficultylevel  = $result[0]->level;
+    }
+
+
+      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, 
+              question_levels.level,sub_section.sub_section_name 
+              FROM question_bank
+                    INNER JOIN section 
+                  on section.id = question_bank.section_id
+                    INNER JOIN question_levels
+                  on question_levels.id = question_bank.level_id
+                    INNER JOIN sub_section
+                  on sub_section.id = question_bank.sub_section_id
+                      
+                  where section.section_name like '%$section%'
+                   and
+                 sub_section.sub_section_name  like '%$subsection%'
+                  and
+               question_levels.level like '%$difficultylevel%'";
+
+            $config['full_tag_open'] = "<ul class='pagination'>";
+            $config['full_tag_close'] = '</ul>';
+            $config['num_tag_open'] = '<li>';
+            $config['num_tag_close'] = '</li>';
+            $config['cur_tag_open'] = '<li class="active"><a href="#">';
+            $config['cur_tag_close'] = '</a></li>';
+            $config['prev_tag_open'] = '<li>';
+            $config['prev_tag_close'] = '</li>';
+            $config['first_tag_open'] = '<li>';
+            $config['first_tag_close'] = '</li>';
+            $config['last_tag_open'] = '<li>';
+            $config['last_tag_close'] = '</li>';
+            $config['prev_link'] = '<i class=""></i>Previous Page';
+            $config['prev_tag_open'] = '<li>';
+            $config['prev_tag_close'] = '</li>';
+            $config['next_link'] = 'Next Page<i class=""></i>';
+            $config['next_tag_open'] = '<li>';
+            $config['next_tag_close'] = '</li>';
+
+            $config['base_url'] = base_url() . 'admin/view-questions-search';
+            $config['reuse_query_string'] = true;
+            $config['total_rows'] = $this->getNumberOfRows($sql);
+            $config['per_page'] = 10;
+            $config["uri_segment"] = 3;
+             
+            $this->pagination->initialize($config);
+              $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+         $links = $this->pagination->create_links();
+
+          $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+          $this->load->view('admin/header');
+          $this->load->view('admin/sidenav');
+
+          $this->load->view('admin/view-questions',array(
+            'questionData' => $questionData,
+            'links' => $links,
+            'section' => $section ,
+            'subsection' => $subsection,
+            'difficultylevel' => $difficultylevel,
+
+            ));
+  }
+
+
+
+   public function getNumberOfRows($sql) {
+      $query = $this->db->query($sql);
+
+      return $query->num_rows();
+
+   }
+
+  public function getAllRowsData($sql, $start=0 ,$offset=0) {
+
+          $sql = $sql." limit $offset ,$start";
+          
+          $query = $this->db->query($sql);
+
+        $questionData = $query->result_object();
+
+        return $questionData;
+
+  }
+
 
   public function viewTest() {
 
@@ -1878,14 +2409,64 @@ public function viewInterview() {
     $sql = "SELECT DISTINCT(interview_code),count(DISTINCT(id)) as total_students FROM `interview_users` where interview_customer_id=$customerId and interview_code is not null GROUP BY interview_code";
 
     $result = $this->db->query($sql)->result_object();
-
+    $interviewcode = '';
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/view-interview', array('customer'=> $customerName->customer_name,'interview' => $result));
+    $this->load->view('admin/view-interview', array(
+
+      'customer'=> $customerName->customer_name,
+      'interview' => $result,
+      'customerId' => $customerId,
+      'interviewcode' => $interviewcode
+
+    ));
+
     //$this->load->view('admin/view-mcq-data');
     $this->load->view('admin/footer');
    // $this->load->view('admin/view-mcq.php', array('mcq'=>$mcq));
   }
+
+
+public function viewInterviewSearch() {
+
+    $customerId = $this->uri->segment(3); 
+
+    $interviewcode = $_POST['interviewcode'];
+
+    $sql  = "SELECT customer_name from customers where id = $customerId";
+    $customerName = $this->db->query($sql)->row();
+
+    $sql = "SELECT DISTINCT(interview_code),count(DISTINCT(id)) as total_students
+    FROM interview_users 
+    where interview_customer_id=$customerId
+    and interview_code is not null
+    and interview_code like '%$interviewcode%'
+    GROUP BY interview_code";
+
+    $result = $this->db->query($sql)->result_object();
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/view-interview', array(
+      'customer'=> $customerName->customer_name,
+      'interview' => $result,
+      'customerId' => $customerId,
+      'interviewcode' => $interviewcode
+    ));   
+
+    $this->load->view('admin/footer');
+
+
+  }
+
+
+
+
+
+
+
+
+
 
   private function getCode() {
 
@@ -1974,6 +2555,12 @@ public function viewInterview() {
 
                 $title = $_POST['test-title'];
                 $type = $_POST['test-type'];
+
+                $check_mcq_test_id = $_POST['check_mcq_test_id'];
+
+                $check_drive_id = $_POST['check_drive_id'];
+
+
                 $isProctored = $_POST['is-proctored'];
                 $customerCode = explode("-",$_POST['customer-code']); //change to customer id
 
@@ -1985,38 +2572,100 @@ public function viewInterview() {
                         'created_by' => $_SESSION['admin_id']
                 );
 
-                $this->db->insert('mcq_test', $data);
+
+                if ($check_mcq_test_id != 0) {
+                    $data = array(
+                        'title' => $title,
+                        'type' => $type
+                    );
+                    
+                    $this->db->where('id', $check_mcq_test_id);
+                    $this->db->update('mcq_test',$data);
+                    $testId = $check_mcq_test_id;
+                } else {    
+                    $this->db->insert('mcq_test', $data);
+                    $testId = $this->db->insert_id();
+
+                    $code = $this->getCode();
+
+                    $data = array(
+                            'mcq_test_id' => $testId,
+                            'code' => $code
+                    );
+
+                    $this->db->insert('mcq_code', $data);
 
 
-                $testId = $this->db->insert_id();
 
-                $code = $this->getCode();
 
-                $data = array(
-                        'mcq_test_id' => $testId,
-                        'code' => $code
-                );
+                    if (strlen(trim($_POST['drive-date'])) > 0) {
 
-                $this->db->insert('mcq_code', $data);
 
-                if (strlen(trim($_POST['drive-date'])) > 0) {
-                  $data = array(
-                    'mcq_test_id' => $testId,
-                    'drive_date' =>trim($_POST['drive-date']),
-                    'drive_time' =>trim($_POST['drive-time']),
-                    'drive_place' =>trim($_POST['drive-place'])
+                        $data = array(
+                          'mcq_test_id' => $testId,
+                          'drive_date' =>trim($_POST['drive-date']),
+                          'drive_time' =>trim($_POST['drive-time']),
+                          'drive_place' =>trim($_POST['drive-place'])
 
-                  );
+                        );
 
-                  $this->db->insert('drive_details', $data);                  
+
+                        if ($check_drive_id != 0) {
+
+
+
+
+                            $this->db->where('id', $check_drive_id);
+                            $this->db->update('drive-details',$data);
+                        } else {  
+                          $this->db->insert('drive_details', $data);
+
+                        }
+
+                      // $this->db->insert('drive-details', $data);                  
+                    }
                 }
 
-
                 echo $testId;
+
+
+                // $this->db->insert('mcq_test', $data);
+
+
+                // $testId = $this->db->insert_id();
+
+                // $code = $this->getCode();
+
+                // $data = array(
+                //         'mcq_test_id' => $testId,
+                //         'code' => $code
+                // );
+
+                // $this->db->insert('mcq_code', $data);
+
+                // if (strlen(trim($_POST['drive-date'])) > 0) {
+                //   $data = array(
+                //     'mcq_test_id' => $testId,
+                //     'drive_date' =>trim($_POST['drive-date']),
+                //     'drive_time' =>trim($_POST['drive-time']),
+                //     'drive_place' =>trim($_POST['drive-place'])
+
+                //   );
+
+                //   $this->db->insert('drive_details', $data);                  
+                // }
+
+
+                // echo $testId;
         }
 
                 public function addTestTime() {
                 $mcqId = $_POST['mcqId'];
+
+
+
+
+
                 // $time1= $_POST['time1'];
                 // $time2= $_POST['time2'];
                 // $time3= $_POST['time3'];
@@ -2030,8 +2679,12 @@ public function viewInterview() {
                 $totalQuestion = explode(",",$_POST['totalQuestion']);
                 $totalTime = explode(",",$_POST['sectionTime']);
 
-                $requiredQuestion = explode(",", $_POST['requiredQnos']);
+                $check_exist_id = explode(",",$_POST['check_exist_id']);
 
+
+
+
+                $requiredQuestion = explode(",", $_POST['requiredQnos']);
                 $data = array();
 
                 $patternData = array();
@@ -2052,6 +2705,24 @@ public function viewInterview() {
                     $p['total_question'] = $requiredQuestion[$i];
 
                     $patternData[] = $p;
+
+
+
+
+
+                      // if ($check_exist_id[$i] != 0) {
+                      //    $tt = array (
+                      //         'section_id' => $sectionIds[$i],
+                      //         'completion_time' => $totalTime[$i],
+                      //         'total_question' => $totalQuestion[$i]
+                      //     );
+                      //     $this->db->where('id', $check_exist_id[$i]);
+                      //     $this->db->update('mcq_time',$tt);
+                      // } else {    
+                        $this->db->insert('mcq_time', $t);
+                        $this->db->insert('mcq_test_pattern', $p);
+                      // }
+
 
                 }
 
@@ -2081,11 +2752,90 @@ public function viewInterview() {
                 //         $t1, $t2, $t3
                 // );
 
-                $this->db->insert_batch('mcq_time', $data);
+                // $this->db->insert_batch('mcq_time', $data);
 
 
-                $this->db->insert_batch('mcq_test_pattern', $patternData);
+                // $this->db->insert_batch('mcq_test_pattern', $patternData);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+ public function editTestTime() {
+                $mcqId = $_POST['mcqId'];
+
+
+
+
+
+                // $time1= $_POST['time1'];
+                // $time2= $_POST['time2'];
+                // $time3= $_POST['time3'];
+
+                // $params = json_decode($data, true);
+                // $title = $params['test-title'];
+                // $type = $params['test-type'];
+
+                $totalSection = $_POST['totalSection'];
+                $sectionIds = explode(",",$_POST['sectionIds']);
+                $totalQuestion = explode(",",$_POST['totalQuestion']);
+                $totalTime = explode(",",$_POST['sectionTime']);
+
+                $check_exist_id = explode(",",$_POST['check_exist_id']);
+
+
+                for($i=0; $i < $totalSection; $i++) {
+                    $t = array (
+                        'mcq_test_id' => $mcqId,
+                        'section_id' => $sectionIds[$i],
+                        'completion_time' => $totalTime[$i],
+                        'total_question' => $totalQuestion[$i]
+                    );
+
+                    // $p = $t;
+                    // $p['level_id'] = "1";
+                    // $p['sub_section_id'] = "1";
+
+                   
+                      if ($check_exist_id[$i] != 0) {
+                         $tt = array (
+                              'section_id' => $sectionIds[$i],
+                              'completion_time' => $totalTime[$i],
+                              'total_question' => $totalQuestion[$i]
+                          );
+                          $this->db->where('id', $check_exist_id[$i]);
+                          $this->db->update('mcq_time',$tt);
+                      } else {    
+                        $this->db->insert('mcq_time', $t);
+                        // $this->db->insert('mcq_test_pattern', $p);
+                      }
+
+
+                }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2333,6 +3083,21 @@ public function viewInterview() {
                   $i++;
           }
           print_r(json_encode($sectionData));
+        }
+
+
+        public function getQuestionLevel() {
+          $sql = "SELECT * FROM `question_levels`";
+          $query = $this->db->query($sql);
+
+          $i = 0;
+          $questionLevelData = array();
+          foreach ($query->result() as $row) {
+                  $questionLevelData[$i]['id'] = $row->id;
+                  $questionLevelData[$i]['level'] = $row->level;
+                  $i++;
+          }
+          print_r(json_encode($questionLevelData));
         }
 
         
@@ -2921,21 +3686,21 @@ echo "success"; die;
 
   //       switch ($a) {
   //           case 'Q':
-		// return "R";
-		// break;
- 	//     case 'R':
+    // return "R";
+    // break;
+  //     case 'R':
   //               return "S"; 
-		// break;
-	 //    case 'S':
+    // break;
+   //    case 'S':
   //               return "T"; 
-		// break;
-	 //    case 'T':
+    // break;
+   //    case 'T':
   //               return "U"; 
   //               break;
-	 //    case 'U':
+   //    case 'U':
   //               return "V"; 
-		// break;
-	 //    case 'V':
+    // break;
+   //    case 'V':
   //               return "W"; 
   //               break;
   //           case 'W':
@@ -3428,16 +4193,16 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
 
   public function createUserProfile () {
-	//print_r($_SESSION); die;
-	$userData = array();
-	if (isset($_SESSION['assessId'])) {
-		              $sql = "SELECT user_email FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_SESSION['assessId'];
+  //print_r($_SESSION); die;
+  $userData = array();
+  if (isset($_SESSION['assessId'])) {
+                  $sql = "SELECT user_email FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$_SESSION['assessId'];
 
               $userEmail = $this->db->query($sql)->row();
-	      if (isset($userEmail->user_email)) {
-		$userData['email']=  $userEmail->user_email;
-	     }
-	}
+        if (isset($userEmail->user_email)) {
+    $userData['email']=  $userEmail->user_email;
+       }
+  }
 
 
     $this->load->view('user-header');
@@ -3636,26 +4401,32 @@ foreach ($sectionDetails['section'] as $key => $value) {
           $get_total_question[$key]['total_question']= $value->total_question;
         } 
 
+
+
+        $this->load->view('admin/header');
+        $this->load->view('admin/sidenav');
+   
         $this->load->view('admin/edit-test', array('mcq_test_data' => $mcq_test_data, 'drive_data' => $drive_data, 'mcq_time_data' => $mcq_time_data , 'get_total_question' => $get_total_question));
+        $this->load->view('admin/footer');
 
     }
 
     
 
-    public function editTestsave()
-    {
+    // public function editTestsave()
+    // {
 
 
-       echo $testId = $_POST['testId'];
-       echo  $mcq_name_title = $_POST['mcq_name_title'];
+    //    echo $testId = $_POST['testId'];
+    //    echo  $mcq_name_title = $_POST['mcq_name_title'];
 
-     echo $mcq_code = $_POST['mcq_code'];
-            echo $total_section = $_POST['total_section'];
-       echo  $password = $_POST['password'];
+    //  echo $mcq_code = $_POST['mcq_code'];
+    //         echo $total_section = $_POST['total_section'];
+    //    echo  $password = $_POST['password'];
 
 
-      echo "string";
-    }
+    //   echo "string";
+    // }
 
   public function fetchCustomer() {
 

@@ -56,6 +56,8 @@ $route['question/create'] = 'questionBank';
 // $route['question/getSection']['POST'] = 'questionBank/getSection';
 $route['question/getSection']['POST'] = 'AdminController/getSection';
 
+$route['question/getQuestionLevel']['POST'] = 'AdminController/getQuestionLevel';
+
 $route['question/getTotalQuestion']['POST'] = 'AdminController/getTotalQuestion';
 
 
@@ -103,6 +105,8 @@ $route['addTest']['POST'] = 'AdminController/addTest';
 $route['checkAvailableQuestion']['POST'] = 'AdminController/checkAvailableQuestion';
 
 $route['addTestTime']['POST'] = 'AdminController/addTestTime';
+$route['editTestTime']['POST'] = 'AdminController/editTestTime';
+
 
 $route['addQuestion']['POST'] = 'questionBank/addQuestion';
 
@@ -133,9 +137,33 @@ $route['user/upload/do_upload'] = 'questionBank/uploadProfileImage';
 $route['admin/create-test'] = 'AdminController/createTest';
 
 $route['admin/view-mcq/:any'] = 'AdminController/viewTest';
+
+
+
 $route['admin/view-interview/:any'] = 'AdminController/viewInterview';
+
+
+
+$route['admin/view-interview-search/:any'] = 'AdminController/viewInterviewSearch';
+    
+
 $route['admin/interview-customers-list'] = 'AdminController/interviewCustomers';
+
+$route['admin/interview-customers-list-search'] = 'AdminController/interviewCustomersSearch';
+
+
+
+
 $route['admin/view-questions'] = 'AdminController/viewQuestion';
+
+
+$route['admin/view-questions/:any'] = 'AdminController/viewQuestion';
+
+ 
+ $route['admin/view-questions-search'] = 'AdminController/viewQuestionSearch';
+
+$route['admin/view-questions-search/:any'] = 'AdminController/viewQuestionSearch';
+ 
 
 $route['admin/view-results'] = 'AdminController/viewResult';
 
@@ -204,6 +232,17 @@ $route['admin/sendInvite'] ['POST']= 'AdminController/sendInvite';
 //proctored controller make later
 $route['proctor/assignedUsers'] = 'AdminController/proctoredUsers'; 
 
+$route['proctor/assignedUsers/:any'] = 'AdminController/proctoredUsers'; 
+
+$route['proctor/assignedUsersSearch'] = 'AdminController/proctoredUsersSearch'; 
+
+$route['proctor/assignedUsersSearch/:any'] = 'AdminController/proctoredUsersSearch'; 
+
+
+
+
+
+
 //email
 $route['admin/contact'] = 'AdminController/contact'; 
 
@@ -231,6 +270,22 @@ $route['admin/generateInterviewUsrPwd']['POST'] = 'AdminController/generateInter
 $route['admin/sendInterviewInvite'] ['POST']= 'AdminController/sendInterviewInvite';
 
 $route['interviewer/assignedInterviews'] = 'AdminController/assignedInterviews'; 
+
+
+
+
+$route['interviewer/assignedInterviews/:any'] = 'AdminController/assignedInterviews';
+
+
+
+
+$route['interviewer/assignedInterviewsSearch'] = 'AdminController/assignedInterviewsSearch';
+
+$route['interviewer/assignedInterviewsSearch/:any'] = 'AdminController/assignedInterviewsSearch';
+
+      
+      
+
 
 $route['user/interview'] = 'questionBank/activeInterview';
 
@@ -265,8 +320,18 @@ $route['user/join-meeting'] = 'AdminController/gotomeetingJoin';
 $route['deleteUsrPwd']['POST'] = 'AdminController/deleteUsrPwd';
 $route['printUsrPwd'] = 'welcome/printUsrPwd';
 
-
+ 
 $route['admin/create-customers'] = 'AdminController/createCustomer';
+
+
+$route['admin/create-customers-search'] = 'AdminController/createCustomerSearch';
+
+$route['admin/create-customers/:any'] = 'AdminController/createCustomer';
+
+
+$route['admin/create-customers-search/:any'] = 'AdminController/createCustomerSearch';
+
+
 $route['admin/mcq-customers'] = 'AdminController/mcqCustomer'; 
 
 $route['admin/fetch-customers']['POST'] = 'AdminController/fetchCustomer'; 
