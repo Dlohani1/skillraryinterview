@@ -28,12 +28,21 @@
 <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
 <script type="text/javascript" src="js/slick.min.js"></script>
 <!-- <script type="text/javascript" src="tutor_connect/js/bootstrap.min.js"></script> -->
-
 <style>
 .fa-refresh:before {content:"\f079"; font-family:'FontAwesome'; font-size:150%; font-style:normal;}
 #refresh{display:none;}
 </style>
 <style>
+  .textdisplay {
+    width: 240px;
+    position: relative;
+    left: 170px;
+    top: 225px;
+    background: #eee;
+    border: 1px solid #d6d6d6;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+}
 #privacy-banner {
     position: fixed;
     bottom: 0;
@@ -92,19 +101,20 @@
     margin: 6px !important;
   }
   .wr-lft-cont .sub-default .sub-default-lft {
-      width: 75%;
-      margin: 5px 2px 5px 3px;
-      padding: 17px 0px 10px 0px;
-      text-align: center;
-      background: #EEEEEE;
-      border: 1px solid #eee;
-      border-radius: 6px;
-      -moz-border-radius: 6px;
-      -khtml-border-radius: 6px;
-      -webkit-border-radius: 6px;
-      line-height: 20px;
-      cursor: pointer;
-  }
+    width: 75%;
+    margin: 5px 2px 5px 3px;
+    padding: 17px 0px 10px 0px;
+    text-align: center;
+    background: #33A478;
+    border: 1px solid #33A478;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
   #cc {
     visibility: visible;
   }
@@ -135,7 +145,7 @@
     border: 1px solid #D6D6D6;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    -khtml-border-radius: 4px;
+    -html-border-radius: 4px;
     -moz-border-radius: 4px;
   }
   .wbitem {
@@ -156,11 +166,11 @@
   background-color: #111;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+  padding-top: 50px;
 }
 
 .sidebar a {
-  padding: 8px 8px 0px 32px;
+  padding: 0px 0px 0px 32px;
   text-decoration: none;
   font-size: 25px;
   color: #818181;
@@ -216,7 +226,9 @@
     margin: 0px 0px 0px 0px!important;
     position: absolute;
     left: 0px;
-    padding: 3px 5px 3px 10px;
+    /*padding: 3px 5px 3px 10px;*/
+    background: #ccc;
+    padding: 3px 5px 4px 7px;
 }
 
 .left-meni-slide {
@@ -245,6 +257,176 @@
     -khtml-border-radius: 4px;
     -moz-border-radius: 4px;
 }
+.icon1{
+  background: springgreen !important;
+  border: 1px solid springgreen !important;
+}
+.icon2{
+  background: turquoise !important;
+  border: 1px solid turquoise !important;
+}
+.icon3{
+  background: tan !important;
+  border: 1px solid tan !important;
+}
+.icon4{
+  background: orange !important;
+  border: 1px solid orange !important;
+}
+.icon5{
+    background: yellowgreen !important;
+    border: 1px solid yellowgreen !important;
+}
+.icon6{
+    background: tomato !important;
+    border: 1px solid tomato !important;
+}
+.icon7{
+    background: wheat !important;
+    border: 1px solid wheat !important;
+}
+.iconDefault{
+    background: #33A478 !important;
+    border: 1px solid #33A478 !important;
+}
+.icon8{
+    background: thistle !important;
+    border: 1px solid thistle !important;
+}
+.subIcon1{
+  background: aquamarine !important;
+  border: 1px solid aquamarine !important;
+}
+.subIcon2{
+  background: #7774b9 !important;
+  border: 1px solid #7774b9 !important;
+}
+.subIcon3{
+  background: #f6cb59 !important;
+  border: 1px solid #f6cb59 !important;
+}
+.subIcon4{
+  background: #6b5e71 !important;
+  border: 1px solid #6b5e71 !important;
+}
+.subIcon5{
+  background: #30a78a !important;
+  border: 1px solid #30a78a !important;
+}
+.pattern1{
+  background: #aa7fc1 !important;
+}
+.pattern2{
+  background: #dde43e !important;
+}
+.pattern3{
+  background: #81c9be !important;
+}
+.pattern4{
+  background: #c981a0 !important;
+}
+.pattern5{
+  background: #bda966 !important;
+}
+.pattern6{
+  background: #8581c9 !important; 
+}
+.pattern7{
+  background: #3eafad !important;
+}
+.bgColor1{
+  background: #4cad6d !important;
+}
+.bgColor2{
+  background: #d8a334 !important;
+}
+.bgColor3{
+  background: #cf87a5 !important;
+}
+.bgColor4{
+  background: #6a92ad !important;
+}
+.bgColor5{
+  background: #a26aad !important;
+}
+.bgColor6{
+  background: #5aa433 !important;
+}
+.bgColor7{
+  background: #e66a6a !important;
+}
+.penColor1{
+  background: #4cad6d !important;
+}
+.penColor2{
+  background: #d8a334 !important;
+}
+.penColor3{
+  background: #cf87a5 !important;
+}
+.penColor4{
+  background: #6a92ad !important;
+}
+.penColor5{
+  background: #a26aad !important;
+}
+.penColor6{
+  background: #5aa433 !important;
+}
+.penColor7{
+  background: #e66a6a !important;
+}
+.shape1{
+  background: #4cad6d !important;
+}
+.shape2{
+  background: #d8a334 !important;
+}
+.shape3{
+  background: #cf87a5 !important;
+}
+.shape4{
+  background: #6a92ad !important;
+}
+.shape6{
+  background: #5aa433 !important;
+}
+.shape7{
+  background: #e66a6a !important;
+}
+.shape8{
+   background: #a26aad !important;
+}
+.text1{
+  background: #e46f6f !important;
+}
+.text2{
+  background: #69a7bd !important;
+}
+.text3{
+  background: #a9bd69 !important;
+}
+.image1{
+  background: #f9b556 !important;
+}
+.image2{
+  background: #b27ad6 !important;
+}
+.download1{
+  background: #40a793 !important;
+}
+.download2{
+  background: #977723 !important;
+}
+.download3{
+  background: #f13c3c !important;
+}
+.helpclas {
+    position: absolute;
+    top: 260px;
+    float: right;
+    right: 314px;
+}
 /*meena css ends */
   @media (min-width: 768px) {
     #privacy-banner {
@@ -256,7 +438,6 @@
     }
 }
 </style>
-
 
 <script type="text/javascript">
 $(document).ready(function() { 
@@ -326,19 +507,19 @@ $(document).ready(function() {
                <!-- Wrapper for carousel items -->
                <div class="carousel-inner bigbanner">
                   <div class="item active">     
-                     <img src="/images/live-video-chat.jpg" title="Live Video Chat">
+                     <img src="/whiteboard/images/live-video-chat.jpg" title="Live Video Chat">
                   </div>
                   <div class="item">  
-                     <img src="/images/upload_presentations.jpg" title="Upload Presentations">
+                     <img src="/whiteboard/images/upload_presentations.jpg" title="Upload Presentations">
                   </div>
                   <div class="item">  
-                     <img src="/images/online_presentation.jpg" title="Online Presentations">
+                     <img src="/whiteboard/images/online_presentation.jpg" title="Online Presentations">
                   </div>
                   <div class="item">
-                     <img src="/images/upload-download-presentation.jpg" title="Upload/Download Presentation">
+                     <img src="/whiteboard/images/upload-download-presentation.jpg" title="Upload/Download Presentation">
                   </div>
                   <div class="item active">     
-                     <img src="/images/change-background.jpg" title="Change Background Color">
+                     <img src="/whiteboard/images/change-background.jpg" title="Change Background Color">
                   </div>
                   <!-- Carousel controls -->
                   <a class="carousel-control left" href="#myCarousel" data-slide="prev">
@@ -387,36 +568,47 @@ $(document).ready(function() {
 
 <div id="mySidebar" class="sidebar">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-  <div id="west" data-options="region:'west', title:'',iconCls:'', split:false, collapsible:false" style="width:95px;">
+  <div id="west" data-options="region:'west', title:'',iconCls:'', split:false, collapsible:false" style="width:100px;">
    <div class="wr-left">
       <div class="wr-lft-cont column">
          <div class="sub-default clickDisable" id="lftMainmenu">
              <a href="javascript:void(0);" id="ancSelect" title="Select Tool">
-               <div class="sub-default-lft"  onclick="return mousePointer(0)"><i class="fa-mouse-pointer"></i></div>
+               <div class="sub-default-lft icon1"  onclick="return mousePointer(0)"><i class="fa fa-crop" aria-hidden="true" style="color: slategrey"></i></div>
+               <span style="color: white;font-size: 12px;text-align: center;display: block;">Select Tool</span>
             </a>
              <a href="javascript:void(0);" id="ancBackground" title="Background">
-               <div class="sub-default-lft"><i class="fa-circle wbitem"></i></div>
+               <div class="sub-default-lft icon2"><i class="fa-circle wbitem" style="color: sandybrown;"></i></div>
+               <span style="color: white;font-size: 12px;text-align: center;display: block;">Background</span>
              </a>
              <a href="javascript:void(0);" id="ancPattern" title="Pattern">
-               <div class="sub-default-lft" ><img src="images/pattern-icon.png" style="border:1px solid #ccc;border-radius:60px;"/></div>
+               <div class="sub-default-lft icon3" ><img src="images/pattern-icon.png" style="border:1px solid #ccc;border-radius:60px; width: 41%;"/></div>
+               <span style="color: white;font-size: 12px;text-align: center;display: block;">Pattern</span>
              </a>
              <a href="javascript:void(0);" id="ancPencil" title="Pencil">
-               <div class="sub-default-lft" style="border-right:none;"><i class="fa-pencil wbitem" style="font-size:120%;"></i></div>
+               <div class="sub-default-lft icon4" style="border-right:none;"><i class="fa fa-pencil-square-o" aria-hidden="true" style="color: midnightblue;"></i></div>
+               <span style="color: white;font-size: 12px;text-align: center;display: block;">Pencil</span>
              </a>
              <a href='javascript:void(0)' id="ancEraser" title="Eraser">
-               <div class="sub-default-lft"><i class="fa-eraser"></i></div>
+               <div class="sub-default-lft icon5"><i class="fas fa-eraser" style="color: sienna;"></i></div>
+               <span style="color: white;font-size: 12px;text-align: center;display: block;">Eraser</span>
              </a>
              <a href="javascript:void(0);" id="ancShape" title="Shapes">
-               <div class="sub-default-lft" style="border-right:none;"><img src="images/shape-sm.png" /></div>
+               <div class="sub-default-lft icon6" style="border-right:none;"><img src="images/shape-sm.png" /></div>
+               <span style="color: white;font-size: 12px;text-align: center;display: block;">Shapes</span>
              </a>
              <a href="javascript:void(0);" id="ancText" title="Text">
-               <div class="sub-default-lft" style="border-right:none;"><i class="fa-text-height"></i></div>
+               <div class="sub-default-lft icon7" style="border-right:none;"><i class="fa fa-text-width" style="color: slateblue;"></i></div>
+               <span style="color: white;font-size: 12px;text-align: center;display: block;">Text</span>
              </a> 
              <a href="javascript:void(0);" id="ancImage" title="Image">
-               <div class="sub-default-lft" style="border-right:none;"><i class="fa-file-image-o"></i></div>
+               <div class="sub-default-lft iconDefault" style="border-right:none;"><i class="fa fa-picture-o" aria-hidden="true" style="color: black"></i></div>
+               <span style="color: white;font-size: 12px;text-align: center;display: block;">Image</span>
              </a>                         
               <a href="javascript:void(0);" id="ancDownload" title="Download/Upload">
-               <div class="sub-default-lft" style="border-right:none;"><img src="images/up-down.png" /></div>
+               <div class="sub-default-lft icon8" style="border-right:none;"><i class="fa fa-download" aria-hidden="true" style="color: mediumvioletred;"></i>
+                <!-- <img src="whiteboard/images/up-down.png" /> -->
+              </div>
+              <span style="color: white;font-size: 12px;text-align: center;display: block;">Download</span>
               </a> 
             <!-- <a href="javascript:void(0);" id="ancTutorConnect" title="Tutor Connect Content Presentation">
                <div class="sub-default-lft" style="border-right:none;"><img src="theme/css/icons/image-editor.png" /></div>
@@ -438,34 +630,42 @@ $(document).ready(function() {
    
       <img src="https://skillrary.com/uploads/images/f-sr-logo-195-50.png" height="50px" style="padding:5px; float:left;"/>
    
-   <h1 class="whtboard">SkillRary</h1><h1 style="color:white"> WHITEBOARD</h1>
+   <h1 class="whtboard">SkillRary <span style="color:white"> WHITEBOARD </span></h1>
 
    <!-- header top right menu first -->      
    <div style="margin:18px 0px 0px 0px;">
       <div class="db-nav  icon-bar">
-         <a href="javascript:void(0);" id="ancUndo" title="Undo">
+         <a href="javascript:void(0);" class="subIcon1" id="ancUndo" title="Undo">
             <div class="sub-default-lft" style="border-right:none;">
               <!-- <i class="fa-undo wbitem"></i> -->
-              <i class="fa-undo wbitem" aria-hidden="true"></i>
+              <i class="fa-undo wbitem" aria-hidden="true" style="color: teal"></i>
             </div>
+          
          </a>
-         <a href="javascript:void(0);" id="ancRedo" title="Redo">
-            <div class="sub-default-lft" style="border-right:none;"><i class="fa-repeat wbitem"></i></div>
+           <span style="color: black;font-size: 12px;text-align: center;display: block;margin-top: 3px">Undo</span>
+         <a href="javascript:void(0);" class="subIcon2" id="ancRedo" title="Redo">
+            <div class="sub-default-lft" style="border-right:none;"><i class="fa-repeat wbitem" style="color: #dbd8d8"></i></div>
+          
          </a>
-         <a href='javascript:void(0)'  title="Clear all" class="clrDynamicCanvas">
+           <span style="color: black;font-size: 12px;text-align: center;display: block;margin-top: 3px">Redo</span>
+         <a href='javascript:void(0)' title="Clear all" class="clrDynamicCanvas subIcon3">
             <div class="sub-default-lft wbitem" style="border-right:none;"><img src="images/clear.png" style="vertical-align:bottom; height:17px;"/></div>
+         
          </a>
-         <a href='javascript:void(0)' id="maximize" title="Maximize" >
-            <div class="sub-default-lft" ><i class="fa-expand wbitem"></i></div>
+            <span style="color: black;font-size: 12px;text-align: center;display: block;margin-top: 3px">Clear all</span>
+
+         <a href='javascript:void(0)' class="subIcon4" id="maximize" title="Maximize" >
+            <div class="sub-default-lft" ><i class="fa-expand wbitem" style="color: white"></i></div>
          </a>
-         <a href='javascript:void(0)' id="refresh" title="Refresh Connection">
+          <span style="color: black;font-size: 12px;text-align: center;display: block;margin-top: 3px">Maximize</span>
+        <!--  <a href='javascript:void(0)' id="refresh" title="Refresh Connection">
             <div class="sub-default-lft" ><i class="fa-refresh wbitem"></i></div>
-         </a>   
-        <!--  <a href="javascript:void(0);" id="ancHelpMain" title="Help Whiteboard">
-           <div class="sub-default-lft" style="border-right:none;"><i class="fa fa-question-circle wbitem" aria-hidden="true"></i>
-<img src="theme/css/icons/help.png" />
+         </a>    -->
+         <a href="javascript:void(0);" class="subIcon5" id="ancHelpMain" title="Help Whiteboard">
+           <div class="sub-default-lft" style="border-right:none;"><i class="fa fa-question-circle wbitem" aria-hidden="true" style="color: #dcd306"></i>
            </div>
-         </a>    -->   
+         </a>   
+           <span style="color: black;font-size: 12px;text-align: center;display: block;margin-top: 3px">Help</span>   
       </div>
    </div> 
    <!-- end of header top right menu first -->   
@@ -547,14 +747,14 @@ $(document).ready(function() {
          <div class="subProperties left-meni-slide" id="bgColorpick" style="min-height:306px; max-height:100%;">
             <div class="icon-curve icon-bgcolor" style="background:transparent !important"></div>
             <div class="sub-tools items">
-               <a href="javascript:void(0);" class='clsBgColor bgcrcle' onclick="return mousePointer(1)"><div class="blck-bgpicker"></div>
+               <a href="javascript:void(0);" class='clsBgColor bgcrcle bgColor1' onclick="return mousePointer(1)"><div class="blck-bgpicker"></div>
                </a>            
-               <a href="javascript:void(0);" class='clsBgColor bgcrcle' onclick="return mousePointer(2)"><div class="red-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsBgColor bgcrcle' onclick="return mousePointer(3)"><div class="green-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsBgColor bgcrcle' onclick="return mousePointer(4)"><div class="yellow-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsBgColor bgcrcle' onclick="return mousePointer(5)"><div class="blue-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsBgColor bgcrcle' onclick="return mousePointer(6)"><div class="white-bgpicker"></div></a> 
-               <a href="javascript:void(0);" class='bgcrcle'>
+               <a href="javascript:void(0);" class='clsBgColor bgcrcle bgColor2' onclick="return mousePointer(2)"><div class="red-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsBgColor bgcrcle bgColor3' onclick="return mousePointer(3)"><div class="green-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsBgColor bgcrcle bgColor4' onclick="return mousePointer(4)"><div class="yellow-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsBgColor bgcrcle bgColor5' onclick="return mousePointer(5)"><div class="blue-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsBgColor bgcrcle bgColor6' onclick="return mousePointer(6)"><div class="white-bgpicker"></div></a> 
+               <a href="javascript:void(0);" class='bgcrcle bgColor7'>
                   <input type="color" id="txtBgColorVal" class="form-control picker" value="#000000">            
                </a>
             </div>          
@@ -565,25 +765,25 @@ $(document).ready(function() {
          <div class="subProperties left-meni-slide" id="bgPattern" style="min-height:312px; max-height:100%;">
             <div class="icon-curve icon-bgpattern"></div>
            <div class="sub-tools items">
-              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(7)" title="Guidelines">
-                 <div class="bgclpkr bgpatterns"><img src="images/transparent-guidelines.png" /></div>
+              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30 pattern1' onclick="return mousePointer(7)" title="Guidelines">
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-guidelines_1.png" /></div>
               </a>
-              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(8)" title="Book Guidelines">
-                 <div class="bgclpkr bgpatterns"><img src="images/transparent-booklines.png" /></div>
+              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30 pattern2' onclick="return mousePointer(8)" title="Book Guidelines">
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-booklines_1.png" /></div>
               </a>
-              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(9)" title="Transparent Background">
-                 <div class="bgclpkr bgpatterns"><img src="images/transparent.png" /></div>
+              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30 pattern3' onclick="return mousePointer(9)" title="Transparent Background">
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent_1.png" /></div>
               </a>
-              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(10)" title="Guidelines">
+              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30 pattern4' onclick="return mousePointer(10)" title="Guidelines">
                  <div class="bgclpkr bgpatterns"><img src="images/transparent-diamond.png" /></div>
               </a>
-              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(11)" title="Book Guidelines">
-                 <div class="bgclpkr bgpatterns"><img src="images/transparent-lgap.png" /></div>
+              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30 pattern5' onclick="return mousePointer(11)" title="Book Guidelines">
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-lgap_1.png" /></div>
               </a>
-              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30' onclick="return mousePointer(12)" title="Transparent Background">
-                 <div class="bgclpkr bgpatterns"><img src="images/transparent-checkered.png" /></div>
+              <a href="javascript:void(0);" class='clsBgColor bgcrcle h30 pattern6' onclick="return mousePointer(12)" title="Transparent Background">
+                 <div class="bgclpkr bgpatterns"><img src="images/transparent-checkered_1.png" /></div>
               </a>   
-              <a href="javascript:void(0);" class='bgcrcle' onclick="return mousePointer(13)" title="Transparent Background" style="padding:3px 5px 4px 7px!important;">
+              <a href="javascript:void(0);" class='bgcrcle pattern7' onclick="return mousePointer(13)" title="Transparent Background" style="padding:3px 5px 4px 5px!important;">
                 <form method="post" enctype="multipart/form-data">       
                    <input type="file" id="filePattern" name="filePattern" title="Upload Pattern from Computer"/>                 
                 </form>
@@ -598,15 +798,15 @@ $(document).ready(function() {
            <div class="icon-curve icon-pendit"></div>
            <div class="sub-tools">          
              <div class="items" style="margin:0px 51px 0px 0px;">            
-               <a href="javascript:void(0);" class='clsPencilColor bgcrcle' onclick="return mousePointer(14)"> 
+               <a href="javascript:void(0);" class='clsPencilColor bgcrcle penColor1' onclick="return mousePointer(14)"> 
                    <input type="color" id="txtPencilClrVal" class="form-control picker" value="#000000"> 
                </a>            
-               <a href="javascript:void(0);" class='clsPencilColor bgcrcle' onclick="return mousePointer(15)"><div class="blck-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsPencilColor bgcrcle' onclick="return mousePointer(16)"><div class="red-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsPencilColor bgcrcle' onclick="return mousePointer(17)"><div class="green-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsPencilColor bgcrcle' onclick="return mousePointer(18)"><div class="yellow-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsPencilColor bgcrcle' onclick="return mousePointer(19)"><div class="white-bgpicker"></div></a>
-               <a href="javascript:void(0);" class='clsPencilColor bgcrcle' onclick="return mousePointer(20)"><div class="blue-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsPencilColor bgcrcle penColor2' onclick="return mousePointer(15)"><div class="blck-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsPencilColor bgcrcle penColor3' onclick="return mousePointer(16)"><div class="red-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsPencilColor bgcrcle penColor4' onclick="return mousePointer(17)"><div class="green-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsPencilColor bgcrcle penColor5' onclick="return mousePointer(18)"><div class="yellow-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsPencilColor bgcrcle penColor6' onclick="return mousePointer(19)"><div class="white-bgpicker"></div></a>
+               <a href="javascript:void(0);" class='clsPencilColor bgcrcle penColor7' onclick="return mousePointer(20)"><div class="blue-bgpicker"></div></a>
              </div>
              <input id="lineSlide" name="lineSlide" value="2"  />
            </div>        
@@ -626,22 +826,22 @@ $(document).ready(function() {
          <div class="subProperties left-meni-slide" id="shapeOptions" style="min-height:351px; max-height:100%;">
            <div class="icon-curve icon-shpeoption"></div>
            <div class="sub-tools items">
-             <a href="javascript:void(0);" class='shapeFillColor bgcrcle' onclick="return mousePointer(21)">                      
+             <a href="javascript:void(0);" class='shapeFillColor bgcrcle shape1' onclick="return mousePointer(21)">                      
                 <input type="color" id="txtFillClrVal" class="form-control picker" value="">
              </a>                              
-             <a href="javascript:void(0)" class="" id="shapeRect" title="Rectangle" data-style='rectangle' onclick="return mousePointer(22)">
+             <a href="javascript:void(0)" class="shape2" id="shapeRect" title="Rectangle" data-style='rectangle' onclick="return mousePointer(22)">
                <img src="images/rectangle-sm.png" title="Rectangle"/></a> 
-             <a href="javascript:void(0)" class="" id="shapeSquare" title="Square" data-style='square' onclick="return mousePointer(23)">
+             <a href="javascript:void(0)" class="shape3" id="shapeSquare" title="Square" data-style='square' onclick="return mousePointer(23)">
                <img src="images/square-sm.png" title="Square"/></a>
-             <a href="javascript:void(0)" class="" id="shapeCircle" title="Circle" data-style='circle' onclick="return mousePointer(24)">
+             <a href="javascript:void(0)" class="shape4" id="shapeCircle" title="Circle" data-style='circle' onclick="return mousePointer(24)">
                <img src="images/circle-sm.png" title="Circle"/></a>
-             <a href="javascript:void(0)" class="" id="shapeTriangle" title="Triangle" data-style='triangle' onclick="return mousePointer(25)">
+             <a href="javascript:void(0)" class="shape5" id="shapeTriangle" title="Triangle" data-style='triangle' onclick="return mousePointer(25)">
                 <img src="images/triangle-sm.png" title="Triangle"/></a>
-             <a href="javascript:void(0)" class="" id="shapeLine" title="Line" data-style='line' onclick="return mousePointer(26)">
+             <a href="javascript:void(0)" class="shape6" id="shapeLine" title="Line" data-style='line' onclick="return mousePointer(26)">
                 <img src="images/line-sm.png" title="Line"/></a>
-             <a href="javascript:void(0)" class="" id="shapeEllipse" title="Ellipse" data-style='ellipse' onclick="return mousePointer(27)">
+             <a href="javascript:void(0)" class="shape7" id="shapeEllipse" title="Ellipse" data-style='ellipse' onclick="return mousePointer(27)">
                 <img src="images/ellipse-sm.png" title="Ellipse"/></a>               
-             <a href='javascript:void(0)' class="eraser" id="btnRemoveShape" title="delete" onclick="return mousePointer(28)"><div class="trash-bgpicker" style="border:none!important;">
+             <a href='javascript:void(0)' class="eraser shape8" id="btnRemoveShape" title="delete" onclick="return mousePointer(28)"><div class="trash-bgpicker" style="border:none!important;">
              <i class="fa-trash"></i></div></a>
            </div>                     
            <!-- <input type="text" id="txtShapeOutline" value="2" class="input-align" style="width:18%; float:left;"/>  
@@ -655,9 +855,9 @@ $(document).ready(function() {
             <div class="icon-curve icon-txtoptions"></div>
             <div id="dd">
                <div class="sub-tools items">
-                 <a href="javascript:void(0)" id="btnNewText" title="Add New Text" onclick="return mousePointer(29)"><i class="fa-plus trashh"></i></a>
-                 <a href="javascript:void(0)" id="btnRemoveText" title="Delete Text"  onclick="return mousePointer(30)"><i class="fa-trash trashh"></i></a>
-                 <a href="javascript:void(0)" id="btnShowMenu" title="Show Text Menu" onclick="return mousePointer(31)"><i class="fa-bars trashh"></i></a>
+                 <a href="javascript:void(0)" class="text1" id="btnNewText" title="Add New Text" onclick="return mousePointer(29)"><i class="fa-plus trashh"></i></a>
+                 <a href="javascript:void(0)" class="text2" id="btnRemoveText" title="Delete Text"  onclick="return mousePointer(30)"><i class="fa-trash trashh"></i></a>
+                 <a href="javascript:void(0)" class="text3" id="btnShowMenu" title="Show Text Menu" onclick="return mousePointer(31)"><i class="fa-bars trashh"></i></a>
                </div>            
              </div>   
            </div>                
@@ -667,8 +867,8 @@ $(document).ready(function() {
          <div id="imageOptions" class='subProperties left-meni-slide' style="min-height:91px; max-height:100%;">
             <div class="icon-curve icon-imgoptions"></div>
             <div class="sub-tools items">            
-               <a href="javascript:void(0)" id="btnNewImage" title="Add New Image" onclick="return mousePointer(32)"><i class="fa-upload trashh" style="font-size:130%!important;"></i></a>
-               <a href="javascript:void(0)" id="btnRemoveImage" class='clsCance' title="Remove Image" 
+               <a href="javascript:void(0)" class="image1" id="btnNewImage" title="Add New Image" onclick="return mousePointer(32)"><i class="fa-upload trashh" style="font-size:130%!important;"></i></a>
+               <a href="javascript:void(0)" class="image2" id="btnRemoveImage" class='clsCance' title="Remove Image" 
                onclick="return mousePointer(33)"><i class="fa-trash trashh"></i></a>  
                <div class="text-tool sub-tools-cat" id="catOne">               
                   <form method="post" enctype="multipart/form-data" id="imageForm" >       
@@ -684,11 +884,11 @@ $(document).ready(function() {
          <div class="subProperties left-meni-slide" id="downloadOptions" style="min-height:145px; max-height:100%;">
             <div class="icon-curve icon-dwnldoptions"></div>
             <div class="sub-tools items">
-              <a href='javascript:void(0)' id="ancDwnJson" title="Download as Board" onclick="return mousePointer(34)">
+              <a href='javascript:void(0)' class="download1" id="ancDwnJson" title="Download as Board" onclick="return mousePointer(34)">
                   <img src="images/download_board.png" class="fa-dwnload" style="width:21px; height:22px;border-radius:0px;"/></a>
-              <a href='javascript:void(0)' id="ancDwnJpeg" title="Download as JPEG" onclick="return mousePointer(35)">
+              <a href='javascript:void(0)' class="download2" id="ancDwnJpeg" title="Download as JPEG" onclick="return mousePointer(35)">
                   <img src="images/download_jpeg.png" class="fa-dwnload" style="width:21px; height:22px;border-radius:0px;"/></a>                           
-              <a href='javascript:void(0)'>
+              <a href='javascript:void(0)' class="download3">
                 <form method="post" enctype="multipart/form-data" id="uploadForm" onclick="return mousePointer(36)">       
                    <input type="file" id="fileJson" name="fileJson" title="Upload Board from Computer">
                 </form>             
@@ -799,13 +999,14 @@ $(document).ready(function() {
    <!-- end of code Help -->
    
    <!--STAGE ENDS -->
-   <div id="helpWindow" class="easyui-window" title="Help Guide for Whiteboard" data-options="iconCls:'icon-help'" style="width:955px;height:500px;">
+ <!--   <div id="helpWindow" class="easyui-window" title="Help Guide for Whiteboard" data-options="iconCls:'icon-help'" style="width:955px;height:500px;"> -->
       <img src=""/>
    </div>
 
 
 <!-- <script src="theme/js/lightslider.js"></script> -->
 <script>
+  openNav();
   function mousePointer(a){
        // if( a == 0 || a == 1 || a == 2 || a == 3 || a == 4 || a == 5 || a == 6 || a == 7 || a == 8 || a == 9 || a == 10 || a == 11 || a == 12 || a == 13 || a == 14 || a == 15 || a == 16 || a == 17 || a == 18 || a == 19 || a == 20 || a ==21 || a == 22 || a == 23 || a == 24 || a == 25 || a == 26 || a == 27 || a == 28 || a == 29 || a == 30 || a == 31 || a == 32 || a == 33 || a == 34 || a == 35 || a == 36 ){
 
@@ -3135,10 +3336,6 @@ function openFileUpload() {
 // document.getElementById("btnDisplayMenu").style.display = "none";
 //$.('#btnDisplayMenu').css("display", "none");
 </script>
-<!-- <script src="https://www.google-analytics.com/urchin.js"></script>
-<script type="text/javascript">
-_uacct = "UA-232293-6";
-urchinTracker();
-</script> -->
-</body>
 
+</body>
+</html>
