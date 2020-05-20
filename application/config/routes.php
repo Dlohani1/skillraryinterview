@@ -308,6 +308,7 @@ $route['customer/upload-question'] = 'CustomerController/uploadQuestionView';
 $route['customer/save-uploaded-question'] = 'CustomerController/saveUploadedQuestion';
 $route['customer/create-interviewers'] = 'CustomerController/addInterviewer';
 $route['customer/save-interviewers']['POST'] = 'CustomerController/saveInterviewer';
+$route['customer/generateInterviewUsrPwd']['POST'] = 'CustomerController/generateInterviewUsrPwd';
 
 $route['admin/add-meeting-credentials'] = 'AdminController/createMeetingCredentials'; 
 $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentials'; 

@@ -1630,30 +1630,30 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
       }      
     }
 
-    // foreach ($interview['users'] as $key => $value) {
-    //   $intervieweeId = $value->id;
-    //   for ($i = 1; $i<4;$i++) {
-    //     $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+    foreach ($interview['users'] as $key => $value) {
+      $intervieweeId = $value->id;
+      for ($i = 1; $i<4;$i++) {
+        $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
 
-    //     $result = $this->db->query($sql)->row();
-    //     $round = "round".$i;
-    //     if (isset($result->interview_status)) {
-    //       $roundResult[$intervieweeId][$round] = $result->interview_status;
-    //     } else {
-    //       if ($i == "1") {
-    //         $roundResult[$intervieweeId][$round] = 1;
-    //       } else {
-    //         $roundResult[$intervieweeId][$round] = 0;  
-    //       }            
-    //     }
-    //   }              
-    // }
+        $result = $this->db->query($sql)->row();
+        $round = "round".$i;
+        if (isset($result->interview_status)) {
+          $roundResult[$intervieweeId][$round] = $result->interview_status;
+        } else {
+          if ($i == "1") {
+            $roundResult[$intervieweeId][$round] = 1;
+          } else {
+            $roundResult[$intervieweeId][$round] = 0;  
+          }            
+        }
+      }              
+    }
 
     // echo "<pre>";
 
     // print_r($roundResult); die;
 
-    //$interview['round-result'] = $roundResult;
+    $interview['round-result'] = $roundResult;
 
     // $sql = "SELECT * FROM mcq_test ";
 
@@ -2021,8 +2021,7 @@ public function viewInterview() {
   
     // Shufle the $str_result and returns substring 
     // of specified length 
-    return substr(str_shuffle($str_result),  
-                       0, $length_of_string); 
+    return substr(str_shuffle($str_result), 0, $length_of_string); 
   }
 
   public function generateUsrPwd() {
@@ -2045,52 +2044,51 @@ public function viewInterview() {
 
   }
 
-   public function addTest() {
+  public function addTest() {
 
-              //echo var_dump(); die;
+  //echo var_dump(); die;
 
-                $title = $_POST['test-title'];
-                $type = $_POST['test-type'];
-                $isProctored = $_POST['is-proctored'];
-                $customerCode = explode("-",$_POST['customer-code']); //change to customer id
+    $title = $_POST['test-title'];
+    $type = $_POST['test-type'];
+    $isProctored = $_POST['is-proctored'];
+    $customerCode = explode("-",$_POST['customer-code']); //change to customer id
 
-                $data = array(
-                        'title' => $title,
-                        'type' => $type,
-                        'customer_id' => $customerCode[1],
-                        'is_proctored' => $isProctored,
-                        'created_by' => $_SESSION['admin_id']
-                );
+    $data = array(
+            'title' => $title,
+            'type' => $type,
+            'customer_id' => $customerCode[1],
+            'is_proctored' => $isProctored,
+            'created_by' => $_SESSION['admin_id']
+    );
 
-                $this->db->insert('mcq_test', $data);
-
-
-                $testId = $this->db->insert_id();
-
-                $code = $this->getCode();
-
-                $data = array(
-                        'mcq_test_id' => $testId,
-                        'code' => $code
-                );
-
-                $this->db->insert('mcq_code', $data);
-
-                if (strlen(trim($_POST['drive-date'])) > 0) {
-                  $data = array(
-                    'mcq_test_id' => $testId,
-                    'drive_date' =>trim($_POST['drive-date']),
-                    'drive_time' =>trim($_POST['drive-time']),
-                    'drive_place' =>trim($_POST['drive-place'])
-
-                  );
-
-                  $this->db->insert('drive_details', $data);                  
-                }
+    $this->db->insert('mcq_test', $data);
 
 
-                echo $testId;
-        }
+    $testId = $this->db->insert_id();
+
+    $code = $this->getCode();
+
+    $data = array(
+            'mcq_test_id' => $testId,
+            'code' => $code
+    );
+
+    $this->db->insert('mcq_code', $data);
+
+    if (strlen(trim($_POST['drive-date'])) > 0) {
+      $data = array(
+        'mcq_test_id' => $testId,
+        'drive_date' =>trim($_POST['drive-date']),
+        'drive_time' =>trim($_POST['drive-time']),
+        'drive_place' =>trim($_POST['drive-place'])
+
+      );
+
+      $this->db->insert('drive_details', $data);                  
+    }
+
+    echo $testId;
+  }
 
                 public function addTestTime() {
                 $mcqId = $_POST['mcqId'];
