@@ -10,11 +10,58 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
+
+ 
+ 
+  <div class="container">
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/view-questions-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-4 ">
+                        <label class="" for="sectionId">Section:</label>
+                        <select id="section" name="section" onchange="getSubSection()">
+                          <option value="0">Select Section</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                          <label class="" for="subsection">Sub Section:</label>
+                          <select id="subsection"   name="subsection" >
+                              <option value="0">Select Sub Section</option>
+                          </select>
+                      </div>
+
+                      <div class="col-md-2">
+                          <label class="" for="difficultylevel">Level:</label>
+                          <select id="difficultylevel" name="difficultylevel" >
+                              <option value="0">Select Level</option>
+                          </select>
+                      </div>
+
+                      <div class="col-md-1">
+                          <!-- <label>Search</label><br> -->
+                          <button type="submit" value="Submit"><i  style="font-size:28px;color:lightblue" class="fa fa-search"></i></button>
+                      </div>               
+
+
+                      <div class="col-md-1">
+                         <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
+                      </div>
+                </div>
+          </div>
+      </form>
+  </div>
+
+
+
                                 <div class="container-fluid">
                                     <div class="container">
   <div class="row">
     
-        
+         
         <div class="col-md-12">
         <!-- <h4>MCQs</h4>
             <div class="container">
@@ -45,6 +92,15 @@
                 </div>
             </div> -->
             <br/>
+
+
+
+
+       
+
+
+
+
         <div class="table-responsive">
 
                 
@@ -53,6 +109,7 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
+                    <th>Sl.no</th>
                     <th>Question</th>
                     <th>Section</th>
                     <th>Sub Section</th>
@@ -64,8 +121,9 @@
     <tbody>
 
         <?php
+         $i = $this->uri->segment(3)+0;
         foreach($questionData as $key => $value) {
-
+           $i++;
             $question = $value->question; 
             $section = $value->section_name;
             $subSection = $value->sub_section_name;
@@ -73,7 +131,7 @@
 
             $id = $value->id;
 
-            echo '<tr>
+            echo '<tr><td>'.$i.'</td>
                     <td><span style="height: 18px;
                       width: 140px;
                       overflow: hidden;
@@ -89,7 +147,8 @@
                     <td>'.$section.'</td> <td>'.$subSection.'</td>
                     <td>'.$level.'</td>
                     <td><p data-placement="top" data-toggle="tooltip" title="view"><button disabled onclick="populateData()" class="btn btn-primary btn-xs" data-title="view" data-toggle="modal" data-target="#view"><span class="glyphicon glyphicon-eye-open"></span></button></p></td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="edit-question/'.$id.'"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().
+                    'admin/edit-question/'.$id.'"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
                     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
                 </tr>';
         }
@@ -157,10 +216,11 @@
    
     
    
-    
+     
     </tbody>        
 </table>
 
+  <p><?php echo $links; ?></p>
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
@@ -284,7 +344,7 @@
     $('#view').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
 
-      console.log('bb', button.data('whatever'))
+      // console.log('bb', button.data('whatever'))
       var recipient = button.data('whatever') // Extract info from data-* attributes
       // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
@@ -292,6 +352,150 @@
       modal.find('#questionDetail').val('New message to ' + recipient)
       //modal.find('.modal-body input').val(recipient)
     })
+
+
+
+
+// for select and auto select section
+
+
+$( document ).ready(function() {
+    var baseUrl = '<?php echo base_url(); ?>';
+
+
+        $.ajax({
+            type: "POST",
+            url: baseUrl+"/question/getSection",
+            success: function(data){
+
+              
+                // Parse the returned json data
+                var opts = $.parseJSON(data);
+                // Use jQuery's each to iterate over the opts value
+                $.each(opts, function(i, d) { 
+                  // console.log('d',d);
+                    // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+
+                  let searchParams = new URLSearchParams(window.location.search)
+                  let section = searchParams.get('section');
+                  
+                  if(section == d.id){
+                    $('#section').append('<option value="' + d.id +'" selected>' + d.name + '</option>');
+                  }else{
+                    $('#section').append('<option value="' + d.id +'">' + d.name + '</option>');
+                  }
+
+                });
+            }
+        });
+
+
+
+
+      $.ajax({
+                type: "POST",
+                url: baseUrl+"/question/getQuestionLevel",
+                success: function(data){
+                    //Parse the returned json data
+                    var opts = $.parseJSON(data);
+                    // Use jQuery's each to iterate over the opts value
+                    $.each(opts, function(i, d) { 
+                      // console.log('d',d);
+                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+
+
+                      let searchParams = new URLSearchParams(window.location.search)
+                      let difficultylevel = searchParams.get('difficultylevel');
+                      
+                      if(difficultylevel == d.id){
+                        $('#difficultylevel').append('<option value="' + d.id +'" selected>' + d.level + '</option>');
+                      }else{
+                        $('#difficultylevel').append('<option value="' + d.id +'">' + d.level + '</option>');
+                      }
+
+                        // $('#difficultylevel').append('<option value="' + d.id + '">' + d.level + '</option>');
+                    });
+                }
+            });
+
+});
+
+
+    let searchParams = new URLSearchParams(window.location.search)
+    let sectionparam = searchParams.get('section');
+
+    if (sectionparam) {
+      getSubSection();
+    }
+
+
+
+  function getSubSection() {
+      let section = document.getElementById("section").value;
+
+      let searchParams = new URLSearchParams(window.location.search)
+      let sectionparam = searchParams.get('section');
+
+        if(section == 0){
+            if(sectionparam != 0){
+              section = sectionparam;
+            }
+        }
+     
+        if (section != 0) {
+
+            $('#subsection').empty()
+
+            var baseUrl = '<?php echo base_url(); ?>';
+
+            $.ajax({
+                type: "POST",
+                url: baseUrl+"/question/getSubSection",
+                data: { 'Id': section },
+                success: function(data){ 
+                    // Parse the returned json data
+                    var opts = $.parseJSON(data);
+                    // Use jQuery's each to iterate over the opts value
+                    $('#subsection').append('<option value="0"> Select option </option>');
+                    $.each(opts, function(i, d) {
+                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                      let searchParams = new URLSearchParams(window.location.search)
+                      let subsection = searchParams.get('subsection');
+                      
+                      if(subsection == d.id){
+                        $('#subsection').append('<option value="' + d.id +'" selected>' + d.name + '</option>');
+                      }else{
+                        $('#subsection').append('<option value="' + d.id +'">' + d.name + '</option>');
+                      }
+
+                  });
+                }
+            });
+        } else {
+            $('#subsection').empty()
+          $('#subsection').append('<option value="0">' + 'Select option' + '</option>');
+        }
+  }
+
+
+    $('#back').click(function () {
+
+      let baseUrl = '<?php echo base_url(); ?>';
+      let url =  baseUrl+"admin/view-questions";
+      window.location.href = url;
+    });
+
+
+
+
+
+
+
+
+
+
+
+
       
 </script>
     </body>

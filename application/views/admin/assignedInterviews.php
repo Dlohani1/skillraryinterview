@@ -6,7 +6,7 @@
       <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
         <li class="breadcrumb-item active">Details</li>
-      </ol>
+      </ol> 
     <div class="card mb-4">
       <div class="card-body">
       <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
@@ -15,9 +15,9 @@
       <div class="row">
          <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
           <div class="col-md-12">
-            <h4>Users List</h4>
+            <h4>Users List</h4> 
             <div class="container">
-              <div class="searchBox">
+              <!-- <div class="searchBox"> -->
 <!--                 <div class="row">
                   <div class="col-md-3 offset-md-1">
                     <label>MCQ Name</label>
@@ -43,8 +43,38 @@
 
                         </div> -->
 
-        </div>
+        <!-- </div> -->
 
+        <div class="container">
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."interviewer/assignedInterviewsSearch";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-6 ">
+                        <label>Search Date</label>
+                        <input type="date" id="searchdate" name="searchdate" class="form-control " placeholder="Search Date" value="<?php echo $searchdate; ?>" >
+                      </div>
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+                      </div>
+
+                       <div class="col-md-1">
+                        <label></label>
+                         <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+  </div>
+ 
                            
         <!-- <div class="container">
         <div class="searchBox">
@@ -71,7 +101,6 @@
         </div>
  -->
         <div class="table-responsive">
-
                 
               <table id="mytable" class="table table-bordred table-striped">
                    
@@ -94,10 +123,15 @@
     <tbody>
 
         <?php 
-        $i = 0;
+        // $i = 0;
+
+                 $i = $this->uri->segment(3)+0;
+
+
         if (count($users) > 0)
         foreach($users as $key => $value) { 
           //print_r($value);
+          // foreach ($records as $row){ $i++; 
             $i++;
 
 		 $a = $value->interview_date;
@@ -196,6 +230,8 @@ echo '</td> </tr>';
     </tbody>
         
 </table>
+
+<p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
@@ -386,6 +422,18 @@ echo '</td> </tr>';
                 </main>
 
 <script>
+
+
+
+  $('#back').click(function () {
+
+      let baseUrl = '<?php echo base_url(); ?>';
+      let url =  baseUrl+"interviewer/assignedInterviews";
+      window.location.href = url;
+    });
+
+
+  
  $.ajaxSetup({
         data: {
             '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
