@@ -720,7 +720,7 @@ const wordCounter = (str) => {
             let WPM = $('#WPM').text();
             localStorage.WPM = WPM;
             localStorage.MTW = MTW;
-            window.location.href = 'speedtyping-new2.html';
+            window.location.href = 'result';
 
          }
     }
