@@ -9,6 +9,19 @@
       </ol>
     <div class="card mb-4">
       <div class="card-body">
+
+
+
+
+
+
+
+
+
+
+
+
+
       <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
       <div class="container-fluid">
       <div class="container">
@@ -51,7 +64,49 @@
                 </div>
             
 
-        </div>
+        </div><br>
+
+
+
+
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/create-customers-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-2 ">
+                        <label>Code</label>
+                        <input type="text" id="searchcode" name="searchcode" class="form-control " placeholder="Search Code" value="<?php echo $searchcode; ?>" >
+                      </div>
+
+                      <div class="col-md-3">
+                        <label>Name</label>
+                        <input type="text" id="searchname" name="searchname" class="form-control" placeholder="Search Name" value="<?php echo $searchname; ?>">
+                      </div>
+
+                      <div class="col-md-3">
+                        <label>Email</label>
+                        <input type="text" id="searchemail" name="searchemail" class="form-control" placeholder="Search Email" value="<?php echo $searchemail; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                        <label>Contact</label>
+                        <input type="text" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
 
                            
         <!-- <div class="container">
@@ -86,7 +141,7 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                  <th>Id</th>                    
+                  <th>Sl.no</th>                    
                   <th>Code</th>
                   <th>Name</th>
                   <th>Email</th>
@@ -97,7 +152,8 @@
     <tbody>
 
         <?php 
-        $i = 0;
+        $i = $this->uri->segment(3)+0;
+
         if (count($customers) > 0)
         foreach($customers as $key => $value) { 
           //print_r($value);
@@ -174,7 +230,7 @@
     </tbody>
         
 </table>
-
+<p><?php echo $links; ?></p>
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
