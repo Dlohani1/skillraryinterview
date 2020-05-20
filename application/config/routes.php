@@ -271,11 +271,15 @@ $route['admin/mcq-customers'] = 'AdminController/mcqCustomer';
 
 $route['admin/fetch-customers']['POST'] = 'AdminController/fetchCustomer'; 
 $route['admin/save-customers']['POST'] = 'AdminController/saveCustomer'; 
+$route['admin/add-interviewers/:any'] = 'AdminController/showInterviewerList'; 
 
+$route['admin/add-interviewer-customer'] = 'AdminController/addInterviewerToCustomer'; 
+$route['admin/remove-interviewer-customer'] = 'AdminController/removeInterviewerToCustomer'; 
 
 $route['admin/uploadGotomeeting'] = 'AdminController/uploadGotomeeting';
 
 $route['html-editor'] = 'welcome/showEditor';
+
 
 
 //typing-test
@@ -296,6 +300,15 @@ $route['customer/view-mcq-data/:any'] = 'CustomerController/viewMcqData';
 $route['customer/view-interview'] = 'CustomerController/viewInterview';
 $route['customer/interview-result/:any'] = 'CustomerController/interviewResult'; 
 $route['customer/logout'] = 'CustomerController/logout';
+
+$route['customer/add-section'] = 'CustomerController/addSection';
+$route['customer/save-section'] = 'CustomerController/saveSection';
+
+$route['customer/upload-question'] = 'CustomerController/uploadQuestionView';
+$route['customer/save-uploaded-question'] = 'CustomerController/saveUploadedQuestion';
+$route['customer/create-interviewers'] = 'CustomerController/addInterviewer';
+$route['customer/save-interviewers']['POST'] = 'CustomerController/saveInterviewer';
+
 $route['admin/add-meeting-credentials'] = 'AdminController/createMeetingCredentials'; 
 $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentials'; 
 

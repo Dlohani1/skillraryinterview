@@ -64,6 +64,7 @@
                     </a>
                     <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
+                             <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>Upload</a>
                             <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
                             <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>View</a>
                         </nav>

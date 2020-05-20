@@ -13,7 +13,7 @@ class AdminController extends CI_Controller {
 
     $uri = $this->uri->segment(2);
     //echo $uri; die;
-    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin'))) {
+    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin','updateToken'))) {
       redirect('admin/login');
     }
 
@@ -147,7 +147,7 @@ class AdminController extends CI_Controller {
 
   }
 
- public function createMeeting ($startDate, $startTime, $assessId , $call = NULL) {
+ public function createMeeting ($startDate, $startTime, $assessId , $call = NULL, $meetingId = 0) {
         //echo "test";
   //$sql = "SELECT * FROM `bse_citrix` limit 2";
 //
@@ -177,7 +177,14 @@ class AdminController extends CI_Controller {
   $endTestTime = $startDate.'T'.$endTime.'.000Z';
   $endTestTime1 = $startDate.'T'.$endTime2.'.000Z';
 
-  $meetingEmail = "trainer111@qspiders.com";
+  if ($call != "interview" || !$meetingId) {
+    $meetingEmail = "trainer111@qspiders.com";  
+  } else {
+    $sql = "SELECT email from `gotomeeting_token_details` where id = $meetingId";
+    $result = $this->db->query($sql)->row();
+    $meetingEmail = $result->email;
+  }
+  
 
         
   $sql = "SELECT access_token FROM `gotomeeting_token_details` where email='".$meetingEmail."'";
@@ -289,6 +296,7 @@ public function startMeeting() {
     //$sql = "SELECT * FROM `bse_citrix` limit 3";
 
     $call = $_POST['call'];
+    $this->updateAccessToken();
 
     //$sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
 
@@ -483,10 +491,25 @@ public function gotomeetingJoin() {
   $this->load->view('user-gotomeeting');
 }
 
+public function saveInterviewStatusnew() {
+ $data = array(
+    'interview_status' => $_POST['status']
+  );
+
+  $whereArray = array (
+    'interview_users_id' => $_POST['userId'],
+    'round' => $_POST['round']
+  );
+
+  $this->db->where($whereArray);
+  $this->db->update('interview_details',$data);
+
+echo "success";
+}
 
 public function saveInterviewStatus() {
  $data = array(
-    'interview_status' => $_POST['status']
+    'interview_status' => $_POST['status'],
   );
 
   $this->db->where('id', $_POST['userId']);
@@ -496,6 +519,20 @@ echo "success";
 }
 
 public function saveActiveRound() {
+  $data = array(
+    'interview_status' => $_POST['status']
+  );
+  $whereArray = array(
+    'round' => $_POST['round'],
+    'interview_users_id' => $_POST['userId']
+  );
+  $this->db->where($whereArray);
+  $this->db->update('interview_details',$data);
+
+echo "success";
+}
+
+public function saveActiveRoundOld() {
   $data = array(
     'active_round' => $_POST['round']
   );
@@ -1283,7 +1320,10 @@ return $x;
  }
 
  public function sendInterviewInvite() {
-  $mcqId = $_POST['mcqId'];
+ 
+  $mcqId = 0;
+  $customerId = $_POST['customerId'];
+  $meetingId = $_POST['meetingId'];
   $email = $_POST['email'];
   $testDate = $_POST['testDate'];
   $testTime = $_POST['testTime'];
@@ -1308,13 +1348,15 @@ return $x;
   $testDate = $testDate[2]."-".$testDate[0]."-".$testDate[1];
 
 
-  $sql = "SELECT * from `interview_details` where interview_date = '".$testDate."' AND duration_timestamp >='".$interviewTimeStamp."' order by duration_timestamp DESC";
+  $sql = "SELECT * from `interview_details` where gotomeeting_id = $meetingId AND interview_date = '".$testDate."' AND duration_timestamp >='".$interviewTimeStamp."' order by duration_timestamp DESC";
 
   $interviewSchedule = $this->db->query($sql)->row();
 
   if (null == $interviewSchedule) {
     foreach ($interviewerId as $key => $value) {
       $data[]  = array (
+        'customer_id' => $customerId,
+        'gotomeeting_id' => $meetingId,
         'interview_users_id' => $userId,
         'mcq_test_id' => $mcqId,
         'interviewer_id' => $value,
@@ -1366,12 +1408,16 @@ return $x;
     //   $this->db->update('student_register',$data);
     // }
 
-    $data  = array (
+    $sql = "SELECT id FROM `student_register` where email = '".$email."'";
+    $result = $this->db->query($sql)->row();
+
+    if (null == $result) {
+      $data  = array (
       'interview_users_id' => $userId,
       'email' => $email
-    );
-
-    $this->db->insert('student_register', $data);
+      );
+      $this->db->insert('student_register', $data);
+    }
 
     $sql = "SELECT username, password from interview_users where id = ".$userId;
 
@@ -1399,7 +1445,8 @@ return $x;
       );
 
       $this->updateAccessToken();
-      $this->createMeeting($testDate, $testTime, $ids , $call="interview");
+      $call = "interview";
+      $this->createMeeting($testDate, $testTime, $ids , $call, $meetingId);
       
       $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 
@@ -1553,65 +1600,82 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
     }
   
     $sql.=" order by interview_users.id asc";
-   // $sql = "SELECT  * from `interview_users` 
-    //order by interview_users.id asc";
-
-    $query = $this->db->query($sql);
-    $interview['users'] = $query->result();
-
+    $interview['users'] = $this->db->query($sql)->result();
+// echo "<pre>";print_r($interview['users']); die;
     $roundResult = array();
-
     foreach ($interview['users'] as $key => $value) {
-          $intervieweeId = $value->id;
-          for ($i = 1; $i<4;$i++) {
-              $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+      $intervieweeId = $value->id;
+      //echo $intervieweeId; die;
+      //$intervieweeId = 10;
+      $sql = "SELECT max(round) as active_round FROM interview_details where interview_users_id = $intervieweeId";
+      $activeRound = $this->db->query($sql)->row();
+      //print_r(var_dump($activeRound)); die;
+      $roundResult = array();
+      if (null !== $activeRound->active_round) {
+        for ($i = 1; $i <= $activeRound->active_round; $i++) {
+          $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
 
-              $result = $this->db->query($sql)->row();
-              $round = "round".$i;
-              if (isset($result->interview_status)) {
-                
-                $roundResult[$intervieweeId][$round] = $result->interview_status;
-              } else {
-                if ($i == "1") {
-                  $roundResult[$intervieweeId][$round] = 1;
-                } else {
-                  $roundResult[$intervieweeId][$round] = 0;  
-                }
-                
-              }
+          $result = $this->db->query($sql)->row();
+          //$round = "round".$i;
+          if (isset($result->interview_status)) {
+              $roundR = "round_".$i;
+              $interview['users'][$key]->totalRound = $i; 
+            $interview['users'][$key]->$roundR = $result->interview_status;
+            //$roundResult[$intervieweeId][$round] = $result->interview_status;
           }
-              
+        } 
+      } else {
+         $interview['users'][$key]->totalRound = 0;
+         $interview['users'][$key]->roundResult = 0;
+      }      
     }
+
+    // foreach ($interview['users'] as $key => $value) {
+    //   $intervieweeId = $value->id;
+    //   for ($i = 1; $i<4;$i++) {
+    //     $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+
+    //     $result = $this->db->query($sql)->row();
+    //     $round = "round".$i;
+    //     if (isset($result->interview_status)) {
+    //       $roundResult[$intervieweeId][$round] = $result->interview_status;
+    //     } else {
+    //       if ($i == "1") {
+    //         $roundResult[$intervieweeId][$round] = 1;
+    //       } else {
+    //         $roundResult[$intervieweeId][$round] = 0;  
+    //       }            
+    //     }
+    //   }              
+    // }
+
     // echo "<pre>";
 
     // print_r($roundResult); die;
 
-    $interview['round-result'] = $roundResult;
+    //$interview['round-result'] = $roundResult;
 
-    $sql = "SELECT * FROM mcq_test ";
+    // $sql = "SELECT * FROM mcq_test ";
 
-    $query = $this->db->query($sql);
+    // $query = $this->db->query($sql);
 
-    $result = $query->result();
+    // $result = $query->result();
 
-    $interview['mcqs-list'] = $query->result();
+    // $interview['mcqs-list'] = $query->result();
+    $sql = "SELECT id, email FROM `gotomeeting_token_details` where customer_id=$customerId ";
+
+    $interview['meeting-id'] = $this->db->query($sql)->result_object();
 
     $sql = "SELECT * from `assess_login` where role= 6"; //interviewer role
 
     $query = $this->db->query($sql);
 
-        // $sql = "SELECT interview_status from `interview_details` where role= 6"; //round status
+    $interview['interviewer-list'] = $query->result();
 
-        // $query = $this->db->query($sql);
 
-        //   echo "<pre>";
-        //   print_r($query->result());
-
-        // print_r($mcq); die;
-
-        $interview['interviewer-list'] = $query->result();
-
-    //print_r($interview); die;
+       
+// echo "<pre>";
+//     print_r($interview); die;
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
     $this->load->view('admin/interview',array('interviewData'=> $interview));
@@ -1646,6 +1710,7 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
         $student = $this->updateResult($mcqId);
 
         $failCount = $passCount = 0;
+        
         foreach ($mcqData['mcq-users'] as $key => $value) {
           
           if (null === $value->studentId) {
@@ -1656,6 +1721,7 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
           $totalAptitudeMarks = 0;
           $totalAptitudeQualifyingMarks = 0;
           $totalUserAptitudeMarks = 0;
+          $countMarks = 0;  
           for ($i =0; $i < count($result['Aptitude']); $i++) {
           
             
@@ -1663,6 +1729,12 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
           $minMarks =  $result['Aptitude'][$i]['total_question']/2;
           $userMarks = $result['Aptitude'][$i]['user_ans'];
 
+          if (null == $userMarks) {
+            $countMarks += 1;
+
+            continue;
+          }
+          
           if ($totalMarks < 10 ) {
               $totalMarks *= 10;
               $minMarks *= 10;    
@@ -1672,6 +1744,11 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
           $totalAptitudeQualifyingMarks += $minMarks;
           $totalUserAptitudeMarks += $userMarks;
         }
+
+        if ($countMarks == count($result['Aptitude'])) {
+          continue;
+        }
+
         //echo $totalAptitudeQualifyingMarks,",",$totalUserAptitudeMarks; die;
         if ($totalAptitudeQualifyingMarks > $totalUserAptitudeMarks) {
           $mcqData['mcq-users'][$key]->status = "FAIL";
@@ -1735,8 +1812,8 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
         }
 
         $mcqData['proctoredIds'] = $proctoredIds;
-// echo "<pre>";
-//         print_r($mcqData); die;
+ // echo "<pre>";
+ //         print_r($mcqData); die;
 
         $this->load->view('admin/header');
         $this->load->view('admin/sidenav');
@@ -3683,7 +3760,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
   
 
   public function uploadGotomeeting() {
-    $sql = "SELECT id,user_email,starttime, endtime, meeting_id from interview_details where is_uploaded = 0 and starttime is not null";
+    $sql = "SELECT id,user_email,starttime, endtime, meeting_id from interview_details where is_uploaded = 3 and starttime is not null";
     $interview = $this->db->query($sql)->result_object();
     
     $meetingEmail = "trainer111@qspiders.com"; 
@@ -3702,7 +3779,8 @@ foreach ($sectionDetails['section'] as $key => $value) {
       $endtime = $value->endtime;
       $url = "https://api.getgo.com/G2M/rest/historicalMeetings?startDate=$starttime&endDate=$endtime";
       $curl = curl_init();
-
+//echo $starttime; die;
+      echo $url; die;
       curl_setopt_array($curl, array(
         CURLOPT_URL => $url,
         CURLOPT_RETURNTRANSFER => true,
@@ -3714,12 +3792,14 @@ foreach ($sectionDetails['section'] as $key => $value) {
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_HTTPHEADER => $headers,
       ));
-
+      echo "<pre>";
+//print_r($headers); die;
       $response = curl_exec($curl);
-
+ //print_r($response); die;
       curl_close($curl);
       echo "<pre>";
       $result = json_decode($response, true);
+     
       if (count($result) > 0 && isset($result[0]['recording']['downloadUrl'])) {
         $client = new Vimeo("dfe4d40e1b610f1fc70286ddc017e53e039e7984", "0tyi2RmRxGpejcv3bcsnRFE/b3HT7Y9LOBYJnkODQlSOXuj/StlNqbevYWBThVZMeNd7qKH6Gkjb+AYfNuRJzHSTZimT3QYpj3ubkwFPM68q106nh3j/znAo26wGBMUq", "d598a2fbacd583051d3b80065915e95d");
           $file_name = $result[0]['recording']['downloadUrl'];
@@ -3933,4 +4013,59 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
   }
 
+  public function showInterviewerList() {
+    $sql = "SELECT * FROM roles ";
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+
+    $sql = "SELECT assess_login.id as assessId, username, password, role, roles.roles FROM assess_login INNER JOIN roles on roles.id = assess_login.role where role = 6 and created_by = 0";
+
+    $query = $this->db->query($sql);
+
+    $userResult = $query->result();
+
+    //print_r($userResult); die;
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+
+    $this->load->view('admin/interviewers-list', array("user"=>$userResult,"roles"=>$result));
+    $this->load->view('admin/footer');
+  }
+
+  public function addInterviewerToCustomer() {
+    print_r($_POST);
+    $customerId = $_POST['customerId'];
+    $interviewerIds = $_POST['interviewerIds'];
+    foreach ($interviewerIds as $key => $value) {
+      $data[]  = array (
+        'customer_id' => $customerId,
+        'assess_login_id' => $value,
+        'is_admin' => 1
+      );
+    }
+
+    $this->db->insert_batch('customer_interviewers', $data);
+    echo "success";
+  }
+
+  public function removeInterviewerToCustomer() {
+    print_r($_POST);
+    $customerId = $_POST['customerId'];
+    $interviewerIds = $_POST['interviewerIds'];
+    // foreach ($interviewerIds as $key => $value) {
+    //   $data[]  = array (
+    //     'customer_id' => $customerId,
+    //     'assess_login_id' => $value,
+    //     'is_admin' => 1
+    //   );
+    // }
+
+    // $this->db->insert_batch('customer_interviewers', $data);
+    $this->db->where_in('assess_login_id', $interviewerIds);
+    $this->db->delete('customer_interviewers');
+    echo "success";
+  }
 }
