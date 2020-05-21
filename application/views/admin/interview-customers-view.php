@@ -14,6 +14,50 @@
       <div class="container">
       <div class="row">
          <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
+
+ 
+<div class="container">
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/interview-customers-list-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-2 ">
+                        <label>Code</label>
+                        <input type="text" id="searchcode" name="searchcode" class="form-control " placeholder="Search Code" value="<?php echo $searchcode; ?>" >
+                      </div>
+
+                      <div class="col-md-3">
+                        <label>Name</label>
+                        <input type="text" id="searchname" name="searchname" class="form-control" placeholder="Search Name" value="<?php echo $searchname; ?>">
+                      </div>
+
+                      <div class="col-md-3">
+                        <label>Email</label>
+                        <input type="text" id="searchemail" name="searchemail" class="form-control" placeholder="Search Email" value="<?php echo $searchemail; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                        <label>Contact</label>
+                        <input type="text" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+  </div>
+
+
           <div class="col-md-12">
             <h4>SkillRary Interviews</h4>
             <div class="container">
