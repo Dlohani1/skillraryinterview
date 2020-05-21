@@ -49,11 +49,11 @@
                       <form method="post" action="save-meeting-credentials" onsubmit="return validate()">
                             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                       <div class="column">
-                       <label>Meeting Email Id</label>
+                       <label>GotoMeeting Email Id</label>
                         <input type="email" name="meeting-email" class="form-control" id="meeting-email" placeholder="Enter Email" autocomplete="off">
                         <span id = "meeting_email_error" style="color:red"></span>
-                        
-                        <label>Password</label>
+                        <br/>
+                        <label>GotoMeeting Password</label>
                         <input type="text" name="password" class="form-control" id="password" placeholder="Enter password" autocomplete="off">
                         <span id = "password_error" style="color:red"></span>
                       </div>

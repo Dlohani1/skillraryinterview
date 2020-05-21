@@ -293,7 +293,7 @@
                     <th class="thborder thMainBorder" width="10%">Total marks</th>
                     <th class="thborder thMainBorder" width="25%">Minimum qualifying marks</th>
                     <th class="thborder thMainBorder" width="17%">Marks secured by you</th>
-                    <th class="thborder thMainBorder" width="10%">Status</th>
+                    <!-- <th class="thborder thMainBorder" width="10%">Status</th> -->
                     <th class="thborder thMainBorder" width="10%">Final Status</th>
                 </tr>
                 <tr>
@@ -301,7 +301,7 @@
                     <td class="tdborder"><?php echo $totalAptitudeMarks; ?></td>
                     <td class="tdborder"><?php echo $totalAptitudeQualifyingMarks; ?></td>
                     <td class="tdborder"><?php echo $totalUserAptitudeMarks; ?></td>
-                    <td class="tdborder">
+                    <td class="tdborder" rowspan="3">
                         <?php
                             if ($totalUserAptitudeMarks >= $totalAptitudeQualifyingMarks) {
                                 echo "<b>PASS</b>";
@@ -311,7 +311,7 @@
                         ?>
                     </td>
 
-                    <td class="tdborder" rowspan="3"><b>PASS</b></td>
+                    <!-- <td class="tdborder" rowspan="3"><b>PASS</b></td> -->
                 </tr>
                  <?php 
                 if ($result['Programming'] != "0") {?>

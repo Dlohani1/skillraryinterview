@@ -224,11 +224,8 @@ class CustomerController extends CI_Controller {
     }
   
     $sql.=" order by interview_users.id asc";
-   // $sql = "SELECT  * from `interview_users` 
-    //order by interview_users.id asc";
 
-    $query = $this->db->query($sql);
-    $interview['users'] = $query->result();
+    $interview['users'] = $this->db->query($sql)->result();
 
     $roundResult = array();
 
@@ -271,16 +268,16 @@ class CustomerController extends CI_Controller {
 
     $query = $this->db->query($sql);
 
-        // $sql = "SELECT interview_status from `interview_details` where role= 6"; //round status
+    // $sql = "SELECT interview_status from `interview_details` where role= 6"; //round status
 
-        // $query = $this->db->query($sql);
+    // $query = $this->db->query($sql);
 
-        //   echo "<pre>";
-        //   print_r($query->result());
+    //   echo "<pre>";
+    //   print_r($query->result());
 
-        // print_r($mcq); die;
+    // print_r($mcq); die;
 
-        $interview['interviewer-list'] = $query->result();
+    $interview['interviewer-list'] = $query->result();
 
     //print_r($interview); die;
     $this->load->view('customer/header');
@@ -492,6 +489,169 @@ class CustomerController extends CI_Controller {
     echo "success";
   }
 
+  public function addSection() {
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+    $this->load->view('customer/add-section');
+    $this->load->view('customer/footer');
+  }
 
+  public function uploadQuestionView() {
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+    $this->load->view('customer/upload-question');
+    $this->load->view('customer/footer');
+  }
+  public function saveSection() {
+    //print_r($_POST); die;
+    $sectionName = $_POST['sectionName'];
+    $subSectionName = $_POST['subSectionName'];
+    $sectionData = array(
+      "customer_id" => $_SESSION['customerId'],
+      "section_name" => $sectionName 
+    );
+    $this->db->insert('section', $sectionData);
+
+    // $sectionId = $this->db->insert_id();
+
+    // $subSectionData = array(
+    //   "section_id" => $sectionId,
+    //   "sub_section_name" => $subSectionName
+    // );
+    // $this->db->insert('sub_section', $subSectionData);
+    redirect('/customer/add-section');
+  }
+
+  public function saveUploadedQuestion() {
+    print_r($_POST); die;
+    $config['upload_path']          = './uploads/';
+    $config['allowed_types']        = '*';
+    $config['max_size']             = 100;
+    $config['max_width']            = 1024;
+    $config['max_height']           = 768;
+
+    $this->load->library('upload', $config);
+
+    if ( ! $this->upload->do_upload('questionFile'))
+    {
+      $error = array('error' => $this->upload->display_errors());
+      print_r($error); die;
+    }
+    else {
+       $filename = 'uploads/'.$_FILES['questionFile']['name'];
+    }
+
+    // Open the file for reading
+    if (($h = fopen("{$filename}", "r")) !== FALSE) {
+      $i = 0;
+      while (($data = fgetcsv($h, 100000, ",")) !== FALSE) {
+        if ($i == 0) {
+          $i++;
+          continue;
+        }
+        print_r($data); die;
+        $data[1] = str_replace("'",'"',$data[1]);
+
+        $qdata = array (
+          "section_id" => $_POST['sectionUpload'],
+          "question_type" => $data[0],
+          "question" => $data[1],
+          "level_id" => $data[9]
+        );
+        
+        $this->db->insert('question_bank', $qdata);
+        $questionId = $this->db->insert_id();
+        $correct  = 0;
+
+        $a1 = array(
+          'question_id' => $questionId,
+          'answer' => $data[2],
+          'is_correct' => $correct,
+        );
+
+        $a2 = array(
+          'question_id' => $questionId,
+          'answer' => $data[3],
+          'is_correct' => $correct,
+        );
+
+        $a3 = array(
+          'question_id' => $questionId,
+          'answer' => $data[4],
+          'is_correct' => $correct,
+        );
+
+        $a4 = array(
+          'question_id' => $questionId,
+          'answer' => $data[5],
+          'is_correct' => $correct,
+        );
+
+        for($i=1;$i<5;$i++) {
+          $varName = "a".$i;
+          if ($data[8] == $i) {
+            ${$varName}['is_correct'] = 1; 
+          }
+        }
+
+        $data = array(
+          $a1, $a2, $a3, $a4
+        );
+        $this->db->insert_batch('answers', $data);
+      }
+
+      $this->session->set_flashdata('success', 'Questions Uploaded successfully');
+      redirect('/customer/question-upload', 'refresh');
+      //echo "success"; die;
+    }
+  }
+
+  public function saveInterviewer() {
+    $customerId = $_SESSION['customerId'];
+
+    $interviewerData = array(
+      "role" => 6,
+      "username" => $_POST['username'],
+      "password" => $_POST['password'],
+      "first_name" => $_POST['first-name'],
+      "last_name" => $_POST['last-name'],
+      "email" => $_POST['user-email'],
+      "contact_no" => $_POST['user-cno'],
+      "created_by" => $customerId
+    );
+
+    $this->db->insert('assess_login', $interviewerData);
+    $assessLoginId = $this->db->insert_id();
+
+    $customerInterviewer = array(
+      "customer_id" => $customerId,
+      "assess_login_id" => $assessLoginId
+    );
+    $this->db->insert('customer_interviewers', $customerInterviewer);
+  } 
+
+  public function addInterviewer() {
+    $customerId = $_SESSION['customerId'];
+   
+    $sql = "SELECT * FROM roles ";
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+
+    $sql = "SELECT * FROM assess_login INNER JOIN roles on roles.id = 6 and created_by = $customerId";
+
+    $query = $this->db->query($sql);
+
+    $userResult = $query->result();
+
+    //print_r($userResult); die;
+
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+
+    $this->load->view('customer/create-interviewers', array("user"=>$userResult,"roles"=>$result));
+    $this->load->view('customer/footer');
+  }
 
 }

@@ -11,7 +11,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>SkillRary Customer</title>
-        <link href=<?php echo base_url()."admin/admin-css-js/css/styles.css";?> rel="stylesheet" />
+        <link href="<?php echo base_url().'admin/admin-css-js/css/styles.css';?>" rel="stylesheet" />
         <link rel="shortcut icon" href="https://skillrary.com/uploads/images/fav-sr-64x64-logo.png" type="image/x-icon">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
