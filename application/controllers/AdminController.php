@@ -1808,30 +1808,30 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
       }      
     }
 
-    foreach ($interview['users'] as $key => $value) {
-      $intervieweeId = $value->id;
-      for ($i = 1; $i<4;$i++) {
-        $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+    // foreach ($interview['users'] as $key => $value) {
+    //   $intervieweeId = $value->id;
+    //   for ($i = 1; $i<4;$i++) {
+    //     $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
 
-        $result = $this->db->query($sql)->row();
-        $round = "round".$i;
-        if (isset($result->interview_status)) {
-          $roundResult[$intervieweeId][$round] = $result->interview_status;
-        } else {
-          if ($i == "1") {
-            $roundResult[$intervieweeId][$round] = 1;
-          } else {
-            $roundResult[$intervieweeId][$round] = 0;  
-          }            
-        }
-      }              
-    }
+    //     $result = $this->db->query($sql)->row();
+    //     $round = "round".$i;
+    //     if (isset($result->interview_status)) {
+    //       $roundResult[$intervieweeId][$round] = $result->interview_status;
+    //     } else {
+    //       if ($i == "1") {
+    //         $roundResult[$intervieweeId][$round] = 1;
+    //       } else {
+    //         $roundResult[$intervieweeId][$round] = 0;  
+    //       }            
+    //     }
+    //   }              
+    // }
 
     // echo "<pre>";
 
     // print_r($roundResult); die;
 
-    $interview['round-result'] = $roundResult;
+    //$interview['round-result'] = $roundResult;
 
     // $sql = "SELECT * FROM mcq_test ";
 
@@ -2625,143 +2625,143 @@ public function viewInterviewSearch() {
 
   }
 
-  public function addTest() {
-    $title = $_POST['test-title'];
-    $type = $_POST['test-type'];
+  // public function addTest() {
+  //   $title = $_POST['test-title'];
+  //   $type = $_POST['test-type'];
 
-    $check_mcq_test_id = $_POST['check_mcq_test_id'];
+  //   $check_mcq_test_id = $_POST['check_mcq_test_id'];
 
-    $check_drive_id = $_POST['check_drive_id'];
-
-
-    $isProctored = $_POST['is-proctored'];
-    $customerCode = explode("-",$_POST['customer-code']); //change to customer id
-
-    $title = $_POST['test-title'];
-    $type = $_POST['test-type'];
-    $isProctored = $_POST['is-proctored'];
-    $customerCode = explode("-",$_POST['customer-code']); //change to customer id
-
-    $data = array(
-            'title' => $title,
-            'type' => $type,
-            'customer_id' => $customerCode[1],
-            'is_proctored' => $isProctored,
-            'created_by' => $_SESSION['admin_id']
-    );
-
-    $this->db->insert('mcq_test', $data);
+  //   $check_drive_id = $_POST['check_drive_id'];
 
 
-    $testId = $this->db->insert_id();
+  //   $isProctored = $_POST['is-proctored'];
+  //   $customerCode = explode("-",$_POST['customer-code']); //change to customer id
 
-    $code = $this->getCode();
+  //   $title = $_POST['test-title'];
+  //   $type = $_POST['test-type'];
+  //   $isProctored = $_POST['is-proctored'];
+  //   $customerCode = explode("-",$_POST['customer-code']); //change to customer id
 
-    $data = array(
-            'mcq_test_id' => $testId,
-            'code' => $code
-    );
+  //   $data = array(
+  //           'title' => $title,
+  //           'type' => $type,
+  //           'customer_id' => $customerCode[1],
+  //           'is_proctored' => $isProctored,
+  //           'created_by' => $_SESSION['admin_id']
+  //   );
 
-    $this->db->insert('mcq_code', $data);
+  //   $this->db->insert('mcq_test', $data);
 
-    if (strlen(trim($_POST['drive-date'])) > 0) {
-      $data = array(
-        'mcq_test_id' => $testId,
-        'drive_date' =>trim($_POST['drive-date']),
-        'drive_time' =>trim($_POST['drive-time']),
-        'drive_place' =>trim($_POST['drive-place'])
 
-      );
+  //   $testId = $this->db->insert_id();
 
-                if ($check_mcq_test_id != 0) {
-                    $data = array(
-                        'title' => $title,
-                        'type' => $type
-                    );
+  //   $code = $this->getCode();
+
+  //   $data = array(
+  //           'mcq_test_id' => $testId,
+  //           'code' => $code
+  //   );
+
+  //   $this->db->insert('mcq_code', $data);
+
+  //   if (strlen(trim($_POST['drive-date'])) > 0) {
+  //     $data = array(
+  //       'mcq_test_id' => $testId,
+  //       'drive_date' =>trim($_POST['drive-date']),
+  //       'drive_time' =>trim($_POST['drive-time']),
+  //       'drive_place' =>trim($_POST['drive-place'])
+
+  //     );
+
+  //               if ($check_mcq_test_id != 0) {
+  //                   $data = array(
+  //                       'title' => $title,
+  //                       'type' => $type
+  //                   );
                     
-                    $this->db->where('id', $check_mcq_test_id);
-                    $this->db->update('mcq_test',$data);
-                    $testId = $check_mcq_test_id;
-                } else {    
-                    $this->db->insert('mcq_test', $data);
-                    $testId = $this->db->insert_id();
+  //                   $this->db->where('id', $check_mcq_test_id);
+  //                   $this->db->update('mcq_test',$data);
+  //                   $testId = $check_mcq_test_id;
+  //               } else {    
+  //                   $this->db->insert('mcq_test', $data);
+  //                   $testId = $this->db->insert_id();
 
-                    $code = $this->getCode();
+  //                   $code = $this->getCode();
 
-                    $data = array(
-                            'mcq_test_id' => $testId,
-                            'code' => $code
-                    );
+  //                   $data = array(
+  //                           'mcq_test_id' => $testId,
+  //                           'code' => $code
+  //                   );
 
-                    $this->db->insert('mcq_code', $data);
-
-
+  //                   $this->db->insert('mcq_code', $data);
 
 
-                    if (strlen(trim($_POST['drive-date'])) > 0) {
 
 
-                        $data = array(
-                          'mcq_test_id' => $testId,
-                          'drive_date' =>trim($_POST['drive-date']),
-                          'drive_time' =>trim($_POST['drive-time']),
-                          'drive_place' =>trim($_POST['drive-place'])
-
-                        );
+  //                   if (strlen(trim($_POST['drive-date'])) > 0) {
 
 
-                        if ($check_drive_id != 0) {
+  //                       $data = array(
+  //                         'mcq_test_id' => $testId,
+  //                         'drive_date' =>trim($_POST['drive-date']),
+  //                         'drive_time' =>trim($_POST['drive-time']),
+  //                         'drive_place' =>trim($_POST['drive-place'])
+
+  //                       );
 
 
-      $this->db->insert('drive_details', $data);                  
-    }
-
-    echo $testId;
-  }
-
-                            $this->db->where('id', $check_drive_id);
-                            $this->db->update('drive-details',$data);
-                        } else {  
-                          $this->db->insert('drive_details', $data);
-
-                        }
-
-                      // $this->db->insert('drive-details', $data);                  
-                    }
-                }
-
-                echo $testId;
+  //                       if ($check_drive_id != 0) {
 
 
-                // $this->db->insert('mcq_test', $data);
+  //     $this->db->insert('drive_details', $data);                  
+  //   }
+
+  //   echo $testId;
+  // }
+
+  //       $this->db->where('id', $check_drive_id);
+  //       $this->db->update('drive-details',$data);
+  //   } else {  
+  //     $this->db->insert('drive_details', $data);
+
+  //   }
+
+  //                     // $this->db->insert('drive-details', $data);                  
+  //                   }
+  //               }
+
+  //               echo $testId;
 
 
-                // $testId = $this->db->insert_id();
-
-                // $code = $this->getCode();
-
-                // $data = array(
-                //         'mcq_test_id' => $testId,
-                //         'code' => $code
-                // );
-
-                // $this->db->insert('mcq_code', $data);
-
-                // if (strlen(trim($_POST['drive-date'])) > 0) {
-                //   $data = array(
-                //     'mcq_test_id' => $testId,
-                //     'drive_date' =>trim($_POST['drive-date']),
-                //     'drive_time' =>trim($_POST['drive-time']),
-                //     'drive_place' =>trim($_POST['drive-place'])
-
-                //   );
-
-                //   $this->db->insert('drive_details', $data);                  
-                // }
+  //               // $this->db->insert('mcq_test', $data);
 
 
-                // echo $testId;
-        }
+  //               // $testId = $this->db->insert_id();
+
+  //               // $code = $this->getCode();
+
+  //               // $data = array(
+  //               //         'mcq_test_id' => $testId,
+  //               //         'code' => $code
+  //               // );
+
+  //               // $this->db->insert('mcq_code', $data);
+
+  //               // if (strlen(trim($_POST['drive-date'])) > 0) {
+  //               //   $data = array(
+  //               //     'mcq_test_id' => $testId,
+  //               //     'drive_date' =>trim($_POST['drive-date']),
+  //               //     'drive_time' =>trim($_POST['drive-time']),
+  //               //     'drive_place' =>trim($_POST['drive-place'])
+
+  //               //   );
+
+  //               //   $this->db->insert('drive_details', $data);                  
+  //               // }
+
+
+  //               // echo $testId;
+  //       }
 
                 public function addTestTime() {
                 $mcqId = $_POST['mcqId'];
