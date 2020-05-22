@@ -9,6 +9,40 @@
         }
     });
 
+function fillValue() {
+    document.getElementById('Fname').value = "Deepak";
+    document.getElementById('Lname').value = "Lohani";
+    document.regform.email.value = "dlohani1@gmail.com";
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = 1993;
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;     
+    document.regform.dob.value = today;
+    document.regform.cno.value = "8878100065";
+    document.regform.gender.value = 1;
+    document.regform.tenth_branch.value = "CBSE";
+    document.regform.tenth_py.value = "2009";
+    document.regform.tenth_per.value = "81";
+    document.regform.twelveth_branch.value = "CBSE";
+    document.regform.twelveth_py.value = "2011";
+    document.regform.twelveth_per.value = "85"; 
+    document.regform.college.value = "CSIT";
+    document.regform.degree_py.value = "2015";
+    document.regform.degree_per.value = "75";
+    document.regform.branch.value = "CSE";    
+    document.regform.degree.value = "BE";
+    document.regform.university.value = "CSVTU";
+    document.regform.state.value = "Karnataka";
+    document.regform.city.value = "Bengaluru";
+    document.regform.pwl.value = "Bengaluru";
+}
+
 function validateUpdateProfile(){
         
           
@@ -108,7 +142,6 @@ function validateUpdateProfile(){
             document.getElementById("errortenth_py").innerHTML = "";
         }
 
-
         if(document.regform.tenth_per.value.length == '0'){ 
             document.getElementById("errortenth_per").innerHTML = "This field is required";
             error = false;
@@ -156,6 +189,7 @@ function validateUpdateProfile(){
         }else {
             document.getElementById("errortwelveth_per").innerHTML = "";
         }
+
         // under graduation
         if(document.regform.college.value.length == '0'){
             document.getElementById("errorcollege").innerHTML = "This field is required";
@@ -229,7 +263,7 @@ function validateUpdateProfile(){
         // } 
         // if(document.regform.universitym.value.length == '0'){
         //     document.getElementById("erroruniversitym").innerHTML = "This field is required";
-        // }
+        // } 
         if(document.regform.state.value.length == '0'){
             document.getElementById("errorstate").innerHTML = "This field is required";
             error = false;
@@ -394,6 +428,7 @@ function Upload() {
                 <div class="col-md-8">
                     <div class="LoginBox">
                         <h4 style="text-align: center;">Create Profile</h4>
+                        <button onclick="fillValue()">Fill Form </button>
                         <hr/>
                         <p class="updatedText"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?> </p>
                         <form name="regform" method="post" action="<?php echo base_url()."user/update-profile";?>"  onsubmit="return validateUpdateProfile();" >
@@ -496,36 +531,34 @@ function Upload() {
                                                 <input type="text" name="college" class="form-control" autocomplete="off"><br/>
                                                 <p id="errorcollege" class="errMessage"></p>
                                             </div>
-                                        
-                                            <div class="col-md-4">
+                                             <div class="col-md-4">
                                                 <label>Passing Year<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                                 <input type="text" name="degree_py" id="DPY" value="<?php echo set_value('degree_py'); ?>" class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_py" class="errMessage"></p>
                                             </div>
                                             <div class="col-md-4">
-                                                <label>Branch<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="branch"  value="<?php echo set_value('branch'); ?>"  class="form-control"  autocomplete="off"><br/>
-                                                <p id="errorbranch" class="errMessage"></p>
-                                            </div>
-                                        </div>
-                                        <div class="row rowGap">
-                                            <div class="col-md-4">
-                                                <label>Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                <input type="text" name="degree" value="<?php echo set_value('degree'); ?>" class="form-control" autocomplete="off"><br/>
-                                                <p id="errordegree" class="errMessage"></p>
-                                            </div>
-                                        
-                                            <div class="col-md-4">
                                                 <label>Percentage<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                                 <input type="text" id="udperU" name="degree_per" value="<?php echo set_value('degree_per'); ?>"  class="form-control"  autocomplete="off"><br/>
                                                 <p id="errordegree_per" class="errMessage"></p>
                                             </div>
+                                        
                                             <div class="col-md-4">
                                                 <label>University<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                                 <input type="text" name="university" class="form-control" autocomplete="off"><br/>
-                                                <p id="erroruniversity" class="errMessage"></p>
+                                                <p id="erroruniversity" class="errMessage"></p>                                            
                                             </div>
-                                        </div>
+                                          
+                                            <div class="col-md-4">
+                                                <label>Branch<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="branch"  value="<?php echo set_value('branch'); ?>"  class="form-control"  autocomplete="off"><br/>
+                                                <p id="errorbranch" class="errMessage"></p>
+                                            </div>
+                                             <div class="col-md-4">
+                                                <label>Degree<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                <input type="text" name="degree" value="<?php echo set_value('degree'); ?>" class="form-control" autocomplete="off"><br/>
+                                                <p id="errordegree" class="errMessage"></p>
+                                            </div>
+                                           </div>
 
                                         <h6 class="twelvethDetails">Post Graduate:</h6>
                                         <hr class="hrDesignUpdate">
@@ -562,13 +595,7 @@ function Upload() {
                                                 <p id="errordegreem" class="errMessage"></p>
                                             </div>
                                         
-                                            <div class="col-md-4">
-                                                <label>Percentage
-                                                   <!--  <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
-                                                </label>
-                                                <input type="text" id="gperU" name="degree_perm" class="form-control"  autocomplete="off"><br/>
-                                                <p id="errordegree_perm" class="errMessage"></p>
-                                            </div>
+                                           
                                             <div class="col-md-4">
                                                 <label>University
                                                    <!--  <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
@@ -577,13 +604,20 @@ function Upload() {
                                                 <input type="text" name="universitym" class="form-control" autocomplete="off"><br/>
                                                 <p id="erroruniversitym" class="errMessage"></p>
                                             </div>
+                                             <div class="col-md-4">
+                                                <label>Percentage
+                                                   <!--  <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
+                                                </label>
+                                                <input type="text" id="gperU" name="degree_perm" class="form-control"  autocomplete="off"><br/>
+                                                <p id="errordegree_perm" class="errMessage"></p>
+                                            </div>
                                         </div>
                                         <div class="row rowGapDegree">
                                             <div class="col-md-4">
                                                 <label>Year Gap in Degree
                                                    <!--  <sup><span style="color:red;font-size: 16px;">*</span></sup> -->
                                                 </label><br/>
-                                                <input type="radio" name="gap" selected autocomplete="off" onclick="showField1()"> No
+                                                <input type="radio" name="gap" checked autocomplete="off" onclick="showField1()"> No
                                                  &nbsp;&nbsp;&nbsp;
                                                 <input type="radio" name="gap" autocomplete="off" onclick=" showField1(1)"> Yes
                                           
@@ -641,16 +675,16 @@ function Upload() {
     </div>
 <script>
 
-window.onload = test();
+// window.onload = test();
 
-function test() {
-    var  username = <?php echo $_SESSION['username']; ?>;
+// function test() {
+//     var  username = "<?php echo $_SESSION['username']; ?>";
 
-    if (localStorage.getItem("isRead") != 1 && undefined !== username) {
-        $('#userModal').modal({backdrop: 'static', keyboard: false})
-        document.getElementById("modal-btn").click();
-    }
-}
+//     if (localStorage.getItem("isRead") != 1 && undefined !== username) {
+//         $('#userModal').modal({backdrop: 'static', keyboard: false})
+//         document.getElementById("modal-btn").click();
+//     }
+// }
 
 function readNote() {
     
