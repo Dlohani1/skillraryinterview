@@ -29,7 +29,7 @@
                     </a>
                     <div class="collapse" id="collapseLayoutsCustomer" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href=<?php echo base_url()."customer/create-interviewe";?>>Create</a>
+                            <a class="nav-link" href=<?php echo base_url()."customer/create-interview-group";?>>Create</a>
                             <a class="nav-link" href=<?php echo base_url()."customer/view-interview";?>>View</a>
                             <a class="nav-link" href=<?php echo base_url()."customer/create-interviewers";?>>Add Interviewer</a>
                         </nav>

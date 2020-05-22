@@ -346,7 +346,8 @@ $route['customer/view-mcq-data/:any'] = 'CustomerController/viewMcqData';
 $route['customer/view-interview'] = 'CustomerController/viewInterview';
 $route['customer/interview-result/:any'] = 'CustomerController/interviewResult'; 
 $route['customer/logout'] = 'CustomerController/logout';
-
+$route['customer/create-interview-group'] = 'CustomerController/createInteviewGroup';
+$route['customer/save-interview-group']['POST'] = 'CustomerController/saveInterviewGroup'; 
 $route['customer/add-section'] = 'CustomerController/addSection';
 $route['customer/save-section'] = 'CustomerController/saveSection';
 

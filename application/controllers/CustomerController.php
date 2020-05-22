@@ -687,7 +687,39 @@ class CustomerController extends CI_Controller {
     return substr(str_shuffle($str_result), 0, $length_of_string); 
   }
 
-  public function generateInterviewUsrPwd() {
+  public function generateInterviewUsrPwd($internalCall=false, $num=null, $group=null) {
+    
+    if (!$internalCall) {
+      $num = $_POST['num'];
+      $group = $_POST['code'];
+    }
+    $mcqId = 0;
+    $customerId = $_SESSION['customerId'];
+    for ($i=1; $i<=$num; $i++) {
+      $username = $this->random_strings(4,"alphaNuMCaps");
+      $password = $this->random_strings(4,"numeric");
+      $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $group,'interview_customer_id' => $customerId);
+    }
+
+    $this->db->insert_batch('interview_users', $data);
+  }
+
+  public function createInteviewGroup() {
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+
+    $this->load->view('customer/interview-group');
+    $this->load->view('customer/footer');
+  }
+
+  public function saveInterviewGroup() {
+    //print_r($_POST); die;
+    //$customerId = $_SESSION['customerId'];
+    $this->generateInterviewUsrPwd(true,$_POST['generate'],$_POST['code']);
+    redirect('customer/view-interview');
+  }
+
+  public function removeInterviewUsrPwd() {
     
     $num = $_POST['num'];
     $group = $_POST['code'];
@@ -696,40 +728,9 @@ class CustomerController extends CI_Controller {
     for ($i=1; $i<=$num; $i++) {
       $username = $this->random_strings(4,"alphaNuMCaps");
       $password = $this->random_strings(4,"numeric");
-     // if (isset($_POST['code']) && $_POST['code'] != "") {
       $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $group,'interview_customer_id' => $customerId);
     }
-    // } else {
-    //   $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $group,'interview_customer_id' => $customer);  
-    // }
-  //   $mcqId = $_POST['mcqId'];
-  //   $group = $_POST['code'];
-  //   $customer = $_POST['customer'];
-  // if (!$internalCall) {
-  //   $num = $_POST['num'];
-  //   $mcqId = $_POST['mcqId'];
-  //   $group = $_POST['code'];
-  //   $customer = $_POST['customer'];
-  // } else {
-  //   $num = $user;
-  //   $mcqId = 0;
-  // }
-  // for ($i=1; $i<=$num; $i++) {
-  //   $username = $this->random_strings(4,"alphaNuMCaps");
-  //   $password = $this->random_strings(4,"numeric");
-  //   if (isset($_POST['code']) && $_POST['code'] != "") {
-  //     $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $group,'interview_customer_id' => $customer);
-  //   } else {
-  //     $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $group,'interview_customer_id' => $customer);  
-  //   }
-    
-  // }
 
-   
-
-  //  //print_r($data); die;
-
-  $this->db->insert_batch('interview_users', $data);
-}
-
+    $this->db->insert_batch('interview_users', $data);
+  }
 }
