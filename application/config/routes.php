@@ -353,7 +353,8 @@ $route['customer/interview-result-search/:any'] = 'CustomerController/interviewR
 $route['customer/interview-result-search/:any/:any'] = 'CustomerController/interviewResultSearch'; 
 
 $route['customer/logout'] = 'CustomerController/logout';
-
+$route['customer/create-interview-group'] = 'CustomerController/createInteviewGroup';
+$route['customer/save-interview-group']['POST'] = 'CustomerController/saveInterviewGroup'; 
 $route['customer/add-section'] = 'CustomerController/addSection';
 $route['customer/save-section'] = 'CustomerController/saveSection';
 

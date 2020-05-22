@@ -387,6 +387,7 @@
         <th style="color: #33A478">Contact No</th>
         <th style="color: #33A478">Username</th>
         <th style="color: #33A478">Password</th>
+         <th style="color: #33A478">Status</th>
         <th style="color: #33A478">Interview Actions</th>
       </tr>
     </thead>
@@ -418,24 +419,25 @@
       }
       $status = "NA";
       if ($value->interview_status == "1") {
-        $status = "PASSED";
+        $status = "<span class='text-success'>PASSED</span>";
       } else if ($value->interview_status == "2") {
-         $status = "REJECTED";
+         $status = "<span class='text-danger'>REJECTED</span>";
       } else if ($value->interview_status == "3") {
-       $status = "ON HOLD";
+       $status = "<span class='text-warning'>ON HOLD</span>";
       } else {
-        $status = "NA";
+        $status = "<span class='text-default'>NA</span>";
       }
       ?>
 
 
       <tr>
         <td><?=$i;?></td>
-        <td><?=$firstname." ".$lastname;?></td>
+        <td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails(<?=$value->studentId;?>)"><?=$firstname." ".$lastname;?></a></td>
         <td><?=$email;?></td>
         <td><?=$contactNo;?></td>
         <td><?=$value->username;?></td>
         <td><?=$value->password;?></td>
+        <td><?=$status;?></td>
         <td width="500"> 
             <div class="accordion_head"><span class="icon">+</span></div>
             <div class="accordion_body" style="display: none;">
