@@ -11,6 +11,47 @@
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
+
+
+
+
+
+<div class="container">
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/view-interview-search/$customerId";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-6 ">
+                        <label>Interview Code</label>
+                        <input type="text" id="interviewcode" name="interviewcode" class="form-control " placeholder="Interview Code" value="<?php echo $interviewcode; ?>" >
+                      </div>
+
+                      <div class="col-md-2 right" float='right'>
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
                                 <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
                                 <!-- <div class="container-fluid">
                                     <div class="container">
@@ -60,7 +101,7 @@
                             $i++;
                             echo "<tr><td>$i</td><td>$value->interview_code</td><td>$value->total_students</td><td><a href=".base_url()."admin/create-interview/$customerId/$value->interview_code><button class='btn btn-primary btn-xs' ><span class='glyphicon glyphicon-eye-open'></span></button></a></td></tr>";
                           }
-                        ?>
+                        ?> 
     
     <!-- <tr>
     <th><input type="checkbox" id="checkall" /></th>

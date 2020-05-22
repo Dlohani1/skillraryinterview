@@ -151,11 +151,7 @@ $route['admin/interview-customers-list'] = 'AdminController/interviewCustomers';
 
 $route['admin/interview-customers-list-search'] = 'AdminController/interviewCustomersSearch';
 
-
-
-
 $route['admin/view-questions'] = 'AdminController/viewQuestion';
-
 
 $route['admin/view-questions/:any'] = 'AdminController/viewQuestion';
 
@@ -215,7 +211,6 @@ $route['admin/edit-test/:any'] = 'AdminController/editTest';
 
 $route['admin/edit-test-save']['POST'] = 'AdminController/editTestsave';
 
-
 //4 april
 
 $route['admin/create-roles'] = 'AdminController/addRoles'; 
@@ -238,11 +233,6 @@ $route['proctor/assignedUsersSearch'] = 'AdminController/proctoredUsersSearch';
 
 $route['proctor/assignedUsersSearch/:any'] = 'AdminController/proctoredUsersSearch'; 
 
-
-
-
-
-
 //email
 $route['admin/contact'] = 'AdminController/contact'; 
 
@@ -263,6 +253,13 @@ $route['admin/add-interview']['POST'] = 'AdminController/addInterviewGroup';
 //$route['admin/create-interview'] = 'AdminController/createInterview'; 
 $route['admin/create-interview/:any/:any'] = 'AdminController/createInterview'; 
 
+$route['admin/create-interview/:any/:any/:any'] = 'AdminController/createInterview'; 
+
+
+$route['admin/create-interview-search/:any/:any'] = 'AdminController/createInterviewSearch';
+$route['admin/create-interview-search/:any/:any/:any'] = 'AdminController/createInterviewSearch';
+
+
 $route['admin/create-interview-customers'] = 'AdminController/createInterviewCustomers'; 
 
 $route['admin/generateInterviewUsrPwd']['POST'] = 'AdminController/generateInterviewUsrPwd';
@@ -271,28 +268,17 @@ $route['admin/sendInterviewInvite'] ['POST']= 'AdminController/sendInterviewInvi
 
 $route['interviewer/assignedInterviews'] = 'AdminController/assignedInterviews'; 
 
-
-
-
 $route['interviewer/assignedInterviews/:any'] = 'AdminController/assignedInterviews';
-
-
-
 
 $route['interviewer/assignedInterviewsSearch'] = 'AdminController/assignedInterviewsSearch';
 
 $route['interviewer/assignedInterviewsSearch/:any'] = 'AdminController/assignedInterviewsSearch';
-
-      
-      
-
 
 $route['user/interview'] = 'questionBank/activeInterview';
 
 $route['admin/closeInterview'] ['POST']= 'AdminController/closeInterview';
 
 $route['admin/interviewFeedback'] ['POST']= 'AdminController/interviewFeedback';
-
 
 $route['interview/login'] = 'questionBank/interviewLogin';
 
@@ -310,7 +296,6 @@ $route['admin/updateToken'] = 'AdminController/updateAccessToken';
 
 $route['skillrary/whiteboard'] = 'welcome/showWhiteBoard';
 
-
 $route['admin/startGotoMeeting'] = 'AdminController/startMeetingIframe';
 
 $route['admin/view-meeting'] = 'AdminController/gotomeetingView';
@@ -320,19 +305,17 @@ $route['user/join-meeting'] = 'AdminController/gotomeetingJoin';
 $route['deleteUsrPwd']['POST'] = 'AdminController/deleteUsrPwd';
 $route['printUsrPwd'] = 'welcome/printUsrPwd';
 
- 
 $route['admin/create-customers'] = 'AdminController/createCustomer';
-
 
 $route['admin/create-customers-search'] = 'AdminController/createCustomerSearch';
 
 $route['admin/create-customers/:any'] = 'AdminController/createCustomer';
 
-
 $route['admin/create-customers-search/:any'] = 'AdminController/createCustomerSearch';
 
+$route['admin/mcq-customers'] = 'AdminController/mcqCustomer';
 
-$route['admin/mcq-customers'] = 'AdminController/mcqCustomer'; 
+$route['admin/mcq-customers-search'] = 'AdminController/mcqCustomerSearch';
 
 $route['admin/fetch-customers']['POST'] = 'AdminController/fetchCustomer'; 
 $route['admin/save-customers']['POST'] = 'AdminController/saveCustomer'; 
@@ -344,8 +327,6 @@ $route['admin/remove-interviewer-customer'] = 'AdminController/removeInterviewer
 $route['admin/uploadGotomeeting'] = 'AdminController/uploadGotomeeting';
 
 $route['html-editor'] = 'welcome/showEditor';
-
-
 
 //typing-test
 

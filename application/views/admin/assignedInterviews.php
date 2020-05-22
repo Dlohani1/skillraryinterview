@@ -225,13 +225,13 @@ echo '</td> </tr>';
     
    
     
-   
+    
     
     </tbody>
         
 </table>
 
-<p><?php echo $links; ?></p>
+<p><?php echo $this->pagination->create_links(); ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">

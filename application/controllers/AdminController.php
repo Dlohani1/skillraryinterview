@@ -816,6 +816,12 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
 
     $result = $this->db->query($sql)->result_array();
 
+
+    $searchcode = '';
+    $searchname = '';
+    $searchemail = '';
+    $searchcontact = '';
+
     $ids = "";
 
     foreach ($result as $key => $value) {
@@ -834,9 +840,69 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/mcq-customers', array("customers"=>$result));
+    $this->load->view('admin/mcq-customers', array(
+        "customers"=>$result,
+        "searchcode"=>$searchcode,
+        "searchname"=>$searchname,
+        "searchemail"=>$searchemail,
+        "searchcontact"=>$searchcontact
+    ));
     $this->load->view('admin/footer');
   }
+
+  public function mcqCustomerSearch() {
+
+    $searchcode = $_POST['searchcode'];
+    $searchname = $_POST['searchname'];
+    $searchemail = $_POST['searchemail'];
+    $searchcontact = $_POST['searchcontact'];
+
+    $sql = "SELECT distinct(customer_id) FROM mcq_test order by customer_id asc";
+
+    $result = $this->db->query($sql)->result_array();
+
+    $ids = "";
+
+    foreach ($result as $key => $value) {
+      if (count($result)-$key > 1) {
+        $ids .= $value['customer_id'].","; 
+      } else {
+        $ids .= $value['customer_id'];
+      }
+    }
+
+   // $sql = "select * from customers where id in (".$ids.") ";
+
+
+$sql = "SELECT * from customers where id in (".$ids.") 
+        and  customer_code like '%$searchcode%'
+        and customer_name like '%$searchname%'
+        and customer_email like '%$searchemail%'
+        and customer_contactno like '%$searchcontact%'";
+
+
+
+   //echo $sql; die;
+   $result = $this->db->query($sql)->result_object();
+
+//    print_r($result); die;
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/mcq-customers', array(
+        "customers"=>$result,
+        "searchcode"=>$searchcode,
+        "searchname"=>$searchname,
+        "searchemail"=>$searchemail,
+        "searchcontact"=>$searchcontact
+    ));
+    // $this->load->view('admin/mcq-customers', array("customers"=>$result));
+    $this->load->view('admin/footer');
+
+
+  }
+
+
 
   public function createCustomer() {
     $sql = "SELECT * FROM customers ";
@@ -1125,6 +1191,11 @@ public function deleteUsrPwd() {
     return strtoupper(random_string('alnum',$size));
 
   }
+
+
+
+
+
 
   public function createTest() {
     $this->load->view('admin/header');
@@ -1767,6 +1838,8 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
     LEFT JOIN student_register ON interview_users.id=student_register.interview_user_id
     order by interview_users.id asc";
 */
+
+     $this->load->library("pagination");
       $customerId = $this->uri->segment(3);
       $interviewCode = $this->uri->segment(4);
 
@@ -1776,9 +1849,217 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
     if ($customerId > 0) {
        $sql.=" where interview_users.interview_customer_id = $customerId and interview_users.interview_code = '".$interviewCode."'";
     }
-  
+    
     $sql.=" order by interview_users.id asc";
-    $interview['users'] = $this->db->query($sql)->result();
+
+    // $interview['users'] = $this->db->query($sql)->result();
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "admin/create-interview/$customerId/$interviewCode";
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 5;
+
+
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(5)) ? $this->uri->segment(5) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $interview['users'] = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+
+// echo "<pre>";print_r($interview['users']); die;
+    $roundResult = array();
+    foreach ($interview['users'] as $key => $value) {
+
+
+      $intervieweeId = $value->id;
+      //echo $intervieweeId; die;
+      //$intervieweeId = 10;
+      $sql = "SELECT max(round) as active_round FROM interview_details where interview_users_id = $intervieweeId";
+      $activeRound = $this->db->query($sql)->row();
+      //print_r(var_dump($activeRound)); die;
+      $roundResult = array();
+      if (null !== $activeRound->active_round) {
+        for ($i = 1; $i <= $activeRound->active_round; $i++) {
+          $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+
+          $result = $this->db->query($sql)->row();
+          //$round = "round".$i;
+          if (isset($result->interview_status)) {
+              $roundR = "round_".$i;
+              $interview['users'][$key]->totalRound = $i; 
+            $interview['users'][$key]->$roundR = $result->interview_status;
+            //$roundResult[$intervieweeId][$round] = $result->interview_status;
+          }
+        } 
+      } else {
+         $interview['users'][$key]->totalRound = 0;
+         $interview['users'][$key]->roundResult = 0;
+      }      
+    }
+
+    foreach ($interview['users'] as $key => $value) {
+      $intervieweeId = $value->id;
+      for ($i = 1; $i<4;$i++) {
+        $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+
+        $result = $this->db->query($sql)->row();
+        $round = "round".$i;
+        if (isset($result->interview_status)) {
+          $roundResult[$intervieweeId][$round] = $result->interview_status;
+        } else {
+          if ($i == "1") {
+            $roundResult[$intervieweeId][$round] = 1;
+          } else {
+            $roundResult[$intervieweeId][$round] = 0;  
+          }            
+        }
+      }              
+    }
+
+    // echo "<pre>";
+
+    // print_r($roundResult); die;
+
+    $interview['round-result'] = $roundResult;
+
+    // $sql = "SELECT * FROM mcq_test ";
+
+    // $query = $this->db->query($sql);
+
+    // $result = $query->result();
+
+    // $interview['mcqs-list'] = $query->result();
+    $sql = "SELECT id, email FROM `gotomeeting_token_details` where customer_id=$customerId ";
+
+    $interview['meeting-id'] = $this->db->query($sql)->result_object();
+
+    $sql = "SELECT * from `assess_login` where role= 6"; //interviewer role
+
+    $query = $this->db->query($sql);
+
+    $interview['interviewer-list'] = $query->result();
+
+    $searchname = '';
+    $searchemail = '';
+    $searchcontact = '';
+       
+// echo "<pre>";
+//     print_r($interview); die;
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/interview',array(
+      'interviewData'=> $interview,
+      'searchname'=> $searchname,
+      'searchemail'=> $searchemail,
+      'searchcontact'=> $searchcontact,
+      'customerId' => $customerId,
+      'interviewCode' => $interviewCode,
+      'links' => $links
+    ));
+    $this->load->view('admin/footer');  
+ }
+
+
+
+ public function createInterviewSearch() {
+    /*$sql = "SELECT  interview_users.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
+    LEFT JOIN student_register ON interview_users.id=student_register.interview_user_id
+    order by interview_users.id asc";
+*/
+
+    $searchname = $_GET['searchname'];
+    $searchemail = $_GET['searchemail'];
+    $searchcontact = $_GET['searchcontact'];
+
+    $customerId = $this->uri->segment(3);
+    $interviewCode = $this->uri->segment(4);
+
+    $sql = "SELECT  interview_users.*, student_register.id as studentId, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
+    LEFT JOIN student_register ON interview_users.id=student_register.interview_users_id";
+
+    if ($customerId > 0) {
+       $sql.=" where interview_users.interview_customer_id = $customerId and interview_users.interview_code = '".$interviewCode."'";
+    }
+  
+     if(!empty($searchname)){
+          $sql.="   and (student_register.first_name like '%$searchname%'
+      or student_register.last_name like '%$searchname%') "; 
+    }
+
+     if(!empty($searchemail)){
+          $sql.="   and student_register.email like '%$searchemail%' "; 
+    }
+
+     if(!empty($searchcontact)){
+          $sql.="   and student_register.contact_no like '%$searchcontact%'  "; 
+    }
+
+
+
+    $sql.=" order by interview_users.id asc";
+
+
+    // $interview['users'] = $this->db->query($sql)->result();
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "admin/create-interview-search/$customerId/$interviewCode";
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 5;
+    $config['reuse_query_string'] = true;
+
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(5)) ? $this->uri->segment(5) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $interview['users'] = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+
 // echo "<pre>";print_r($interview['users']); die;
     $roundResult = array();
     foreach ($interview['users'] as $key => $value) {
@@ -1808,30 +2089,30 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
       }      
     }
 
-    // foreach ($interview['users'] as $key => $value) {
-    //   $intervieweeId = $value->id;
-    //   for ($i = 1; $i<4;$i++) {
-    //     $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+    foreach ($interview['users'] as $key => $value) {
+      $intervieweeId = $value->id;
+      for ($i = 1; $i<4;$i++) {
+        $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
 
-    //     $result = $this->db->query($sql)->row();
-    //     $round = "round".$i;
-    //     if (isset($result->interview_status)) {
-    //       $roundResult[$intervieweeId][$round] = $result->interview_status;
-    //     } else {
-    //       if ($i == "1") {
-    //         $roundResult[$intervieweeId][$round] = 1;
-    //       } else {
-    //         $roundResult[$intervieweeId][$round] = 0;  
-    //       }            
-    //     }
-    //   }              
-    // }
+        $result = $this->db->query($sql)->row();
+        $round = "round".$i;
+        if (isset($result->interview_status)) {
+          $roundResult[$intervieweeId][$round] = $result->interview_status;
+        } else {
+          if ($i == "1") {
+            $roundResult[$intervieweeId][$round] = 1;
+          } else {
+            $roundResult[$intervieweeId][$round] = 0;  
+          }            
+        }
+      }              
+    }
 
     // echo "<pre>";
 
     // print_r($roundResult); die;
 
-    //$interview['round-result'] = $roundResult;
+    $interview['round-result'] = $roundResult;
 
     // $sql = "SELECT * FROM mcq_test ";
 
@@ -1850,15 +2131,25 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
 
     $interview['interviewer-list'] = $query->result();
 
-
+   
        
 // echo "<pre>";
 //     print_r($interview); die;
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/interview',array('interviewData'=> $interview));
+    $this->load->view('admin/interview',array(
+      'interviewData'=> $interview,
+      'searchname'=> $searchname,
+      'searchemail'=> $searchemail,
+      'searchcontact'=> $searchcontact,
+      'customerId' => $customerId,
+      'interviewCode' => $interviewCode,
+      'links' => $links
+    ));
     $this->load->view('admin/footer');  
  }
+
+
   
   public function viewMcqData() {
     $mcqId = $this->uri->segment(3);
@@ -2625,143 +2916,251 @@ public function viewInterviewSearch() {
 
   }
 
-  // public function addTest() {
-  //   $title = $_POST['test-title'];
-  //   $type = $_POST['test-type'];
+  public function addTest() {
 
-  //   $check_mcq_test_id = $_POST['check_mcq_test_id'];
+              //echo var_dump(); die;
 
-  //   $check_drive_id = $_POST['check_drive_id'];
+                $title = $_POST['test-title'];
+                $type = $_POST['test-type'];
 
+                $check_mcq_test_id = $_POST['check_mcq_test_id'];
 
-  //   $isProctored = $_POST['is-proctored'];
-  //   $customerCode = explode("-",$_POST['customer-code']); //change to customer id
-
-  //   $title = $_POST['test-title'];
-  //   $type = $_POST['test-type'];
-  //   $isProctored = $_POST['is-proctored'];
-  //   $customerCode = explode("-",$_POST['customer-code']); //change to customer id
-
-  //   $data = array(
-  //           'title' => $title,
-  //           'type' => $type,
-  //           'customer_id' => $customerCode[1],
-  //           'is_proctored' => $isProctored,
-  //           'created_by' => $_SESSION['admin_id']
-  //   );
-
-  //   $this->db->insert('mcq_test', $data);
+                $check_drive_id = $_POST['check_drive_id'];
 
 
-  //   $testId = $this->db->insert_id();
+                $isProctored = $_POST['is-proctored'];
+                $customerCode = explode("-",$_POST['customer-code']); //change to customer id
 
-  //   $code = $this->getCode();
+                $data = array(
+                        'title' => $title,
+                        'type' => $type,
+                        'customer_id' => $customerCode[1],
+                        'is_proctored' => $isProctored,
+                        'created_by' => $_SESSION['admin_id']
+                );
 
-  //   $data = array(
-  //           'mcq_test_id' => $testId,
-  //           'code' => $code
-  //   );
 
-  //   $this->db->insert('mcq_code', $data);
-
-  //   if (strlen(trim($_POST['drive-date'])) > 0) {
-  //     $data = array(
-  //       'mcq_test_id' => $testId,
-  //       'drive_date' =>trim($_POST['drive-date']),
-  //       'drive_time' =>trim($_POST['drive-time']),
-  //       'drive_place' =>trim($_POST['drive-place'])
-
-  //     );
-
-  //               if ($check_mcq_test_id != 0) {
-  //                   $data = array(
-  //                       'title' => $title,
-  //                       'type' => $type
-  //                   );
+                if ($check_mcq_test_id != 0) {
+                    $data = array(
+                        'title' => $title,
+                        'type' => $type
+                    );
                     
-  //                   $this->db->where('id', $check_mcq_test_id);
-  //                   $this->db->update('mcq_test',$data);
-  //                   $testId = $check_mcq_test_id;
-  //               } else {    
-  //                   $this->db->insert('mcq_test', $data);
-  //                   $testId = $this->db->insert_id();
+                    $this->db->where('id', $check_mcq_test_id);
+                    $this->db->update('mcq_test',$data);
+                    $testId = $check_mcq_test_id;
+                } else {    
+                    $this->db->insert('mcq_test', $data);
+                    $testId = $this->db->insert_id();
 
-  //                   $code = $this->getCode();
+                    $code = $this->getCode();
 
-  //                   $data = array(
-  //                           'mcq_test_id' => $testId,
-  //                           'code' => $code
-  //                   );
+                    $data = array(
+                            'mcq_test_id' => $testId,
+                            'code' => $code
+                    );
 
-  //                   $this->db->insert('mcq_code', $data);
-
-
+                    $this->db->insert('mcq_code', $data);
 
 
-  //                   if (strlen(trim($_POST['drive-date'])) > 0) {
 
 
-  //                       $data = array(
-  //                         'mcq_test_id' => $testId,
-  //                         'drive_date' =>trim($_POST['drive-date']),
-  //                         'drive_time' =>trim($_POST['drive-time']),
-  //                         'drive_place' =>trim($_POST['drive-place'])
-
-  //                       );
+                    if (strlen(trim($_POST['drive-date'])) > 0) {
 
 
-  //                       if ($check_drive_id != 0) {
+                        $data = array(
+                          'mcq_test_id' => $testId,
+                          'drive_date' =>trim($_POST['drive-date']),
+                          'drive_time' =>trim($_POST['drive-time']),
+                          'drive_place' =>trim($_POST['drive-place'])
+
+                        );
 
 
-  //     $this->db->insert('drive_details', $data);                  
-  //   }
-
-  //   echo $testId;
-  // }
-
-  //       $this->db->where('id', $check_drive_id);
-  //       $this->db->update('drive-details',$data);
-  //   } else {  
-  //     $this->db->insert('drive_details', $data);
-
-  //   }
-
-  //                     // $this->db->insert('drive-details', $data);                  
-  //                   }
-  //               }
-
-  //               echo $testId;
+                        if ($check_drive_id != 0) {
 
 
-  //               // $this->db->insert('mcq_test', $data);
 
 
-  //               // $testId = $this->db->insert_id();
+                            $this->db->where('id', $check_drive_id);
+                            $this->db->update('drive-details',$data);
+                        } else {  
+                          $this->db->insert('drive_details', $data);
 
-  //               // $code = $this->getCode();
+                        }
 
-  //               // $data = array(
-  //               //         'mcq_test_id' => $testId,
-  //               //         'code' => $code
-  //               // );
+                      // $this->db->insert('drive-details', $data);                  
+                    }
+                }
 
-  //               // $this->db->insert('mcq_code', $data);
-
-  //               // if (strlen(trim($_POST['drive-date'])) > 0) {
-  //               //   $data = array(
-  //               //     'mcq_test_id' => $testId,
-  //               //     'drive_date' =>trim($_POST['drive-date']),
-  //               //     'drive_time' =>trim($_POST['drive-time']),
-  //               //     'drive_place' =>trim($_POST['drive-place'])
-
-  //               //   );
-
-  //               //   $this->db->insert('drive_details', $data);                  
-  //               // }
+                echo $testId;
 
 
-  //               // echo $testId;
-  //       }
+                // $this->db->insert('mcq_test', $data);
+
+
+                // $testId = $this->db->insert_id();
+
+                // $code = $this->getCode();
+
+                // $data = array(
+                //         'mcq_test_id' => $testId,
+                //         'code' => $code
+                // );
+
+                // $this->db->insert('mcq_code', $data);
+
+                // if (strlen(trim($_POST['drive-date'])) > 0) {
+                //   $data = array(
+                //     'mcq_test_id' => $testId,
+                //     'drive_date' =>trim($_POST['drive-date']),
+                //     'drive_time' =>trim($_POST['drive-time']),
+                //     'drive_place' =>trim($_POST['drive-place'])
+
+                //   );
+
+                //   $this->db->insert('drive_details', $data);                  
+                // }
+
+
+                // echo $testId;
+        }
+
+
+
+ //  public function addTest() {
+ // $title = $_POST['test-title'];
+ //    $type = $_POST['test-type'];
+
+ //    $check_mcq_test_id = $_POST['check_mcq_test_id'];
+
+ //    $check_drive_id = $_POST['check_drive_id'];
+
+
+ //    $isProctored = $_POST['is-proctored'];
+ //    $customerCode = explode("-",$_POST['customer-code']); //change to customer id
+
+
+ //    $data = array(
+ //            'title' => $title,
+ //            'type' => $type,
+ //            'customer_id' => $customerCode[1],
+ //            'is_proctored' => $isProctored,
+ //            'created_by' => $_SESSION['admin_id']
+ //    );
+
+ //    $this->db->insert('mcq_test', $data);
+
+
+ //    $testId = $this->db->insert_id();
+
+ //    $code = $this->getCode();
+
+ //    $data = array(
+ //            'mcq_test_id' => $testId,
+ //            'code' => $code
+ //    );
+
+ //    $this->db->insert('mcq_code', $data);
+
+ //    if (strlen(trim($_POST['drive-date'])) > 0) {
+ //      $data = array(
+ //        'mcq_test_id' => $testId,
+ //        'drive_date' =>trim($_POST['drive-date']),
+ //        'drive_time' =>trim($_POST['drive-time']),
+ //        'drive_place' =>trim($_POST['drive-place'])
+
+ //      );
+
+ //                if ($check_mcq_test_id != 0) {
+ //                    $data = array(
+ //                        'title' => $title,
+ //                        'type' => $type
+ //                    );
+                    
+ //                    $this->db->where('id', $check_mcq_test_id);
+ //                    $this->db->update('mcq_test',$data);
+ //                    $testId = $check_mcq_test_id;
+ //                } else {    
+ //                    $this->db->insert('mcq_test', $data);
+ //                    $testId = $this->db->insert_id();
+
+ //                    $code = $this->getCode();
+
+ //                    $data = array(
+ //                            'mcq_test_id' => $testId,
+ //                            'code' => $code
+ //                    );
+
+ //                    $this->db->insert('mcq_code', $data);
+
+
+
+
+ //                    if (strlen(trim($_POST['drive-date'])) > 0) {
+
+
+ //                        $data = array(
+ //                          'mcq_test_id' => $testId,
+ //                          'drive_date' =>trim($_POST['drive-date']),
+ //                          'drive_time' =>trim($_POST['drive-time']),
+ //                          'drive_place' =>trim($_POST['drive-place'])
+
+ //                        );
+
+
+ //                        if ($check_drive_id != 0) {
+
+
+ //      $this->db->insert('drive_details', $data);                  
+ //    }
+
+ //    echo $testId;
+ //  }
+
+ //                            $this->db->where('id', $check_drive_id);
+ //                            $this->db->update('drive-details',$data);
+ //                        } else {  
+ //                          $this->db->insert('drive_details', $data);
+
+ //                        }
+
+ //                      // $this->db->insert('drive-details', $data);                  
+ //                    }
+ //                }
+
+ //                echo $testId;
+
+
+ //                // $this->db->insert('mcq_test', $data);
+
+
+ //                // $testId = $this->db->insert_id();
+
+ //                // $code = $this->getCode();
+
+ //                // $data = array(
+ //                //         'mcq_test_id' => $testId,
+ //                //         'code' => $code
+ //                // );
+
+ //                // $this->db->insert('mcq_code', $data);
+
+ //                // if (strlen(trim($_POST['drive-date'])) > 0) {
+ //                //   $data = array(
+ //                //     'mcq_test_id' => $testId,
+ //                //     'drive_date' =>trim($_POST['drive-date']),
+ //                //     'drive_time' =>trim($_POST['drive-time']),
+ //                //     'drive_place' =>trim($_POST['drive-place'])
+
+ //                //   );
+
+ //                //   $this->db->insert('drive_details', $data);                  
+ //                // }
+
+
+ //                // echo $testId;
+ //        }
 
                 public function addTestTime() {
                 $mcqId = $_POST['mcqId'];
