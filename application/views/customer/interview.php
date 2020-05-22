@@ -11,6 +11,41 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 
 <style>
+   .accordion_container {
+            width: 500px;
+        }
+        .accordion_head {
+            /*background-color:skyblue;*/
+            color: black;
+            cursor: pointer;
+            font-family: arial;
+            font-size: 14px;
+            margin: 0 0 1px 0;
+            padding: 7px 11px;
+            font-weight: bold;
+        }
+        .accordion_body {
+            background: lightgray;
+        }
+        .accordion_body p{
+            padding: 18px 5px;
+            margin: 0px;
+        }
+        .plusminus{
+            float:right;
+        }
+        th{
+            text-align: center;
+        }
+        td{
+            text-align: center;
+        }
+        .icon{
+            padding: 6px 8px;
+            background: lightgray;
+            color: #33A478;
+            font-size: 20px;
+        }
   /* Style the container/contact section */
 #detail {
   border-radius: 5px;
@@ -32,11 +67,49 @@
   display: table;
   clear: both;
 }
+
+/*.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}*/
+
+/*.accordion:after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}*/
+
 </style>
 <div id="layoutSidenav_content">
   <main>
     <div class="container-fluid">
-      <h1 class="mt-4">Interview Result</h1>
+      <h1 class="mt-4">Schedule Interview </h1>
       <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
         <li class="breadcrumb-item active">Details</li>
@@ -52,18 +125,18 @@
  <input type="hidden" id="round" name="round"  />
           <div class="col-md-12">
             <h4>INTERVIEWs</h4>
-           <!--  <div class="container"  id="detail">
+            <div class="container"  id="detail">
             <div class="row">
               <div class="column">
                 <label>User Count</label>
                 <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off">
                 <span id ="generate_error" style="color:red"></span>
-              </div> -->
+              </div>
 
               <!--  <div class="column">
                 <label>Interview Code (if any) </label> -->
-                <!-- <input type="hidden" name="code" class="form-control" id="interview-code" placeholder="Enter code" autocomplete="off">
- -->
+                <input type="hidden" name="code" class="form-control" id="interview-code" placeholder="Enter code" autocomplete="off">
+
 
 
                 <input type="hidden" id="mcqTestId" value= "<?php// echo $mcq['mcq-details']->id;?>">
@@ -86,15 +159,16 @@
 
 
               </div> -->
-              <!-- <div class="column">
+              <div class="column">
                <button style="margin-top:30px" onclick="generateUsrPwd()">Generate IDs</button>
+               <!-- <button style="margin-top:30px" onclick="removeUsrPwd()">Remove IDs</button> -->
               </div>
             </div>
 
 
 
 
-            </div> -->
+            </div>
           </div>
             <div class="container">
               <!-- <div class="searchBox"> -->
@@ -150,62 +224,272 @@
         </div><br/>
         </div>
  -->
-        <div class="table-responsive">
+
+ <!-- test -->
+ <!-- <button class="accordion" id="one" ><b> Deepak </b> username : <b>test</b></button>
+<div class="panel">
+<button type="button" onclick="myFunction()">Try it</button>
+ <table id="myTable" border = "1">
+ <thead>
+  <th> Round </th>
+  <th> Send </th>
+  <th> Feedback </th>
+  <th> Result </th>
+ </thead>
+</table>
+</div> -->
+<br/>
+<?php
+
+//   $i = 0;
+
+//   if (count($interviewData['users']) > 0) {
+//     foreach($interviewData['users'] as $key => $value) {
+//       $i++;
+//       $sendInvite = 0;
+// //print_r($value); die;
+//       $firstname = "";
+//       if (isset($value->first_name)) {
+//         $firstname = $value->first_name;
+//       }
+//       $lastname = "";
+//       if (isset($value->last_name)) {
+//         $lastname = $value->last_name;
+//       }
+//       $email = "";
+//       if (isset($value->email)) {
+//         $email = $value->email;
+//       }
+//       $contactNo = "";
+//       if (isset($value->contact_no)) {
+//         $contactNo = $value->contact_no;
+//       }
+//       $status = "NA";
+//       if ($value->interview_status == "1") {
+//         $status = "PASSED";
+//       } else if ($value->interview_status == "2") {
+//          $status = "REJECTED";
+//       } else if ($value->interview_status == "3") {
+//        $status = "ON HOLD";
+//       } else {
+//         $status = "NA";
+//       }
+      ?>
+
+
+<!--       <button class="accordion" id="btn_<?=$i?>"> <?=$i;?> Name : <strong><?=$firstname." ".$lastname;?>  </strong> Email: <strong> <?=$email;?> </strong> Usename: <strong> <?=$value->username;?> </strong> Password: <strong> <?=$value->password;?> </strong> Final Status: <strong> <?=$status;?> </strong></button>
+      <div class="panel">
+        <br/>
+        <button onclick="addNewSection1(<?=$i.','.$value->id;?>)"> Add Rounds</button>
+        <button onclick="saveStatus1(<?=$value->id;?>)"> Add Final Status</button>
+        <table class="table table-bordered" id="testt_<?=$i;?>" border="1">
+          <thead>
+            <th>Round</th>
+            <th>Send</th>
+            <th>Result</th>
+            <th>Next Round</th>
+            <th>Status</th>
+          </thead> -->
+          <?php 
+           
+
+          // for($j=1;$j<=$value->totalRound;$j++) {
+
+          //   echo "<tr><td>Round $j</td><td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-envelope'></span></button></td><td><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#myModal1' onclick='showInterviewFeedback($j,$value->id)'><span class='glyphicon glyphicon-comment'></span></button></td><td><button class='btn btn-primary btn-xs' onclick='nextRound($j,$value->id)'><span class='glyphicon glyphicon-ok'></span></button></td>";
+          //   //echo "<td>NA</td>";
+          //   $field = "round_".$j;
+          //   if ($value->$field == "1") {
+          //     echo '<td><strong>PASSED</strong></td>';
+          //   } else if ($value->$field == "2") {
+          //     echo '<td><strong>REJECTED</strong></td>';
+          //   } else if ($value->$field == "3") {
+          //     echo '<td><strong>ON HOLD</strong></td>';
+          //   } else {
+          //     echo '<td>NA</td>';  
+          //   }
+          //   echo "</tr>";
+          // }
+          ?>
+        <!-- </table>
+      </div> -->
+<?php
+  //   }
+  // }
+
+?>
+<!-- <button class="accordion">Section 2</button>
+<div class="panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<button class="accordion">Section 3</button>
+<div class="panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div> -->
+ <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th style="color: #33A478">SL.No</th>
+        <th style="color: #33A478">Name</th>
+        <th style="color: #33A478">Email</th>
+        <th style="color: #33A478">Contact No</th>
+        <th style="color: #33A478">Username</th>
+        <th style="color: #33A478">Password</th>
+        <th style="color: #33A478">Status</th>
+        <th style="color: #33A478">Interview Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+
+  $i = 0;
+
+  if (count($interviewData['users']) > 0) {
+    foreach($interviewData['users'] as $key => $value) {
+      $i++;
+      $sendInvite = 0;
+//print_r($value); die;
+      $firstname = "";
+      if (isset($value->first_name)) {
+        $firstname = $value->first_name;
+      }
+      $lastname = "";
+      if (isset($value->last_name)) {
+        $lastname = $value->last_name;
+      }
+      $email = "";
+      if (isset($value->email)) {
+        $email = $value->email;
+      }
+      $contactNo = "";
+      if (isset($value->contact_no)) {
+        $contactNo = $value->contact_no;
+      }
+      $status = "NA";
+      if ($value->interview_status == "1") {
+        $status = "<span class='text-success'>PASSED</span>";
+      } else if ($value->interview_status == "2") {
+         $status = "<span class='text-danger'>REJECTED</span>";
+      } else if ($value->interview_status == "3") {
+       $status = "<span class='text-warning'>ON HOLD</span>";
+      } else {
+        $status = "<span class='text-default'>NA</span>";
+      }
+      ?>
+
+
+      <tr>
+        <td><?=$i;?></td>
+        <td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails(<?=$value->studentId;?>)"><?=$firstname." ".$lastname;?></a></td>
+        <td><?=$email;?></td>
+        <td><?=$contactNo;?></td>
+        <td><?=$value->username;?></td>
+        <td><?=$value->password;?></td>
+        <td><?=$status;?></td>
+        <td width="500"> 
+            <div class="accordion_head"><span class="icon">+</span></div>
+            <div class="accordion_body" style="display: none;">
+            <table width="100%" id="test_<?=$i;?>" border="1">
+                <thead>
+                <tr>
+                    <th colspan="2"><button onclick="addNewSection(<?=$i.','.$value->id;?>)"> Add Rounds</button>
+                    </th>
+                    <th colspan="3"> <button onclick="saveStatus(<?=$value->id;?>)"> Add Final Status</button>
+                    </th>                    
+                </tr>
+                <tr>
+                    <th width="30%">Round</th>
+                    <th width="30%">Send</th>
+                    <th width="30%">Result</th>
+                    <th width="30%" colspan="2">Status</th>
+                </tr>
+                <?php 
+           
+          for($j=1;$j<=$value->totalRound;$j++) {
+
+            echo "<tr><td>Round $j</td><td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-envelope'></span></button></td><td><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#myModal1' onclick='showInterviewFeedback($j,$value->id)'><span class='glyphicon glyphicon-comment'></span></button></td><td><button class='btn btn-primary btn-xs' onclick='nextRound($j,$value->id)'><span class='glyphicon glyphicon-ok'></span></button></td>";
+            //echo "<td>NA</td>";
+            $field = "round_".$j;
+            if ($value->$field == "1") {
+              echo '<td class="text-success">PASSED</td>';
+            } else if ($value->$field == "2") {
+              echo '<td class="text-danger">REJECTED</td>';
+            } else if ($value->$field == "3") {
+              echo '<td class="text-info">ON HOLD</td>';
+            } else {
+              echo '<td>NA</td>';  
+            }
+            echo "</tr>";
+          }
+          ?>
+                </thead>
+                <tbody>
+                
+            </tbody>
+            </table>
+            </div>
+        </td>
+      </tr>
+       <?php } }?>
+    </tbody>
+  </table>
+<!-- test -->
+        <!-- <div class="table-responsive">
 
                 
               <table id="mytable" class="table table-bordred table-striped">
                    
-                   <thead>
+                   <thead> -->
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-		                <th>Sl. no </th>
+		               <!--  <th>Sl. no </th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Contact-no</th>
                     <th>Username</th>
-                    <th>Password</th>
+                    <th>Password</th> -->
                      <!-- <th>Total Section</th>
                      <th>Total Question</th> -->
                      <!-- <th>view</th>
                       <th>Download</th> -->
                       
-                       <th  colspan = 4>Interview actions</th>
+                       <!-- <th  colspan = 4>Interview actions</th>
                    </thead>
     <tbody>
-  <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><strong>Round1</strong></td><td><strong>Round2</strong></td><td><strong>Round3</strong></td><td><strong>Status</strong></td></tr>
+  <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><strong>Round1</strong></td><td><strong>Round2</strong></td><td><strong>Round3</strong></td><td><strong>Status</strong></td></tr> -->
 
         <?php 
 
-	$i = 0;
+	// $i = 0;
 
-        if (count($interviewData['users']) > 0)
-        foreach($interviewData['users'] as $key => $value) {
-	  $i++;
-          $sendInvite = 0;
+ //        if (count($interviewData['users']) > 0)
+ //        foreach($interviewData['users'] as $key => $value) {
+	//   $i++;
+ //          $sendInvite = 0;
 
           // if (in_array($value->id, $mcq['proctoredIds'])) {
           //   $sendInvite = 1;
           // }
 
-          $firstname = "";
-          if (isset($value->first_name)) {
-            $firstname = $value->first_name;
-          }
-          $lastname = "";
-          if (isset($value->last_name)) {
-            $lastname = $value->last_name;
-          }
-          $email = "";
-          if (isset($value->email)) {
-            $email = $value->email;
-          }
-          $contactNo = "";
-          if (isset($value->contact_no)) {
-            $contactNo = $value->contact_no;
-          }
+          // $firstname = "";
+          // if (isset($value->first_name)) {
+          //   $firstname = $value->first_name;
+          // }
+          // $lastname = "";
+          // if (isset($value->last_name)) {
+          //   $lastname = $value->last_name;
+          // }
+          // $email = "";
+          // if (isset($value->email)) {
+          //   $email = $value->email;
+          // }
+          // $contactNo = "";
+          // if (isset($value->contact_no)) {
+          //   $contactNo = $value->contact_no;
+          // }
 
 
-          echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$firstname." ".$lastname.'</a></td><td>'.$email.'</td><td>'.$contactNo.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
+          // echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$firstname." ".$lastname.'</a></td><td>'.$email.'</td><td>'.$contactNo.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
           	 // echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
@@ -223,16 +507,16 @@
 
       </p></td>';
     }*/
-    $intervieweeId = $value->id;
-    $round1 = "";
-    $round1Status = "";
-    $round2Status = "";
-    $round3Status = "";
-    $round2 = "disabled";
-    $round3 = "disabled";
-    $textClass1 ="text-success";
-    $textClass2 ="text-success";
-    $textClass3 ="text-success";
+    // $intervieweeId = $value->id;
+    // $round1 = "";
+    // $round1Status = "";
+    // $round2Status = "";
+    // $round3Status = "";
+    // $round2 = "disabled";
+    // $round3 = "disabled";
+    // $textClass1 ="text-success";
+    // $textClass2 ="text-success";
+    // $textClass3 ="text-success";
 
     // if ($interviewData['round-result'][$intervieweeId]['round1']) {
     //   $round1 = "";
@@ -246,113 +530,113 @@
     //   $round3 = "";
     // }
 
-    if ($value->active_round == "1") {
-      $round1 = "";
-      $round2 = "disabled";
-      $round3 = "disabled";
+    // if ($value->active_round == "1") {
+    //   $round1 = "";
+    //   $round2 = "disabled";
+    //   $round3 = "disabled";
 
-      $round1Status = "";
-      $round2Status = "";
-      $round3Status = "";
-    }
+    //   $round1Status = "";
+    //   $round2Status = "";
+    //   $round3Status = "";
+    // }
 
-    if ($value->active_round == "2") {
-      $round1 = "disabled";
-      $round2 = "";
-      $round3 = "disabled";
+    // if ($value->active_round == "2") {
+    //   $round1 = "disabled";
+    //   $round2 = "";
+    //   $round3 = "disabled";
 
-      $round1Status = "PASSED";
+    //   $round1Status = "PASSED";
 
-      $round2Status = "";
-      $round3Status = "";
-    }
+    //   $round2Status = "";
+    //   $round3Status = "";
+    // }
 
-    if ($value->active_round == "3") {
-      $round2 = "disabled";
-      $round1 = "disabled";
-      $round3="";
-      $round1Status = "PASSED";      
-      $round2Status = "PASSED";
-      $round3Status = "";
-    }
+    // if ($value->active_round == "3") {
+    //   $round2 = "disabled";
+    //   $round1 = "disabled";
+    //   $round3="";
+    //   $round1Status = "PASSED";      
+    //   $round2Status = "PASSED";
+    //   $round3Status = "";
+    // }
 
-    if ($value->interview_status == "1") {
+    // if ($value->interview_status == "1") {
         
-      $round2 = "disabled";
-      $round1 = "disabled";
-      $round3 = "disabled";
-      $round1Status = "PASSED";      
-      $round2Status = "PASSED";
-      $round3Status = "PASSED";
+    //   $round2 = "disabled";
+    //   $round1 = "disabled";
+    //   $round3 = "disabled";
+    //   $round1Status = "PASSED";      
+    //   $round2Status = "PASSED";
+    //   $round3Status = "PASSED";
 
-      // if ($value->active_round == "1") {
-      //   $round1Status = "PASSED";      
-      //   $round2Status = "";
-      //   $round3Status = "";
-      // } else if ($value->active_round == "2") {
-      //   $round1Status = "PASSED";      
-      //   $round2Status = "PASSED";
-      //   $round3Status = "";
-      // } else if ($value->active_round == "3") {
-      //   $round1Status = "PASSED";      
-      //   $round2Status = "";
-      //   $round3Status = "";
-      // }
+    //   // if ($value->active_round == "1") {
+    //   //   $round1Status = "PASSED";      
+    //   //   $round2Status = "";
+    //   //   $round3Status = "";
+    //   // } else if ($value->active_round == "2") {
+    //   //   $round1Status = "PASSED";      
+    //   //   $round2Status = "PASSED";
+    //   //   $round3Status = "";
+    //   // } else if ($value->active_round == "3") {
+    //   //   $round1Status = "PASSED";      
+    //   //   $round2Status = "";
+    //   //   $round3Status = "";
+    //   // }
 
-    } else if ($value->interview_status == "2") {
+    // } else if ($value->interview_status == "2") {
     
-      $round2 = "disabled";
-      $round1 = "disabled";
-      $round3 = "disabled";
-      $round1Status = "PASSED";      
-      $round2Status = "PASSED";
-      $round3Status = "PASSED";
+    //   $round2 = "disabled";
+    //   $round1 = "disabled";
+    //   $round3 = "disabled";
+    //   $round1Status = "PASSED";      
+    //   $round2Status = "PASSED";
+    //   $round3Status = "PASSED";
 
      
-      if ($value->active_round == "1") {
-        $round1Status = "REJECTED";      
-        $round2Status = "";
-        $round3Status = "";
-        $textClass1 ="text-danger";
-      } else if ($value->active_round == "2") {
-        $round1Status = "PASSED";      
-        $round2Status = "REJECTED";
-        $round3Status = "";
-        $textClass2 ="text-danger";
-      } else if ($value->active_round == "3") {
-        $round1Status = "PASSED";      
-        $round2Status = "PASSED";
-        $round3Status = "REJECTED";
-        $textClass3 ="text-danger";
-      }
+    //   if ($value->active_round == "1") {
+    //     $round1Status = "REJECTED";      
+    //     $round2Status = "";
+    //     $round3Status = "";
+    //     $textClass1 ="text-danger";
+    //   } else if ($value->active_round == "2") {
+    //     $round1Status = "PASSED";      
+    //     $round2Status = "REJECTED";
+    //     $round3Status = "";
+    //     $textClass2 ="text-danger";
+    //   } else if ($value->active_round == "3") {
+    //     $round1Status = "PASSED";      
+    //     $round2Status = "PASSED";
+    //     $round3Status = "REJECTED";
+    //     $textClass3 ="text-danger";
+    //   }
 
-    } else if ($value->interview_status == "3") {
+    // } else if ($value->interview_status == "3") {
      
-      $round1 = "disabled";
-      $round2 = "disabled";
-      $round3 = "disabled";
-      $round1Status = "PASSED";      
-      $round2Status = "PASSED";
-      $round3Status = "On HOLD";
+    //   $round1 = "disabled";
+    //   $round2 = "disabled";
+    //   $round3 = "disabled";
+    //   $round1Status = "PASSED";      
+    //   $round2Status = "PASSED";
+    //   $round3Status = "On HOLD";
 
       
-      if ($value->active_round == "1") {
-        $round1Status = "ON HOLD";      
-        $round2Status = "";
-        $round3Status = "";
-        $textClass1 ="text-warning";
-      } else if ($value->active_round == "2") {
-        $round1Status = "PASSED";      
-        $round2Status = "ON HOLD";
-        $round3Status = "";
-        $textClass2 ="text-warning";
-      } else if ($value->active_round == "3") {
-        $round1Status = "PASSED";      
-        $round2Status = "PASSED";
-        $round3Status = "ON HOLD";
-        $textClass3 ="text-warning";
-      }
-    }
+    //   if ($value->active_round == "1") {
+    //     $round1Status = "ON HOLD";      
+    //     $round2Status = "";
+    //     $round3Status = "";
+    //     $textClass1 ="text-warning";
+    //   } else if ($value->active_round == "2") {
+    //     $round1Status = "PASSED";      
+    //     $round2Status = "ON HOLD";
+    //     $round3Status = "";
+    //     $textClass2 ="text-warning";
+    //   } else if ($value->active_round == "3") {
+    //     $round1Status = "PASSED";      
+    //     $round2Status = "PASSED";
+    //     $round3Status = "ON HOLD";
+    //     $textClass3 ="text-warning";
+    //   }
+    // }
     // if ($value->active_round == "4") {
     //   $round3 =  "disabled";
     //   $round2 =  "disabled";
@@ -364,61 +648,61 @@
 
       
 
-if ($sendInvite) {
-        echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
+// if ($sendInvite) {
+//         echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
 
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button><span class="glyphicon glyphicon-ok"></span>
+//       <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button><span class="glyphicon glyphicon-ok"></span>
 
-      </p></td>';
-    } else {
-      echo '<td><span data-placement="top" data-toggle="tooltip" title="Invite">
+//       </p></td>';
+//     } else {
+//       echo '<td><span data-placement="top" data-toggle="tooltip" title="Invite">
 
-      <button '.$round1.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(1,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;</span>
-<span data-placement="top" data-toggle="tooltip" title="Comment">
+//       <button '.$round1.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(1,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;</span>
+// <span data-placement="top" data-toggle="tooltip" title="Comment">
 
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(1,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
-      </span>
-      <span data-placement="top" data-toggle="tooltip" title="Round">
-      <button '.$round1.' class="btn btn-primary btn-xs" onclick="nextRound(2,'.$value->id.')"><span class="glyphicon glyphicon-ok">
-      </span></button> <p class="'.$textClass1.'">'.$round1Status.'</p></td>
+//       <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(1,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
+//       </span>
+//       <span data-placement="top" data-toggle="tooltip" title="Round">
+//       <button '.$round1.' class="btn btn-primary btn-xs" onclick="nextRound(2,'.$value->id.')"><span class="glyphicon glyphicon-ok">
+//       </span></button> <p class="'.$textClass1.'">'.$round1Status.'</p></td>
 
-      <td>
+//       <td>
 
-      <button '.$round2.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(2,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
+//       <button '.$round2.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(2,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
 
-      <button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(2,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
-
-      
-      <button '.$round2.' class="btn btn-primary btn-xs" onclick="nextRound(3,'.$value->id.')"><span class="glyphicon glyphicon-ok">
-
-      </button><p class="'.$textClass2.'">'.$round2Status.'</p></td>
-
-
-      <td>
-
-      <button '.$round3.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(3,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
+//       <button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(2,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
 
       
-      <button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(3,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>
-      &nbsp;
+//       <button '.$round2.' class="btn btn-primary btn-xs" onclick="nextRound(3,'.$value->id.')"><span class="glyphicon glyphicon-ok">
+
+//       </button><p class="'.$textClass2.'">'.$round2Status.'</p></td>
+
+
+//       <td>
+
+//       <button '.$round3.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(3,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
 
       
-      <button '.$round3.' class="btn btn-primary btn-xs" onclick="nextRound(4,'.$value->id.')"><span class="glyphicon glyphicon-ok"></span></button>
-      <p class="'.$textClass3.'">'.$round3Status.'</p></td>';
+//       <button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(3,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>
+//       &nbsp;
 
-      if ($value->interview_status == "1") {
-        echo '<td><strong>PASSED</strong></td>';
-      } else if ($value->interview_status == "2") {
-        echo '<td><strong>REJECTED</strong></td>';
-      } else if ($value->interview_status == "3") {
-        echo '<td><strong>ON HOLD</strong></td>';
-      } else {
-        echo '<td>NA</td>';  
-      }
       
-    }
-    echo '</tr>';
-        }
+//       <button '.$round3.' class="btn btn-primary btn-xs" onclick="nextRound(4,'.$value->id.')"><span class="glyphicon glyphicon-ok"></span></button>
+//       <p class="'.$textClass3.'">'.$round3Status.'</p></td>';
+
+//       if ($value->interview_status == "1") {
+//         echo '<td><strong>PASSED</strong></td>';
+//       } else if ($value->interview_status == "2") {
+//         echo '<td><strong>REJECTED</strong></td>';
+//       } else if ($value->interview_status == "3") {
+//         echo '<td><strong>ON HOLD</strong></td>';
+//       } else {
+//         echo '<td>NA</td>';  
+//       }
+      
+//     }
+//     echo '</tr>';
+//         }
         ?>
     
     <!-- <tr>
@@ -484,9 +768,9 @@ if ($sendInvite) {
     
    
     
-    </tbody>
+    <!-- </tbody>
         
-</table>
+</table> -->
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
@@ -499,7 +783,7 @@ if ($sendInvite) {
   <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
 </ul> -->
                 
-            </div>
+            <!-- </div> -->
             
         </div>
   </div>
@@ -521,27 +805,12 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           <div class="form-group">
         <input class="form-control " id="userEmail" type="text" placeholder="Enter Email">
         </div>
- <div class="form-group" style="display:none">
-       
-
-                    <label>Select MCQs</label>
-                    <select  class="form-control inputBox" id="testId">
-                      <option value=0> Select </option>
-                      
-        <?php 
-
-        if (count($interviewData['mcqs-list']) > 0) {
-        foreach($interviewData['mcqs-list'] as $key => $value) {?>
-        <option value=<?php echo $value->id; ?>> <?php echo $value->title;?> </option>
-        <?php } }?>                       
-                    </select>
-        </div>
 
         <div class="form-group">
           <label>Interviewer</label>
        <!-- <select  class="form-control inputBox" id="interviewerId"> -->
-<select id="interviewerId" multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100">
-                      <option value=0> Select</option>
+          <select id="interviewerId" multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100">
+                      <!-- <option value=0> Select</option> -->
                       
         <?php 
 
@@ -554,31 +823,47 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         </div>
         <div class="form-group">
           <label> Interview Schedule </label>
-
           <br/>
-           <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' id="date-time" class="form-control"  />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-                <br/>
-
-         <!-- Date: <input type="date" id="testDate" /> Time : <input type="time" id="testTime"/> -->    
-         Mode : <select class="form-group inputBox" id="interviewMode">
-                      <option value=0 disabled> Select</option>
-                       <option value=1 selected=> Online</option>
-                        <option value=2 disabled> Offline</option>
-              </select>
-              <span id="error" style="color:red"></span></br>
-               <label> Duration (in hrs) </label>
-                <input type="number" id="duration" name="duration" min="1" max="5">
-
-                
-
-         
-        
+          <div class='input-group date' id='datetimepicker1'>
+            <input type='text' id="date-time" class="form-control"  />
+            <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
         </div>
+        <br/>
+        <div class="form-group">
+          <label>Select Meeting IDs</label>
+          <select  class="form-control inputBox" id="testId">
+            <option value=0> Select </option>
+            <?php 
+            if (count($interviewData['meeting-id']) > 0) {
+              $i = 1;
+              foreach($interviewData['meeting-id'] as $key => $value) { ?>
+                <option value=<?php echo $value->id; ?>> <?php echo "Room ".$i;?> </option>
+                <?php $i++;
+              }
+            }?>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label> Interview Mode</label>
+          <select class="form-group inputBox" id="interviewMode">
+            <option value=0 disabled> Select</option>
+            <option value=1 selected=> Online</option>
+            <option value=2 disabled> Offline</option>
+          </select>
+          <span id="error" style="color:red"></span></br>
+          <label> Duration (in hrs) </label>
+          <input type="number" id="duration" name="duration" min="1" max="5">
+        </div>
+
+        <div class="form-group"  style="display:none">
+          <label> Venue </label>
+          <input type="text" id="interviewVenue" value="test"/>
+        </div>
+         <!-- Date: <input type="date" id="testDate" /> Time : <input type="time" id="testTime"/> -->
 
         <!-- <div class="form-group">
           <label> Interview Mode</label>
@@ -593,12 +878,7 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         
         </div> -->
 
-                <div class="form-group">
-          <label> Venue </label>
-
-          <input type="text" id="interviewVenue" />   
-        
-        </div>
+               
 
        <!--  <div class="form-group">
           <label> Comment </label>
@@ -818,6 +1098,60 @@ color: red;">&times;</button>
                 </main>
 
 <script>
+  var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+      //panel.style.maxHeight = "auto";
+    } 
+  });
+}
+
+function myFunction() {
+  var table = document.getElementById("myTable");
+  var row = table.insertRow(1);
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);  
+  var cell3 = row.insertCell(2);
+  var cell4 = row.insertCell(3);
+
+  cell1.innerHTML = "NEW CELL1";
+  cell2.innerHTML = "NEW CELL2";
+  cell3.innerHTML = "NEW CELL2";
+  cell4.innerHTML = "NEW CELL2";
+  document.getElementById("one").click();
+  document.getElementById("one").click();
+}
+
+function addNewSection(i,id) {
+  // var sectionCount = document.getElementById("sectionNo").value ;
+  // document.getElementById("sectionNo").value = parseInt(sectionCount) + 1;
+  // if (i == undefined) {
+  //   var i = document.getElementById("sectionNo").value;
+  // }
+
+  var countRow = document.getElementById('test_'+i).rows.length;
+  var rowCount = countRow - 1;
+  var html = '';
+  html += '<tr>';
+  html += '<td>Round '+rowCount+'</td>';
+
+  html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
+
+  html += '&nbsp;<td> <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback('+rowCount+','+id+')"><span class="glyphicon glyphicon-comment"></span></button></td>';
+  html +='<td><button class="btn btn-primary btn-xs" onclick="nextRound('+rowCount+','+id+')" ><span class="glyphicon glyphicon-ok"></span></button></td>';
+  html += '&nbsp;<td>NA</td>';
+  $('#test_'+i).append(html);
+  document.getElementById("btn_"+i).click();
+  document.getElementById("btn_"+i).click();
+}
 // $(document).ready(function () {
 // $("#testDate").datepicker({
 // minDate: 0
@@ -1012,7 +1346,7 @@ function showStudentDetails(userId) {
                         //console.log(item, index);
                         if (null !== item) {
                         var eachrow = 
-                               '<tr><td><strong>'+index+': </strong>'+item+ '</td></tr>';
+                               '<tr><td><strong>'+index+': </strong></td><td>'+item+ '</td></tr>';
                    $('#student').append(eachrow);
                 }
                   });
@@ -1030,6 +1364,16 @@ function showStudentDetails(userId) {
                     }
                 });
   }
+
+function saveStatus(userId) {
+  var baseUrl = document.getElementById("base_url").value;
+  var status = prompt("Enter Round Status (Type 1 for PASS, 2 for REJECT, 3 for ON HOLD)");
+  if (status !== null) {
+  saveInterviewStatus(userId,status);
+  alert('Saved');
+  window.location.reload();
+  }
+}
 
 function saveInterviewStatus(userId, status) {
     var baseUrl = document.getElementById("base_url").value;
@@ -1056,7 +1400,34 @@ function saveInterviewStatus(userId, status) {
                 });
   }
 
- function nextRound(id,userId) {
+  function nextRound(id,userId) {
+    var baseUrl = document.getElementById("base_url").value;
+    var status = prompt("Enter Round Status (Type 1 for PASS, 2 for REJECT, 3 for ON HOLD)");
+    if (status !== null) {
+      $.ajax({
+        url: baseUrl+"admin/saveActiveRound",
+        type: 'post',
+        
+        // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+        data: { "userId":userId,"round":id,"status":status} ,
+        success: function( data, textStatus, jQxhr ){
+            //window.location.reload(true);
+           // window.location.href="admin/view-mcq";
+            //$('#response pre').html( JSON.stringify( data ) );
+            console.log('data', data);
+            // document.getElementById("code").disabled = true;
+
+            // document.getElementById("codeSubmit").disabled = true;
+            window.location.reload();
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+            console.log( errorThrown );
+        }
+      });
+    }
+  }
+
+ function nextRoundOld(id,userId) {
   var baseUrl = document.getElementById("base_url").value;
                   //alert(round);
                   // document.getElementById("assessId").value = id;
@@ -1133,16 +1504,15 @@ function saveInterviewStatus(userId, status) {
                 // alert(mcqId);
                 var mcqId = 0;
                 var baseUrl = document.getElementById("base_url").value;
-                var code = "<?php echo $this->uri->segment(4);?>";
-                var customerId = "<?php echo $this->uri->segment(3);?>";
+                var code = "<?php echo $this->uri->segment(3);?>";
                 if (isError) {
                   $.ajax({
-                    url: baseUrl+"admin/generateInterviewUsrPwd",
+                    url: baseUrl+"customer/generateInterviewUsrPwd",
                    
                     type: 'post',
                     
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "num":num,"mcqId":mcqId, "code":code,"customer":customerId} ,
+                    data: { "num":num,"mcqId":mcqId, "code":code} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";
@@ -1213,63 +1583,80 @@ function getHour(hour) {
   }
   return hour;
 }
-             function sendInterviewInvite() {
-               //alert('send');
-                var interviewerId = document.getElementById("interviewerId").value ;
-                var userEmail = document.getElementById("userEmail").value ;
-                // var testDate = document.getElementById("testDate").value ;
-                // var testTime = document.getElementById("testTime").value ;
-                var interviewVenue = document.getElementById("interviewVenue").value ;
-                var interviewMode = document.getElementById("interviewMode").value ;
-                var testId = document.getElementById("testId").value ;
-                var baseUrl = document.getElementById("base_url").value;
+ function sendInterviewInvite() {
+ //alert('send');
+  //var pathArray = window.location.pathname.split('/');
+  //var customerId = pathArray[5];
+  var customerId = "<?php echo $_SESSION['customerId'];?>";
+  var interviewerId = document.getElementById("interviewerId").value ;
+  var userEmail = document.getElementById("userEmail").value ;
+  // var testDate = document.getElementById("testDate").value ;
+  // var testTime = document.getElementById("testTime").value ;
+  var interviewVenue = document.getElementById("interviewVenue").value ;
+  var interviewMode = document.getElementById("interviewMode").value ;
+  var testId = document.getElementById("testId").value ;
+  var baseUrl = document.getElementById("base_url").value;
 
-                var userId = document.getElementById("assessId").value;
+  var userId = document.getElementById("assessId").value;
 
-            		var round = document.getElementById("round").value;
-                var duration = document.getElementById("duration").value;
+	var round = document.getElementById("round").value;
+  var duration = document.getElementById("duration").value;
 
-            		var interview = document.getElementById("interviewerId");
-                var interviewerIds = getSelectValues(interview);
+	var interview = document.getElementById("interviewerId");
+  var interviewerIds = getSelectValues(interview);
 
-                var interviewDateTime =  document.getElementById("date-time").value;
+  var interviewDateTime =  document.getElementById("date-time").value;
 
-                var res = interviewDateTime.split(" ");
-                testDate = res[0];
-                var timeSplit = res[1].split(":");
-                var hour = timeSplit[0];
-                if (res[2] == "PM") {
-                  var hour = getHour(hour);
+  var res = interviewDateTime.split(" ");
+  testDate = res[0];
+  var timeSplit = res[1].split(":");
+  var hour = timeSplit[0];
 
-                }
-                testTime = hour+":"+timeSplit[1];
+  if (res[2] == "PM") {
+    var hour = getHour(hour);
 
-                  $.ajax({
-                    url: baseUrl+"admin/sendInterviewInvite",
-                    type: 'post',
+  }
+  testTime = hour+":"+timeSplit[1];
 
-                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                
-                    data: {"duration":duration,"round":round, "userId" : userId, "mcqId" : testId, "email":userEmail, "testDate":testDate, "testTime":testTime, 
-                    "interviewerId" : interviewerIds, "interviewMode" : interviewMode, "interviewVenue" : interviewVenue} ,
-                    success: function( data, textStatus, jQxhr ){
-                        //window.location.reload(true);
-                       // window.location.href="admin/view-mcq";
-                        //$('#response pre').html( JSON.stringify( data ) );
-                        console.log('data', data);
-                        console.log('dd', data.status);
-                        console.log('de',JSON.stringify( data ))
-                        // document.getElementById("code").disabled = true;
-                        if (data.status == "400") {
-                            document.getElementById("error").innerHTML = data.data;
-                        } else {
-                        //document.getElementById("codeSubmit").disabled = true;
-                       window.location.reload();
-                      }
-                    },
-                    error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
-                    }
-                });
-             }
+  $.ajax({
+    url: baseUrl+"admin/sendInterviewInvite",
+    type: 'post',
+
+    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+
+    data: {"customerId":customerId,"duration":duration,"round":round, "userId" : userId, "meetingId" : testId, "email":userEmail, "testDate":testDate, "testTime":testTime, 
+    "interviewerId" : interviewerIds, "interviewMode" : interviewMode, "interviewVenue" : interviewVenue} ,
+    success: function( data, textStatus, jQxhr ){
+        //window.location.reload(true);
+       // window.location.href="admin/view-mcq";
+        //$('#response pre').html( JSON.stringify( data ) );
+        console.log('data', data);
+        console.log('dd', data.status);
+        console.log('de',JSON.stringify( data ))
+        // document.getElementById("code").disabled = true;
+        if (data.status == "400") {
+            document.getElementById("error").innerHTML = data.data;
+        } else {
+        //document.getElementById("codeSubmit").disabled = true;
+       window.location.reload();
+      }
+    },
+    error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+    }
+  });
+}
+ $(".accordion_head").click(function(){
+  if ($('.accordion_body').is(':visible')) {
+      $(".accordion_body").slideUp(300);
+      $(".plusminus").text('+');
+  }
+  if( $(this).next(".accordion_body").is(':visible')){
+      $(this).next(".accordion_body").slideUp(300);
+      $(this).children(".plusminus").text('+');
+  }else {
+      $(this).next(".accordion_body").slideDown(300); 
+      $(this).children(".plusminus").text('-');
+  }
+        });
 </script>
