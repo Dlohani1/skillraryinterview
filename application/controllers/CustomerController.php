@@ -8,6 +8,7 @@ class CustomerController extends CI_Controller {
     $this->load->database();
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
+          $this->load->library("pagination");
 
     // $uri = $this->uri->segment(2);
     // //echo $uri; die;
@@ -224,7 +225,210 @@ class CustomerController extends CI_Controller {
     }
   
     $sql.=" order by interview_users.id asc";
-    $interview['users'] = $this->db->query($sql)->result();
+    // $interview['users'] = $this->db->query($sql)->result();
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "customer/interview-result/$interviewCode";
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+    $config['reuse_query_string'] = true;
+
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $interview['users'] = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+// echo "<pre>";print_r($interview['users']); die;
+    $roundResult = array();
+    foreach ($interview['users'] as $key => $value) {
+      $intervieweeId = $value->id;
+      //echo $intervieweeId; die;
+      //$intervieweeId = 10;
+      $sql = "SELECT max(round) as active_round FROM interview_details where interview_users_id = $intervieweeId";
+      $activeRound = $this->db->query($sql)->row();
+      //print_r(var_dump($activeRound)); die;
+      $roundResult = array();
+      if (null !== $activeRound->active_round) {
+        for ($i = 1; $i <= $activeRound->active_round; $i++) {
+          $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+
+          $result = $this->db->query($sql)->row();
+          //$round = "round".$i;
+          if (isset($result->interview_status)) {
+              $roundR = "round_".$i;
+              $interview['users'][$key]->totalRound = $i; 
+            $interview['users'][$key]->$roundR = $result->interview_status;
+            //$roundResult[$intervieweeId][$round] = $result->interview_status;
+          }
+        } 
+      } else {
+         $interview['users'][$key]->totalRound = 0;
+         $interview['users'][$key]->roundResult = 0;
+      }      
+    }
+
+    // foreach ($interview['users'] as $key => $value) {
+    //   $intervieweeId = $value->id;
+    //   for ($i = 1; $i<4;$i++) {
+    //     $sql = "SELECT * FROM interview_details where round = $i and interview_users_id = $intervieweeId";
+
+    //     $result = $this->db->query($sql)->row();
+    //     $round = "round".$i;
+    //     if (isset($result->interview_status)) {
+    //       $roundResult[$intervieweeId][$round] = $result->interview_status;
+    //     } else {
+    //       if ($i == "1") {
+    //         $roundResult[$intervieweeId][$round] = 1;
+    //       } else {
+    //         $roundResult[$intervieweeId][$round] = 0;  
+    //       }            
+    //     }
+    //   }              
+    // }
+
+    // echo "<pre>";
+
+    // print_r($roundResult); die;
+
+    //$interview['round-result'] = $roundResult;
+
+    // $sql = "SELECT * FROM mcq_test ";
+
+    // $query = $this->db->query($sql);
+
+    // $result = $query->result();
+
+    // $interview['mcqs-list'] = $query->result();
+    $sql = "SELECT id, email FROM `gotomeeting_token_details` where customer_id=$customerId ";
+
+    $interview['meeting-id'] = $this->db->query($sql)->result_object();
+
+    $sql = "SELECT * from `assess_login` where role= 6"; //interviewer role
+
+    $query = $this->db->query($sql);
+
+    $interview['interviewer-list'] = $query->result();
+
+    $searchname = '';
+    $searchemail = '';
+    $searchcontact = '';
+
+    //print_r($interview); die;
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+    $this->load->view('customer/interview',array(
+      'interviewData'=> $interview,
+
+      'searchname'=> $searchname,
+      'searchemail'=> $searchemail,
+      'searchcontact'=> $searchcontact,
+      'interviewCode'=> $interviewCode,
+       'links' => $links
+
+    ));
+    $this->load->view('customer/footer');  
+ }
+
+
+  public function interviewResultSearch() {
+    /*$sql = "SELECT  interview_users.*, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
+    LEFT JOIN student_register ON interview_users.id=student_register.interview_user_id
+    order by interview_users.id asc";
+*/
+      $customerId = $_SESSION['customerId'];
+      $interviewCode = $this->uri->segment(3);
+      
+      $searchname = $_GET['searchname'];
+      $searchemail = $_GET['searchemail'];
+      $searchcontact = $_GET['searchcontact'];
+
+
+  $sql = "SELECT  interview_users.*, student_register.id as studentId, student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `interview_users` 
+    LEFT JOIN student_register ON interview_users.id=student_register.interview_users_id";
+
+    if ($customerId > 0) {
+       $sql.=" where interview_users.interview_customer_id = $customerId and interview_users.interview_code = '".$interviewCode."'";
+    }
+ 
+    if(!empty($searchname)){
+          $sql.="   and (student_register.first_name like '%$searchname%'
+      or student_register.last_name like '%$searchname%') "; 
+    }
+
+    if(!empty($searchemail)){
+          $sql.="   and student_register.email like '%$searchemail%' "; 
+    }
+
+    if(!empty($searchcontact)){
+          $sql.="   and student_register.contact_no like '%$searchcontact%'  "; 
+    }
+
+
+    $sql.=" order by interview_users.id asc";
+
+    // $interview['users'] = $this->db->query($sql)->result();
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "customer/interview-result-search/$interviewCode";
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+    $config['reuse_query_string'] = true;
+
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $interview['users'] = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+
+
 // echo "<pre>";print_r($interview['users']); die;
     $roundResult = array();
     foreach ($interview['users'] as $key => $value) {
@@ -300,9 +504,39 @@ class CustomerController extends CI_Controller {
     //print_r($interview); die;
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
-    $this->load->view('customer/interview',array('interviewData'=> $interview));
+    $this->load->view('customer/interview',array(
+      'interviewData'=> $interview,
+
+      'searchname'=> $searchname,
+      'searchemail'=> $searchemail,
+      'searchcontact'=> $searchcontact,
+      'interviewCode'=> $interviewCode,
+       'links' => $links
+
+    ));
     $this->load->view('customer/footer');  
  }
+
+
+   public function getNumberOfRows($sql) {
+      $query = $this->db->query($sql);
+
+      return $query->num_rows();
+
+   }
+
+  public function getAllRowsData($sql, $start=0 ,$offset=0) {
+
+          $sql = $sql." limit $offset ,$start";
+          
+          $query = $this->db->query($sql);
+
+        $questionData = $query->result_object();
+
+        return $questionData;
+
+  }
+
   //duplicate
   public function viewResult($mcqId, $sId) {
 //echo $mcqId; echo $sId; die;

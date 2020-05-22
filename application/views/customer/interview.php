@@ -170,6 +170,54 @@
 
             </div>
           </div>
+
+
+
+<div class="container">
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/interview-result-search/$interviewCode";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                    <!--   <div class="col-md-2 ">
+                        <label>Code</label>
+                        <input type="text" id="searchcode" name="searchcode" class="form-control " placeholder="Search Code" value="<?php echo $searchcode; ?>" >
+                      </div> -->
+
+                      <div class="col-md-3">
+                        <label>Name</label>
+                        <input type="text" id="searchname" name="searchname" class="form-control" placeholder="Search Name" value="<?php echo $searchname; ?>">
+                      </div>
+
+                      <div class="col-md-3">
+                        <label>Email</label>
+                        <input type="text" id="searchemail" name="searchemail" class="form-control" placeholder="Search Email" value="<?php echo $searchemail; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                        <label>Contact</label>
+                        <input type="number" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+  </div>
+
+
+
+
+
             <div class="container">
               <!-- <div class="searchBox"> -->
                 <!-- <div class="row">
@@ -342,7 +390,7 @@
     <tbody>
       <?php
 
-  $i = 0;
+    $i = $this->uri->segment(4);
 
   if (count($interviewData['users']) > 0) {
     foreach($interviewData['users'] as $key => $value) {
@@ -771,6 +819,7 @@
     <!-- </tbody>
         
 </table> -->
+  <p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">

@@ -345,6 +345,13 @@ $route['customer/mcq-list'] = 'CustomerController/viewMcqList';
 $route['customer/view-mcq-data/:any'] = 'CustomerController/viewMcqData';
 $route['customer/view-interview'] = 'CustomerController/viewInterview';
 $route['customer/interview-result/:any'] = 'CustomerController/interviewResult'; 
+
+$route['customer/interview-result/:any/:any'] = 'CustomerController/interviewResult'; 
+
+$route['customer/interview-result-search/:any'] = 'CustomerController/interviewResultSearch'; 
+
+$route['customer/interview-result-search/:any/:any'] = 'CustomerController/interviewResultSearch'; 
+
 $route['customer/logout'] = 'CustomerController/logout';
 
 $route['customer/add-section'] = 'CustomerController/addSection';
