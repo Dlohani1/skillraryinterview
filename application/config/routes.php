@@ -342,8 +342,22 @@ $route['customer/checklogin']['POST'] = 'CustomerController/checkLogin';
 $route['customer/dashboard'] = 'CustomerController/viewDashboard';
 
 $route['customer/mcq-list'] = 'CustomerController/viewMcqList';
+
+$route['customer/mcq-list/:any'] = 'CustomerController/viewMcqList';
+
+$route['customer/mcq-list-search'] = 'CustomerController/viewMcqListSearch';
+
+$route['customer/mcq-list-search/:any'] = 'CustomerController/viewMcqListSearch';
+
 $route['customer/view-mcq-data/:any'] = 'CustomerController/viewMcqData';
 $route['customer/view-interview'] = 'CustomerController/viewInterview';
+
+$route['customer/view-interview/:any'] = 'CustomerController/viewInterview';
+
+$route['customer/view-interview-search'] = 'CustomerController/viewInterviewSearch';
+
+$route['customer/view-interview-search/:any'] = 'CustomerController/viewInterviewSearch';
+
 $route['customer/interview-result/:any'] = 'CustomerController/interviewResult'; 
 
 $route['customer/interview-result/:any/:any'] = 'CustomerController/interviewResult'; 
