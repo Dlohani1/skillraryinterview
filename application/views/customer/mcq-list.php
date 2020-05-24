@@ -36,6 +36,46 @@
   <div class="row">
         <div class="col-md-12">
         <h4>MCQs</h4>
+
+<div class="container">
+<form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/mcq-list-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-3">
+                        <label>MCQ Name</label>
+                        <input type="text" id="mcqname" name="mcqname" class="form-control" placeholder="Search mcq name" value="<?php echo $mcqname; ?>">
+                      </div>
+
+                     <div class="col-md-3 ">
+                        <label>MCQ Code</label>
+                        <input type="text" id="mcqcode" name="mcqcode" class="form-control " placeholder="Search mcq code" value="<?php echo $mcqcode; ?>" >
+                      </div>
+
+                      <div class="col-md-3">
+                        <label>Proctored</label>
+                        <input type="number" id="proctored" name="proctored" class="form-control" placeholder="Search proctored" value="<?php echo $proctored; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+</div>
+
+
+
+
         <div class="table-responsive">
               <table id="mytable" class="table table-bordred table-striped">
                    <thead>
@@ -51,7 +91,8 @@
     <tbody>
 
         <?php 
-		$i = 0;
+		      $i = $this->uri->segment(3);
+
         foreach($mcq as $key => $value) {
 		$i++;
     $proctored = "No";
@@ -130,6 +171,7 @@
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">

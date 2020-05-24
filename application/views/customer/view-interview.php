@@ -19,7 +19,7 @@
                                             <div class="col-md-3 offset-md-1">
                                                 <label>MCQ Name</label>
                                                 <input type="text" class="form-control inputBox">
-                                            </div>
+                                             </div>
                                             <div class="col-md-3 offset-md-1">
                                                 <label>Total Questions</label>
                                                 <input type="text" class="form-control inputBox">
@@ -39,6 +39,35 @@
   <div class="row">
         <div class="col-md-12">
         <h4>Interview Group</h4>
+
+
+<div class="container">
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/view-interview-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-6">
+                        <label>Code</label>
+                        <input type="text" id="searchcode" name="searchcode" class="form-control" placeholder="Search Code" value="<?php echo $searchcode; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+  </div>
+
+
         <div class="table-responsive">
               <table id="mytable" class="table table-bordred table-striped">
                    <thead>
@@ -55,7 +84,8 @@
                     <tbody>
 
                         <?php
-                          $i = 0;
+                         $i = $this->uri->segment(3)+0;
+
                           foreach($interview as $key => $value) {
                             $i++;
                             echo "<tr><td>$i</td><td>$value->interview_code</td><td>$value->total_students</td><td><a href=".base_url()."customer/interview-result/$value->interview_code><button class='btn btn-primary btn-xs' ><span class='glyphicon glyphicon-eye-open'></span></button></a></td></tr>";
@@ -128,6 +158,7 @@
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
