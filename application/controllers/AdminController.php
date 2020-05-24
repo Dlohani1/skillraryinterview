@@ -150,7 +150,7 @@ class AdminController extends CI_Controller {
 
   }
 
- public function createMeeting ($startDate, $startTime, $assessId , $call = NULL, $meetingId = 0) {
+ public function createMeeting ($startDate, $startTime, $assessId , $call = NULL, $meetingId = 0, $duration = 3) {
         //echo "test";
   //$sql = "SELECT * FROM `bse_citrix` limit 2";
 //
@@ -167,16 +167,18 @@ class AdminController extends CI_Controller {
   $timestamp = strtotime("-6 hours 30 minutes", $timestamp); 
   $startTime = date('H:i:s', $timestamp);
 
-
-
   $startTestTime = $startDate.'T'.$startTime.'.000Z';
 
   $startTestTime1 = $startDate.'T'.$startTime1.'.000Z';
 
-  $timestamp = strtotime($startTime) + 180*60; // 3 hours
-  $timestamp2 = strtotime($startTime1) + 180*60; // 3 hours
+  $duration = $duration * 3600;
+
+  $timestamp = strtotime($startTime) + $duration; // 3 hours
+  $timestamp2 = strtotime($startTime1) + $duration; // 3 hours
+
   $endTime = date('H:i:s', $timestamp);
   $endTime2 = date('H:i:s', $timestamp2);
+  
   $endTestTime = $startDate.'T'.$endTime.'.000Z';
   $endTestTime1 = $startDate.'T'.$endTime2.'.000Z';
 
@@ -187,39 +189,36 @@ class AdminController extends CI_Controller {
     $result = $this->db->query($sql)->row();
     $meetingEmail = $result->email;
   }
-  
 
-        
   $sql = "SELECT access_token FROM `gotomeeting_token_details` where email='".$meetingEmail."'";
-
 
   $meeting = $this->db->query($sql)->result();
 
-        foreach($meeting as $key => $value) {
+  foreach($meeting as $key => $value) {
 
-                $token = $value->access_token;
-               // $timeZone = "Asia/Calcutta";
-                $timeZone = "";
-                $headers = array(
-                        'Content-Type: application/json',
-                        "accept: application/json",
-                        "Authorization: ".$token,
-                );
+    $token = $value->access_token;
+   // $timeZone = "Asia/Calcutta";
+    $timeZone = "";
+    $headers = array(
+            'Content-Type: application/json',
+            "accept: application/json",
+            "Authorization: ".$token,
+    );
 
-              $url = 'https://api.getgo.com/G2M/rest/meetings';
-               // $meetdes=preg_replace("/[^a-zA-Z]/", "", $course->description);
-                //$meettit=preg_replace("/[^a-zA-Z]/", "", $course->course_title);
+    $url = 'https://api.getgo.com/G2M/rest/meetings';
+     // $meetdes=preg_replace("/[^a-zA-Z]/", "", $course->description);
+      //$meettit=preg_replace("/[^a-zA-Z]/", "", $course->course_title);
 
 
-                $fields = array(
-                    'subject' => "test",
-                    'starttime'=> $startTestTime,
-                     'endtime' => $endTestTime,
-                    'conferencecallinfo'=>'Free',
-                    'timezonekey'=> $timeZone,
-                    "passwordrequired" => FALSE,
-                    "meetingtype" =>  "scheduled",
-                );
+      $fields = array(
+          'subject' => "test",
+          'starttime'=> $startTestTime,
+           'endtime' => $endTestTime,
+          'conferencecallinfo'=>'Free',
+          'timezonekey'=> $timeZone,
+          "passwordrequired" => FALSE,
+          "meetingtype" =>  "scheduled",
+      );
 /*
 if ($call = "interview") {
 
@@ -230,65 +229,65 @@ $fields['subject'] = "DXC Interview";
 // print_r(json_encode($fields)); die;
 
 
-    $ch = curl_init();
-               curl_setopt($ch,CURLOPT_HTTPHEADER, $headers );
-                curl_setopt($ch,CURLOPT_URL, $url);
-                curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch,CURLOPT_POST, true);
-                curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($fields));
+  $ch = curl_init();
+  curl_setopt($ch,CURLOPT_HTTPHEADER, $headers );
+  curl_setopt($ch,CURLOPT_URL, $url);
+  curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch,CURLOPT_POST, true);
+  curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($fields));
 
 
-                $result = curl_exec($ch);
+        $result = curl_exec($ch);
 
-                curl_close($ch);
-                $webinars = json_decode($result);
+        curl_close($ch);
+        $webinars = json_decode($result);
 
-                if($webinars!=''){
-                  if(isset($webinars->int_error_code) || isset($webinars->int_err_code)){
-                    continue;
-                  }else{
-      //print_r($webinars); die;
-       $data = array(
-              'meeting_id' => $webinars[0]->meetingid,
-              'user_join_url' => $webinars[0]->joinURL,
-              'starttime'=> $startTestTime1,
-              'endtime' => $endTestTime1
-          );
-      if ($call == "test") {
-       $this->db->where('id', $assessId);
-             $this->db->update('proctored_mcq',$data);
-      } else if ($call == "interview") {
-        //echo "test", $assessId;
-        //$this->db->where('id', $assessId);
-                               //$this->db->update('interview_details',$data);
+        if($webinars!=''){
+          if(isset($webinars->int_error_code) || isset($webinars->int_err_code)){
+            continue;
+          }else{
+//print_r($webinars); die;
+$data = array(
+      'meeting_id' => $webinars[0]->meetingid,
+      'user_join_url' => $webinars[0]->joinURL,
+      'starttime'=> $startTestTime1,
+      'endtime' => $endTestTime1
+  );
+if ($call == "test") {
+$this->db->where('id', $assessId);
+     $this->db->update('proctored_mcq',$data);
+} else if ($call == "interview") {
+//echo "test", $assessId;
+//$this->db->where('id', $assessId);
+                       //$this->db->update('interview_details',$data);
 
-  foreach ($assessId as $key => $value) {
-                                  /*$data[]  =array(
-                                      'id' => $value,
-                                      'meeting_id' => $webinars[0]->meetingid,
-                                      'user_join_url' => $webinars[0]->joinURL
-                                  );*/
-       // $data = array(
-    //                             'meeting_id' => $webinars[0]->meetingid,
-    //                             'user_join_url' => $webinars[0]->joinURL,
-    //                             'starttime'=> $startTestTime,
-    //                             'endtime' => $endTestTime,
-    //                     );
+foreach ($assessId as $key => $value) {
+                          /*$data[]  =array(
+                              'id' => $value,
+                              'meeting_id' => $webinars[0]->meetingid,
+                              'user_join_url' => $webinars[0]->joinURL
+                          );*/
+// $data = array(
+//                             'meeting_id' => $webinars[0]->meetingid,
+//                             'user_join_url' => $webinars[0]->joinURL,
+//                             'starttime'=> $startTestTime,
+//                             'endtime' => $endTestTime,
+//                     );
 
-        $this->db->where('id', $value);
-                               $this->db->update('interview_details',$data);
-                                }
+$this->db->where('id', $value);
+                       $this->db->update('interview_details',$data);
+                        }
 
-                               //$this->db->updateBatch('interview_details',$data, 'id');
+                       //$this->db->updateBatch('interview_details',$data, 'id');
 
 
-      }
-       echo "Success";
-            //start meeting
-            //$this->startMeeting($webinars->meetingid, $headers);
-            break;
-                  }
-                 }
+}
+echo "Success";
+    //start meeting
+    //$this->startMeeting($webinars->meetingid, $headers);
+    break;
+          }
+         }
 }
 //          echo "<pre>";
 //print_r($mcq); die;
@@ -1691,11 +1690,11 @@ return $x;
       "testDateTime" => $testDate." ". $testTime,
       "testTime" => $interviewTimeHour.":".$interviewTime[1]." ".$timeA,
       "link" => "https://assess.skillrary.com/interview/login"
-      );
+    );
 
       $this->updateAccessToken();
       $call = "interview";
-      $this->createMeeting($testDate, $testTime, $ids , $call, $meetingId);
+      $this->createMeeting($testDate, $testTime, $ids , $call, $meetingId, $duration);
       
       $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 

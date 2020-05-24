@@ -338,7 +338,7 @@ $route['typing-test/result'] = 'welcome/typingTestResult';
 
 $route['customer/login'] = 'CustomerController/login';
 $route['customer/checklogin']['POST'] = 'CustomerController/checkLogin';
-
+$route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
 $route['customer/dashboard'] = 'CustomerController/viewDashboard';
 
 $route['customer/mcq-list'] = 'CustomerController/viewMcqList';

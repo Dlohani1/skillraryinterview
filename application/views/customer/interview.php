@@ -825,11 +825,16 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           <label> Interview Schedule </label>
           <br/>
           <div class='input-group date' id='datetimepicker1'>
-            <input type='text' id="date-time" class="form-control"  />
+            <input onblur="checkRoom()" type='text' id="date-time" class="form-control"  />
             <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
             </span>
           </div>
+        </div>
+        <br/>
+         <div class="form-group">
+          <label> Duration (in hrs) </label>
+          <input type="number" id="duration" name="duration" min="1" max="5" value="1">
         </div>
         <br/>
         <div class="form-group">
@@ -837,13 +842,14 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           <select  class="form-control inputBox" id="testId">
             <option value=0> Select </option>
             <?php 
-            if (count($interviewData['meeting-id']) > 0) {
-              $i = 1;
-              foreach($interviewData['meeting-id'] as $key => $value) { ?>
-                <option value=<?php echo $value->id; ?>> <?php echo "Room ".$i;?> </option>
-                <?php $i++;
-              }
-            }?>
+            // if (count($interviewData['meeting-id']) > 0) {
+            //   $i = 1;
+            //   foreach($interviewData['meeting-id'] as $key => $value) { ?>
+            <!-- <option value=<?php echo $value->id; ?>> <?php echo "Room ".$i;?> </option> -->
+              <?php// $i++;
+            //   }
+            // }
+            ?>
           </select>
         </div>
 
@@ -855,11 +861,10 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             <option value=2 disabled> Offline</option>
           </select>
           <span id="error" style="color:red"></span></br>
-          <label> Duration (in hrs) </label>
-          <input type="number" id="duration" name="duration" min="1" max="5">
         </div>
 
         <div class="form-group"  style="display:none">
+
           <label> Venue </label>
           <input type="text" id="interviewVenue" value="test"/>
         </div>
@@ -1149,8 +1154,8 @@ function addNewSection(i,id) {
   html +='<td><button class="btn btn-primary btn-xs" onclick="nextRound('+rowCount+','+id+')" ><span class="glyphicon glyphicon-ok"></span></button></td>';
   html += '&nbsp;<td>NA</td>';
   $('#test_'+i).append(html);
-  document.getElementById("btn_"+i).click();
-  document.getElementById("btn_"+i).click();
+  // document.getElementById("btn_"+i).click();
+  // document.getElementById("btn_"+i).click();
 }
 // $(document).ready(function () {
 // $("#testDate").datepicker({
@@ -1583,6 +1588,59 @@ function getHour(hour) {
   }
   return hour;
 }
+
+  function checkRoom() {
+    var duration = document.getElementById("duration").value;
+    var interviewDateTime =  document.getElementById("date-time").value;
+    var res = interviewDateTime.split(" ");
+    testDate = res[0];
+    var timeSplit = res[1].split(":");
+    var hour = timeSplit[0];
+
+    if (res[2] == "PM") {
+      var hour = getHour(hour);
+
+    }
+    testTime = hour+":"+timeSplit[1];
+    //alert('test');
+    var baseUrl = document.getElementById("base_url").value;
+    $.ajax({
+    url: baseUrl+"customer/checkRoom",
+    type: 'post',
+
+    data: {"testdate":testDate,"testTime":testTime ,"duration":duration,} ,
+    success: function( data, textStatus, jQxhr ){
+        //window.location.reload(true);
+        // window.location.href="admin/view-mcq";
+        //$('#response pre').html( JSON.stringify( data ) );
+        // console.log('data', data);
+        // console.log('dd', data.status);
+        // console.log('de',JSON.stringify( data ))
+        // document.getElementById("code").disabled = true;
+
+        var opts = $.parseJSON(data);
+        console.log('oo', opts)
+        $('#testId').empty();
+        // Use jQuery's each to iterate over the opts value
+        $.each(opts, function(i, d) { console.log('d',d);
+           j = i+1;
+            // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+            $('#testId').append('<option value="' + d.id + '">Room ' + j + '</option>');
+          });
+
+        if (data.status == "400") {
+            document.getElementById("error").innerHTML = data.data;
+        } else {
+        //document.getElementById("codeSubmit").disabled = true;
+       //window.location.reload();
+      }
+    },
+    error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+    }
+  });
+  }
+
  function sendInterviewInvite() {
  //alert('send');
   //var pathArray = window.location.pathname.split('/');
@@ -1628,7 +1686,7 @@ function getHour(hour) {
     "interviewerId" : interviewerIds, "interviewMode" : interviewMode, "interviewVenue" : interviewVenue} ,
     success: function( data, textStatus, jQxhr ){
         //window.location.reload(true);
-       // window.location.href="admin/view-mcq";
+        // window.location.href="admin/view-mcq";
         //$('#response pre').html( JSON.stringify( data ) );
         console.log('data', data);
         console.log('dd', data.status);
@@ -1648,8 +1706,8 @@ function getHour(hour) {
 }
  $(".accordion_head").click(function(){
   if ($('.accordion_body').is(':visible')) {
-      $(".accordion_body").slideUp(300);
-      $(".plusminus").text('+');
+    $(".accordion_body").slideUp(300);
+    $(".plusminus").text('+');
   }
   if( $(this).next(".accordion_body").is(':visible')){
       $(this).next(".accordion_body").slideUp(300);

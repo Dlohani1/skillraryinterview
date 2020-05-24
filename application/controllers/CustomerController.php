@@ -704,6 +704,63 @@ class CustomerController extends CI_Controller {
     $this->db->insert_batch('interview_users', $data);
   }
 
+  public function getTimeStamp($date, $time, $duration = null) {
+
+    $x = strtotime($date." ".$time);
+    if (null !== $duration) {
+      $x = strtotime("+".$duration."hours",$x);
+    }
+    return $x;
+  }
+
+  public function checkRoom() {
+  //print_r($_POST);
+  $testDate = $_POST['testdate'];
+  $testTime = $_POST['testTime'];
+  $duration = $_POST['duration'];
+
+  $interviewTimeStamp = $this->getTimeStamp($testDate, $testTime);
+  $durationTimeStamp = $this->getTimeStamp($testDate, $testTime, ($duration*2)); 
+
+  //$testDate = $_POST['datetime'];
+  $testDate = explode("/",$testDate);
+
+  $testDate = $testDate[2]."-".$testDate[0]."-".$testDate[1];
+
+  $customerId = $_SESSION['customerId'];
+
+  //print_r($getIds); die;
+
+  $sql = "SELECT gotomeeting_id from `interview_details` where customer_id = $customerId AND interview_date = '".$testDate."' AND interview_timestamp <= '".$interviewTimeStamp."' AND  duration_timestamp >='".$interviewTimeStamp."'";
+
+  $interviewSchedule = $this->db->query($sql)->result_object();
+
+  $usedIds = array();
+  $gotomeetingIds = array();
+  if (null !== $interviewSchedule) {
+    foreach ($interviewSchedule as $key => $value) {
+      $usedIds[] = $value->gotomeeting_id;
+    }
+  }
+
+  $sql = "SELECT id , email from `gotomeeting_token_details` where customer_id = $customerId";
+
+  $getIds = $this->db->query($sql)->result_object();
+
+  $i = 0;
+  foreach ($getIds as $key => $value) {
+
+    if (in_array($value->id, $usedIds)) {
+      continue;
+    }
+    $gotomeetingIds[$i]['id'] = $value->id;
+    $i++;
+  }
+
+  print_r(json_encode($gotomeetingIds));
+  //print_r($gotomeetingIds);
+  }
+
   public function createInteviewGroup() {
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
