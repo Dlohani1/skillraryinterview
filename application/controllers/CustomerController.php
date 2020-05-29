@@ -135,7 +135,8 @@ class CustomerController extends CI_Controller {
       "mcqname"=>$mcqname,
       "mcqcode"=>$mcqcode,
       "proctored"=>$proctored,
-      "links"=>$links
+      "links"=>$links,
+      'proctored' => 2
 
     ));
     $this->load->view('customer/footer');
@@ -148,7 +149,7 @@ public function viewMcqListSearch() {
 
     $mcqname = $_GET['mcqname'];
      $mcqcode = $_GET['mcqcode'];
-     $proctored = $_GET['proctored'];
+     $proctored = $_GET['select_roctored'];
 
     $sql = "SELECT mcq_test.id,mcq_test.is_proctored, mcq_test.title, mcq_code.code, SUM(mcq_test_pattern.total_question) as totalQuestion
             FROM mcq_test
@@ -156,7 +157,27 @@ public function viewMcqListSearch() {
             LEFT JOIN mcq_test_pattern on mcq_test.id=mcq_test_pattern.mcq_test_id";
     $sql .= " WHERE mcq_test.customer_id = $customerId";
 
-    $sql .= " and mcq_test.is_proctored like '%$proctored%'  and mcq_test.title like '%$mcqname%'    and mcq_code.code like '%$mcqcode%'  ";
+
+    // $sql .= " and mcq_test.is_proctored like '%$proctored%'  and mcq_test.title like '%$mcqname%'    and mcq_code.code like '%$mcqcode%'  ";
+
+   if( $mcqname){
+      $sql .= "   and mcq_test.title like '%$mcqname%' ";
+    }
+
+    if ($mcqcode) {
+      $sql .= "   and mcq_code.code like '%$mcqcode%' ";
+    }
+
+
+    if(($proctored == 0 || $proctored == 1) ){
+      $sql .= " and mcq_test.is_proctored = $proctored  ";
+    }
+
+    if($proctored == 2){
+      $sql .= " and mcq_test.is_proctored in(0, 1) ";
+    }
+
+
 
     $sql .= " GROUP by mcq_test.id, mcq_test.title, mcq_code.code";
 
@@ -216,7 +237,7 @@ public function viewMcqListSearch() {
             $i++;
         }
     }
-
+ 
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
     $this->load->view('customer/mcq-list',array(
@@ -238,26 +259,64 @@ public function viewMcqListSearch() {
           $query = $this->db->query($sql);
           return $query;
   }
-
+ 
   public function viewMcqData() {
-     $mcqId = $this->uri->segment(3);   
+      $mcqId = $this->uri->segment(3);   
 
 
-        $sql = "SELECT mcq_test.id as id,title, mcq_test.is_proctored as proctoredTest,mcq_code.code FROM `mcq_test` 
-         LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
-         WHERE mcq_test.id=".$mcqId;
+      $sql = "SELECT mcq_test.id as id,title, mcq_test.is_proctored as proctoredTest,mcq_code.code FROM `mcq_test` 
+       LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
+       WHERE mcq_test.id=".$mcqId;
 
-        $mcq = $this->db->query($sql)->row();
+      $mcq = $this->db->query($sql)->row();
 
-         $mcqData['mcq-details'] = $mcq;
+      $mcqData['mcq-details'] = $mcq;
 
-        $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
-               LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
-        where mcq_test_id= $mcqId
-        order by assess_usr_pwd.id asc";
+      $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
+        LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
+      where mcq_test_id= $mcqId
+      order by assess_usr_pwd.id asc";
 
-        $query = $this->db->query($sql);
-        $mcqData['mcq-users'] = $query->result();
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . "customer/view-mcq-data/$mcqId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $mcqData['mcq-users']= $this->getAllRowsRecord($sql,$config['per_page'], $start_index);
+
+
+        // $query = $this->db->query($sql);
+        // $mcqData['mcq-users'] = $query->result();
 //echo '<pre>'; print_r(var_dump($mcqData)); die;
         $failCount = $passCount = 0;
         foreach ($mcqData['mcq-users'] as $key => $value) {
@@ -336,10 +395,202 @@ public function viewMcqListSearch() {
 
         $this->load->view('customer/header');
         $this->load->view('customer/sidenav');
-        $this->load->view('customer/view-mcq-data', array('mcq' => $mcqData));
+        $this->load->view('customer/view-mcq-data', array(
+          'mcq' => $mcqData,'links' => $links,
+          'mcqId' =>$mcqId
+        ));
         //$this->load->view('admin/view-mcq-data');
         $this->load->view('customer/footer');
   }
+
+  public function viewMcqDataSearch() {
+    $mcqId = $this->uri->segment(3); 
+
+    $searchname =$_GET['searchname'];
+
+    $searchemail =$_GET['searchemail'];
+
+    $contactno =$_GET['contactno'];
+
+    $searchusername =$_GET['searchusername'];
+
+        $sql = "SELECT mcq_test.id as id,title, mcq_test.is_proctored as proctoredTest,mcq_code.code FROM `mcq_test` 
+         LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
+         WHERE mcq_test.id=".$mcqId;
+
+        $mcq = $this->db->query($sql)->row();
+
+         $mcqData['mcq-details'] = $mcq;
+
+        $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
+               LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
+        where mcq_test_id= $mcqId";
+
+        // order by assess_usr_pwd.id asc";
+
+      if($searchname){
+        $sql .= " and ( student_register.first_name like '%$searchname%' or   student_register.last_name like '%$searchname%'  )  ";
+      }
+
+      if($searchemail){
+        $sql .= "  and student_register.email like '%$searchemail%' ";
+      }
+
+       if($contactno){
+        $sql .= "  and student_register.contact_no like '%$contactno%' ";
+      }
+
+
+       if($searchusername){
+        $sql .= "  and assess_usr_pwd.username like '%$searchusername%'  ";
+      }
+
+      $sql .= "  order by assess_usr_pwd.id asc ";
+
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . "customer/view-mcq-data-search/$mcqId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $mcqData['mcq-users']= $this->getAllRowsRecord($sql,$config['per_page'], $start_index);
+
+
+        // $query = $this->db->query($sql);
+        // $mcqData['mcq-users'] = $query->result();
+//echo '<pre>'; print_r(var_dump($mcqData)); die;
+        $failCount = $passCount = 0;
+        foreach ($mcqData['mcq-users'] as $key => $value) {
+          
+          if (null === $value->studentId) {
+            continue;
+          }
+          $result = $this->viewResult($mcqId,$value->studentId);
+
+          $totalAptitudeMarks = 0;
+          $totalAptitudeQualifyingMarks = 0;
+          $totalUserAptitudeMarks = 0;
+          for ($i =0; $i < count($result['Aptitude']); $i++) {
+          
+            
+          $totalMarks = $result['Aptitude'][$i]['total_question'];                   
+          $minMarks =  $result['Aptitude'][$i]['total_question']/2;
+          $userMarks = $result['Aptitude'][$i]['user_ans'];
+
+          if ($totalMarks < 10 ) {
+              $totalMarks *= 10;
+              $minMarks *= 10;    
+              $userMarks *= 10;
+          }
+          $totalAptitudeMarks += $totalMarks;
+          $totalAptitudeQualifyingMarks += $minMarks;
+          $totalUserAptitudeMarks += $userMarks;
+        }
+        //echo $totalAptitudeQualifyingMarks,",",$totalUserAptitudeMarks; die;
+        if ($totalAptitudeQualifyingMarks > $totalUserAptitudeMarks) {
+          $mcqData['mcq-users'][$key]->status = "FAIL";
+          ++$failCount;
+        } else {
+          $mcqData['mcq-users'][$key]->status = "PASS";
+          ++$passCount;
+        }
+        }
+       
+       $sql = "SELECT * from `assess_login` where role= 7"; //proctor role
+
+        $query = $this->db->query($sql);
+
+        //   echo "<pre>";
+        //   print_r($query->result());
+
+        // print_r($mcq); die;
+
+        $mcqData['mcq-proctor'] = $query->result();
+       
+        //print_r($mcqData); die;
+
+        $sql = "SELECT count(DISTINCT(`student_id`)) as total FROM `mcq_test_question` where mcq_test_id = $mcqId";
+
+
+        $totalStudent = $this->db->query($sql)->row();
+
+        $mcqData['mcq-details']->totalStudent = $totalStudent->total;
+
+        $mcqData['mcq-details']->failCount = $failCount;
+        $mcqData['mcq-details']->passCount = $passCount;
+
+        $sql = "SELECT assess_usr_pwd_id as assessIds FROM `proctored_mcq` where mcq_test_id = $mcqId";
+
+
+        $assessIds = $this->db->query($sql)->result();
+        $proctoredIds = array();
+
+        foreach ($assessIds as $key => $value) {
+          $proctoredIds[] = $value->assessIds;
+
+        }
+
+        $mcqData['proctoredIds'] = $proctoredIds;
+// echo "<pre>";
+//         print_r($mcqData); die;
+
+        $this->load->view('customer/header');
+        $this->load->view('customer/sidenav');
+        $this->load->view('customer/view-mcq-data', array(
+          'mcq' => $mcqData,
+          'mcqId' => $mcqId,
+          'links' => $links,
+          'searchname' => $searchname,
+          'searchemail' => $searchemail,
+          'contactno' => $contactno,
+          'searchusername' => $searchusername
+        ));
+        //$this->load->view('admin/view-mcq-data');
+        $this->load->view('customer/footer');
+  }
+
+
+  public function getAllRowsRecord($sql, $start=0 ,$offset=0) {
+
+      $sql = $sql." limit $offset ,$start";
+      
+      $query = $this->db->query($sql);
+
+      $questionData = $query->result();
+      return $questionData;
+  }
+
+
 
   public function viewInterview() {
     $customerId = $_SESSION['customerId']; 
@@ -382,7 +633,7 @@ public function viewMcqListSearch() {
     $links = $this->pagination->create_links();
 
     $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
-    
+     
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
     $this->load->view('customer/view-interview', array(
@@ -1174,8 +1425,21 @@ public function viewMcqListSearch() {
       $num = $_POST['num'];
       $group = $_POST['code'];
     }
-    $mcqId = 0;
+
     $customerId = $_SESSION['customerId'];
+    $sql = "SELECT * from `interview_users` where interview_code = '$group' and interview_customer_id = '$customerId'";
+    $codeCheck = $this->db->query($sql)->result();
+
+    $codeCheck =($codeCheck == null)? '' : $codeCheck[0]->interview_code ;
+
+
+    if ($codeCheck) {
+      $this->session->set_flashdata('message', "$group code already exist.");
+      redirect('customer/create-interview-group');
+    } 
+
+    $mcqId = 0;
+    
     for ($i=1; $i<=$num; $i++) {
       $username = $this->random_strings(4,"alphaNuMCaps");
       $password = $this->random_strings(4,"numeric");
@@ -1241,7 +1505,7 @@ public function viewMcqListSearch() {
   print_r(json_encode($gotomeetingIds));
   //print_r($gotomeetingIds);
   }
-
+ 
   public function createInteviewGroup() {
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
@@ -1253,6 +1517,14 @@ public function viewMcqListSearch() {
   public function saveInterviewGroup() {
     //print_r($_POST); die;
     //$customerId = $_SESSION['customerId'];
+
+// var_dump($_POST['generate'],$_POST['code']);
+// return;
+
+
+
+
+
     $this->generateInterviewUsrPwd(true,$_POST['generate'],$_POST['code']);
     redirect('customer/view-interview');
   }
@@ -1271,4 +1543,173 @@ public function viewMcqListSearch() {
 
     $this->db->insert_batch('interview_users', $data);
   }
+
+
+public function todaysInterview() {
+
+    $searchdate = '';
+    $todaysDate = date("Y-m-d");
+
+    $customerId = $_SESSION['customerId'];
+
+    
+    $sql = "SELECT interview_details.gotomeeting_id, interview_details.user_email, interview_details.interview_date, 
+              interview_details.interview_time, gtd.email , interview_details.endtime
+              FROM interview_details 
+              inner  join gotomeeting_token_details as gtd
+              on gtd.id = interview_details.gotomeeting_id  
+              where interview_date = ('$todaysDate') 
+              and interview_details.customer_id = $customerId   
+              and gtd.customer_id = $customerId  
+              order by interview_details.interview_time ";
+
+              // echo $customerId;
+
+              // return;
+
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'customer/todays-interview';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+
+   // $result = $this->db->query($sql)->result_object();
+
+    $sql  = "SELECT customer_name from customers where id = $customerId";
+    $customerName = $this->db->query($sql)->row();
+
+
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+
+    $this->load->view('customer/todays-interview', array(
+        "todaysinterview"=>$result,
+        "searchdate"=>$searchdate,
+        'customer'=> $customerName->customer_name,
+        'links' => $links
+    ));
+
+    $this->load->view('customer/footer');
+
+  }
+
+
+
+  public function todaysInterviewSearch() {
+
+    $searchdate = $_GET['searchdate'];
+    $todaysDate = date("Y-m-d");
+    $customerId = $_SESSION['customerId'];
+
+    
+    $sql = "SELECT interview_details.gotomeeting_id, interview_details.user_email, interview_details.interview_date, 
+              interview_details.interview_time, gtd.email, interview_details.endtime
+              FROM interview_details 
+              inner  join gotomeeting_token_details as gtd
+              on gtd.id = interview_details.gotomeeting_id ";
+
+              $sql1 = " and interview_details.customer_id = $customerId   
+              and gtd.customer_id = $customerId  ";
+
+    if(!empty($searchdate)){
+        $sql .= " where interview_date = ('$searchdate')  $sql1 ";
+    }else{
+        $sql .= " where interview_date = ('$todaysDate') $sql1 ";
+    }
+
+    $sql .= " order by interview_details.interview_time  "; 
+
+   // $result = $this->db->query($sql)->result_object();
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'customer/todays-interview-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+      $sql  = "SELECT customer_name from customers where id = $customerId";
+    $customerName = $this->db->query($sql)->row();
+
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+
+    $this->load->view('customer/todays-interview', array(
+        "todaysinterview"=>$result,
+        "searchdate"=>$searchdate,
+        'customer'=> $customerName->customer_name,
+        'links' => $links
+    ));
+
+    $this->load->view('customer/footer');
+  }
+
+
+
+
 }
+
+

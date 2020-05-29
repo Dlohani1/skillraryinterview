@@ -3,7 +3,7 @@
             ?>
             <div id="layoutSidenav_content">
                 <main>
-                    <di3 class="container-fluid">
+                    <div class="container-fluid">
                         <h1 class="mt-4">Interviews</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
@@ -36,7 +36,10 @@
                                             </div>
                                         </div>
                                     </div><br/> -->
-  <div class="row">
+
+                              <div class="container-fluid">
+                                <div class="container">
+                                   <div class="row">
         <div class="col-md-12">
         <h4>Interview Group</h4>
 

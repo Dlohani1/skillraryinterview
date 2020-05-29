@@ -33,7 +33,10 @@
                                             </div>
                                         </div>
                                     </div><br/> -->
-  <div class="row">
+
+  <div class="container-fluid">
+                                <div class="container">
+                                <div class="row">
         <div class="col-md-12">
         <h4>MCQs</h4>
 
@@ -49,22 +52,33 @@
                         <input type="text" id="mcqname" name="mcqname" class="form-control" placeholder="Search mcq name" value="<?php echo $mcqname; ?>">
                       </div>
 
-                     <div class="col-md-3 ">
+                      <div class="col-md-3 ">
                         <label>MCQ Code</label>
                         <input type="text" id="mcqcode" name="mcqcode" class="form-control " placeholder="Search mcq code" value="<?php echo $mcqcode; ?>" >
                       </div>
 
                       <div class="col-md-3">
-                        <label>Proctored</label>
-                        <input type="number" id="proctored" name="proctored" class="form-control" placeholder="Search proctored" value="<?php echo $proctored; ?>">
+                        <label>Search Proctored</label><br>
+                        <select id="select_roctored" name="select_roctored"> 
+
+                            <option value='2' <?php if($proctored == 2)echo 'selected';?>  >All</option> 
+                            <option value='0' <?php if($proctored == 0)echo 'selected';?> > No</option> 
+                            <option value='1' <?php if($proctored == 1)echo 'selected';?> >Yes</option> 
+                        </select>
                       </div>
 
-                      <div class="col-md-2">
-                          <label>Search</label><br>
-                          <button type="submit" value="Submit">
-                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
-                          </button>
 
+
+                      <div class="col-md-2">
+                        <label>Search</label><br>
+                        <button type="submit" value="Submit">
+                          <i style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                        </button>
+                      </div>
+
+                      <div class="col-md-1">
+                          <label></label>
+                          <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
                       </div>
 
                 </div>
@@ -254,3 +268,14 @@
                     </div>
                 </main>
 
+
+
+<script type="text/javascript">
+  
+   $('#back').click(function () {
+
+      let baseUrl = '<?php echo base_url(); ?>';
+      let url =  baseUrl+"customer/mcq-list/";
+      window.location.href = url;
+    });
+</script>
