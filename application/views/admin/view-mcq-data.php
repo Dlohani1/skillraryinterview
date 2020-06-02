@@ -82,6 +82,55 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
               </div>
             </div>
           </div>
+
+
+          <!-- for search filter start -->
+
+          <div class="container">
+                <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/view-mcq-data-search/$mcqId";?>>
+
+                    <div class="searchBox">
+
+                          <div class="row">
+
+                                <div class="col-md-2 ">
+                                  <label>Name</label>
+                                  <input type="text" id="searchname" name="searchname" class="form-control " placeholder="Search Name" value="<?php echo $searchname ?? ''; ?>" >
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>Email</label>
+                                  <input type="text" id="searchemail" name="searchemail" class="form-control" placeholder="Search Email" value="<?php echo $searchemail ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>Contact-no</label>
+                                  <input type="number" id="contactno" name="contactno" class="form-control" placeholder="Search Contact-no" value="<?php echo $contactno ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-2">
+                                  <label>Username</label>
+                                  <input type="text" id="searchusername" name="searchusername" class="form-control" placeholder="Search Username" value="<?php echo $searchusername ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Search</label><br>
+                                    <button type="submit" value="Submit">
+                                      <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                                    </button>
+
+                                </div>
+
+                          </div>
+
+                    </div>
+                </form>
+            </div>
+
+          <!-- for search filter end -->
+
+
+
             <div class="container">
               <!-- <div class="searchBox"> -->
                 <!-- <div class="row">
@@ -163,8 +212,9 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
     <tbody>
 
         <?php 
-        $mcqId = $mcq['mcq-details']->id;
-	$i = 0;
+          $mcqId = $mcq['mcq-details']->id;
+	       // $i = 0;
+         $i = $this->uri->segment(4);
         if (count($mcq['mcq-users']) > 0)
         foreach($mcq['mcq-users'] as $key => $value) {
 		$i++;
@@ -227,9 +277,11 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
+
 
 <div class="clearfix"></div>
-<ul class="pagination pull-right">
+<!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
   <li class="active"><a href="?page=1">1</a></li>
   <li><a href="?page=2">2</a></li>
@@ -237,7 +289,7 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
   <li><a href="?page=4">4</a></li>
   <li><a href="?page=5">5</a></li>
   <li><a href="?page=6"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-</ul>
+</ul> -->
                 
             </div>
             

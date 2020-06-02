@@ -61,6 +61,7 @@
                       <div class="column">
                         <label>Interview Group Code </label>
                         <input type="text" name="code" class="form-control" id="interview-code" placeholder="Enter code" autocomplete="off">
+                         <div id="infoMessage" style="color:red;"><?php echo $this->session->flashdata('message');?></div>
                         <span id = "interview_code_error" style="color:red"></span>
 
                       </div>
@@ -81,6 +82,8 @@
   </main>
 
 <script>
+
+
   var baseUrl = document.getElementById("base_url").value;
   $('#customer_code').keyup(function(){ 
     var query = $(this).val();
@@ -97,10 +100,16 @@
       });
     }
 })
+
+
+
  $(document).on('click', 'li', function(){  
     $('#customer_code').val($(this).text());  
     $('#customerList').fadeOut();
   });
+
+
+
 
  function validate() {
   var customerCode = "<?php $_SESSION['customerId']; ?>";

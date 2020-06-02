@@ -39,8 +39,8 @@
                       </div>
 
                       <div class="col-md-2">
-                        <label>Contact</label>
-                        <input type="text" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
+                        <label> Contact No</label>
+                        <input type="number" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
                       </div>
 
                       <div class="col-md-2">

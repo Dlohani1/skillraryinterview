@@ -19,9 +19,8 @@
 
 
 
-
 <div class="container">
-      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/mcq-customers-search";?>>
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/mcq-customers-search";?>>
 
           <div class="searchBox">
 
@@ -43,8 +42,8 @@
                       </div>
 
                       <div class="col-md-2">
-                        <label>Contact</label>
-                        <input type="text" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
+                        <label>Contact No</label>
+                        <input type="number" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
                       </div>
 
                       <div class="col-md-2">
@@ -146,7 +145,9 @@
     <tbody>
 
         <?php 
-        $i = 0;
+          $i = $this->uri->segment(3);
+
+        // $i = 0;
         if (count($customers) > 0)
         foreach($customers as $key => $value) { 
           //print_r($value);
@@ -224,6 +225,7 @@
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
@@ -397,4 +399,4 @@
 
 
              }
-</script>
+</script> 
