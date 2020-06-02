@@ -114,9 +114,17 @@ $route['add-question/:any/:any']= 'AdminController/showQuestion';
 
 $route['user/enter-code'] = 'questionBank/enterCode';
 
+ 
 $route['user/profile'] = 'questionBank/showUserProfile';
 
+
+$route['user/profile-state'] = 'questionBank/showUserProfileState';
+
+$route['user/profile-city']['POST'] = 'questionBank/showUserProfileCity';
+
+
 $route['user/create/profile'] = 'AdminController/createUserProfile';
+
 
 $route['user/update-profile']['POST'] = 'questionBank/userProfileUpdate';
 

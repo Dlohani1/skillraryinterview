@@ -900,6 +900,9 @@ class QuestionBank extends MyController {
 
         }  
 
+
+
+
         public function showUserProfile($user = false) {
 
             $userId = $this->session->id;
@@ -960,7 +963,7 @@ class QuestionBank extends MyController {
                 $this->load->view('codefooter');
             }
         }
-
+ 
 
         public function activeInterview() {
 
@@ -973,6 +976,34 @@ class QuestionBank extends MyController {
             $this->load->view('enter-code', array('interviewData' => $result));
             $this->load->view('codefooter');
         }
+
+
+        public function showUserProfileState() {
+
+              $sql = "SELECT * FROM states where country_id = 101";
+
+                $query = $this->db->query($sql);
+
+                $result = $query->result();
+
+                print_r( json_encode($result));
+            
+        }
+
+
+        public function showUserProfileCity() {
+
+                $state_id = $_POST['id'];
+                $sql = "  SELECT * FROM cities where state_id = $state_id " ;
+
+                $query = $this->db->query($sql);
+
+                $result = $query->result();
+
+                print_r( json_encode($result));
+        }
+
+
 
         public function createUserProfile () {
             $this->load->view('user-header');
