@@ -543,16 +543,16 @@ class QuestionBank extends MyController {
 
         public function signin() {
 
-                $isEmailLogin = 0;
-               $email = $_POST['email'];
+            $isEmailLogin = 0;
+            $email = trim($_POST['email']);
             //    $pwd = md5(trim($_POST['pwd']));
-               $pwd = trim($_POST['pwd']);
+            $pwd = trim($_POST['pwd']);
 
-               $this->load->helper('email');
+            $this->load->helper('email');
 
-                if (valid_email($email)) {
-                    $isEmailLogin = 1;    
-                }
+            if (valid_email($email)) {
+            $isEmailLogin = 1;    
+            }
 
                 if ($isEmailLogin) {
 
@@ -1266,7 +1266,13 @@ class QuestionBank extends MyController {
                if ($result1[$i] > 60 ) {
                 $min = intval($result1[$i] / 60);
                 $sec = $result1[$i] % 60;
-                $time = $min." min ".$sec. " sec";
+                if ($value < $result1[$i] ) {
+                    $time = $min." min ";
+                } else {
+                    $time = $min." min ".$sec. " sec";
+                }
+
+                
                } else {
                 if ($result1[$i] > 0) {
                     $time = $result1[$i]." sec";    

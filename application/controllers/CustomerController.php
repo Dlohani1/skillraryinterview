@@ -8,13 +8,17 @@ class CustomerController extends CI_Controller {
     $this->load->database();
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
-          $this->load->library("pagination");
+    $this->load->library("pagination");
 
     // $uri = $this->uri->segment(2);
     // //echo $uri; die;
     // if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin'))) {
     //   redirect('admin/login');
     // }
+
+    if (!isset($_SESSION['customerId'])) {
+      redirect('customer/login');
+    }
   } 
 
   public function login() {
