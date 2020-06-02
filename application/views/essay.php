@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
-    <link rel="shortcut icon" href="https://www.skillrary.com/uploads/images/fav-sr-64x64-logo.png" type="image/x-icon">
     <title>SkillRary | Essay</title>
 
     <style>
@@ -83,6 +82,7 @@
                     <div class="box">
                         <textarea name="essay" id="essay" type="text" cols="120" rows="20" class="form-control"></textarea><br>
                         <input type="submit" value="Submit paragraph" id="para" onclick="submitParagraph(2)" class="subtnn">
+                        <input type="submit" value="Restart" id="restart_para"  style="display:none;"  onclick="window.location.assign(window.location.href)" class="subtnn">
                         <input type="hidden" id="backspaceCount" value="0"/>
                         <input type="hidden" id="deleteCount" value="0" />
                         <br>
@@ -91,17 +91,25 @@
                 <div class="col-md-4">
                     <div class="box2">
                         <p class="Username" id="showName"></p>
-                        <p class="count">Backspace Count : 
-                            <span  class="backspaceCount" id="backspaceCountShow"></span>
+                        <p class="count">Backspace Count :
+                            <span  class="backspaceCount" id="backspaceCountShow">0</span>
                         </p>
                         <p class="count">Delete Count : 
-                            <span class="backspaceCount" id ="deleteCountShow"></span>
+                            <span class="backspaceCount" id ="deleteCountShow">0</span>
                         </p> 
                          <p class="count">Total Words : 
-                            <span class="backspaceCount" id ="wordCountShow"></span>
+                            <span class="backspaceCount" id ="wordCountShow">0</span>
                         </p> 
+
+                        <p class="count">Total Characters : 
+                            <span class="backspaceCount" id ="charactersCountShow">0</span>
+                        </p>
+
                          <p class="count"> Time Left:
                             <span style="font-size:18px" class="backspaceCount" id ="showtime"></span>
+                        </p> 
+                           <p class="count" id="spentTime" style="display:none;" > Time Spent:
+                            <span style="font-size:18px;" class="backspaceCount" id ="showSpentTime"></span>
                         </p> 
                     </div>
                 </div>
@@ -116,15 +124,13 @@
         var backspace = 0;
         var deleteCount = 0;
         var totalsec = 1800;
-        
 
         input.addEventListener('keydown', function (event) {
-
             const key = event.key;
             if (key === "Backspace") {
                 backspace++;
                 document.getElementById("backspaceCount").value = backspace;
-                console.log('ba',backspace);
+                // console.log('ba',backspace);
             }
             if (key === "Delete") {
                 deleteCount++;
@@ -145,54 +151,116 @@
             }
         }
 
+        var spentMin = 0;
+        var spentSec = 0;
+        var totalSpentTime = parseInt(1800);
+
+        function showtime() {
+            // console.log('showtime', totalsec);
+            // first check if exam finished
+            // if (pos >= questions.length) {
+            //     console.log('end');
+            //     clearTimeout(tim);
+            //     return;
+            // }
+
+            // 1 seconde eraf
+            totalsec--;
+
+            totalSpent = parseInt(totalSpentTime) - parseInt(totalsec);
+            
+            var min = parseInt(totalsec / 60, 10);
+            var sec = totalsec - (min * 60);
+
+            spentMin = parseInt(totalSpent / 60, 10);
+            spentSec = totalSpent - (spentMin * 60);
+        
+            if (parseInt(sec) > 0) {
+                document.getElementById("showtime").innerHTML =  min + " Minutes :" + sec + " Seconds";
+                tim = setTimeout("showtime()", 1000);
+               // tim = setTimeout("showtime()", 1000);
+            } else {
+                if (parseInt(sec) == 0) {
+                     document.getElementById("showtime").innerHTML = min + " Minutes :" + sec + " Seconds";
+
+                    if (parseInt(min) == 0) {
+                        clearTimeout(tim);
+                        alert("Time Up");
+                        document.getElementById('para').click();
+                    } else {
+                         document.getElementById("showtime").innerHTML =  min + " Minutes :" + sec + " Seconds";
+
+                         tim = setTimeout("showtime()", 1000);
+                    }
+                }
+
+            }
+        }
+
         //document.getElementById('para').click(1);
         function submitParagraph() {
 
             clearTimeout(tim);
-            console.log('a',document.getElementById("backspaceCount").value)
+            // console.log('a',document.getElementById("backspaceCount").value)
             var backspaceCount = document.getElementById("backspaceCount").value;
             var deleteCount = document.getElementById("deleteCount").value;
-            var wordCount = document.getElementById("essay").value != 0 ? document.getElementById("essay").value.split(' ').length: 0;
+
+            var wordCount = document.getElementById("essay").value != 0 ? document.getElementById("essay").value.trim().split(/\s+/).length: 0;
+
+            let characterCount = document.getElementById("essay").value;
+
+            characterCount = characterCount.replace(/\s{2,}/g, ' ').trim().length;
+
             document.getElementById("backspaceCountShow").innerHTML = backspaceCount;
             document.getElementById("deleteCountShow").innerHTML= deleteCount ;
             document.getElementById("wordCountShow").innerHTML= wordCount ;
+            document.getElementById("spentTime").style.display = "inline";
+            document.getElementById("showSpentTime").innerHTML =  spentMin + " Minutes :" + spentSec + " Seconds";
+            document.getElementById("para").disabled = true;
+            document.getElementById("restart_para").style.display = "inline";
+            document.getElementById("charactersCountShow").innerHTML = characterCount;
+
         }
 
-       
 
-        function showtime() {
-        console.log('showtime', totalsec);
-        // first check if exam finished
-        // if (pos >= questions.length) {
-        //     console.log('end');
-        //     clearTimeout(tim);
-        //     return;
-        // }
+    input.addEventListener("keydown", function(e) {
 
-        // 1 seconde eraf
-        totalsec--;
-        
-        var min = parseInt(totalsec / 60, 10);
-        var sec = totalsec - (min * 60);
-        
-          if (parseInt(sec) > 0) {
-            document.getElementById("showtime").innerHTML =  min + " Minutes :" + sec + " Seconds";
-            tim = setTimeout("showtime()", 1000);
-          } else {
-            if (parseInt(sec) == 0) {
-              document.getElementById("showtime").innerHTML = min + " Minutes :" + sec + " Seconds";
-              if (parseInt(min) == 0) {
-                clearTimeout(tim);
-                alert("Time Up");
-               document.getElementById('para').click();
-              } else {
-                document.getElementById("showtime").innerHTML =  min + " Minutes :" + sec + " Seconds";
-                tim = setTimeout("showtime()", 1000);
-              }
-            }
+     // F5 Key
+        if ((e.which || e.keyCode) == 116){
+             disabledEvent(e);
+        }
 
-          }
-    }
+          // disabled ctrl + c
+        if (e.ctrlKey && e.which == 67) {
+           disabledEvent(e);
+        }
+
+          // disabled ctrl + c
+        if (e.ctrlKey && e.which == 86) {
+           disabledEvent(e);
+        }
+
+       // "F12" key
+        if (event.keyCode == 123) {
+           disabledEvent(e);
+        }
+
+     }, false);
+
+     
+     function disabledEvent(e){
+       if (e.stopPropagation){
+         e.stopPropagation();
+       } else if (window.event){
+         window.event.cancelBubble = true;
+       }
+       e.preventDefault();
+       return false;
+     }
+
+     document.addEventListener('contextmenu', event => event.preventDefault());
+
+
     </script>
 
 </body>
