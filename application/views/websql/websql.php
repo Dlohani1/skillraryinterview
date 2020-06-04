@@ -6,7 +6,7 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <style type="text/css">
+ <style>
   
  	html, body {
       height: 100%;
@@ -112,11 +112,18 @@ textarea
     </div>
 </div>
 <div class="column1" >
-   Base Tables:
-    <table id="dbtab" class="table">
-        <tbody>
+   Your Database:
+    <table  class="table">
+    <thead>
+      <tr>
+        <th>Tablename</th>
+        <th>Records</th>
+      </tr>
+    </thead>
+    <tbody id="dbtab">
 
-        </tbody>
+
+    </tbody>
     </table>
 </div>
 </div>
@@ -206,41 +213,59 @@ textarea
         function getAllTablesFromDB() {
 
                 $("#dbtab").empty();
-              db.transaction(function(tx) {
+                var names = "";
+               
+                
 
+                //...
+                
+
+              db.transaction(function(tx) {
+                
                 tx.executeSql('SELECT tbl_name from sqlite_master WHERE type = "table"', [], function(tx, results) {
 
-                    var no_rec = results.rows; 
-                    
+                   var no_rec = results.rows; 
+                    console.log('dda', no_rec)
                     for(var p = 1; p < no_rec.length; p++){
-
+                    console.log('dd')
+                    if (p == (no_rec.length - 1)) {
+                      names += no_rec[p].tbl_name;
+                    } else {
+                      names += no_rec[p].tbl_name+",";  
+                    }
+                    
+                    localStorage.setItem("names", names);
                     var qwerty = '<tr>';
-                        qwerty += '<th>'+no_rec[p].tbl_name+'</th>';
-                //         qwerty += '<th id='+no_rec[p].tbl_name+'>test</th>';
-                //         var tableName = no_rec[p].tbl_name;
-                //         tx.executeSql('SELECT COUNT(*) AS nr FROM '+ no_rec[p].tbl_name ,[tableName],function (tx, r){
-			            	// var asdfg = r.rows[0];
-			            	// resultVar =  asdfg.nr;
-			            	// console.log(tableName);
-			            	// document.getElementById(tableName).innerHTML = "Paragraph changed!";
-			            	// });
-                        
-                        //var countSql = 'SELECT COUNT(*) AS nr FROM '+no_rec[p].tbl_name;
-                        //var pqr = CountExecute(countSql,tx);
-                        //console.log(pqr);
-                        //qwerty += '<th>'+NoofRows+'</th>';
-                        //alert(NoofRows);
-                        
+                    qwerty += '<th>'+no_rec[p].tbl_name+'</th>';
 
-                        qwerty += '</tr>';
-                        //console.log(qwerty);
-                        $("#dbtab").append(qwerty);
+                    qwerty += '<th id='+no_rec[p].tbl_name+'>0</th>';
 
+                  //         var tableName = no_rec[p].tbl_name;
+                    // let resultVar;
+                    //   tx.executeSql('SELECT COUNT(*) AS nr FROM '+ no_rec[p].tbl_name ,[],function (tx, r){
+    			            	// var temp = r.rows[0];
+    			            	// resultVar =  temp.nr;
+    			            	// console.log(resultVar);	
+                    //     qwerty += '<th >'+resultVar+'</th>';		            	
+                	   //  });
+                      
+                    //   console.log('key',qwerty); 
+
+                      qwerty += '</tr>';
+                      //console.log(qwerty);
+                      $("#dbtab").append(qwerty);
                     }
                 });
-
+                
+                // tx.executeSql('SELECT COUNT(*) AS nr FROM '+ no_rec[p].tbl_name ,[],function (tx, r){
+                //     var temp = r.rows[0];
+                //     resultVar =  temp.nr;
+                //     console.log(resultVar);  
+                //     //qwerty += '<th >'+resultVar+'</th>';                 
+                //   });
 
               });
+              console.log('tbl',localStorage.getItem("names"));
             }
 
             

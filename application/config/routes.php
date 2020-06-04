@@ -451,4 +451,4 @@ $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentia
 
 $route['admin/result/:any'] = 'AdminController/updateResult';
 
-$route['web-sql'] = 'SqlController/getViewHere';
+$route['sql-editor'] = 'SqlController/getViewHere';
