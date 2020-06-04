@@ -1384,6 +1384,7 @@ public function viewMcqListSearch() {
     $this->db->insert('customer_interviewers', $customerInterviewer);
   } 
 
+
   public function addInterviewer() {
     $customerId = $_SESSION['customerId'];
    
@@ -1395,18 +1396,164 @@ public function viewMcqListSearch() {
 
     $sql = "SELECT * FROM assess_login INNER JOIN roles on roles.id = 6 and created_by = $customerId";
 
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'customer/create-interviewers';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $userResult = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    // $query = $this->db->query($sql);
+
+    // $userResult = $query->result();
+
+    //print_r($userResult); die;
+
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+    $searchusername ='';
+
+    $this->load->view('customer/create-interviewers', array(
+      "user"=>$userResult,
+      "roles"=>$result,
+      "links"=>$links,
+      'searchusername' => $searchusername
+
+    ));
+    $this->load->view('customer/footer');
+  }
+
+
+
+ public function addInterviewerSearch() {
+    $customerId = $_SESSION['customerId'];
+
+    $searchusername = $_GET['searchusername'];
+
+     
+   
+    $sql = "SELECT * FROM roles ";
+
     $query = $this->db->query($sql);
 
-    $userResult = $query->result();
+    $result = $query->result();
+
+    $sql = "SELECT * FROM assess_login INNER JOIN roles on roles.id = 6 and created_by = $customerId";
+
+
+    if (!empty($searchusername)) {
+        $sql .= "  where assess_login.username like '%$searchusername%' ";
+    }
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'customer/create-interviewers-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $userResult = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    // $query = $this->db->query($sql);
+
+    // $userResult = $query->result();
 
     //print_r($userResult); die;
 
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
 
-    $this->load->view('customer/create-interviewers', array("user"=>$userResult,"roles"=>$result));
+    $this->load->view('customer/create-interviewers', array(
+      "user"=>$userResult,
+      "roles"=>$result,
+      "links"=>$links,
+      'searchusername' => $searchusername
+
+    ));
     $this->load->view('customer/footer');
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   public function random_strings($length_of_string, $type) { 
   
