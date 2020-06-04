@@ -215,6 +215,8 @@ $route['admin/edit-test-save']['POST'] = 'AdminController/editTestsave';
 
 $route['admin/create-roles'] = 'AdminController/addRoles'; 
 
+
+
 $route['admin/saveRole'] ['POST']= 'AdminController/saveRole'; 
 
 
@@ -382,3 +384,17 @@ $route['admin/add-meeting-credentials'] = 'AdminController/createMeetingCredenti
 $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentials'; 
 
 $route['admin/result/:any'] = 'AdminController/updateResult';
+
+
+$route['admin/add-section'] = 'AdminController/createSection'; 
+
+$route['admin/add-section/:any'] = 'AdminController/createSection'; 
+
+
+$route['admin/add-section-search'] = 'AdminController/createSectionSearch'; 
+
+$route['admin/add-section-search/:any'] = 'AdminController/createSectionSearch'; 
+
+$route['admin/delete-section']['POST'] = 'AdminController/deleteSection'; 
+
+$route['admin/saveSection'] ['POST']= 'AdminController/saveSection'; 

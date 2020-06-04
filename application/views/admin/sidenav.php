@@ -67,6 +67,7 @@
                              <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>Upload</a>
                             <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
                             <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>View</a>
+                            <a class="nav-link" href=<?php echo base_url()."admin/add-section";?>>Section</a>
                         </nav>
                     </div>
                     <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
