@@ -1,6 +1,8 @@
 <html>
 <head>
-<title>Sql-Editor</title>
+<title>SKILLRARY | Sql-Editor</title>
+<meta name="Description" content="SkillRary's Sql-Editor">
+<link rel="shortcut icon" href="https://skillrary.com/uploads/images/fav-sr-64x64-logo.png" type="image/x-icon">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" rel="preconnect" defer/> 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -82,7 +84,7 @@ textarea
 	<div class="container-fluid" style="background: #33A478;">
 		<img src="https://skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary" style="padding:5px">
 	<span>
-      <button type="fa fa-play" class="btn btn-primary" aria-hidden="true" id="ExecuteSql" >Execute Query</button>
+      <button  class="btn btn-primary" aria-hidden="true" id="ExecuteSql" >Execute Query</button>
     </span>
 
     <!-- <span>
@@ -106,7 +108,7 @@ textarea
     </div>
       <div class="row" id="bottom_box">
         <table id="qwerty" class="table">
-          
+          <th>Click "Execute Query" to execute the SQL statement above.</th>
         </table>
       </div>
     </div>
@@ -135,7 +137,6 @@ textarea
 
 
         $('document').ready(function() {
-
         	$("#RestoreDb").click(function(){
         		db.changeVersion(db.version, '', function(t) {
 				t.executeSql("SELECT name FROM sqlite_master WHERE type='table' and name not like '__Webkit%'", [], function(sqlTransaction, sqlResultSet) {
@@ -149,6 +150,7 @@ textarea
 				});
 				});
         		restoreDb();
+
         	});
 
 
@@ -212,60 +214,88 @@ textarea
 
         function getAllTablesFromDB() {
 
-                $("#dbtab").empty();
-                var names = "";
-               
-                
+          $("#dbtab").empty();
+          var rowCntr = 3;
+          tblNames = [];
+          db.transaction(function(tx) {
+            console.log('tst1')
+            tx.executeSql('SELECT tbl_name from sqlite_master WHERE type = "table"', [], function(tx, results) {
+               console.log('first')
+              
+                var no_rec = results.rows; 
+                //console.log('dnn',no_rec)
+                for(var p = 1; p < no_rec.length; p++){
+                 console.log('second')
+                  // if (p == (no_rec.length - 1)) {
+                  //   names += no_rec[p].tbl_name;
+                  // } else {
+                  //   names += no_rec[p].tbl_name+",";  
+                  // }
+                  
+                    tblNames.push(no_rec[p].tbl_name) ;  
+                 // }
+                  //localStorage.setItem("names", names);
+                  var qwerty = '<tr>';
+                  qwerty += '<th>'+no_rec[p].tbl_name+'</th>';
 
-                //...
-                
+                  qwerty += '<th class="totalRecords" id='+no_rec[p].tbl_name+'>0</th>';
 
-              db.transaction(function(tx) {
-                
-                tx.executeSql('SELECT tbl_name from sqlite_master WHERE type = "table"', [], function(tx, results) {
+                //         var tableName = no_rec[p].tbl_name;
+                  // let resultVar;
+                  
+                    tx.executeSql('SELECT COUNT(rowId) AS nr FROM '+ no_rec[p].tbl_name ,[],function (tx, r){
+                      //resa += "ars";
 
-                   var no_rec = results.rows; 
-                    console.log('dda', no_rec)
-                    for(var p = 1; p < no_rec.length; p++){
-                    console.log('dd')
-                    if (p == (no_rec.length - 1)) {
-                      names += no_rec[p].tbl_name;
-                    } else {
-                      names += no_rec[p].tbl_name+",";  
-                    }
-                    
-                    localStorage.setItem("names", names);
-                    var qwerty = '<tr>';
-                    qwerty += '<th>'+no_rec[p].tbl_name+'</th>';
-
-                    qwerty += '<th id='+no_rec[p].tbl_name+'>0</th>';
-
-                  //         var tableName = no_rec[p].tbl_name;
-                    // let resultVar;
-                    //   tx.executeSql('SELECT COUNT(*) AS nr FROM '+ no_rec[p].tbl_name ,[],function (tx, r){
-    			            	// var temp = r.rows[0];
-    			            	// resultVar =  temp.nr;
-    			            	// console.log(resultVar);	
-                    //     qwerty += '<th >'+resultVar+'</th>';		            	
-                	   //  });
+                      //console.log('qq',resa)
+                      //var a = r;
+                      //console.log('ad', tx)
+  			            	// var temp = r.rows[0];
+  			            	// resultVar =  temp.nr;
                       
-                    //   console.log('key',qwerty); 
+                      var cls = document.getElementsByClassName("totalRecords");
+                      console.log('ccc',cls.length)
+                      for (var i = 0; i < cls.length; i++) {
+                          //cls.item(i).id
+                       console.log('cls',cls.item(i).id);
+                        if (cls.item(i).id == tblNames[0]) {
+                          cls.item(i).innerHTML = r.rows[0].nr;
+                          tblNames.shift()
+                          break;
+                        }
+                      }
+                     //cls.item(resa).innerHTML = r.rows[0].nr;
+                     // var dd = document.getElementById(no_rec[p].tbl_name);
+                     // dd.innerHTML = r.rows[0].nr;
+  			            	//console.log("rss",resa,r.rows[0].nr, r.rows[0].tbl_name);	
+                      //qwerty += '<th >'+resultVar+'</th>';		            	
+              	    });
+                    
+                  //   console.log('key',qwerty); 
 
-                      qwerty += '</tr>';
-                      //console.log(qwerty);
-                      $("#dbtab").append(qwerty);
-                    }
-                });
-                
-                // tx.executeSql('SELECT COUNT(*) AS nr FROM '+ no_rec[p].tbl_name ,[],function (tx, r){
-                //     var temp = r.rows[0];
-                //     resultVar =  temp.nr;
-                //     console.log(resultVar);  
-                //     //qwerty += '<th >'+resultVar+'</th>';                 
-                //   });
-
+                    qwerty += '</tr>';
+                    //console.log(qwerty);
+                    $("#dbtab").append(qwerty);
+                } 
               });
-              console.log('tbl',localStorage.getItem("names"));
+              
+               // var cls = document.getElementsByClassName("totalRecords");
+               // console.log('ad',cls)
+                // for (var n=0, length = cls.length; n < length; n++) {
+                //   //cls[n].id= "oct_" + (n + 1);
+                //   console.log('n',n,cls[n].id) 
+                // }   
+              // tx.executeSql('SELECT COUNT(*) AS nr FROM categories' ,[],function (tx, r){
+              //     var temp = r.rows[0];
+              //     resultVar =  temp.nr;
+              //      console.log('ads',cls.length)
+              //     console.log('aa',resultVar);  
+
+              //     //qwerty += '<th >'+resultVar+'</th>';                 
+              //   });              
+
+            });
+
+             // console.log('tbl',localStorage.getItem("names"));
             }
 
             
@@ -277,22 +307,18 @@ textarea
             	resultVar =  asdfg.nr;
             	});
 
-                console.log(resultVar);
+                console.log('dqd',resultVar);
 
                         }
 
 
         $("#ExecuteSql").click(function(){
 
-            var sql = $("#rawSql").val();
+          var sql = $("#rawSql").val();
 
-            db.transaction(function (tx) {
-
-                tx.executeSql(sql, [], querySuccess, errorCB);
-                
-            });
-
-
+          db.transaction(function (tx) {
+            tx.executeSql(sql, [], querySuccess, errorCB);   
+          });
         });
 
 
@@ -318,6 +344,7 @@ textarea
          function querySuccess(tx, results) {
             $("#qwerty").empty();
              getAllTablesFromDB();
+             
             var len = results.rows.length;
                 if(len > 0) {
 
@@ -327,9 +354,9 @@ textarea
                     const propOwn = Object.getOwnPropertyNames(firstRow);
 
                     var NewHeader = '<tr>';
-
+                    
                     for(var i = 0 ; i < propOwn.length ; i++){
-
+                     
                     NewHeader += '<th>'+propOwn[i]+'</th>';
 
                     }
@@ -337,12 +364,13 @@ textarea
                     NewHeader += '</tr>';
                     $("#qwerty").append(NewHeader);
 
-                    for(var j = 0 ; j < tableData.length ; j++){
+                    for(var j = 0 ; j < tableData.length; j++){
 
                         var temp = Object.values(tableData[j]);
 
                         var NewRow = "<tr>";
                         for(var k = 0 ; k < propOwn.length ; k++){
+
                             NewRow += '<td>'+temp[k]+'</td>';
                         }
 
@@ -360,7 +388,7 @@ textarea
                 	var SuccessMessage = '<tr><th>Success</th></tr>';
                 }
                 if(sql.search(/select/i) >= 0){
-                	var SuccessMessage = '<tr><th>No Results Founding</th></tr>';
+                	var SuccessMessage = '<tr><th>No Results Found</th></tr>';
                 }
                 if(sql.search(/insert/i) >= 0){
                 	var SuccessMessage = '<tr><th>New Row Inserted</th></tr>';
