@@ -543,16 +543,16 @@ class QuestionBank extends MyController {
 
         public function signin() {
 
-                $isEmailLogin = 0;
-               $email = $_POST['email'];
+            $isEmailLogin = 0;
+            $email = trim($_POST['email']);
             //    $pwd = md5(trim($_POST['pwd']));
-               $pwd = trim($_POST['pwd']);
+            $pwd = trim($_POST['pwd']);
 
-               $this->load->helper('email');
+            $this->load->helper('email');
 
-                if (valid_email($email)) {
-                    $isEmailLogin = 1;    
-                }
+            if (valid_email($email)) {
+            $isEmailLogin = 1;    
+            }
 
                 if ($isEmailLogin) {
 
@@ -900,6 +900,9 @@ class QuestionBank extends MyController {
 
         }  
 
+
+
+
         public function showUserProfile($user = false) {
 
             $userId = $this->session->id;
@@ -960,7 +963,7 @@ class QuestionBank extends MyController {
                 $this->load->view('codefooter');
             }
         }
-
+ 
 
         public function activeInterview() {
 
@@ -973,6 +976,34 @@ class QuestionBank extends MyController {
             $this->load->view('enter-code', array('interviewData' => $result));
             $this->load->view('codefooter');
         }
+
+
+        public function showUserProfileState() {
+
+              $sql = "SELECT * FROM states where country_id = 101";
+
+                $query = $this->db->query($sql);
+
+                $result = $query->result();
+
+                print_r( json_encode($result));
+            
+        }
+
+
+        public function showUserProfileCity() {
+
+                $state_id = $_POST['id'];
+                $sql = "  SELECT * FROM cities where state_id = $state_id " ;
+
+                $query = $this->db->query($sql);
+
+                $result = $query->result();
+
+                print_r( json_encode($result));
+        }
+
+
 
         public function createUserProfile () {
             $this->load->view('user-header');
@@ -1266,7 +1297,13 @@ class QuestionBank extends MyController {
                if ($result1[$i] > 60 ) {
                 $min = intval($result1[$i] / 60);
                 $sec = $result1[$i] % 60;
-                $time = $min." min ".$sec. " sec";
+                if ($value < $result1[$i] ) {
+                    $time = $min." min ";
+                } else {
+                    $time = $min." min ".$sec. " sec";
+                }
+
+                
                } else {
                 if ($result1[$i] > 0) {
                     $time = $result1[$i]." sec";    

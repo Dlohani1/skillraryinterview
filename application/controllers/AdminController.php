@@ -769,6 +769,8 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
 
   }
 
+
+
   public function createUser() {
 
     $sql = "SELECT * FROM roles ";
@@ -779,19 +781,140 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
 
     $sql = "SELECT * FROM assess_login INNER JOIN roles on roles.id = assess_login.role";
 
-    $query = $this->db->query($sql);
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
 
-    $userResult = $query->result();
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'admin/create-users';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $userResult = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    // $query = $this->db->query($sql);
+
+    // $userResult = $query->result();
 
     //print_r($userResult); die;
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
 
-    $this->load->view('admin/create-users', array("user"=>$userResult,"roles"=>$result));
+    $searchusername = '';
+    $searchrole = '';
+
+    $this->load->view('admin/create-users', array(
+      "user"=>$userResult,
+      "roles"=>$result,
+      "searchusername"=>$searchusername,
+      "searchrole"=>$searchrole,
+       "links"=>$links
+
+    ));
     $this->load->view('admin/footer');
     
   }
+
+
+  public function createUserSearch() {
+
+    $searchusername = $_GET['searchusername'];
+    $searchrole = $_GET['searchrole'];
+
+    $sql = "SELECT * FROM roles ";
+
+    $query = $this->db->query($sql);
+
+    $result = $query->result();
+
+    $sql = "SELECT * FROM assess_login INNER JOIN roles on roles.id = assess_login.role 
+            where assess_login.username like '%$searchusername%'  and roles.roles like '%$searchusername%' ";
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'admin/create-users-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $userResult = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+
+    // $query = $this->db->query($sql);
+
+    // $userResult = $query->result();
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+
+    $this->load->view('admin/create-users', array(
+      "user"=>$userResult,
+      "roles"=>$result,
+      "searchusername"=>$searchusername,
+      "searchrole"=>$searchrole,
+       "links"=>$links
+
+    ));
+
+    $this->load->view('admin/footer');
+    
+  }
+
+
 
   public function saveCustomer() {
     $sql = "SELECT MAX(id) as id FROM customers";
@@ -810,7 +933,7 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
    $this->db->insert('customers', $data);
    echo "success";
   }
-
+ 
   public function mcqCustomer() {
     $sql = "SELECT distinct(customer_id) FROM mcq_test order by customer_id asc";
 
@@ -834,7 +957,46 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
 
    $sql = "select * from customers where id in (".$ids.")";
    //echo $sql; die;
-   $result = $this->db->query($sql)->result_object();
+
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'admin/mcq-customers';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+   // $result = $this->db->query($sql)->result_object();
 
 //    print_r($result); die;
 
@@ -845,17 +1007,18 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
         "searchcode"=>$searchcode,
         "searchname"=>$searchname,
         "searchemail"=>$searchemail,
-        "searchcontact"=>$searchcontact
+        "searchcontact"=>$searchcontact,
+         "links"=>$links
     ));
     $this->load->view('admin/footer');
   }
 
   public function mcqCustomerSearch() {
 
-    $searchcode = $_POST['searchcode'];
-    $searchname = $_POST['searchname'];
-    $searchemail = $_POST['searchemail'];
-    $searchcontact = $_POST['searchcontact'];
+    $searchcode = $_GET['searchcode'];
+    $searchname = $_GET['searchname'];
+    $searchemail = $_GET['searchemail'];
+    $searchcontact = $_GET['searchcontact'];
 
     $sql = "SELECT distinct(customer_id) FROM mcq_test order by customer_id asc";
 
@@ -874,16 +1037,52 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
    // $sql = "select * from customers where id in (".$ids.") ";
 
 
-$sql = "SELECT * from customers where id in (".$ids.") 
+    $sql = "SELECT * from customers where id in (".$ids.") 
         and  customer_code like '%$searchcode%'
         and customer_name like '%$searchname%'
         and customer_email like '%$searchemail%'
         and customer_contactno like '%$searchcontact%'";
 
 
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'admin/mcq-customers-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
    //echo $sql; die;
-   $result = $this->db->query($sql)->result_object();
+   // $result = $this->db->query($sql)->result_object();
 
 //    print_r($result); die;
 
@@ -894,7 +1093,8 @@ $sql = "SELECT * from customers where id in (".$ids.")
         "searchcode"=>$searchcode,
         "searchname"=>$searchname,
         "searchemail"=>$searchemail,
-        "searchcontact"=>$searchcontact
+        "searchcontact"=>$searchcontact,
+        "links"=>$links
     ));
     // $this->load->view('admin/mcq-customers', array("customers"=>$result));
     $this->load->view('admin/footer');
@@ -902,6 +1102,140 @@ $sql = "SELECT * from customers where id in (".$ids.")
 
   }
 
+
+  public function todaysInterview() {
+
+    $searchdate = '';
+    $todaysDate = date("Y-m-d");
+    
+    $sql = "SELECT interview_details.gotomeeting_id, interview_details.user_email, interview_details.interview_date, 
+              interview_details.interview_time, gtd.email , interview_details.endtime
+              FROM interview_details 
+              inner  join gotomeeting_token_details as gtd
+              on gtd.id = interview_details.gotomeeting_id  
+              where interview_date = ('$todaysDate')   
+              order by interview_details.interview_time ";
+
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'admin/todays-interview';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+
+   // $result = $this->db->query($sql)->result_object();
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/todays-interview', array(
+        "todaysinterview"=>$result,
+        "searchdate"=>$searchdate,
+        'links' => $links
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+
+  public function todaysInterviewSearch() {
+
+    $searchdate = $_GET['searchdate'];
+    $todaysDate = date("Y-m-d");
+    
+    $sql = "SELECT interview_details.gotomeeting_id, interview_details.user_email, interview_details.interview_date, 
+              interview_details.interview_time, gtd.email, interview_details.endtime
+              FROM interview_details 
+              inner  join gotomeeting_token_details as gtd
+              on gtd.id = interview_details.gotomeeting_id ";
+
+    if(!empty($searchdate)){
+        $sql .= " where interview_date = ('$searchdate') ";
+    }else{
+        $sql .= " where interview_date = ('$todaysDate') ";
+    }
+
+    $sql .= " order by interview_details.interview_time  "; 
+
+   // $result = $this->db->query($sql)->result_object();
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'admin/todays-interview-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/todays-interview', array(
+        "todaysinterview"=>$result,
+        "searchdate"=>$searchdate,
+        'links' => $links
+    ));
+    $this->load->view('admin/footer');
+  }
 
 
   public function createCustomer() {
@@ -1037,7 +1371,6 @@ $sql = "SELECT * from customers where id in (".$ids.")
     $this->load->view('admin/footer');
   } 
 
-
  
   public function interviewCustomers() {
     $sql = "SELECT DISTINCT(interview_customer_id) FROM `interview_users` WHERE interview_customer_id is NOT NULL";
@@ -1056,7 +1389,46 @@ $sql = "SELECT * from customers where id in (".$ids.")
       }
       
       $sql = "SELECT * FROM customers WHERE id IN ($customerIds)";
-      $customers = $this->db->query($sql)->result_object();
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'admin/interview-customers-list';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $customers = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+
+
+      // $customers = $this->db->query($sql)->result_object();
     }
 
      $searchcode = '';
@@ -1074,23 +1446,23 @@ $sql = "SELECT * from customers where id in (".$ids.")
          "customers"=>$customers,
          "searchcode"=>$searchcode,
          "searchname"=>$searchname,
-           "searchemail"=>$searchemail,
-         "searchcontact"=>$searchcontact
+         "searchemail"=>$searchemail,
+         "searchcontact"=>$searchcontact,
+         "links" => $links
     ));
     $this->load->view('admin/footer');
   }
 
 
-
   public function interviewCustomersSearch() {
 
-         $searchcode = $_POST['searchcode'];
+         $searchcode = $_GET['searchcode'];
 
-         $searchname = $_POST['searchname'];
+         $searchname = $_GET['searchname'];
 
-         $searchemail = $_POST['searchemail'];
+         $searchemail = $_GET['searchemail'];
 
-         $searchcontact = $_POST['searchcontact'];
+         $searchcontact = $_GET['searchcontact'];
 
          $sql = "SELECT distinct(c.id), c.customer_code, c.username, c.password, c.customer_name,
                   c.customer_email, c.customer_contactno, c.customer_address, c.is_active
@@ -1103,9 +1475,44 @@ $sql = "SELECT * from customers where id in (".$ids.")
                   and c.customer_email like '%$searchemail%'
                   and c.customer_contactno like '%$searchcontact%'";
 
-         $customers = $this->db->query($sql)->result_object();
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'admin/interview-customers-list-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $customers = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
 
+         // $customers = $this->db->query($sql)->result_object();
         $this->load->view('admin/header');
         $this->load->view('admin/sidenav');
         $this->load->view('admin/interview-customers-view', array(
@@ -1113,26 +1520,135 @@ $sql = "SELECT * from customers where id in (".$ids.")
              "searchcode"=>$searchcode,
              "searchname"=>$searchname,
               "searchemail"=>$searchemail,
-             "searchcontact"=>$searchcontact
+             "searchcontact"=>$searchcontact,
+             "links" => $links
         ));
         $this->load->view('admin/footer');
   }
 
 
-
   public function addRoles() {
     $sql = "SELECT * FROM roles ";
 
-    $query = $this->db->query($sql);
 
-    $result = $query->result();
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
 
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'admin/create-roles';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    // $query = $this->db->query($sql);
+
+    // $result = $query->result();
+ 
+    $searchrole = '';
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-roles', array(
+      "roles"=>$result,
+      'links' =>$links,
+      'searchrole' => $searchrole
+
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+  public function addRolesSearch() {
+    $searchrole = $_GET['searchrole'];
+
+    $sql = "SELECT * FROM roles ";
+
+    if(!empty($searchrole)){
+       $sql .= " where roles like '%$searchrole%' ";
+    }
+
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'admin/create-roles-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    // $query = $this->db->query($sql);
+
+    // $result = $query->result();
+ 
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/create-roles', array("roles"=>$result));
+    $this->load->view('admin/create-roles', array(
+      "roles"=>$result,
+      'links' =>$links,
+      'searchrole' => $searchrole
+
+    ));
     $this->load->view('admin/footer');
   }
+
+
 
   public function saveRole() {
     $data  = array ('roles' => $_POST['role']);
@@ -1189,12 +1705,7 @@ public function deleteUsrPwd() {
     //$params = $this->input->post();
 
     return strtoupper(random_string('alnum',$size));
-
   }
-
-
-
-
 
 
   public function createTest() {
@@ -2149,16 +2660,18 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
     $this->load->view('admin/footer');  
  }
 
-
   
+
   public function viewMcqData() {
     $mcqId = $this->uri->segment(3);
-    $pageNo = 1;
-    if (isset($_GET['page'])) {
-      $pageNo = $_GET['page'];
-    } 
-    $offset = $pageNo*10; 
-    $page = $offset - 10;
+    // $pageNo = 1;
+    // if (isset($_GET['page'])) {
+    //   $pageNo = $_GET['page'];
+    // } 
+    // $offset = $pageNo*10; 
+    // $page = $offset - 10;
+
+   
 
     $sql = "SELECT mcq_test.id as id,title, mcq_test.is_proctored as proctoredTest,mcq_code.code FROM `mcq_test` 
      LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
@@ -2171,11 +2684,48 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
     $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
        LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
       where mcq_test_id= $mcqId
-      order by assess_usr_pwd.id asc
-      limit $page, $offset";
+      order by assess_usr_pwd.id asc";
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
 
 
-        $mcqData['mcq-users'] = $this->db->query($sql)->result();
+    $config['base_url'] = base_url() . "admin/view-mcq-data/$mcqId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $mcqData['mcq-users']= $this->getAllRowsRecord($sql,$config['per_page'], $start_index);
+
+
+        // $mcqData['mcq-users'] = $this->db->query($sql)->result();
+
         $student = $this->updateResult($mcqId);
 
         $failCount = $passCount = 0;
@@ -2286,10 +2836,234 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
 
         $this->load->view('admin/header');
         $this->load->view('admin/sidenav');
-        $this->load->view('admin/view-mcq-data', array('mcq' => $mcqData));
+        $this->load->view('admin/view-mcq-data', array(
+          'mcq' => $mcqData,
+          'links' => $links,
+          'mcqId' => $mcqId
+
+        ));
         //$this->load->view('admin/view-mcq-data');
         $this->load->view('admin/footer');
   }
+
+
+
+
+public function viewMcqDataSearch() {
+    $mcqId = $this->uri->segment(3);
+
+    $searchname =$_GET['searchname'];
+
+    $searchemail =$_GET['searchemail'];
+
+    $contactno =$_GET['contactno'];
+
+    $searchusername =$_GET['searchusername'];
+
+
+    $sql = "SELECT mcq_test.id as id,title, mcq_test.is_proctored as proctoredTest,mcq_code.code FROM `mcq_test` 
+     LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
+     WHERE mcq_test.id=".$mcqId;
+
+    $mcq = $this->db->query($sql)->row();
+
+    $mcqData['mcq-details'] = $mcq;
+
+    $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
+       LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
+      where mcq_test_id= $mcqId ";
+
+      if($searchname){
+        $sql .= " and ( student_register.first_name like '%$searchname%' or   student_register.last_name like '%$searchname%'  )  ";
+      }
+
+      if($searchemail){
+        $sql .= "  and student_register.email like '%$searchemail%' ";
+      }
+
+       if($contactno){
+        $sql .= "  and student_register.contact_no like '%$contactno%' ";
+      }
+
+
+       if($searchusername){
+        $sql .= "  and assess_usr_pwd.username like '%$searchusername%'  ";
+      }
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . "admin/view-mcq-data-search/$mcqId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $mcqData['mcq-users']= $this->getAllRowsRecord($sql,$config['per_page'], $start_index);
+
+
+        // $mcqData['mcq-users'] = $this->db->query($sql)->result();
+
+        $student = $this->updateResult($mcqId);
+
+        $failCount = $passCount = 0;
+        
+        foreach ($mcqData['mcq-users'] as $key => $value) {
+          
+          if (null === $value->studentId) {
+            continue;
+          }
+          $result = $this->viewResult($mcqId,$value->studentId);
+
+          $totalAptitudeMarks = 0;
+          $totalAptitudeQualifyingMarks = 0;
+          $totalUserAptitudeMarks = 0;
+          $countMarks = 0;  
+          for ($i =0; $i < count($result['Aptitude']); $i++) {
+          
+            
+          $totalMarks = $result['Aptitude'][$i]['total_question'];                   
+          $minMarks =  $result['Aptitude'][$i]['total_question']/2;
+          $userMarks = $result['Aptitude'][$i]['user_ans'];
+
+          if (null == $userMarks) {
+            $countMarks += 1;
+
+            continue;
+          }
+          
+          if ($totalMarks < 10 ) {
+              $totalMarks *= 10;
+              $minMarks *= 10;    
+              $userMarks *= 10;
+          }
+          $totalAptitudeMarks += $totalMarks;
+          $totalAptitudeQualifyingMarks += $minMarks;
+          $totalUserAptitudeMarks += $userMarks;
+        }
+
+        if ($countMarks == count($result['Aptitude'])) {
+          continue;
+        }
+
+        //echo $totalAptitudeQualifyingMarks,",",$totalUserAptitudeMarks; die;
+        if ($totalAptitudeQualifyingMarks > $totalUserAptitudeMarks) {
+          $mcqData['mcq-users'][$key]->status = "FAIL";
+          ++$failCount;
+          if (isset($_GET['passed'])) {
+            $passed = $_GET['passed'];
+
+            if ($passed == "1") {
+              if (in_array($value->studentId, $student['fail'])) {
+                unset($mcqData['mcq-users'][$key]);
+              }
+            } 
+          }
+        } else {
+          $mcqData['mcq-users'][$key]->status = "PASS";
+          ++$passCount;
+          if (isset($_GET['passed'])) {
+            $passed = $_GET['passed'];
+            if ($passed == "2") {
+              if (in_array($value->studentId, $student['pass'])) {
+                unset($mcqData['mcq-users'][$key]);
+              }
+            }
+          } 
+        }
+        }
+      $mcqData['mcq-users'] = array_values($mcqData['mcq-users']);
+
+       $sql = "SELECT * from `assess_login` where role= 7"; //proctor role
+
+        $query = $this->db->query($sql);
+
+        //   echo "<pre>";
+        //   print_r($query->result());
+
+        // print_r($mcq); die;
+
+        $mcqData['mcq-proctor'] = $query->result();
+       
+        //print_r($mcqData); die;
+
+        $sql = "SELECT count(DISTINCT(`student_id`)) as total FROM `mcq_test_question` where mcq_test_id = $mcqId";
+
+
+        $totalStudent = $this->db->query($sql)->row();
+
+        $mcqData['mcq-details']->totalStudent = $totalStudent->total;
+
+        $mcqData['mcq-details']->failCount = $failCount;
+        $mcqData['mcq-details']->passCount = $passCount;
+
+        $sql = "SELECT assess_usr_pwd_id as assessIds FROM `proctored_mcq` where mcq_test_id = $mcqId";
+
+
+        $assessIds = $this->db->query($sql)->result();
+        $proctoredIds = array();
+
+        foreach ($assessIds as $key => $value) {
+          $proctoredIds[] = $value->assessIds;
+
+        }
+
+        $mcqData['proctoredIds'] = $proctoredIds;
+ // echo "<pre>";
+ //         print_r($mcqData); die;
+
+        $this->load->view('admin/header');
+        $this->load->view('admin/sidenav');
+        $this->load->view('admin/view-mcq-data', array(
+          'mcq' => $mcqData,
+          'links' => $links,
+          'mcqId' => $mcqId,
+          'searchname' => $searchname,
+          'searchemail' => $searchemail,
+          'contactno' => $contactno,
+          'searchusername' => $searchusername
+        ));
+        //$this->load->view('admin/view-mcq-data');
+        $this->load->view('admin/footer');
+  }
+
+
+  public function getAllRowsRecord($sql, $start=0 ,$offset=0) {
+
+          $sql = $sql." limit $offset ,$start";
+          
+          $query = $this->db->query($sql);
+
+          $questionData = $query->result();
+          return $questionData;
+  }
+
 
   public function addInterviewGroup() {
     $customerId = explode('-',$_POST['customer']);
@@ -2726,6 +3500,7 @@ echo "success";
     $adminId = $_SESSION['admin_id'];
     $customerId = $this->uri->segment(3); 
 
+
     $sql = "SELECT mcq_test.id,mcq_test.is_proctored, mcq_test.title, mcq_code.code, SUM(mcq_test_pattern.total_question) as totalQuestion
             FROM mcq_test
             LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
@@ -2738,8 +3513,52 @@ echo "success";
 
     $sql .= " GROUP by mcq_test.id, mcq_test.title, mcq_code.code";
 
+
+
+   $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . "admin/view-mcq/$customerId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $query = $this->getAllRows($sql,$config['per_page'], $start_index);
+
+
+
+
+
+
     //echo $sql; die;
-    $query = $this->db->query($sql);
+    // $query = $this->db->query($sql);
 
     $result = array();
 
@@ -2762,8 +3581,139 @@ echo "success";
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/view-mcq', array('mcq' => $mcq));
+    $this->load->view('admin/view-mcq', array(
+      'mcq' => $mcq,
+      'customerId' => $customerId,
+      'links' => $links,
+      'select_roctored' => 2
+    ));
     $this->load->view('admin/footer');
+  }
+
+
+
+
+
+
+
+  public function viewTestSearch() {
+
+    $adminId = $_SESSION['admin_id'];
+    $customerId = $this->uri->segment(3); 
+
+    $searchname = $_GET['searchname'];
+    $search_mcq_code = $_GET['search_mcq_code'];
+    $select_roctored = $_GET['select_roctored'];
+
+    $sql = "SELECT mcq_test.id,mcq_test.is_proctored, mcq_test.title, mcq_code.code, SUM(mcq_test_pattern.total_question) as totalQuestion
+            FROM mcq_test
+            LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
+            LEFT JOIN mcq_test_pattern on mcq_test.id=mcq_test_pattern.mcq_test_id";
+
+
+    $sql .= " WHERE mcq_test.customer_id = $customerId";
+
+    if( $searchname){
+      $sql .= "   and mcq_test.title like '%$searchname%' ";
+    }
+
+    if ($search_mcq_code) {
+      $sql .= "   and mcq_code.code like '%$search_mcq_code%' ";
+    }
+
+
+    if(($select_roctored == 0 || $select_roctored == 1) ){
+      $sql .= " and mcq_test.is_proctored = $select_roctored  ";
+    }
+
+    if($select_roctored == 2){
+      $sql .= " and mcq_test.is_proctored in(0, 1) ";
+    }
+
+    $sql .= " GROUP by mcq_test.id, mcq_test.title, mcq_code.code";
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . "admin/view-mcq-search/$customerId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $query = $this->getAllRows($sql,$config['per_page'], $start_index);
+
+
+
+
+    // $query = $this->db->query($sql);
+
+    $result = array();
+
+    $i = 0;
+     $mcq = array();     
+    if($query->num_rows() > 0)  {
+
+        foreach ($query->result() as $row) {
+
+            $mcq[$i]['id'] = $row->id;
+            $mcq[$i]['proctored'] = $row->is_proctored;
+            $sectionDetails = $this->getMcqSection($row->id);
+            $mcq[$i]['sectionCount'] = isset($sectionDetails['section']) ? count($sectionDetails['section']) : 0;
+            $mcq[$i]['title'] = $row->title;
+            $mcq[$i]['code'] = $row->code;
+            $mcq[$i]['question'] = $row->totalQuestion;
+            $i++;
+        }
+    }
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/view-mcq', array(
+      'mcq' => $mcq,
+      'customerId' => $customerId,
+      'searchname' => $searchname,
+      'search_mcq_code' => $search_mcq_code,
+      'select_roctored' => $select_roctored,
+      'links' => $links
+
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+  public function getAllRows($sql, $start=0 ,$offset=0) {
+
+          $sql = $sql." limit $offset ,$start";
+          
+          $query = $this->db->query($sql);
+          return $query;
   }
 
 public function viewInterview() {
@@ -2776,7 +3726,46 @@ public function viewInterview() {
 
     $sql = "SELECT DISTINCT(interview_code),count(DISTINCT(id)) as total_students FROM `interview_users` where interview_customer_id=$customerId and interview_code is not null GROUP BY interview_code";
 
-    $result = $this->db->query($sql)->result_object();
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "admin/view-interview/$customerId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    // $result = $this->db->query($sql)->result_object();
+
+
     $interviewcode = '';
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
@@ -2785,7 +3774,8 @@ public function viewInterview() {
       'customer'=> $customerName->customer_name,
       'interview' => $result,
       'customerId' => $customerId,
-      'interviewcode' => $interviewcode
+      'interviewcode' => $interviewcode,
+      'links' => $links
 
     ));
 
@@ -2799,7 +3789,7 @@ public function viewInterviewSearch() {
 
     $customerId = $this->uri->segment(3); 
 
-    $interviewcode = $_POST['interviewcode'];
+    $interviewcode = $_GET['interviewcode'];
 
     $sql  = "SELECT customer_name from customers where id = $customerId";
     $customerName = $this->db->query($sql)->row();
@@ -2811,7 +3801,43 @@ public function viewInterviewSearch() {
     and interview_code like '%$interviewcode%'
     GROUP BY interview_code";
 
-    $result = $this->db->query($sql)->result_object();
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "admin/view-interview-search/$customerId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    // $result = $this->db->query($sql)->result_object();
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
@@ -2819,7 +3845,8 @@ public function viewInterviewSearch() {
       'customer'=> $customerName->customer_name,
       'interview' => $result,
       'customerId' => $customerId,
-      'interviewcode' => $interviewcode
+      'interviewcode' => $interviewcode,
+      'links' => $links
     ));   
 
     $this->load->view('admin/footer');
@@ -5132,7 +6159,8 @@ foreach ($sectionDetails['section'] as $key => $value) {
     return $isAvailable;
   }
 
-      public function createMeetingCredentials() {
+
+  public function createMeetingCredentials() {
     $sql = "SELECT DISTINCT(interview_customer_id) FROM `interview_users` WHERE interview_customer_id is NOT NULL";
     $result = $this->db->query($sql)->result_array();
     $customers = array();
@@ -5148,13 +6176,182 @@ foreach ($sectionDetails['section'] as $key => $value) {
         }
       }
       
-      $sql = "SELECT * FROM gotomeeting_token_details WHERE customer_id IN ($customerIds)";
-      $customers = $this->db->query($sql)->result_object();
+      // $sql = "SELECT * FROM gotomeeting_token_details WHERE customer_id IN ($customerIds)";
+
+      $sql = "  SELECT  * , customers.customer_name , customers.customer_code FROM gotomeeting_token_details gtd 
+                inner join customers  
+                on gtd.customer_id = customers.id 
+                WHERE customer_id IN ($customerIds)";
+
+                // echo "$sql";
+
+                // die;
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'admin/add-meeting-credentials';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $customers = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+      // $customers = $this->db->query($sql)->result_object();
+    }
+
+
+    $customername = '';
+    $searchname = '';
+    $lastname = '';
+    $searchEmail = '';
+     $searchcode = '';
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-meeting-credentials',array(
+      'customers'=> $customers,
+      'links'=> $links,
+      'customername'=> $customername,
+      'searchname'=> $searchname,
+      'lastname'=> $lastname,
+      'searchEmail'=> $searchEmail,
+      'searchcode' => $searchcode
+
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+  public function createMeetingCredentialsSearch() {
+
+    $customername = $_GET['customername'];
+    $searchname = $_GET['searchname'];
+    $lastname = $_GET['lastname'];
+    $searchEmail = $_GET['searchEmail'];
+    $searchcode = $_GET['searchcode'];
+
+    $sql = "SELECT DISTINCT(interview_customer_id) FROM `interview_users` WHERE interview_customer_id is NOT NULL";
+    $result = $this->db->query($sql)->result_array();
+    $customers = array();
+
+    if (count($result) > 0) {
+      $customerIds = "";
+
+      foreach ($result as $key => $value) {
+        if ($key == (count($result) - 1)) {
+          $customerIds .= $value['interview_customer_id'];
+        } else {
+          $customerIds .= $value['interview_customer_id'].",";  
+        }
+      }
+      
+      // $sql = "SELECT * FROM gotomeeting_token_details WHERE customer_id IN ($customerIds)";
+
+      $sql = "  SELECT  * , customers.customer_name, customers.customer_code  FROM gotomeeting_token_details gtd 
+                inner join customers  
+                on gtd.customer_id = customers.id 
+                WHERE customer_id IN ($customerIds)";
+
+                if (!empty($customername)) {
+                  $sql .= "  and  customers.customer_name like '%$customername%' ";
+                }
+
+
+                if (!empty($searchcode)) {
+                  $sql .= "  and  customers.customer_code  like '%$searchcode%' ";
+                }
+
+                if (!empty($searchname)) {
+                  $sql .= "  and first_name like '%$searchname%' ";
+                }
+
+                if (!empty($lastname)) {
+                  $sql .= "  and  last_name like '%$lastname%' ";
+                }
+
+                if (!empty($searchEmail)) {
+                  $sql .= "  and   email  like '%$searchEmail%' ";
+                }
+
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'admin/add-meeting-credentials-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $customers = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+      // $customers = $this->db->query($sql)->result_object();
     }
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/create-meeting-credentials',array('customers'=> $customers));
+    $this->load->view('admin/create-meeting-credentials',array(
+      'customers'=> $customers,
+      'links'=> $links,
+      'customername'=> $customername,
+      'searchname'=> $searchname,
+      'lastname'=> $lastname,
+      'searchEmail'=> $searchEmail,
+      'searchcode' => $searchcode
+
+    ));
     $this->load->view('admin/footer');
   }
 

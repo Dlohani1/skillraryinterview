@@ -33,9 +33,69 @@
                                             </div>
                                         </div>
                                     </div><br/> -->
+
+                                    <div class="container-fluid">
+                                    <div class="container">
   <div class="row">
         <div class="col-md-12">
         <h4>MCQs</h4>
+
+          <!-- for search filter start -->
+
+          <div class="container">
+                <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/view-mcq-search/$customerId";?>>
+
+                    <div class="searchBox">
+
+                          <div class="row">
+
+                                <div class="col-md-2 ">
+                                  <label>Search MCQ Name</label>
+                                  <input type="text" id="searchname" name="searchname" class="form-control " placeholder="Search Name" value="<?php echo $searchname ?? ''; ?>" >
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>Search MCQ Code</label>
+                                  <input type="text" id="search_mcq_code" name="search_mcq_code" class="form-control" placeholder="Search MCQ Code" value="<?php echo $search_mcq_code ?? ''; ?>">
+                                </div>
+                               
+                                <div class="col-md-3">
+                                  <label>Search Proctored</label><br>
+                                  <select id="select_roctored" name="select_roctored"> 
+
+                                      <!-- <option value='none' >Select option</option>  -->
+                                      <option value='2' <?php if($select_roctored == 2)echo 'selected';?>  >All</option> 
+                                      <option value='0' <?php if($select_roctored == 0)echo 'selected';?> > No</option> 
+                                      <option value='1' <?php if($select_roctored == 1)echo 'selected';?> >Yes</option> 
+                                  </select>
+                                </div>
+
+                          
+
+                                <div class="col-md-2">
+                                    <label>Search</label><br>
+                                    <button type="submit" value="Submit">
+                                      <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                                    </button>
+
+                                </div>
+
+                                <div class="col-md-1">
+                                  <label></label>
+                                  <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
+                                </div>
+ 
+                          </div>
+
+                    </div>
+                </form>
+            </div>
+
+          <!-- for search filter end -->
+
+
+ 
+
         <div class="table-responsive">
               <table id="mytable" class="table table-bordred table-striped">
                    <thead>
@@ -53,7 +113,7 @@
     <tbody>
 
         <?php 
-		$i = 0;
+          $i = $this->uri->segment(4);
         foreach($mcq as $key => $value) {
 		$i++;
     $proctored = "No";
@@ -66,7 +126,7 @@
     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'admin/edit-test/'.$value['id'].'"><button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button disabled class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td></tr>';
         }
-        ?>
+        ?> 
     
     <!-- <tr>
     <th><input type="checkbox" id="checkall" /></th>
@@ -134,6 +194,7 @@
     </tbody>
         
 </table>
+  <p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
@@ -216,3 +277,14 @@
                     </div>
                 </main>
 
+
+<script type="text/javascript">
+  
+   $('#back').click(function () {
+    let customerId = '<?php echo $customerId; ?>';
+
+      let baseUrl = '<?php echo base_url(); ?>';
+      let url =  baseUrl+"admin/view-mcq/"+customerId;
+      window.location.href = url;
+    });
+</script>

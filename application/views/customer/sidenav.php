@@ -18,7 +18,7 @@
                             
                             <!-- <a class="nav-link" href=<?php //echo base_url()."admin/view-mcq";?>>View</a> -->
                              
-                        </nav>
+                        </nav> 
                     </div>
 
                       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsCustomer" aria-expanded="false" aria-controls="collapseLayoutsCustomer"
@@ -29,6 +29,8 @@
                     </a>
                     <div class="collapse" id="collapseLayoutsCustomer" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href=<?php echo base_url()."customer/todays-interview";?>>Today's Schedule</a>
+
                             <a class="nav-link" href=<?php echo base_url()."customer/create-interview-group";?>>Create</a>
                             <a class="nav-link" href=<?php echo base_url()."customer/view-interview";?>>View</a>
                             <a class="nav-link" href=<?php echo base_url()."customer/create-interviewers";?>>Add Interviewer</a>

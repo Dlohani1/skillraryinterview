@@ -18,10 +18,6 @@
 
 
 
-
-
-
-
       <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
       <div class="container-fluid">
       <div class="container">
@@ -44,7 +40,7 @@
                   </div>
                   <div class="col-md-2 offset-md-1">
                     <label>Contact No</label>
-                    <input type="text" id="customer_contactno" name="customer_contactno" class="form-control inputBox">
+                    <input type="number" id="customer_contactno" name="customer_contactno" class="form-control inputBox">
                     <span id="contactError" style="color:red"></span>
                   </div>
                 <div>
@@ -91,8 +87,8 @@
                       </div>
 
                       <div class="col-md-2">
-                        <label>Contact</label>
-                        <input type="text" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
+                        <label>Contact No</label>
+                        <input type="number" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
                       </div>
 
                       <div class="col-md-2">
@@ -152,7 +148,7 @@
     <tbody>
 
         <?php 
-        $i = $this->uri->segment(3)+0;
+        $i = $this->uri->segment(3);
 
         if (count($customers) > 0)
         foreach($customers as $key => $value) { 

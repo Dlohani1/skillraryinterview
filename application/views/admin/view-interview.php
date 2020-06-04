@@ -17,7 +17,7 @@
 
 
 <div class="container">
-      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/view-interview-search/$customerId";?>>
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/view-interview-search/$customerId";?>>
 
           <div class="searchBox">
 
@@ -96,7 +96,7 @@
                     <tbody>
 
                         <?php
-                          $i = 0;
+                           $i = $this->uri->segment(4);
                           foreach($interview as $key => $value) {
                             $i++;
                             echo "<tr><td>$i</td><td>$value->interview_code</td><td>$value->total_students</td><td><a href=".base_url()."admin/create-interview/$customerId/$value->interview_code><button class='btn btn-primary btn-xs' ><span class='glyphicon glyphicon-eye-open'></span></button></a></td></tr>";
@@ -169,7 +169,7 @@
     </tbody>
         
 </table>
-
+<p><?php echo $links; ?></p>
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
@@ -248,3 +248,6 @@
     </div>
   </div>
 </main>
+
+
+
