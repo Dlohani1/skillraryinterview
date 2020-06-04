@@ -382,3 +382,10 @@ $route['admin/add-meeting-credentials'] = 'AdminController/createMeetingCredenti
 $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentials'; 
 
 $route['admin/result/:any'] = 'AdminController/updateResult';
+
+$route['skillrary-chat'] = 'ChatController/showJoinPage';
+$route['createChat']['POST'] = 'ChatController/createChatFun';
+$route['chat-room'] = 'ChatController/showChatPage';
+$route['save-mess']['POST'] = 'ChatController/saveMessageFun';
+$route['skillrary-chat/logout'] = 'ChatController/logout';
+// $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
