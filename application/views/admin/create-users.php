@@ -125,6 +125,51 @@
         </div><br/>
         </div>
  -->
+
+
+
+
+<!-- <div class="container"> -->
+  <br>
+     <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/create-users-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-4 ">
+                        <label>Search Username</label>
+                        <input type="text" id="searchusername" name="searchusername" class="form-control " placeholder="Search Code" value="<?php echo $searchusername; ?>" >
+                      </div>
+
+                      <div class="col-md-4">
+                        <label>Search Role</label>
+                        <input type="text" id="searchrole" name="searchrole" class="form-control" placeholder="Search Role" value="<?php echo $searchrole; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+                      </div>
+
+                      <div class="col-md-1">
+                        <label></label>
+                         <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+  <!-- </div> -->
+
+
+
+
+
+
         <div class="table-responsive">
 
                 
@@ -146,7 +191,8 @@
     <tbody>
 
         <?php 
-	$i = 0;
+	
+          $i = $this->uri->segment(3);
         if (count($user) > 0)
         foreach($user as $key => $value) { 
           //print_r($value);
@@ -224,6 +270,7 @@
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
@@ -359,4 +406,17 @@
 
 
              }
+</script>
+
+
+
+<script type="text/javascript">
+  
+  $('#back').click(function () {
+
+      let baseUrl = '<?php echo base_url(); ?>';
+      let url =  baseUrl+"admin/create-users";
+      window.location.href = url;
+    });
+
 </script>

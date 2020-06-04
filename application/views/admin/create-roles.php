@@ -70,6 +70,34 @@
         </div><br/>
         </div>
  -->
+
+ <br>
+     <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/create-roles-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                      <div class="col-md-4">
+                        <label>Search Role</label>
+                        <input type="text" id="searchrole" name="searchrole" class="form-control" placeholder="Search Role" value="<?php echo $searchrole; ?>">
+                      </div>
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+
+
+
+
         <div class="table-responsive">
 
                 
@@ -90,7 +118,8 @@
     <tbody>
 
         <?php 
-        $i = 0;
+        $i = $this->uri->segment(3);
+
         if (count($roles) > 0)
         foreach($roles as $key => $value) { 
           //print_r($value);
@@ -168,6 +197,7 @@
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
@@ -294,3 +324,6 @@
 
              }
 </script>
+
+
+
