@@ -63,28 +63,28 @@
         border-top: none;
     }
     .table td {
-    padding: 8px;
-    vertical-align: top;
-    font-size: 15px;
-}
-textarea  
-{  
-  width: 100%;
-   font-family: "Lucida Console", Courier, monospace;
-   color:'DodgerBlue';
-}
-
-
-
- </style>
-
+      padding: 8px;
+      vertical-align: top;
+      font-size: 15px;
+    }
+    textarea  {  
+      width: 100%;
+     font-family: "Lucida Console", Courier, monospace;
+     color:'DodgerBlue';
+    }
+    .play {
+      background: transparent;
+      background-image: linear-gradient(to bottom right, #33A478, rgba(0, 0, 0, 0.76) 60%);
+      border: 1px solid black;
+    }
+  </style>
 </head>
 <body>
 
 	<div class="container-fluid" style="background: #33A478;">
 		<img src="https://skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary" style="padding:5px">
 	<span>
-      <button  class="btn btn-primary" aria-hidden="true" id="ExecuteSql" >Execute Query</button>
+      <button  class="btn btn-primary play" aria-hidden="true" id="ExecuteSql" >Execute Query</button>
     </span>
 
     <!-- <span>
@@ -92,7 +92,7 @@ textarea
     </span> -->
 
     <span>
-      <button type="fa fa-play" class="btn btn-primary" aria-hidden="true" id="RestoreDb" >Restore Database</button>
+      <button type="fa fa-play" class="btn btn-primary play" aria-hidden="true" id="RestoreDb" >Restore Database</button>
     </span>
 
 
