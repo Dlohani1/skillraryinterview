@@ -10,6 +10,7 @@ class AdminController extends CI_Controller {
     $this->load->database();
     $this->load->helper(array('form', 'url', 'string'));
     $this->load->library(array('session','form_validation'));
+    $this->load->library('form_validation');
 
     $this->load->library("pagination");
 
@@ -6461,4 +6462,160 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $this->db->delete('customer_interviewers');
     echo "success";
   }
+
+
+  public function createSection() {
+    $sql = " SELECT * FROM section ";
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'admin/add-section';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $searchSection = '';
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-section', array(
+      "section"=>$result,
+      "links"=>$links,
+      "searchSection" => $searchSection
+
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+
+  public function createSectionSearch() {
+
+    $searchSection = $_GET['searchSection'];
+
+    $sql = " SELECT * FROM section ";
+
+    if(!empty($searchSection)){
+        $sql .= "  where section_name like '%$searchSection%' ";
+    }
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+
+    $config['base_url'] = base_url() . 'admin/add-section-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-section', array(
+      "section"=>$result,
+      "links"=>$links,
+      "searchSection" => $searchSection
+
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+
+
+  public function saveSection() {
+    $searchSection = $_POST['searchSection'];
+
+    if (empty($searchSection)) {
+        $this->session->set_flashdata('error', "Enter section name.");
+        redirect('admin/add-section');
+    }
+
+      $this->form_validation->set_rules('searchSection', 'Section','required|is_unique[section.section_name]');
+      if($this->form_validation->run()== FALSE){
+      
+        $this->session->set_flashdata('error', "$searchSection already exist.");
+        redirect('admin/add-section');
+
+      }else{
+        $data  = array ('section_name' => $_POST['searchSection']);
+        $this->db->insert('section', $data);
+
+        $this->session->set_flashdata('success', "$searchSection added successfully.");
+
+        redirect('admin/add-section');
+      }
+  }
+
+
+   public function deleteSection() {
+
+      $status = ($_POST['value'] == 1) ? 0 : 1;
+
+       $data = array(
+          'is_active' => $status
+       );
+
+       $this->db->where('id', $_POST['id']);
+       $this->db->update('section',$data);
+  }
+
+
+
+
 }
+
+
+
