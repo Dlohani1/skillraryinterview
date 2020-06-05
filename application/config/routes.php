@@ -380,6 +380,10 @@ $route['customer/checklogin']['POST'] = 'CustomerController/checkLogin';
 $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
 $route['customer/dashboard'] = 'CustomerController/viewDashboard';
 
+$route['customer/create-test'] = 'CustomerController/createTest';
+$route['customer/addTest']['POST'] = 'CustomerController/addTest';
+$route['customer/addTestTime']['POST'] = 'CustomerController/addTestTime';
+
 $route['customer/mcq-list'] = 'CustomerController/viewMcqList';
   
 $route['customer/mcq-list/:any'] = 'CustomerController/viewMcqList';

@@ -53,7 +53,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
          <input type="hidden" id="assessId" name="assessId"  />
           <div class="col-md-12">
             <h4>MCQs</h4>
-<!--             <div class="container"  id="detail">
+            <div class="container"  id="detail">
             <div class="row">
               <div class="column">
                 <label>User Count</label>
@@ -72,7 +72,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
                   <label for="lname">Fail Count : </label> <strong><?=$mcq['mcq-details']->failCount;?></strong><br/> 
               </div>
             </div>
-          </div> -->
+          </div>
 
 
 

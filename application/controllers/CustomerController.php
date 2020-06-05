@@ -10,15 +10,15 @@ class CustomerController extends CI_Controller {
     $this->load->library(array('session','form_validation'));
     $this->load->library("pagination");
 
-    // $uri = $this->uri->segment(2);
-    // //echo $uri; die;
-    // if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin'))) {
-    //   redirect('admin/login');
-    // }
 
-    if (!isset($_SESSION['customerId'])) {
+    $uri = $this->uri->segment(2);
+
+    if (!isset($_SESSION['customerId']) && !in_array($uri,array('login','logout','checklogin'))) {
       redirect('customer/login');
     }
+    // if (!isset($_SESSION['customerId'])) {
+    //   redirect('customer/login');
+    // }
   } 
 
   public function login() {
@@ -26,7 +26,124 @@ class CustomerController extends CI_Controller {
     $this->load->view('customer/login');
   }
 
+  private function getCode() {
 
+    $seed = str_split('abcdefghijklmnopqrstuvwxyz'
+    .'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    .'0123456789!@#$%^&*()'); // and any other characters
+    shuffle($seed); // probably optional since array_is randomized; this may be redundant
+    $rand = '';
+    foreach (array_rand($seed, 5) as $k) $rand .= $seed[$k];
+  
+    return $rand;
+  }
+
+  public function addTest() {
+
+    $title = $_POST['test-title'];
+    $type = $_POST['test-type'];
+
+    //$check_mcq_test_id = $_POST['check_mcq_test_id'];
+    $check_mcq_test_id = 0;
+
+    //$check_drive_id = $_POST['check_drive_id'];
+    $check_drive_id = 0;
+
+    //$isProctored = $_POST['is-proctored'];
+    $isProctored = 0;
+    //$customerCode = explode("-",$_POST['customer-code']); //change to customer id
+
+    $data = array(
+      'title' => $title,
+      'type' => $type,
+      'customer_id' => $_SESSION['customerId'],
+      'is_proctored' => $isProctored,
+      'created_by' => $_SESSION['customerId']
+    );
+
+
+    if ($check_mcq_test_id != 0) {
+        $data = array(
+            'title' => $title,
+            'type' => $type
+        );
+        
+        $this->db->where('id', $check_mcq_test_id);
+        $this->db->update('mcq_test',$data);
+        $testId = $check_mcq_test_id;
+    } else {    
+      $this->db->insert('mcq_test', $data);
+      $testId = $this->db->insert_id();
+
+      $code = $this->getCode();
+
+      $data = array(
+              'mcq_test_id' => $testId,
+              'code' => $code
+      );
+
+      $this->db->insert('mcq_code', $data);
+
+      if (strlen(trim($_POST['drive-date'])) > 0) {
+
+
+        $data = array(
+          'mcq_test_id' => $testId,
+          'drive_date' =>trim($_POST['drive-date']),
+          'drive_time' =>trim($_POST['drive-time']),
+          'drive_place' =>trim($_POST['drive-place'])
+        );
+
+
+        if ($check_drive_id != 0) {
+          $this->db->where('id', $check_drive_id);
+          $this->db->update('drive-details',$data);
+        } else {  
+          $this->db->insert('drive_details', $data);
+        }               
+      }
+    }
+
+    echo $testId;
+  }
+
+   public function addTestTime() {
+    $mcqId = $_POST['mcqId'];
+
+    $totalSection = $_POST['totalSection'];
+    $sectionIds = explode(",",$_POST['sectionIds']);
+    $totalQuestion = explode(",",$_POST['totalQuestion']);
+    $totalTime = explode(",",$_POST['sectionTime']);
+
+    //$check_exist_id = explode(",",$_POST['check_exist_id']);
+
+    $requiredQuestion = explode(",", $_POST['requiredQnos']);
+    $data = array();
+
+    $patternData = array();
+
+    for($i=0; $i < $totalSection; $i++) {
+        $t = array (
+          'mcq_test_id' => $mcqId,
+          'section_id' => $sectionIds[$i],
+          'completion_time' => $totalTime[$i],
+          'total_question' => $totalQuestion[$i]
+        );
+
+        $data[] = $t;
+
+        $p = $t;
+        $p['level_id'] = "1";
+        $p['sub_section_id'] = "1";
+        $p['total_question'] = $requiredQuestion[$i];
+
+        $patternData[] = $p;
+        $this->db->insert('mcq_time', $t);
+        $this->db->insert('mcq_test_pattern', $p);
+    }
+    //$this->session->set_flashdata('success-test', 'MCQ Created successfully');
+    echo true;
+  }
 
   public function checkLogin() {
     $login = $_POST['login'];
@@ -42,11 +159,20 @@ class CustomerController extends CI_Controller {
       $customerId = $result->id;
       $_SESSION['customerId'] = $customerId;
       $_SESSION['customerName'] = $result->customer_name;
+      $_SESSION['isMCQAssigned'] = $result->mcq;
+      $_SESSION['isInterviewAssigned'] = $result->interview;
       //redirect('customer/dashboard');
       redirect('customer/mcq-list');
     } else {
        redirect('customer/login');
     }
+  }
+
+  public function createTest() {
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+    $this->load->view('customer/create-mcq');
+    $this->load->view('customer/footer');
   }
 
   public function viewDashboard() {
@@ -265,9 +391,8 @@ public function viewMcqListSearch() {
   }
  
   public function viewMcqData() {
-      $mcqId = $this->uri->segment(3);   
-
-
+      $mcqId = $this->uri->segment(3); 
+      //echo $mcqId; die;
       $sql = "SELECT mcq_test.id as id,title, mcq_test.is_proctored as proctoredTest,mcq_code.code FROM `mcq_test` 
        LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
        WHERE mcq_test.id=".$mcqId;
@@ -317,8 +442,8 @@ public function viewMcqListSearch() {
     $links = $this->pagination->create_links();
 
     $mcqData['mcq-users']= $this->getAllRowsRecord($sql,$config['per_page'], $start_index);
-
-
+// echo "<pre>";
+//print_r($mcqData['mcq-users']); die;
         // $query = $this->db->query($sql);
         // $mcqData['mcq-users'] = $query->result();
 //echo '<pre>'; print_r(var_dump($mcqData)); die;

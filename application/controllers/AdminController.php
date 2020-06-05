@@ -16,7 +16,7 @@ class AdminController extends CI_Controller {
 
     $uri = $this->uri->segment(2);
     //echo $uri; die;
-    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin','updateToken'))) {
+    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin','updateToken','checkCode'))) {
       redirect('admin/login');
     }  
 
