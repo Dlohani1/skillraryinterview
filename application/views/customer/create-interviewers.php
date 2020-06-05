@@ -117,6 +117,36 @@
         </div><br/>
         </div>
  -->
+
+<br>
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/create-interviewers-search";?>>
+
+          <div class="searchBox">
+
+                <div class="row">
+
+                   
+                      <div class="col-md-5">
+                        <label>Search Username</label>
+                        <input type="text" id="searchusername" name="searchusername" class="form-control" placeholder="Search Username" value="<?php echo $searchusername; ?>">
+                      </div>
+
+
+                      <div class="col-md-2">
+                          <label>Search</label><br>
+                          <button type="submit" value="Submit">
+                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                          </button>
+
+                      </div>
+
+                </div>
+
+          </div>
+      </form>
+
+
+
         <div class="table-responsive">
 
                 
@@ -136,7 +166,7 @@
                 <tbody>
 
                 <?php 
-                $i = 0;
+                 $i = $this->uri->segment(3);
                 if (count($user) > 0)
                   foreach($user as $key => $value) { 
                     //print_r($value);
@@ -214,6 +244,7 @@
     </tbody>
         
 </table>
+  <p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">

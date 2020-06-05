@@ -52,6 +52,18 @@ class QuestionBank extends MyController {
                 print_r(json_encode($sectionData));
         }
 
+        public function saveResult() {
+            $studentId = $_POST['student'];
+            $mcqId = $_POST['mcqId'];
+            $whereArray = array (
+                "user_id" => $studentId,
+                "mcq_test_id" => $mcqId
+            );
+            $data = array ("is_completed" => 2);
+            $this->db->where($whereArray);
+            $this->db->update('user_status',$data);
+            echo "success";
+        }
         public function save() {
                 
                 $sectionId = $_POST['sectionId'];
@@ -543,16 +555,16 @@ class QuestionBank extends MyController {
 
         public function signin() {
 
-                $isEmailLogin = 0;
-               $email = $_POST['email'];
+            $isEmailLogin = 0;
+            $email = trim($_POST['email']);
             //    $pwd = md5(trim($_POST['pwd']));
-               $pwd = trim($_POST['pwd']);
+            $pwd = trim($_POST['pwd']);
 
-               $this->load->helper('email');
+            $this->load->helper('email');
 
-                if (valid_email($email)) {
-                    $isEmailLogin = 1;    
-                }
+            if (valid_email($email)) {
+            $isEmailLogin = 1;    
+            }
 
                 if ($isEmailLogin) {
 
@@ -1297,7 +1309,13 @@ class QuestionBank extends MyController {
                if ($result1[$i] > 60 ) {
                 $min = intval($result1[$i] / 60);
                 $sec = $result1[$i] % 60;
-                $time = $min." min ".$sec. " sec";
+                if ($value < $result1[$i] ) {
+                    $time = $min." min ";
+                } else {
+                    $time = $min." min ".$sec. " sec";
+                }
+
+                
                } else {
                 if ($result1[$i] > 0) {
                     $time = $result1[$i]." sec";    
@@ -1665,9 +1683,21 @@ class QuestionBank extends MyController {
             $this->load->view('loadiframe');
         }
 
-        public function showInstructions() {//echo "<pre>";print_r($_SESSION['instructionData']); die;
-            $this->load->view('user-header');
-            $this->load->view('instructions');
+        public function isTestCompleted() {
+            $studentId = $_SESSION['id'];
+            $mcqId = $_SESSION['mcqId'];
+            $sql = "SELECT is_completed from user_status where user_id = $studentId and mcq_test_id = $mcqId";
+
+            $result = $this->db->query($sql)->row();
+            return $result->is_completed;
+        }
+        public function showInstructions() {
+            if ($this->isTestCompleted() != 2) {
+                $this->load->view('user-header');
+                $this->load->view('instructions');
+            } else {
+                redirect('user/home');   
+            }
         }
 
         public function redirectPage() {

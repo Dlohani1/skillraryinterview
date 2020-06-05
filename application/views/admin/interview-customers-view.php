@@ -17,7 +17,7 @@
 
  
 <div class="container">
-      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/interview-customers-list-search";?>>
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/interview-customers-list-search";?>>
 
           <div class="searchBox">
 
@@ -139,7 +139,7 @@
     <tbody>
 
         <?php 
-        $i = 0;
+         $i = $this->uri->segment(3);
         if (count($customers) > 0)
         foreach($customers as $key => $value) { 
           //print_r($value);
@@ -215,7 +215,7 @@
     </tbody>
         
 </table>
-
+<p><?php echo $links; ?></p>
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>

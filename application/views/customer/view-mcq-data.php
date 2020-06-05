@@ -53,7 +53,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
          <input type="hidden" id="assessId" name="assessId"  />
           <div class="col-md-12">
             <h4>MCQs</h4>
-<!--             <div class="container"  id="detail">
+            <div class="container"  id="detail">
             <div class="row">
               <div class="column">
                 <label>User Count</label>
@@ -72,7 +72,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
                   <label for="lname">Fail Count : </label> <strong><?=$mcq['mcq-details']->failCount;?></strong><br/> 
               </div>
             </div>
-          </div> -->
+          </div>
 
 
 
@@ -234,7 +234,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
             
           }
           
-            echo '<tr><td>'.$i.'</td><td>'.$value->first_name." ".$value->last_name.'</td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="Edit"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
+            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="Edit"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
     if ($proctoredTest) {
@@ -340,6 +340,35 @@ if (!$mcq['mcq-details']->proctoredTest) {
   </div>
 </div>
 
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" style="margin-top: -5%;
+
+margin-right: -29%;
+
+color: red;">&times;</button>
+          <h4 class="modal-title">Student Detail</h4>
+        </div>
+        <div class="modal-body">
+                  <table id="classTable" class="table table-bordered">
+          <thead>
+          </thead>
+          <tbody id="student">
+           
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
@@ -435,6 +464,39 @@ if (!$mcq['mcq-details']->proctoredTest) {
                 function setUserId(id) {
                   document.getElementById("assessId").value = id;                  
                 }
+                function showStudentDetails(userId) {
+    var baseUrl = document.getElementById("base_url").value;
+     $('#student').empty();
+    $.ajax({
+                    url: baseUrl+"admin/showStudentData",
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                  data: { "id":userId} ,
+                    success: function( data, textStatus, jQxhr ){
+
+                       $.each(data, function (index, item) {
+                        //console.log(item, index);
+                        if (null !== item) {
+                        var eachrow = 
+                               '<tr><td><strong>'+index+': </strong></td><td>'+item+ '</td></tr>';
+                   $('#student').append(eachrow);
+                }
+                  });
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        // document.getElementById("code").disabled = true;
+
+                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+  }
 
                function generateUsrPwd() {
                 

@@ -168,7 +168,7 @@
                 </tr>
                 <tr>
                     <td class="tdborder"><b>Residence City</b></td>
-                    <td class="tdborder"><?php echo $studentData->city;?></td>
+                    <td class="tdborder"><?php echo $studentData->city_name;?></td>
                     <td class="tdborder"><b>Date of Birth (Gender)</b></td>
                     <td class="tdborder"><?php echo $studentData->dob;?> <?php if ($studentData->gender == 1) {echo "(Male)";} else {echo "(Female)";}?></td>
                 </tr>
