@@ -217,7 +217,7 @@ font-size: 16px;
          <form method="post" action="<?php echo base_url().'admin/checkCode'; ?>">
            <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
           <input type="text" id = "code" name = "code" placeholder="Type Code Here" class="form-control" required autocomplete="off"/><br/>
-          <input type="submit" class="btn proceedBtn" value="Proceed">
+          <input type="submit" class="btn proceedBtn" id="checkLoginWithOpt" value="Proceed">
         </form>
       </div>
 
@@ -262,6 +262,16 @@ font-size: 16px;
     </div>
   </div>
 </div>  -->
+
+<script type="text/javascript">
+  $('#checkLoginWithOpt').click(function(){
+
+    localStorage.setItem("checkLoginWithOpt", "checkLoginWithOpt");
+
+  });
+
+
+</script>
 
 </body>
 </html>
