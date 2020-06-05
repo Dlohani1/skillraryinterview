@@ -685,16 +685,24 @@ function Upload() {
     </div>
 <script>
 
-// window.onload = test();
+//window.onload = test();
 
-// function test() {
-//     var  username = "<?php //echo $_SESSION['username']; ?>";
 
-//     if (localStorage.getItem("isRead") != 1 && undefined !== username) {
-//         $('#userModal').modal({backdrop: 'static', keyboard: false})
-//         document.getElementById("modal-btn").click();
-//     }
-// }
+ var checkLoginWithOpt = localStorage.getItem("checkLoginWithOpt");
+
+if(checkLoginWithOpt == 'checkLoginWithOpt'){
+    test();
+}
+
+
+function test() {
+    var  username = "<?php //echo $_SESSION['username']; ?>";
+
+    if (localStorage.getItem("isRead") != 1 && undefined !== username) {
+        $('#userModal').modal({backdrop: 'static', keyboard: false})
+        document.getElementById("modal-btn").click();
+    }
+}
 $(document).ready(function(){
 
         let base_url = "<?php echo base_url();?>";
