@@ -1689,7 +1689,11 @@ class QuestionBank extends MyController {
             $sql = "SELECT is_completed from user_status where user_id = $studentId and mcq_test_id = $mcqId";
 
             $result = $this->db->query($sql)->row();
-            return $result->is_completed;
+            if (null != $result) {
+                return $result->is_completed;   
+            } else {
+                return 0;
+            }
         }
         public function showInstructions() {
             if ($this->isTestCompleted() != 2) {
