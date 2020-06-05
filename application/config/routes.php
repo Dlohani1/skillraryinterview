@@ -387,5 +387,11 @@ $route['skillrary-chat'] = 'ChatController/showJoinPage';
 $route['createChat']['POST'] = 'ChatController/createChatFun';
 $route['chat-room'] = 'ChatController/showChatPage';
 $route['save-mess']['POST'] = 'ChatController/saveMessageFun';
+$route['show-message'] = 'ChatController/showMessageFun';
+
+$route['joinChatStudent']['POST'] = 'ChatController/joinChatFun';
+
+
+
 $route['skillrary-chat/logout'] = 'ChatController/logout';
 // $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';

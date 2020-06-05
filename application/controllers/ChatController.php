@@ -56,8 +56,7 @@ class ChatController extends CI_Controller{
 		if(isset($temp['0']->id)){
 			
 				$_SESSION['trainerId'] = $temp['0']->id;
-				//$session->set('trainerId', $temp['0']->id);
-				
+				$_SESSION['trainerName'] = $temp['0']->trainer_name;
 
 			    $chatroomData = array(
 						      "trainer_id" => $temp['0']->id,
@@ -102,11 +101,30 @@ class ChatController extends CI_Controller{
   {
   	$text = $_POST['text'];
   	$fileName = $_SESSION['channelTitle'].".html";
+  	date_default_timezone_set('Asia/kolkata');
   	$date = date('h:i A', time());
   	$fp = fopen($fileName, 'a');
-  	fwrite($fp, "<div class='msgln'>(".$date.") <b>".$_SESSION['trainerId']."</b>: ".stripslashes(htmlspecialchars($text))."<br></div>");
+  	fwrite($fp, "<div class='msgln'>(".$date.") <b>".$_SESSION['trainerName']."</b>: ".stripslashes(htmlspecialchars($text))."<br></div>");
     fclose($fp);
   }
+
+  public function showMessageFun(){
+
+  	$file_name = $_SESSION['channelTitle'].".html";
+
+  	if (file_exists ( $file_name ) && filesize ( $file_name ) > 0){
+  		$file = fopen($file_name, 'r');
+  		$contents = fread($file,filesize ( $file_name ));
+  		print_r($contents);
+  	}
+
+  }
+
+  public function joinChatFun(){
+  	
+  }
+
+
 
 
 

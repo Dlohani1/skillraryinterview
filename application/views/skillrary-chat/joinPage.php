@@ -144,19 +144,21 @@
             <div class="col-md-6 card joinchat">
                 <img src="<?=base_url().'images/wave3.svg';?>">
                 <h5 class="joinTextHead">Join a Chat</h5>
-                <div class="row">
-                    <div class="col-md-6 offset-md-3">
-                        <input type="text" name="name"  placeholder="Enter your name" class="form-control">
-                    </div>
-                </div><br/>
-                <div class="row">
-                    <div class="col-md-6 offset-md-3">
-                        <input type="text" name="name"  placeholder="Enter code" class="form-control">
-                    </div>
-                </div><br/>
-                <div style="text-align: center;">
-                    <button type="submit" class="joinBtn">Join as a student</button>
-                </div>
+				<form action ="joinChatStudent" method="post" autocomplete="off"> 
+	                <div class="row">
+	                    <div class="col-md-6 offset-md-3">
+	                        <input type="text" name="student_name"  placeholder="Enter your name" class="form-control">
+	                    </div>
+	                </div><br/>
+	                <div class="row">
+	                    <div class="col-md-6 offset-md-3">
+	                        <input type="text" name="chat_code"  placeholder="Enter code" class="form-control">
+	                    </div>
+	                </div><br/>
+	                <div style="text-align: center;">
+	                    <button type="submit" class="joinBtn">Join as a student</button>
+	                </div>
+				</form>
                 <img src="<?=base_url().'images/wave5.svg';?>">
             </div>
         </div><br/>

@@ -162,7 +162,7 @@
             padding: 15px;
             width: 100%;
         }
-        .chatMessage{
+        #chatMessage{
              height: 420px;
              background: none repeat scroll 0 0 #fdfdfd;
             border: 1px solid #ddd;
@@ -333,7 +333,17 @@
 
             </div>
             <div class="panel-left">
-                <div class="chatMessage">
+                <div id="chatMessage">
+
+                		<?php
+							$fileName = $_SESSION['channelTitle'].".html";
+							if (file_exists ( $fileName ) && filesize ( $fileName ) > 0) {
+								$handle = fopen ( $fileName, "r" );
+								$contents = fread ( $handle, filesize ( $fileName ) );
+								fclose ( $handle );
+								echo $contents;
+							}
+						?>
                     
                         <!-- <p class="commentMessage">
                             <img src="<?=base_url().'images/teacher.svg';?>" class="chatImage">
@@ -398,14 +408,27 @@
 				data :{text: clientmsg},
 				method:'POST',
 				success:function(data) {
-					console.log('qwerty',data);
-				    $("#usermsg").attr("value", "");
-					// loadLog();
-				    
+				   
+					loadLog();
+				     $("#usermsg").val('');
 			    }
 		    });
 
 		});
+
+    		function loadLog(){	
+			
+			$.ajax({
+				url: "show-message",
+				method:'get',
+				success: function(data){
+					$("#chatMessage").html(data);
+			  	},
+			});
+		}
+
+		setInterval (loadLog, 4000);
+
     </script>
 </body>
 </html>
