@@ -568,7 +568,8 @@ gender,
 dob,
 email,
 contact_no,
-state,
+states.name as state_name,
+cities.name as city_name,
 city,
 tenth_board,
 tenth_passing_year,
@@ -588,10 +589,12 @@ degree_passing_year,
 -- pg_percentage,
 -- pg_degree,
 stream,
-work_location from `student_register` where id = $id";
+work_location from `student_register` left join states on student_register.state = states.id
+left join cities on student_register.city = cities.id where student_register.id = $id";
 
 
     $result = $this->db->query($sql)->row();
+
     $studentData = array();
 
     foreach ($result as $key => $value) {
@@ -620,11 +623,11 @@ work_location from `student_register` where id = $id";
           # code...
           $studentData['Contact No'] = $value;
           break;
-          case 'state':
+          case 'state_name':
           # code...
           $studentData['State'] = $value;
           break;
-          case 'city':
+          case 'city_name':
           # code...
           $studentData['City'] = $value;
           break;

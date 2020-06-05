@@ -52,6 +52,18 @@ class QuestionBank extends MyController {
                 print_r(json_encode($sectionData));
         }
 
+        public function saveResult() {
+            $studentId = $_POST['student'];
+            $mcqId = $_POST['mcqId'];
+            $whereArray = array (
+                "user_id" => $studentId,
+                "mcq_test_id" => $mcqId
+            );
+            $data = array ("is_completed" => 2);
+            $this->db->where($whereArray);
+            $this->db->update('user_status',$data);
+            echo "success";
+        }
         public function save() {
                 
                 $sectionId = $_POST['sectionId'];
@@ -1671,9 +1683,25 @@ class QuestionBank extends MyController {
             $this->load->view('loadiframe');
         }
 
-        public function showInstructions() {//echo "<pre>";print_r($_SESSION['instructionData']); die;
-            $this->load->view('user-header');
-            $this->load->view('instructions');
+        public function isTestCompleted() {
+            $studentId = $_SESSION['id'];
+            $mcqId = $_SESSION['mcqId'];
+            $sql = "SELECT is_completed from user_status where user_id = $studentId and mcq_test_id = $mcqId";
+
+            $result = $this->db->query($sql)->row();
+            if (null != $result) {
+                return $result->is_completed;   
+            } else {
+                return 0;
+            }
+        }
+        public function showInstructions() {
+            if ($this->isTestCompleted() != 2) {
+                $this->load->view('user-header');
+                $this->load->view('instructions');
+            } else {
+                redirect('user/home');   
+            }
         }
 
         public function redirectPage() {

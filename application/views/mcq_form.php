@@ -7,16 +7,16 @@
 
     $studentId = 0;
     $mcqTestId= 0;
-if (count($testData) > 0) {
-  // print_r($testData);
-    $sectionIdResume =  $testData['section_id'];
-    $questionIdResume = $testData['question_id'];
-    $timeTaken = $testData['time_left'];
-    $totalTime = $testData['total_time'];
-    $resumeTest = 1;
-    $studentId = $testData['user_id'];
-    $mcqTestId= $testData['mcq_test_id'];
-}
+    if (count($testData) > 0) {
+      // print_r($testData);
+        $sectionIdResume =  $testData['section_id'];
+        $questionIdResume = $testData['question_id'];
+        $timeTaken = $testData['time_left'];
+        $totalTime = $testData['total_time'];
+        $resumeTest = 1;
+        $studentId = $testData['user_id'];
+        $mcqTestId= $testData['mcq_test_id'];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -1667,6 +1667,17 @@ window.onload = InitializeMap;
                     document.getElementById("section"+newSectionId).disabled = false;
                     $("#section"+newSectionId).click(); 
                 } else {
+                    var student = document.getElementById("studentSessionId").value;
+                    var mcqId = document.getElementById("mcqSessionId").value;
+                    $.ajax({
+                        type: "POST",
+                        url: "saveResult",
+                        data:{"student":student,  "mcqId":mcqId, },
+
+                        success: function(data){
+                            console.log('ansr', data)                            
+                        }
+                    });
                     closeBtn();
                 } 
                 console.log('ddd')          

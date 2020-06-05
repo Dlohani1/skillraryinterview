@@ -830,7 +830,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             url: base_url+"user/profile-city",
-            data:{id:state_id}, 
+            data:{id: null !== state_id ? state_id : selected_state}, 
 
             success: function (data) {
 
@@ -857,9 +857,9 @@ $(document).ready(function(){
 
                $('#city').append('<option value="0">Residence City</option>');
 
-    }
+    } else {
 
-        if (selected_city != 0 && selected_city != null) {
+       // if (selected_city != 0 && selected_city != null) {
 
                  $('#state').trigger('change');
         }
