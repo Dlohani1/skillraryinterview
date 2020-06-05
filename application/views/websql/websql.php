@@ -77,7 +77,7 @@ textarea
  </style>
 
 </head>
-<body>
+<body id="bodyClass">
 
 	<div class="container-fluid" style="background: #33A478;">
 		<img src="https://skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary" style="padding:5px">
@@ -130,8 +130,18 @@ textarea
 
 <script type="text/javascript">
 
-        var db = null;
-        var db = openDatabase('SkillRary', '1.0', 'To Do', 5 * 1024 * 1024);
+        
+        var isFirefox = typeof InstallTrigger !== 'undefined';
+        if(isFirefox){
+          document.getElementById("bodyClass").innerHTML = 'This feature is not accesible in firfox Browser: please try in Google-chrome';
+          throw new Error("This feature is not accesible in firefox Browser: please try in Google-chrome");
+         
+        }
+        else{
+          var db = null;
+          var db = openDatabase('SkillRary', '1.0', 'To Do', 5 * 1024 * 1024);
+        }
+        
 
 
         $('document').ready(function() {
