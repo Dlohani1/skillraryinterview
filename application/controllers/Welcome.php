@@ -57,11 +57,11 @@ public function mypdf(){
     $result = $this->viewResult($mcqId, $studentId);
    
 
-    $sql = "SELECT * FROM `student_register` WHERE id=".$studentId;
+    $sql = "SELECT student_register.*, states.name as state_name, cities.name as city_name FROM `student_register` left join states on student_register.state = states.id
+left join cities on student_register.city = cities.id WHERE student_register.id=".$studentId ;
 
     $student = $this->db->query($sql)->row();
 
-    // print_r($student); die;
 
 
     // $this->load->view('admin/student-result', array('studentData' => $student));
@@ -351,5 +351,42 @@ public function viewResult($mcqId, $sId) {
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
         $objWriter->save('php://output'); 
  
+    }
+
+    public function typingTest() {
+        $this->load->view('typing-test/home');
+    }
+
+    public function typingTestStart() {
+        $this->load->library('user_agent');
+        $refer = null;
+        if ($this->agent->is_referral()) {
+            $refer =  $this->agent->referrer();
+        }
+        /*
+        if (null !== $refer) {
+
+        $this->load->view('typing-test/test'); 
+        } else {
+            redirect('/typing-test');
+        } */
+        $this->load->view('typing-test/test'); 
+    }
+
+    public function typingTestResult() {
+         $this->load->library('user_agent');
+        $refer = null;
+        if ($this->agent->is_referral()) {
+            $refer =  $this->agent->referrer();
+        }
+
+        /*
+        if (null !== $refer) {
+
+        $this->load->view('typing-test/result'); 
+        } else {
+            redirect('/typing-test');
+        }*/
+        $this->load->view('typing-test/result'); 
     }
 }
