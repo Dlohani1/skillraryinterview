@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-
+ 
 $route['user/new-login']['GET'] = 'MyController/loginOpt';
 
 $route['question/create'] = 'questionBank';
@@ -130,6 +130,11 @@ $route['admin/checkCode']['POST'] = 'AdminController/checkCode';
 $route['user/logout'] = 'MyController/logout';
 
 $route['user/home'] = 'questionBank/userHome';
+
+$route['user/home'] = 'questionBank/userHome';
+
+
+
 
 $route['user/test'] = 'questionBank/codeTestResult';
 
@@ -499,3 +504,11 @@ $route['customer/delete-section']['POST'] = 'CustomerController/deleteSection';
 $route['customer/saveSection'] ['POST']= 'CustomerController/addNewSection'; 
 
 $route['sql-editor'] = 'SqlController/getViewHere';
+
+$route['sql-editor'] = 'SqlController/getViewHere';
+
+
+$route['checkcode'] = 'Welcome/checkcode';
+
+$route['checklogin'] = 'Welcome/checklogin';
+
