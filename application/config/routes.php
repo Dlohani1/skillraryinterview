@@ -197,6 +197,7 @@ $route['addMcq']['POST'] = 'questionBank/addMcqCode';
 $route['redirect-to-code'] = 'questionBank/redirectPage';
 
 $route['saveTestStatus'] = 'questionBank/saveTestStatus';
+$route['saveResult'] = 'questionBank/saveResult';
 
 $route['load-frame'] = 'questionBank/loadFrame';
 
