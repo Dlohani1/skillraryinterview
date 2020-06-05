@@ -166,7 +166,17 @@ $route['admin/view-questions/:any'] = 'AdminController/viewQuestion';
 $route['admin/view-questions-search'] = 'AdminController/viewQuestionSearch';
 
 $route['admin/view-questions-search/:any'] = 'AdminController/viewQuestionSearch';
- 
+
+
+$route['customer/view-questions'] = 'CustomerController/viewQuestion';
+
+$route['customer/view-questions/:any'] = 'CustomerController/viewQuestion';
+
+$route['customer/view-questions-search'] = 'CustomerController/viewQuestionSearch';
+
+$route['customer/view-questions-search/:any'] = 'CustomerController/viewQuestionSearch';
+
+
 $route['admin/view-results'] = 'AdminController/viewResult';
 
 $route['admin/view-mcq-data/:any'] = 'AdminController/viewMcqData';
@@ -182,7 +192,11 @@ $route['admin/download-students/:any/:any']= 'AdminController/downloadExcel';
 
 $route['admin/add-question'] = 'AdminController/createQuestion';
 
+$route['customer/add-question'] = 'CustomerController/createQuestion';
+
 $route['admin/edit-question/:any'] = 'AdminController/editQuestion';
+
+$route['customer/edit-question/:any'] = 'CustomerController/editQuestion';
 
 //$route['admin/login'] = 'AdminController/adminLogin';
 
@@ -226,8 +240,6 @@ $route['admin/edit-test-save']['POST'] = 'AdminController/editTestsave';
 //4 april
 
 $route['admin/create-roles'] = 'AdminController/addRoles'; 
-
-
 
 $route['admin/saveRole'] ['POST']= 'AdminController/saveRole'; 
 
@@ -443,7 +455,6 @@ $route['customer/create-interviewers'] = 'CustomerController/addInterviewer';
 
 $route['customer/create-interviewers/:any'] = 'CustomerController/addInterviewer';
 
-
 $route['customer/create-interviewers-search'] = 'CustomerController/addInterviewerSearch';
 
 $route['customer/create-interviewers-search/:any'] = 'CustomerController/addInterviewerSearch';
@@ -455,7 +466,6 @@ $route['admin/add-meeting-credentials'] = 'AdminController/createMeetingCredenti
 
 $route['admin/add-meeting-credentials/:any'] = 'AdminController/createMeetingCredentials'; 
 
-
 $route['admin/add-meeting-credentials-search'] = 'AdminController/createMeetingCredentialsSearch'; 
 
 $route['admin/add-meeting-credentials-search/:any'] = 'AdminController/createMeetingCredentialsSearch'; 
@@ -464,11 +474,9 @@ $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentia
 
 $route['admin/result/:any'] = 'AdminController/updateResult';
 
-
 $route['admin/add-section'] = 'AdminController/createSection'; 
 
 $route['admin/add-section/:any'] = 'AdminController/createSection'; 
-
 
 $route['admin/add-section-search'] = 'AdminController/createSectionSearch'; 
 
@@ -477,5 +485,17 @@ $route['admin/add-section-search/:any'] = 'AdminController/createSectionSearch';
 $route['admin/delete-section']['POST'] = 'AdminController/deleteSection'; 
 
 $route['admin/saveSection'] ['POST']= 'AdminController/saveSection'; 
+
+$route['customer/add-section'] = 'CustomerController/createSection'; 
+
+$route['customer/add-section/:any'] = 'CustomerController/createSection'; 
+
+$route['customer/add-section-search'] = 'CustomerController/createSectionSearch'; 
+
+$route['customer/add-section-search/:any'] = 'CustomerController/createSectionSearch'; 
+
+$route['customer/delete-section']['POST'] = 'CustomerController/deleteSection'; 
+
+$route['customer/saveSection'] ['POST']= 'CustomerController/addNewSection'; 
 
 $route['sql-editor'] = 'SqlController/getViewHere';

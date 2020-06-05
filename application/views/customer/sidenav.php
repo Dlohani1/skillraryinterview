@@ -47,10 +47,11 @@
                     </a>
                     <div class="collapse" id="collapseLayoutsQ" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
+                             <a class="nav-link" href=<?php echo base_url()."customer/add-question";?>>Create Question</a>
                             <a class="nav-link" href=<?php echo base_url()."customer/add-section";?>>Add Section</a>
-                             <a class="nav-link" href=<?php echo base_url()."customer/upload-question";?>>Upload Question</a>
-                            <a class="nav-link" href=<?php //echo base_url()."admin/add-question";?>>Create</a>
-                            <a class="nav-link" href=<?php //echo base_url()."admin/view-questions";?>>View</a>
+                            <!--  <a class="nav-link" href=<?php //echo base_url()."customer/upload-question";?>>Upload Question</a> -->
+                 <!--            <a class="nav-link" href=<?php //echo base_url()."admin/add-question";?>>Create</a> -->
+                            <a class="nav-link" href=<?php echo base_url()."customer/view-questions";?>>View</a>
                         </nav>
                     </div>
                        <?php }
