@@ -135,8 +135,8 @@
         
         var isFirefox = typeof InstallTrigger !== 'undefined';
         if(isFirefox){
-          document.getElementById("bodyClass").innerHTML = 'This feature is not accesible in firfox Browser: please try in Google-chrome';
-          throw new Error("This feature is not accesible in firefox Browser: please try in Google-chrome");
+          document.getElementById("bodyClass").innerHTML = 'This feature is not accesible in Firefox Browser: Please open in Google Chrome';
+          throw new Error("This feature is not accesible in Firefox Browser: Please open in Google Chrome");
          
         }
         else{
