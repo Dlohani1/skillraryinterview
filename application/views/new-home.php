@@ -73,7 +73,7 @@
 								</li>
 								<!-- <li><a href="https://live.skillrary.com/" target="_blank"><i class="fa fa-user" aria-hidden="true"></i>Skillrary Live</a></li> -->
 								<!-- <li><a href="course">Course</a></li> -->
-								<li><a href="<?php echo base_url().'admin/login'; ?>">Admin</a>
+								<li><a href="<?php echo base_url().'customer/login'; ?>">Customer</a>
 								</li>
 								<!-- <li><a href="user/register">Sign Up</a></li> -->
 							</ul>
@@ -155,95 +155,64 @@
 	</div>
 	<div class="clr"></div>
 	<footer class="footer-main">
-		<div class="container-fluid">
-			<div class="col-md-3 col-sm-12 footlogo">
-				<div class="site-logo">
-					<img src="assets/skillrary/images/spacer.gif" class="lazy" data-original="assets/skillrary/images/footer-logo.jpg" alt="logo" height="90" width="300">
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-12">
-				<div class="single-right">
-					<ul class="footer_menu clearfix">
-						<li><a href="blogs">Blogs</a>
-						</li>
-						<li><a href="career">Career</a>
-						</li>
-						<li><a href="testimoniallist">Testimonial</a>
-						</li>
-						<li><a href="http://compiler.skillrary.com/">Compiler</a>
-						</li>
-						<li><a href="privacy">Privacy Policy</a>
-						</li>
-						<li><a href="about-us">About Us</a>
-						</li>
-						<li><a href="service">Services</a>
-						</li>
-						<li><a href="faq">FAQs</a>
-						</li>
-						<li><a href="user-forum">Forum</a>
-						</li>
-						<li><a href="contact-us">Contact Us</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-12 mapfooter">
-				<div class="">
-					<a href="https://www.google.co.in/maps/place/SkillRary+(An+e-learning+medium,+offers+Digital+%26+Online+Training+Worldwide)/@12.9476346,77.573515,17z/data=!4m5!3m4!1s0x3bae151ca2efe3a1:0xfa97908591bd2c0f!8m2!3d12.9479849!4d77.5730215?hl=en" target="_blank">
-						<img alt="location" src="assets/skillrary/images/spacer.gif" data-original="assets/skillrary/images/black_map.jpg" class="lazy" height="160" width="320">
-					</a>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-12">
-				<div class="footer-address">
-					<h4>SkillRary, Inc.</h4> 
-					<p>India
-						<br>#50, 1st Floor, Brigade MLR Center,
-						<br>Vani Vilas Road, Bangalore-560004 Karnataka, India
-						<br> <i class="fa fa-phone" aria-hidden="true"></i> US : +1(415)429-3957
-						<br>&nbsp;&nbsp; IND : (+91) 9606655655</p>
-				</div>
-			</div>
-		</div>
-		<div class="footer_social_icon">
-			<div class="col-lg-6 col-md-6 col-sm-12">
-				<div class="single-middle">
-					<ul class="list-inline social-icon">
-						<li><a href="https://bit.ly/twitterSkillRary"><i class="fa fa-twitter"></i></a>
-						</li>
-						<li><a href="https://www.facebook.com/SkillRary-239765376715126/"><i class="fa fa-facebook"></i></a>
-						</li>
-						<li><a href="https://www.linkedin.com/company/14464724/"><i class="fa fa-linkedin"></i></a>
-						</li>
-						<li><a href="https://www.instagram.com/skillrary/"><i class="fa fa-instagram"></i></a>
-						</li>
-						<li><a href="https://www.youtube.com/channel/UCmAEUYxXdQsuQ4vPcTo5YIg"><i class="fa fa-youtube"></i></a>
-						</li>
-					</ul>
-				</div>
-				<div class="copyright_text">
-					<p>Copyrights &copy; 2020, All Rights Reserved by SkillRary</p>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6 col-sm-12">
-				<div class="app-list-block">
-					<ul class="app-list">
-						<h4>LEARN ON THE GO!</h4> 
-						<li>
-							<a href="https://bit.ly/skillraryios">
-								<img src="assets/skillrary/images/app-apple.png" class="img-responsive" alt="learn" height="56" width="150">
-							</a>
-						</li>
-						<li>
-							<a href="https://bit.ly/skillraryandroid">
-								<img src="assets/skillrary/images/app-android.png" class="img-responsive" height="56" width="150" alt="learn">
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</footer>
+         <div class="container-fluid">
+            <div class="col-md-3 col-sm-12 footlogo">
+               <div class="site-logo"> <img src="https://www.skillrary.com/assets/skillrary/images/spacer.gif"  class="lazy" data-original="https://www.skillrary.com/assets/skillrary/images/footer-logo.jpg"> </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+               <div class="single-right">
+                  <ul class="footer_menu clearfix">
+                     <li><a href="https://www.skillrary.com/blogs">Blogs</a></li>
+                     <li><a href="https://www.skillrary.com/career">Career</a></li>
+                     <li><a href="https://www.skillrary.com/testimoniallist">Testimonial</a></li>
+                     <li><a href="https://www.skillrary.com/internships">Internship</a></li>
+                     <li><a href="http://compiler.skillrary.com/">Compiler</a></li>
+                     <li><a href="https://www.skillrary.com/privacy">Privacy Policy</a></li>
+                     <li><a href="https://www.skillrary.com/about-us">About Us</a></li>
+                     <li><a href="https://www.skillrary.com/service">Services</a></li>
+                     <li><a href="https://www.skillrary.com/faq">FAQs</a></li>
+                     <li><a href="https://www.skillrary.com/user-forum">Forum</a></li>
+                     <li><a href="https://www.skillrary.com/contact-us">Contact Us</a></li>
+                  </ul>
+               </div>
+            </div>
+            <div class="col-md-3 col-sm-12 mapfooter">
+               <div class="map_images"> <a href="https://www.google.co.in/maps/place/SkillRary+(An+e-learning+medium,+offers+Digital+%26+Online+Training+Worldwide)/@12.9476346,77.573515,17z/data=!4m5!3m4!1s0x3bae151ca2efe3a1:0xfa97908591bd2c0f!8m2!3d12.9479849!4d77.5730215?hl=en" target="_blank"><img  src="https://www.skillrary.com/assets/skillrary/images/spacer.gif" data-original="https://www.skillrary.com/assets/skillrary/images/black_map.jpg" class="lazy"></a> </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+               <div class="footer-address">
+                  <h4>SkillRary, Inc.</h4>
+                  <p>India<br> #50, 1st Floor, Brigade MLR Center,<br> Vani Vilas Road, Bangalore-560004 Karnataka, India<br> <i class="fa fa-phone" aria-hidden="true"></i> US : +1(415)429-3957 <br> &nbsp;&nbsp; IND : (+91) 9606655655 </p>
+               </div>
+            </div>
+         </div>
+         <div class="footer_social_icon">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+               <div class="single-middle">
+                  <ul class="list-inline social-icon">
+                     <li><a href="https://bit.ly/twitterSkillRary"><i class="fa fa-twitter"></i></a></li>
+                     <li><a href="https://bit.ly/FSKILLRARY"><i class="fa fa-facebook"></i></a></li>
+                     <li><a href="https://bit.ly/LISKILLRARY"><i class="fa fa-linkedin"></i></a></li>
+                     <li><a href="https://bit.ly/InstaSKILLRARY"><i class="fa fa-instagram"></i></a></li>
+                     <li><a href="https://bit.ly/youtubeSkillRary"><i class="fa fa-youtube"></i></a></li>
+                  </ul>
+               </div>
+               <div class="copyright_text">
+                  <!-- <p>Copyrights © 2019, All Rights Reserved by EduRary</p> --> 
+                  <p>Copyrights &copy; 2020, All Rights Reserved by SkillRary</p>
+               </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+               <div class="app-list-block">
+                  <ul class="app-list">
+                     <h4>LEARN ON THE GO!</h4>
+                     <li><a href="https://bit.ly/skillraryios"><img src="https://www.skillrary.com/assets/skillrary/images/app-apple.png" class="img-responsive"></a></li>
+                     <li><a href="https://bit.ly/skillraryandroid"><img src="https://www.skillrary.com/assets/skillrary/images/app-android.png" class="img-responsive"></a></li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </footer>
 	<script src="assets/skillrary/js/homepage_opt.js" defer></script>
 	<link href="assets/skillrary/fonts/awesome/css/font-awesome.min.css" rel="stylesheet">
 	<link href="assets/skillrary/js/plugins/all/common.css" rel="stylesheet">

@@ -99,8 +99,15 @@ input:checked + .slider:before {
 
                          <div class="row">
                             <div class="col-md-3 offset-md-1">
-                              <input type="text" name="searchSection" required class="form-control" id="searchSection" placeholder="Enter section" autocomplete="off"><br/>
+                              <input type="text" name="searchSection" required class="form-control" id="searchSection" placeholder="Enter section" autocomplete="off">
+                               
+                               <br/>
                               <button type="submit" value="Submit">Create section
+                          </button>
+                            </div>
+                            <div class="col-md-3 offset-md-1">
+                              
+                               <input type="text" name="subSection" required class="form-control" id="subSection" placeholder="Enter sub section" autocomplete="off">
                           </button>
                             </div>
                          </div>

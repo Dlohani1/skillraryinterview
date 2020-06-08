@@ -4607,7 +4607,14 @@ public function viewInterviewSearch() {
         }
 
         public function getSection() {
+
           $sql = "SELECT * FROM `section`";
+          
+          if (isset($_SESSION['customerId'])) {
+            $customerId = $_SESSION['customerId'];
+            $sql = "SELECT * FROM `section` where customer_id = $customerId";  
+          }
+
           $query = $this->db->query($sql);
 
           $i = 0;
@@ -4726,11 +4733,15 @@ if (($h = fopen("{$filename}", "r")) !== FALSE)
        //     VALUES ('$data[0]', '$data[1]', '$data[9]')";
 
     $qdata = array (
-     "section_id" => $_POST['sectionUpload'],
+      "section_id" => $_POST['sectionUpload'],
       "question_type" => $data[0],
       "question" => $data[1],
       "level_id" => $data[9]
     );
+
+    if(isset($_SESSION['customerId'])) {
+      $qdata['customer_id'] = $_SESSION['customerId'];
+    }
 
 //print_r($qdata); die;
     $this->db->insert('question_bank', $qdata);
@@ -4912,6 +4923,10 @@ echo "success"; die;
       'question' => $question,
       'question_type' => $questionType
     );
+
+    if (isset($_SESSION['customerId'])) {
+      $qdata['customer_id'] = $_SESSION['customerId']; 
+    }
 
 
     // if (!empty($_FILES['qimg']['name'])) {
