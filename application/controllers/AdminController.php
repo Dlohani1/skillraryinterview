@@ -6649,13 +6649,10 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $banner_image = $_FILES['banner_image']['name'];    
 
     $config['upload_path'] = './uploads/images/';
-    $config['allowed_types'] = 'gif|jpg|jpeg|png';
+    $config['allowed_types'] = '*';
     // $config['max_size'] = 2000;
     // $config['max_width'] = 1500;
     // $config['max_height'] = 1500;
-
-    // print_r(var_dump($logo_image));
-    // print_r(var_dump($banner_image));
 
     $this->load->library('upload', $config);
 

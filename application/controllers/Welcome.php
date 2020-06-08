@@ -36,7 +36,9 @@ class Welcome extends CI_Controller {
             redirect('user/home');
         } else {
             //$this->load->view('home');
-            $this->load->view('new-home');   
+            $sql = "SELECT logo_image_url, banner_image_url from site_images where is_active = 1";
+            $result = $this->db->query($sql)->row();
+            $this->load->view('new-home',array("images"=>$result));
         }
 	}
 

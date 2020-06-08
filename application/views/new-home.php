@@ -41,7 +41,7 @@
 									<img src="uploads/images/f-sr-logo-195-50.png" alt="SkillRary" class="img-responsive" width="195" height="50" style="margin: 10px 0;" />
 								</a>
 								<a href="" class="site-logo col-sm-6">
-									<img src="uploads/images/dxc_logo.png" alt="SkillRary" class="img-responsive" width="195" height="50" style="margin: 10px 0;" />
+									<img src="<?=$images->logo_image_url;?>" alt="SkillRary" class="img-responsive" width="195" height="50" style="margin: 10px 0;" />
 								</a>
 							</div>
 						</div>
@@ -98,7 +98,7 @@
 					<div class="tp-banner">
 						<ul>
 							<li data-masterspeed="1500" data-slotamount="7" data-transition="fade">
-								<img data-bgrepeat="no-repeat" data-bgposition="left top" data-bgfit="cover" alt="slidebg1" src="./uploads/banner/1589367032_skillrary-banner-image-diona.jpg" alt="banner" width="1420" height="670">
+								<img data-bgrepeat="no-repeat" data-bgposition="left top" data-bgfit="cover" alt="slidebg1" src="<?=$images->banner_image_url;?>" alt="banner" width="1420" height="670">
 								<div data-easing="Power4.easeOut" data-start="1200" data-speed="500" data-y="420" data-x="20" class="tp-caption  skewfromrightshort fadeout"></div>
 								<div class="banner_text_new ban-content" id="text-div"></div>
 							</li>
