@@ -58,10 +58,10 @@
 <div class="form-group">
       <label class="control-label col-sm-2" for="pwd">Answers:</label>
       <div class="col-sm-10">          
-        <input type="radio" name="correct" value="1"> Select if correct option<input type="text" class="form-control" id="pwd" placeholder="Enter Answer" name="ans1">
-	<input type="radio" name="correct" value="2"> Select if correct option<input type="text" class="form-control" id="pwd" placeholder="Enter Answer" name="ans2">
-	<input type="radio" name="correct" value="3"> Select if correct option<input type="text" class="form-control" id="pwd" placeholder="Enter Answer" name="ans3">
-	<input type="radio" name="correct" value="4"> Select if correct option<input type="text" class="form-control" id="pwd" placeholder="Enter Answer" name="ans4">
+        <input type="radio" name="correct" value="1"> Select if correct option<input type="text" class="form-control" style="width:71%" id="pwd" placeholder="Enter Answer" name="ans1">
+      	<input type="radio" name="correct" value="2"> Select if correct option<input type="text" class="form-control" style="width:71%" id="pwd" placeholder="Enter Answer" name="ans2">
+      	<input type="radio" name="correct" value="3"> Select if correct option<input type="text" class="form-control" style="width:71%" id="pwd" placeholder="Enter Answer" name="ans3">
+      	<input type="radio" name="correct" value="4"> Select if correct option<input type="text" class="form-control" style="width:71%" id="pwd" placeholder="Enter Answer" name="ans4">
       </div>
     </div>
 

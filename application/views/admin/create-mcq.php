@@ -394,8 +394,8 @@
               
                function getTotalS(id,a) {
                 //console.log('aa',a, "b",b)
-                var selectedId =  document.getElementById(id).selectedIndex;
-
+                //var selectedId =  document.getElementById(id).selectedIndex;
+                var selectedId =  document.getElementById(id).value;
                 var baseUrl = document.getElementById("base-url").value;
                 $.ajax({
                     type: "POST",

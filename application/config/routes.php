@@ -501,7 +501,8 @@ $route['customer/add-section-search/:any'] = 'CustomerController/createSectionSe
 
 $route['customer/delete-section']['POST'] = 'CustomerController/deleteSection'; 
 
-$route['customer/saveSection'] ['POST']= 'CustomerController/addNewSection'; 
+$route['customer/saveSection'] ['POST']= 'CustomerController/addNewSection';
+$route['customer/save']['POST'] = 'AdminController/save'; 
 
 $route['sql-editor'] = 'SqlController/getViewHere';
 

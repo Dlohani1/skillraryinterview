@@ -19,7 +19,7 @@
         <div class="container">
             <!-- <h2 align="center" style="color: #33a478;font-weight: 600;">Create Test</h2> -->
             <div class="row">
-                <div class="col-md-8 offset-md-2 firstSection">
+                <div class="col-md-10 offset-md-2 firstSection">
                    
            
            
@@ -132,7 +132,7 @@
 
 <div class="form-group" id="singleOptions" style="display: none">
     <label class="control-label col-sm-2" for="pwd">Answers:</label>
-    <div class="col-md-8">          
+    <div class="col-md-6">          
         <input type="radio" name="correct" value="1"> Select if correct option<input type="text" class="form-control" id="option1" placeholder="Enter Answer" name="ans1">
         <input type="radio" name="correct" value="2"> Select if correct option<input type="text" class="form-control" id="option2" placeholder="Enter Answer" name="ans2">
         <input type="radio" name="correct" value="3"> Select if correct option<input type="text" class="form-control" id="option3" placeholder="Enter Answer" name="ans3">
