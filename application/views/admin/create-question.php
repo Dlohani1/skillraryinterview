@@ -29,6 +29,8 @@
 
                                         <div align="left">
                          <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Upload Question</button>
+                         
+                          <a href="<?=base_url()."download-format";?>"><i class="fa fa-download" aria-hidden="true"></i> Download Format</a>
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">

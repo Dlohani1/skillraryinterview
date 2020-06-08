@@ -6679,4 +6679,11 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
     echo "success";
   }
+
+  public function downloadFormat() {
+    $data = file_get_contents("./uploads/question-format.csv"); // Read the file's contents
+    $name = 'upload-question-format.csv';
+    $this->load->helper('download');
+    force_download($name, $data);
+  }
 }
