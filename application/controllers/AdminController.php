@@ -3364,6 +3364,7 @@ echo "success";
           $this->load->view('admin/header');
           $this->load->view('admin/sidenav');
 
+
           $this->load->view('admin/view-questions',array(
             'questionData' => $questionData,
             'links' => $links,
@@ -4561,6 +4562,7 @@ public function viewInterviewSearch() {
           echo "window.close();";
           echo "</script>";
         }
+
 
         public function createQuestion() {
           $this->load->view('admin/header');
@@ -6618,7 +6620,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
   }
 
 
-   public function deleteSection() {
+  public function deleteSection() {
 
       $status = ($_POST['value'] == 1) ? 0 : 1;
 
@@ -6631,9 +6633,53 @@ foreach ($sectionDetails['section'] as $key => $value) {
   }
 
 
+  public function uploadImage() {
+   
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/upload-image');
+    $this->load->view('admin/footer');
+  }
+
+  public function uploadImageSave() {
+
+    $this->load->helper('url', 'form');
+    $logo_image = $_FILES['logo_image']['name'];
+    $banner_image = $_FILES['banner_image']['name'];    
+
+    $config['upload_path'] = './uploads/images/';
+    $config['allowed_types'] = 'gif|jpg|jpeg|png';
+    // $config['max_size'] = 2000;
+    // $config['max_width'] = 1500;
+    // $config['max_height'] = 1500;
+
+    // print_r(var_dump($logo_image));
+    // print_r(var_dump($banner_image));
+
+    $this->load->library('upload', $config);
 
 
+    $data = array();
+    if ( (strlen($logo_image) > 0) && (!$this->upload->do_upload('logo_image')) ) {
+      $error = array('error' => $this->upload->display_errors());
+      print_r($error); 
+      //$this->load->view('upload_form', $error);
+    } else {
+      $data['logo_image_url'] = "uploads/images/".$logo_image;
+    }
+
+    if ( (strlen($banner_image) > 0) && (!$this->upload->do_upload('banner_image')) ) {
+      $error = array('error' => $this->upload->display_errors());
+      //$this->load->view('upload_form', $error);
+      print_r($error); 
+    } else {
+      $data['banner_image_url'] = "uploads/images/".$banner_image;
+    }
+
+    //print_r($data); die;
+    $this->db->insert('site_images', $data);
+
+    echo "success";
+  }
 }
-
-
-

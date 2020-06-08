@@ -246,6 +246,12 @@ $route['admin/edit-test-save']['POST'] = 'AdminController/editTestsave';
 
 $route['admin/create-roles'] = 'AdminController/addRoles'; 
 
+
+$route['admin/upload-image'] = 'AdminController/uploadImage';
+
+$route['admin/upload-image-save']['POST'] = 'AdminController/uploadImageSave';
+
+
 $route['admin/saveRole'] ['POST']= 'AdminController/saveRole'; 
 
 $route['admin/create-roles/:any'] = 'AdminController/addRoles'; 
