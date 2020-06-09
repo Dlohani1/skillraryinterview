@@ -401,18 +401,15 @@ public function viewResult($mcqId, $sId) {
 
 
     public function checkcode() {
-
-      $this->load->view('log-in-with-code');
-
+        $sql = "SELECT logo_image_url from site_images where is_active = 1";
+        $result = $this->db->query($sql)->row();
+        $this->load->view('log-in-with-code',array("images"=>$result));
     }
 
 
     public function checklogin() {
-
-      $this->load->view('login-in-with-crediential');
-
+        $sql = "SELECT logo_image_url from site_images where is_active = 1";
+        $result = $this->db->query($sql)->row();
+        $this->load->view('login-in-with-crediential',array("images"=>$result));
     }
-
-
-    
 }
