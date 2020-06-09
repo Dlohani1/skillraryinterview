@@ -519,4 +519,4 @@ $route['sql-editor'] = 'SqlController/getViewHere';
 $route['checkcode'] = 'Welcome/checkcode';
 
 $route['checklogin'] = 'Welcome/checklogin';
-
+$route['download-format'] = 'AdminController/downloadFormat';

@@ -6663,9 +6663,6 @@ foreach ($sectionDetails['section'] as $key => $value) {
     // $config['max_width'] = 1500;
     // $config['max_height'] = 1500;
 
-    // print_r(var_dump($logo_image));
-    // print_r(var_dump($banner_image));
-
     $this->load->library('upload', $config);
 
 
@@ -6718,4 +6715,13 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $this->db->update('site_images',$data);    
   }
 
+
+  public function downloadFormat() {
+    $data = file_get_contents("./uploads/question-format.csv"); // Read the file's contents
+    $name = 'upload-question-format.csv';
+    $this->load->helper('download');
+    force_download($name, $data);
+  }
+
+  
 }

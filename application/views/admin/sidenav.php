@@ -68,7 +68,6 @@
                             <a class="nav-link" href=<?php echo base_url()."admin/add-question";?>>Create</a>
                             <a class="nav-link" href=<?php echo base_url()."admin/view-questions";?>>View</a>
                             <a class="nav-link" href=<?php echo base_url()."admin/add-section";?>>Section</a>
-                            <a class="nav-link" href=<?php echo base_url()."admin/upload-image";?>>Upload Image</a>
                         </nav>
                     </div>
                     <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsR" aria-expanded="false" aria-controls="collapseLayoutsR"
@@ -82,7 +81,20 @@
                             <a class="nav-link" href=<?php //echo base_url()."admin/view-results";?>>View</a>
                         </nav>
                     </div> -->
-
+                    <div class="sb-sidenav-menu-heading">Interface</div>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsImg" aria-expanded="false" aria-controls="collapseLayouts"
+                        >
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Site Images
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayoutsImg" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                           <!--  <a class="nav-link" href=<?php// echo base_url()."admin/create-interview";?>>Create</a> -->
+                            
+                            <a class="nav-link" href=<?php echo base_url()."admin/upload-image";?>>Upload</a>
+                        </nav>
+                    </div>
                     <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsI" aria-expanded="false" aria-controls="collapseLayouts"
                         >
