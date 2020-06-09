@@ -6634,19 +6634,28 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
 
   public function uploadImage() {
-   
+
+      $sql = " SELECT * from `site_images` "; 
+      $query = $this->db->query($sql);
+      $images = $query->result();
+
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-    $this->load->view('admin/upload-image');
+    $this->load->view('admin/upload-image', [
+       'images' => $images,
+
+    ]);
     $this->load->view('admin/footer');
   }
+ 
 
   public function uploadImageSave() {
 
+
     $this->load->helper('url', 'form');
-    $logo_image = $_FILES['logo_image']['name'];
-    $banner_image = $_FILES['banner_image']['name'];    
+    $logo_image = isset($_FILES['logo_image']['name']) ? $_FILES['logo_image']['name'] : "";
+    $banner_image = isset($_FILES['banner_image']['name']) ? $_FILES['banner_image']['name'] : "";    
 
     $config['upload_path'] = './uploads/images/';
     $config['allowed_types'] = '*';
@@ -6663,7 +6672,9 @@ foreach ($sectionDetails['section'] as $key => $value) {
       print_r($error); 
       //$this->load->view('upload_form', $error);
     } else {
-      $data['logo_image_url'] = "uploads/images/".$logo_image;
+      if (strlen($logo_image) > 0) {
+        $data['logo_image_url'] = "uploads/images/".$logo_image;
+      }
     }
 
     if ( (strlen($banner_image) > 0) && (!$this->upload->do_upload('banner_image')) ) {
@@ -6671,14 +6682,39 @@ foreach ($sectionDetails['section'] as $key => $value) {
       //$this->load->view('upload_form', $error);
       print_r($error); 
     } else {
-      $data['banner_image_url'] = "uploads/images/".$banner_image;
+      if (strlen($banner_image) > 0) {
+        $data['banner_image_url'] = "uploads/images/".$banner_image;
+      }
     }
 
-    //print_r($data); die;
-    $this->db->insert('site_images', $data);
+    if (!isset($_POST['updateImage'])) {
 
-    echo "success";
+      $this->db->insert('site_images', $data);
+    } else {
+
+      $id = $_POST["hidden_logo_image_id"];
+      $this->db->where('id', $id);
+      $this->db->update('site_images',$data);
+    }
+    redirect($_SERVER['HTTP_REFERER']);
+
   }
+
+  public function activeSiteImage() {
+    $data = array(
+      'is_active' => !$_POST['value']
+    );
+
+    $this->db->where('id', $_POST['id']);
+    $this->db->update('site_images',$data);
+
+    $data = array(
+      'is_active' => 0
+    );
+    $this->db->where('id !=',$_POST['id']);
+    $this->db->update('site_images',$data);    
+  }
+
 
   public function downloadFormat() {
     $data = file_get_contents("./uploads/question-format.csv"); // Read the file's contents
@@ -6686,4 +6722,6 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $this->load->helper('download');
     force_download($name, $data);
   }
+
+  
 }
