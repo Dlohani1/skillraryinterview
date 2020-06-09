@@ -1,3 +1,70 @@
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+
+
+
+
+
+
 <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
 <div id="layoutSidenav_content">
   <main>
@@ -73,7 +140,7 @@
 
  <br>
  <b>Change Image<b/><br><br>
-     <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/upload-image-save";?>>
+     <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/upload-image-save";?>  onsubmit="return validateForm()">
 
           <div class="searchBox">
 
@@ -82,11 +149,14 @@
                       <div class="col-md-4">
                         <label>Logo Image</label>
                         <input type="file" id="logo_image" name="logo_image" class="form-control" placeholder="logo-image">
+                        <div id="error_logo_image"></div>
                       </div>
 
                        <div class="col-md-4">
                         <label>Banner Image</label>
                         <input type="file" id="banner_image" name="banner_image" class="form-control" placeholder="banner-image">
+                        <div id="error_banner_image"></div>
+
                       </div>
 
                       <div class="col-md-2">
@@ -112,28 +182,104 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                  <!--  <th>Id</th>
-                    <th>Role</th> -->
-                     <!-- <th>Total Section</th>
-                     <th>Total Question</th> -->
-                    <!--  <th>Delete</th>
-                      <th>Download</th> -->
+                   <th>Sl no.</th>
+                    <th>Logo Image</th>
+                     <th>Banner Image</th>
+                     <th>Change Status</th>
+                     <th>Status</th>
+                      <!--<th>Download</th>
                       
-                       <!-- <th>Delete</th> -->
+                        <th>Delete</th> -->
                    </thead>
     <tbody>
 
         <?php 
         $i = $this->uri->segment(3);
 
-        //if (count($roles) > 0)
-        //foreach($roles as $key => $value) { 
-          //print_r($value);
-           //  $i++;
-           //  echo '<tr><td>'.$i.'</td><td>'.$value->roles.'</td> 
+        if (count($images) > 0)
+        foreach($images as $key => $value) { 
+          $id = $value->id;
+          $logo_image_url = $value->logo_image_url;
+          $banner_image_url = $value->banner_image_url;
+
+
+$checked = "";
+                            
+                            if($value->is_active){
+                               $checked = "checked";
+                            } 
+
+                            if($value->is_active){
+                               $status = "Active";
+                            } else{
+                               $status = "Inactive";
+                            }
+
+
+
+
+// <a href="#" id="pop">
+//     <img id="imageresource" src="$logo_image_ur" style="width: 400px; height: 264px;">
+//     $logo_image_ur
+// </a>
+
+
+            $i++;
+            echo '<tr>
+                      <td>'.$i.'</td>
+                      <td>'.$value->logo_image_url.'
+
+
+<p data-placement="top"  data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs pop_up_logo_upload" data-title="Edit" data-toggle="modal"  data-id="'.$id.'"  data-logo_image_url="'.$logo_image_url.'"  >
+
+    <span class="glyphicon glyphicon-pencil"></span>
+
+</button></p></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      <td>'.$value->banner_image_url.'
+
+
+
+<p data-placement="top"  data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs pop_up_banner_upload" data-title="Edit" data-toggle="modal"  data-id="'.$id.'" data-banner_image_url="'.$banner_image_url.'" >
+
+    <span class="glyphicon glyphicon-pencil"></span>
+
+</button></p></td>
+
+
+
+
+
+                      <td>
+                            <label class="switch"> <input type="checkbox" '.$checked.'  class="activeinactive"  onclick="checkActive('.$value->id.','.$value->is_active.')">
+
+                                 <span class="slider round" title="Status" data-toggle="tooltip"></span>
+                            </label>
+                          </td>
+
+
+
+
+
+
+
+                      <td>'.$status.'</td>
       
-           // </tr>';
-       // }
+                 </tr>';
+       }
         ?>
 <!--     <td><a href="view-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       <td><a href="download-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> -->
@@ -222,37 +368,135 @@
 </div>
 
 
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-      <div class="modal-dialog">
-    <div class="modal-content">
-          <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-        <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
-      </div>
-          <div class="modal-body">
-          <div class="form-group">
-        <input class="form-control " type="text" placeholder="Mohsin">
-        </div>
-        <div class="form-group">
+<!-- <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
         
-        <input class="form-control " type="text" placeholder="Irshad">
-        </div>
-        <div class="form-group">
-        <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
-    
-        
-        </div>
-      </div>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+
+                <h4 class="modal-title custom_align" id="Heading">Edit Images</h4>
+
+            </div>
+
+            <div class="modal-body">
+                    
+                      <div class="form-group">
+                       <input class="form-control " type="text"  placeholder="Mohsin">
+                      </div>
+
+                      <div class="form-group">
+                      
+                          <input class="form-control " type="text" placeholder="Irshad">
+                      </div>
+                  
+                      <div class="form-group">
+                          <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+                      
+                      </div>
+                 
+            </div>
+
+
           <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-      </div>
-        </div>
+              <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+          </div>
+ -->
+
+      <!-- </div> -->
     <!-- /.modal-content --> 
-  </div>
+    <!-- </div> -->
       <!-- /.modal-dialog --> 
+<!-- </div> -->
+    
+    
+
+<!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="imagemodallogo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+ <form  enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/upload-image-save";?> onsubmit="return validateFormLogoUpdate()">>
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Image preview</h4>
+      </div>
+      <div class="modal-body">
+        <img src="" id="imagepreviewlogo" style="width: 400px; height: 264px;" >
+
+
+                        <label>Update Logo Image</label>
+
+                        <input type="hidden" id="hidden_logo_image_id" name="hidden_logo_image_id">
+
+
+                         <input type="hidden" name="updateImage" value="1">
+                        <input type="file" id="update_logo_image" name="logo_image" class="form-control">
+                        <div id="error_update_logo_image" ></div>
+
+
+
+      </div>
+      <div class="modal-footer">
+
+
+           <button type="submit" value="Submit">Submit
+                          </button>
+      </div>
     </div>
-    
-    
+      </form>
+  </div>
+</div>
+
+
+
+<!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="imagemodalbanner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+ <form  enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/upload-image-save";?> onsubmit="return validateFormBannerUpdate()">>
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Image preview</h4>
+      </div>
+      <div class="modal-body">
+        <img src="" id="imagepreviewbanner" style="width: 400px; height: 264px;" >
+
+
+                        <label>Update Banner Image</label>
+
+                        <input type="hidden" id="hidden_banner_image_id" name="hidden_logo_image_id">
+
+                        <input type="hidden" name="updateImage" value="2">
+
+                        <input type="file" id="update_banner_image" name="banner_image" class="form-control">
+                        <div id="error_update_banner_image" ></div>
+
+
+
+      </div>
+      <div class="modal-footer">
+
+
+           <button type="submit" value="Submit">Submit
+                          </button>
+      </div>
+
+    </div>
+  </form>
+  </div>
+</div>
+
+
+
+
+
+
+
     
     <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
@@ -286,6 +530,10 @@
                 </main>
 
 <script>
+  $(document).click(function(event) {
+    $('#error_update_banner_image').empty();
+    $('#error_update_logo_image').empty();
+  })
    $.ajaxSetup({
         data: {
             '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
@@ -321,13 +569,147 @@
                 });
 
 
-                        // $.alert({
-                        //     title: 'SkillRary Alert!',
-                        //     content: 'Username Password Generated',
-                        // });
-
-
              }
+
+
+
+var base_url =  "<?php echo base_url();?>"
+
+  $(".pop_up_logo_upload").on("click", function() {
+
+    $('#hidden_logo_image_id').val($(this).data('id'));
+     if ($(this).data('logo_image_url').length > 0) {
+       $('#imagepreviewlogo').attr('src', base_url+$(this).data('logo_image_url'));
+      $('#imagepreviewlogo').show();
+    } else {
+      $('#imagepreviewlogo').hide();
+    }
+
+  
+   $('#imagemodallogo').modal('show');
+
+});
+
+  $(".pop_up_banner_upload").on("click", function() {
+
+    $('#hidden_banner_image_id').val($(this).data('id'));
+
+    if ($(this).data('banner_image_url').length > 0) {
+      $('#imagepreviewbanner').attr('src', base_url+$(this).data('banner_image_url'));
+      $('#imagepreviewbanner').show();
+    } else {
+      $('#imagepreviewbanner').hide();
+    }
+  
+
+   $('#imagemodalbanner').modal('show');
+
+});
+
+
+  // $('#update_banner_image_name').click(function () {
+
+  //   let hidden_banner_image_id = $('#hidden_banner_image_id').val();
+
+  //   var file = $('#update_banner_image')[0].files[0];
+  //   let file_name = file.name;
+
+  //   $.ajax({
+  //     url: base_url+"admin/upload-image-update",
+  //     type: 'post',
+  //     data: {
+  //       "id": hidden_banner_image_id,
+  //       "file_name": file_name,
+  //       "type": "banner"
+  //     } ,
+  //     success: function( data, textStatus, jQxhr ){
+
+  //         console.log('data',data);
+  //         window.location.reload();
+  //     },
+  //     error: function( jqXhr, textStatus, errorThrown ){
+  //         console.log( errorThrown );
+  //     }
+  //   });
+  // });
+
+  // $('#update_logo_image_name').click(function () {
+
+  //   let hidden_banner_image_id = $('#hidden_logo_image_id').val();
+
+  //   var file = $('#update_logo_image')[0].files[0];
+  //   let file_name = file.name;
+
+  //   $.ajax({
+  //     url: base_url+"admin/upload-image-update",
+  //     type: 'post',
+  //     data: {
+  //       "id": hidden_banner_image_id,
+  //       "file_name": file_name,
+  //       "type": "logo"
+  //     } ,
+  //     success: function( data, textStatus, jQxhr ){
+  //       console.log('data',data);
+  //         //window.location.reload();
+  //     },
+  //     error: function( jqXhr, textStatus, errorThrown ){
+  //         console.log( errorThrown );
+  //     }
+  //   });
+  // });
+
+
+function checkActive(id, value){
+
+      $.ajax({
+        method: "POST",
+        data: { "id" : id, "value" : value} ,
+        url: base_url+"admin/upload-image-delete",
+        success: function(response){
+          window.location.reload();
+      });
+
+      
+  }
+
+function validateForm(event){
+  let error = true;
+  let logo_image = $('#logo_image').val();
+  let banner_image = $('#banner_image').val();
+  if(logo_image == ''){
+    $('#error_logo_image').html('<span style="color:red">Please upload logo image</span>');
+    error = false;
+ }
+   if(banner_image == ''){
+    $('#error_banner_image').html('<span style="color:red">Please upload Banner image</span>');
+     error = false;
+ }
+return  error;
+}
+
+
+function validateFormBannerUpdate(event){
+  let error = true;
+  let file = $('#update_banner_image').val();
+  if(file == ''){
+    $('#error_update_banner_image').html('<span style="color:red">Please upload logo image</span>');
+    error = false;
+ }
+  
+return  error;
+}
+
+function validateFormLogoUpdate(event){
+   let error = true;
+   let file = $('#update_logo_image').val();
+   if(file == ''){
+      $('#error_update_logo_image').html('<span style="color:red">Please upload logo image</span>');
+      error = false;
+   }
+  
+return  error;
+}
+
 </script>
 
 
