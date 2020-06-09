@@ -52,6 +52,18 @@ class QuestionBank extends MyController {
                 print_r(json_encode($sectionData));
         }
 
+        public function saveResult() {
+            $studentId = $_POST['student'];
+            $mcqId = $_POST['mcqId'];
+            $whereArray = array (
+                "user_id" => $studentId,
+                "mcq_test_id" => $mcqId
+            );
+            $data = array ("is_completed" => 2);
+            $this->db->where($whereArray);
+            $this->db->update('user_status',$data);
+            echo "success";
+        }
         public function save() {
                 
                 $sectionId = $_POST['sectionId'];
@@ -543,16 +555,16 @@ class QuestionBank extends MyController {
 
         public function signin() {
 
-                $isEmailLogin = 0;
-               $email = $_POST['email'];
+            $isEmailLogin = 0;
+            $email = trim($_POST['email']);
             //    $pwd = md5(trim($_POST['pwd']));
-               $pwd = trim($_POST['pwd']);
+            $pwd = trim($_POST['pwd']);
 
-               $this->load->helper('email');
+            $this->load->helper('email');
 
-                if (valid_email($email)) {
-                    $isEmailLogin = 1;    
-                }
+            if (valid_email($email)) {
+            $isEmailLogin = 1;    
+            }
 
                 if ($isEmailLogin) {
 
@@ -900,6 +912,9 @@ class QuestionBank extends MyController {
 
         }  
 
+
+
+
         public function showUserProfile($user = false) {
 
             $userId = $this->session->id;
@@ -960,7 +975,7 @@ class QuestionBank extends MyController {
                 $this->load->view('codefooter');
             }
         }
-
+ 
 
         public function activeInterview() {
 
@@ -973,6 +988,34 @@ class QuestionBank extends MyController {
             $this->load->view('enter-code', array('interviewData' => $result));
             $this->load->view('codefooter');
         }
+
+
+        public function showUserProfileState() {
+
+              $sql = "SELECT * FROM states where country_id = 101";
+
+                $query = $this->db->query($sql);
+
+                $result = $query->result();
+
+                print_r( json_encode($result));
+            
+        }
+
+
+        public function showUserProfileCity() {
+
+                $state_id = $_POST['id'];
+                $sql = "  SELECT * FROM cities where state_id = $state_id " ;
+
+                $query = $this->db->query($sql);
+
+                $result = $query->result();
+
+                print_r( json_encode($result));
+        }
+
+
 
         public function createUserProfile () {
             $this->load->view('user-header');
@@ -1266,7 +1309,13 @@ class QuestionBank extends MyController {
                if ($result1[$i] > 60 ) {
                 $min = intval($result1[$i] / 60);
                 $sec = $result1[$i] % 60;
-                $time = $min." min ".$sec. " sec";
+                if ($value < $result1[$i] ) {
+                    $time = $min." min ";
+                } else {
+                    $time = $min." min ".$sec. " sec";
+                }
+
+                
                } else {
                 if ($result1[$i] > 0) {
                     $time = $result1[$i]." sec";    
@@ -1611,22 +1660,21 @@ class QuestionBank extends MyController {
             }
             else
             {
-                // echo "dfafa"; die;
-                    // $data = array('upload_data' => $this->upload->data());
+                    // echo "dfafa"; die;
+                        // $data = array('upload_data' => $this->upload->data());
 
-                    // $this->load->view('upload_success', $data);
-                $userId = $this->session->id;
+                        // $this->load->view('upload_success', $data);
+                    $userId = $this->session->id;
 
             $userData = array();
 
             $userData['profile_image'] = "uploads/".$_FILES['profilePic']['name'];
-
-           
+          
             $this->db->where('id', $userId);
             $this->db->update('student_register',$userData);
 
             $this->session->set_flashdata('success', 'Updated successfully');
-                redirect('user/profile', 'refresh');
+            redirect('user/profile', 'refresh');
             }
         }
 
@@ -1634,9 +1682,25 @@ class QuestionBank extends MyController {
             $this->load->view('loadiframe');
         }
 
-        public function showInstructions() {//echo "<pre>";print_r($_SESSION['instructionData']); die;
-            $this->load->view('user-header');
-            $this->load->view('instructions');
+        public function isTestCompleted() {
+            $studentId = $_SESSION['id'];
+            $mcqId = $_SESSION['mcqId'];
+            $sql = "SELECT is_completed from user_status where user_id = $studentId and mcq_test_id = $mcqId";
+
+            $result = $this->db->query($sql)->row();
+            if (null != $result) {
+                return $result->is_completed;   
+            } else {
+                return 0;
+            }
+        }
+        public function showInstructions() {
+            if ($this->isTestCompleted() != 2) {
+                $this->load->view('user-header');
+                $this->load->view('instructions');
+            } else {
+                redirect('user/home');   
+            }
         }
 
         public function redirectPage() {

@@ -5,6 +5,7 @@
         }
     });
 
+
 function validateUpdateProfile(){
 
         var error = true;
@@ -708,19 +709,50 @@ function Upload() {
                                         <legend id="sectionHeading">Other Details:</legend>
                                             <div class="row rowGap">
                                                 <div class="col-md-6">
-                                                    <label>Residence State<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                   <!--  <label>Residence State<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+
+
                                                     <input type="text" name="state" value="<?php echo $userData['state']; ?>"  class="form-control formControl"  autocomplete="off"><br/>
                                                     <p id="errorstate" class="errMessage"></p>
+ -->
+                                                   <!--  <select class="state" name="state">
+                                                        <option value="null">Residence State</option>
+
+                                                    </select> -->
+
+
+                                                    <label class="" for="state">Residence State</label>
+                                                  <select id="state"    name="state" >
+                                                      <option value="0">Residence State</option>
+                                                  </select>
+
+                                                    <p id="errorstate" class="errMessage"></p>
+
+
                                                 </div>
+
+
                                                 <div class="col-md-6">
-                                                    <label>Residence City<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
-                                                    <input type="text" name="city" value="<?php echo $userData['city']; ?>"  class="form-control formControl"  autocomplete="off"><br/>
+
+                                                  <!--   <label>Residence City<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                    <input type="text" name="city" value="<?php echo $userData['city']; ?>"  class="form-control formControl"  autocomplete="off"><br/> -->
+
+
+                                                    <label class="" for="city">Residence City</label><br/>
+                                                  <select id="city"    name="city" >
+                                                      <!-- <option value="0">Residence City</option> -->
+                                                  </select>
+
+
                                                     <p id="errorcity" class="errMessage"></p>
+                                                    <br/>
                                                 </div>
+
                                             </div>
+
                                             <div class="row rowGap">
                                                 <div class="col-md-6">
-                                                    <label>Preffered Work Location<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
+                                                    <label style="margin-top: 21px;">Preffered Work Location<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                                     <input type="text" name="pwl" value="<?php echo $userData['work_location']; ?>"  class="form-control"   autocomplete="off">
                                                     <p id="errorpwl" class="errMessageLast"></p>
                                                 </div>
@@ -747,3 +779,93 @@ function Upload() {
             </div> -->
         </div>
     </div>
+
+
+
+<script type="text/javascript">
+    
+
+$(document).ready(function(){
+
+        let base_url = "<?php echo base_url();?>";
+        let selected_state = "<?php echo $userData['state']; ?>" ;
+        var selected_city = "<?php echo $userData['city']; ?>" ;
+
+        $.ajax({
+                type: "GET",
+                url: base_url+"user/profile-state",
+                success: function (data) {
+
+                        let state=JSON.parse(data);
+                          // $('#state').append('<option value="0">Residence State</option>');
+
+                        for (let i = 0; i < state.length; i++) {
+
+                            if(selected_state == state[i]["id"]){
+                                $('#state').append('<option value="' + state[i]["id"] +'" selected>' + state[i]["name"] + '</option>');
+                            }else{
+                               $('#state').append('<option value="' + state[i]["id"]+'">' +  state[i]["name"] + '</option>');
+                            }
+
+                        }   
+
+                }
+      });
+
+
+
+
+
+   $('#state').change(function(){
+        let state_id;
+        if($(this).val() == 0){
+              state_id = selected_state;
+        }else{
+             state_id = $(this).val();
+              $('#city').empty()
+        }
+
+       
+
+        $.ajax({
+            type: "POST",
+            url: base_url+"user/profile-city",
+            data:{id: null !== state_id ? state_id : selected_state}, 
+
+            success: function (data) {
+
+                     let city =JSON.parse(data);
+
+                    $('#city').append('<option value="0">Residence City</option>');
+
+                    for (let i = 0; i < city.length; i++) {
+
+                        if(selected_city == city[i]["id"]){
+                            $('#city').append('<option value="' + city[i]["id"] +'" selected>' + city[i]["name"] + '</option>');
+                        }else{
+                           $('#city').append('<option value="' + city[i]["id"]+'">' +  city[i]["name"] + '</option>');
+                        }
+
+                    }   
+              
+            }
+
+        });
+    });
+
+    if (selected_city == 0 ) {
+
+               $('#city').append('<option value="0">Residence City</option>');
+
+    } else {
+
+       // if (selected_city != 0 && selected_city != null) {
+
+                 $('#state').trigger('change');
+        }
+
+  });
+
+
+
+</script>

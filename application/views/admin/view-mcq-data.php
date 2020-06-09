@@ -82,6 +82,55 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
               </div>
             </div>
           </div>
+
+
+          <!-- for search filter start -->
+
+          <div class="container">
+                <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/view-mcq-data-search/$mcqId";?>>
+
+                    <div class="searchBox">
+
+                          <div class="row">
+
+                                <div class="col-md-2 ">
+                                  <label>Name</label>
+                                  <input type="text" id="searchname" name="searchname" class="form-control " placeholder="Search Name" value="<?php echo $searchname ?? ''; ?>" >
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>Email</label>
+                                  <input type="text" id="searchemail" name="searchemail" class="form-control" placeholder="Search Email" value="<?php echo $searchemail ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>Contact-no</label>
+                                  <input type="number" id="contactno" name="contactno" class="form-control" placeholder="Search Contact-no" value="<?php echo $contactno ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-2">
+                                  <label>Username</label>
+                                  <input type="text" id="searchusername" name="searchusername" class="form-control" placeholder="Search Username" value="<?php echo $searchusername ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Search</label><br>
+                                    <button type="submit" value="Submit">
+                                      <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                                    </button>
+
+                                </div>
+
+                          </div>
+
+                    </div>
+                </form>
+            </div>
+
+          <!-- for search filter end -->
+
+
+
             <div class="container">
               <!-- <div class="searchBox"> -->
                 <!-- <div class="row">
@@ -163,8 +212,9 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
     <tbody>
 
         <?php 
-        $mcqId = $mcq['mcq-details']->id;
-	$i = 0;
+          $mcqId = $mcq['mcq-details']->id;
+	       // $i = 0;
+         $i = $this->uri->segment(4);
         if (count($mcq['mcq-users']) > 0)
         foreach($mcq['mcq-users'] as $key => $value) {
 		$i++;
@@ -189,7 +239,7 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
             
           }
           
-            echo '<tr><td>'.$i.'</td><td>'.$value->first_name." ".$value->last_name.'</td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="Edit"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
+            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="Edit"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
     if ($proctoredTest) {
@@ -227,9 +277,11 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
+
 
 <div class="clearfix"></div>
-<ul class="pagination pull-right">
+<!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
   <li class="active"><a href="?page=1">1</a></li>
   <li><a href="?page=2">2</a></li>
@@ -237,7 +289,7 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
   <li><a href="?page=4">4</a></li>
   <li><a href="?page=5">5</a></li>
   <li><a href="?page=6"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-</ul>
+</ul> -->
                 
             </div>
             
@@ -293,7 +345,35 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
   </div>
       <!-- /.modal-dialog --> 
     </div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
     
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" style="margin-top: -5%;
+
+margin-right: -29%;
+
+color: red;">&times;</button>
+          <h4 class="modal-title">Student Detail</h4>
+        </div>
+        <div class="modal-body">
+                  <table id="classTable" class="table table-bordered">
+          <thead>
+          </thead>
+          <tbody id="student">
+           
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>    
     
     
     <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
@@ -469,6 +549,40 @@ function getHour(hour) {
   }
   return hour;
 }
+
+function showStudentDetails(userId) {
+    var baseUrl = document.getElementById("base_url").value;
+     $('#student').empty();
+    $.ajax({
+        url: baseUrl+"admin/showStudentData",
+        type: 'post',
+        
+        // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+      data: { "id":userId} ,
+        success: function( data, textStatus, jQxhr ){
+
+           $.each(data, function (index, item) {
+            //console.log(item, index);
+            if (null !== item) {
+            var eachrow = 
+                   '<tr><td><strong>'+index+': </strong></td><td>'+item+ '</td></tr>';
+       $('#student').append(eachrow);
+    }
+      });
+            //window.location.reload(true);
+           // window.location.href="admin/view-mcq";
+            //$('#response pre').html( JSON.stringify( data ) );
+            console.log('data', data);
+            // document.getElementById("code").disabled = true;
+
+            // document.getElementById("codeSubmit").disabled = true;
+            //window.location.reload();
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+            console.log( errorThrown );
+        }
+    });
+  }
      
 
              function sendTestInvite() {

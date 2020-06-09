@@ -18,10 +18,6 @@
 
 
 
-
-
-
-
       <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
       <div class="container-fluid">
       <div class="container">
@@ -41,22 +37,23 @@
                     <label>Email</label>
                     <input type="text" id="customer_email" name="customer_email" class="form-control inputBox">
                     <span id="emailError" style="color:red"></span>
+                    <input type="checkbox" id="isMCQ" name="isMCQ">MCQ
                   </div>
                   <div class="col-md-2 offset-md-1">
                     <label>Contact No</label>
-                    <input type="text" id="customer_contactno" name="customer_contactno" class="form-control inputBox">
-                    <span id="contactError" style="color:red"></span>
+                    <input type="number" id="customer_contactno" name="customer_contactno" class="form-control inputBox">
+                    <span id="contactError" style="color:red"></span>                    
+                    <input type="checkbox"  id="isInterview" name="isInterview">Interview
                   </div>
                 <div>
              </div>
           </div>
-<div class="row">
-                  <div class="col-md-3 offset-md-1">
-                    <label>Address</label>
-                    <input type="text" id="customer_address" name="customer_address" class="form-control inputBox" >
-                    <span id="addressError" style="color:red"></span>
-                  </div>
-                
+          <div class="row">
+            <div class="col-md-3 offset-md-1">
+              <label>Address</label>
+              <input type="text" id="customer_address" name="customer_address" class="form-control inputBox" >
+              <span id="addressError" style="color:red"></span>
+            </div>                
           </div>
 
                 <div align="right">
@@ -91,8 +88,8 @@
                       </div>
 
                       <div class="col-md-2">
-                        <label>Contact</label>
-                        <input type="text" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
+                        <label>Contact No</label>
+                        <input type="number" id="searchcontact" name="searchcontact" class="form-control" placeholder="Search Contact" value="<?php echo $searchcontact; ?>">
                       </div>
 
                       <div class="col-md-2">
@@ -152,7 +149,7 @@
     <tbody>
 
         <?php 
-        $i = $this->uri->segment(3)+0;
+        $i = $this->uri->segment(3);
 
         if (count($customers) > 0)
         foreach($customers as $key => $value) { 
@@ -330,7 +327,8 @@
                 var email = document.getElementById("customer_email").value;
                 var contact = document.getElementById("customer_contactno").value;
                 var address = document.getElementById("customer_address").value;
-
+                var isMCQ =  document.getElementById("isMCQ").checked ? 1 : 0;
+                var isInterview =  document.getElementById("isInterview").checked ? 1 : 0;
                 var isError = true;
 
                 if (name.trim().length == 0 ) {
@@ -378,7 +376,9 @@
                       "customer_name":name,
                       "customer_email":email,
                       "customer_contactno":contact,
-                      "customer_address": address
+                      "customer_address": address,
+                      "mcq": isMCQ,
+                      "interview": isInterview
                     } ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);

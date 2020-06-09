@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-
+ 
 $route['user/new-login']['GET'] = 'MyController/loginOpt';
 
 $route['question/create'] = 'questionBank';
@@ -79,9 +79,7 @@ $route['fetchQuestion'] = 'questionBank/fetchQuestion';
 
 $route['search/MCQ'] = 'questionBank/searchTest';
 
-
 $route['admin/uploadQuestion']['POST'] = 'AdminController/uploadQuestion';
-
 
 $route['user/registration'] = 'questionBank/registration';
 
@@ -107,14 +105,17 @@ $route['checkAvailableQuestion']['POST'] = 'AdminController/checkAvailableQuesti
 $route['addTestTime']['POST'] = 'AdminController/addTestTime';
 $route['editTestTime']['POST'] = 'AdminController/editTestTime';
 
-
 $route['addQuestion']['POST'] = 'questionBank/addQuestion';
 
 $route['add-question/:any/:any']= 'AdminController/showQuestion';
 
 $route['user/enter-code'] = 'questionBank/enterCode';
-
+ 
 $route['user/profile'] = 'questionBank/showUserProfile';
+
+$route['user/profile-state'] = 'questionBank/showUserProfileState';
+
+$route['user/profile-city']['POST'] = 'questionBank/showUserProfileCity';
 
 $route['user/create/profile'] = 'AdminController/createUserProfile';
 
@@ -130,6 +131,11 @@ $route['user/logout'] = 'MyController/logout';
 
 $route['user/home'] = 'questionBank/userHome';
 
+$route['user/home'] = 'questionBank/userHome';
+
+
+
+
 $route['user/test'] = 'questionBank/codeTestResult';
 
 $route['user/upload/do_upload'] = 'questionBank/uploadProfileImage';
@@ -138,32 +144,52 @@ $route['admin/create-test'] = 'AdminController/createTest';
 
 $route['admin/view-mcq/:any'] = 'AdminController/viewTest';
 
+$route['admin/view-mcq/:any/:any'] = 'AdminController/viewTest';
 
+$route['admin/view-mcq-search/:any'] = 'AdminController/viewTestSearch';
+
+$route['admin/view-mcq-search/:any/:any'] = 'AdminController/viewTestSearch';
 
 $route['admin/view-interview/:any'] = 'AdminController/viewInterview';
 
-
+$route['admin/view-interview/:any/:any'] = 'AdminController/viewInterview';
 
 $route['admin/view-interview-search/:any'] = 'AdminController/viewInterviewSearch';
-    
+$route['admin/view-interview-search/:any/:any'] = 'AdminController/viewInterviewSearch';
 
 $route['admin/interview-customers-list'] = 'AdminController/interviewCustomers';
+$route['admin/interview-customers-list/:any'] = 'AdminController/interviewCustomers';
 
 $route['admin/interview-customers-list-search'] = 'AdminController/interviewCustomersSearch';
 
+$route['admin/interview-customers-list-search/:any'] = 'AdminController/interviewCustomersSearch';
+ 
 $route['admin/view-questions'] = 'AdminController/viewQuestion';
 
 $route['admin/view-questions/:any'] = 'AdminController/viewQuestion';
 
- 
- $route['admin/view-questions-search'] = 'AdminController/viewQuestionSearch';
+$route['admin/view-questions-search'] = 'AdminController/viewQuestionSearch';
 
 $route['admin/view-questions-search/:any'] = 'AdminController/viewQuestionSearch';
- 
+
+
+$route['customer/view-questions'] = 'CustomerController/viewQuestion';
+
+$route['customer/view-questions/:any'] = 'CustomerController/viewQuestion';
+
+$route['customer/view-questions-search'] = 'CustomerController/viewQuestionSearch';
+
+$route['customer/view-questions-search/:any'] = 'CustomerController/viewQuestionSearch';
+
 
 $route['admin/view-results'] = 'AdminController/viewResult';
 
 $route['admin/view-mcq-data/:any'] = 'AdminController/viewMcqData';
+$route['admin/view-mcq-data/:any/:any'] = 'AdminController/viewMcqData';
+
+$route['admin/view-mcq-data-search/:any'] = 'AdminController/viewMcqDataSearch';
+
+$route['admin/view-mcq-data-search/:any/:any'] = 'AdminController/viewMcqDataSearch';
 
 $route['admin/view-students/:any']= 'AdminController/showStudents';
 
@@ -171,7 +197,11 @@ $route['admin/download-students/:any/:any']= 'AdminController/downloadExcel';
 
 $route['admin/add-question'] = 'AdminController/createQuestion';
 
+$route['customer/add-question'] = 'CustomerController/createQuestion';
+
 $route['admin/edit-question/:any'] = 'AdminController/editQuestion';
+
+$route['customer/edit-question/:any'] = 'CustomerController/editQuestion';
 
 //$route['admin/login'] = 'AdminController/adminLogin';
 
@@ -186,6 +216,7 @@ $route['addMcq']['POST'] = 'questionBank/addMcqCode';
 $route['redirect-to-code'] = 'questionBank/redirectPage';
 
 $route['saveTestStatus'] = 'questionBank/saveTestStatus';
+$route['saveResult'] = 'questionBank/saveResult';
 
 $route['load-frame'] = 'questionBank/loadFrame';
 
@@ -215,10 +246,29 @@ $route['admin/edit-test-save']['POST'] = 'AdminController/editTestsave';
 
 $route['admin/create-roles'] = 'AdminController/addRoles'; 
 
+$route['admin/upload-image'] = 'AdminController/uploadImage';
+
+$route['admin/upload-image-save']['POST'] = 'AdminController/uploadImageSave';
+
+$route['admin/upload-image-delete']['POST'] = 'AdminController/activeSiteImage';
+
+
 $route['admin/saveRole'] ['POST']= 'AdminController/saveRole'; 
 
+$route['admin/create-roles/:any'] = 'AdminController/addRoles'; 
+
+$route['admin/create-roles-search'] = 'AdminController/addRolesSearch'; 
+
+$route['admin/create-roles-search/:any'] = 'AdminController/addRolesSearch'; 
+
+$route['admin/saveRole'] ['POST']= 'AdminController/saveRole'; 
 
 $route['admin/create-users'] = 'AdminController/createUser'; 
+$route['admin/create-users/:any'] = 'AdminController/createUser'; 
+
+$route['admin/create-users-search'] = 'AdminController/createUserSearch'; 
+
+$route['admin/create-users-search/:any'] = 'AdminController/createUserSearch'; 
 
 $route['admin/saveUser'] ['POST']= 'AdminController/saveUser'; 
 
@@ -315,7 +365,21 @@ $route['admin/create-customers-search/:any'] = 'AdminController/createCustomerSe
 
 $route['admin/mcq-customers'] = 'AdminController/mcqCustomer';
 
+$route['admin/mcq-customers/:any'] = 'AdminController/mcqCustomer';
+
+  
 $route['admin/mcq-customers-search'] = 'AdminController/mcqCustomerSearch';
+
+$route['admin/mcq-customers-search/:any'] = 'AdminController/mcqCustomerSearch';
+
+$route['admin/todays-interview'] = 'AdminController/todaysInterview';
+
+$route['admin/todays-interview/:any'] = 'AdminController/todaysInterview';
+
+$route['admin/todays-interview-search'] = 'AdminController/todaysInterviewSearch';
+
+$route['admin/todays-interview-search/:any'] = 'AdminController/todaysInterviewSearch';
+
 
 $route['admin/fetch-customers']['POST'] = 'AdminController/fetchCustomer'; 
 $route['admin/save-customers']['POST'] = 'AdminController/saveCustomer'; 
@@ -341,8 +405,12 @@ $route['customer/checklogin']['POST'] = 'CustomerController/checkLogin';
 $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
 $route['customer/dashboard'] = 'CustomerController/viewDashboard';
 
-$route['customer/mcq-list'] = 'CustomerController/viewMcqList';
+$route['customer/create-test'] = 'CustomerController/createTest';
+$route['customer/addTest']['POST'] = 'CustomerController/addTest';
+$route['customer/addTestTime']['POST'] = 'CustomerController/addTestTime';
 
+$route['customer/mcq-list'] = 'CustomerController/viewMcqList';
+  
 $route['customer/mcq-list/:any'] = 'CustomerController/viewMcqList';
 
 $route['customer/mcq-list-search'] = 'CustomerController/viewMcqListSearch';
@@ -350,6 +418,13 @@ $route['customer/mcq-list-search'] = 'CustomerController/viewMcqListSearch';
 $route['customer/mcq-list-search/:any'] = 'CustomerController/viewMcqListSearch';
 
 $route['customer/view-mcq-data/:any'] = 'CustomerController/viewMcqData';
+
+$route['customer/view-mcq-data/:any/:any'] = 'CustomerController/viewMcqData';
+
+$route['customer/view-mcq-data-search/:any'] = 'CustomerController/viewMcqDataSearch';
+
+$route['customer/view-mcq-data-search/:any/:any'] = 'CustomerController/viewMcqDataSearch';
+
 $route['customer/view-interview'] = 'CustomerController/viewInterview';
 
 $route['customer/view-interview/:any'] = 'CustomerController/viewInterview';
@@ -357,6 +432,15 @@ $route['customer/view-interview/:any'] = 'CustomerController/viewInterview';
 $route['customer/view-interview-search'] = 'CustomerController/viewInterviewSearch';
 
 $route['customer/view-interview-search/:any'] = 'CustomerController/viewInterviewSearch';
+
+$route['customer/todays-interview'] = 'CustomerController/todaysInterview';
+
+$route['customer/todays-interview/:any'] = 'CustomerController/todaysInterview';
+
+$route['customer/todays-interview-search'] = 'CustomerController/todaysInterviewSearch';
+
+$route['customer/todays-interview-search/:any'] = 'CustomerController/todaysInterviewSearch';
+
 
 $route['customer/interview-result/:any'] = 'CustomerController/interviewResult'; 
 
@@ -367,21 +451,41 @@ $route['customer/interview-result-search/:any'] = 'CustomerController/interviewR
 $route['customer/interview-result-search/:any/:any'] = 'CustomerController/interviewResultSearch'; 
 
 $route['customer/logout'] = 'CustomerController/logout';
+
 $route['customer/create-interview-group'] = 'CustomerController/createInteviewGroup';
+
 $route['customer/save-interview-group']['POST'] = 'CustomerController/saveInterviewGroup'; 
+
 $route['customer/add-section'] = 'CustomerController/addSection';
 $route['customer/save-section'] = 'CustomerController/saveSection';
 
 $route['customer/upload-question'] = 'CustomerController/uploadQuestionView';
+
 $route['customer/save-uploaded-question'] = 'CustomerController/saveUploadedQuestion';
+
 $route['customer/create-interviewers'] = 'CustomerController/addInterviewer';
+
+$route['customer/create-interviewers/:any'] = 'CustomerController/addInterviewer';
+
+$route['customer/create-interviewers-search'] = 'CustomerController/addInterviewerSearch';
+
+$route['customer/create-interviewers-search/:any'] = 'CustomerController/addInterviewerSearch';
+
 $route['customer/save-interviewers']['POST'] = 'CustomerController/saveInterviewer';
 $route['customer/generateInterviewUsrPwd']['POST'] = 'CustomerController/generateInterviewUsrPwd';
 
 $route['admin/add-meeting-credentials'] = 'AdminController/createMeetingCredentials'; 
+
+$route['admin/add-meeting-credentials/:any'] = 'AdminController/createMeetingCredentials'; 
+
+$route['admin/add-meeting-credentials-search'] = 'AdminController/createMeetingCredentialsSearch'; 
+
+$route['admin/add-meeting-credentials-search/:any'] = 'AdminController/createMeetingCredentialsSearch'; 
+
 $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentials'; 
 
 $route['admin/result/:any'] = 'AdminController/updateResult';
+
 
 $route['skillrary-chat'] = 'ChatController/showJoinPage';
 $route['createChat']['POST'] = 'ChatController/createChatFun';
@@ -396,3 +500,39 @@ $route['approving-users']['POST'] = 'ChatController/approveWaitingUsers';
 
 $route['skillrary-chat/logout'] = 'ChatController/logout';
 // $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
+
+$route['admin/add-section'] = 'AdminController/createSection'; 
+
+$route['admin/add-section/:any'] = 'AdminController/createSection'; 
+
+$route['admin/add-section-search'] = 'AdminController/createSectionSearch'; 
+
+$route['admin/add-section-search/:any'] = 'AdminController/createSectionSearch'; 
+
+$route['admin/delete-section']['POST'] = 'AdminController/deleteSection'; 
+
+$route['admin/saveSection'] ['POST']= 'AdminController/saveSection'; 
+
+$route['customer/add-section'] = 'CustomerController/createSection'; 
+
+$route['customer/add-section/:any'] = 'CustomerController/createSection'; 
+
+$route['customer/add-section-search'] = 'CustomerController/createSectionSearch'; 
+
+$route['customer/add-section-search/:any'] = 'CustomerController/createSectionSearch'; 
+
+$route['customer/delete-section']['POST'] = 'CustomerController/deleteSection'; 
+
+$route['customer/saveSection'] ['POST']= 'CustomerController/addNewSection';
+$route['customer/save']['POST'] = 'AdminController/save'; 
+
+$route['sql-editor'] = 'SqlController/getViewHere';
+
+$route['sql-editor'] = 'SqlController/getViewHere';
+
+
+$route['checkcode'] = 'Welcome/checkcode';
+
+$route['checklogin'] = 'Welcome/checklogin';
+$route['download-format'] = 'AdminController/downloadFormat';
+

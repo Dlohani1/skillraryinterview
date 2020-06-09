@@ -18,7 +18,7 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-
+   
 	public function __construct()
     {
             parent::__construct();
@@ -26,13 +26,22 @@ class Welcome extends CI_Controller {
             $this->load->database();
             $this->load->library(array('session'));
     }
-	public function index()
-	{
+
+
+    
+	public function index() {
 		//$this->load->view('welcome_message');
         if (null !== $this->session->id) {          
             redirect('user/home');
         } else {
-            $this->load->view('home');   
+            //$this->load->view('home');
+            $sql = "SELECT logo_image_url, banner_image_url from site_images where is_active = 1";
+            $result = $this->db->query($sql)->row();
+            if (null !== $result) {
+                $this->load->view('new-home',array("images"=>$result));
+            } else {
+                $this->load->view('home');
+            }
         }
 	}
 
@@ -57,11 +66,11 @@ public function mypdf(){
     $result = $this->viewResult($mcqId, $studentId);
    
 
-    $sql = "SELECT * FROM `student_register` WHERE id=".$studentId;
+    $sql = "SELECT student_register.*, states.name as state_name, cities.name as city_name FROM `student_register` left join states on student_register.state = states.id
+left join cities on student_register.city = cities.id WHERE student_register.id=".$studentId ;
 
     $student = $this->db->query($sql)->row();
 
-    // print_r($student); die;
 
 
     // $this->load->view('admin/student-result', array('studentData' => $student));
@@ -352,4 +361,58 @@ public function viewResult($mcqId, $sId) {
         $objWriter->save('php://output'); 
  
     }
+
+    public function typingTest() {
+        $this->load->view('typing-test/home');
+    }
+
+    public function typingTestStart() {
+        $this->load->library('user_agent');
+        $refer = null;
+        if ($this->agent->is_referral()) {
+            $refer =  $this->agent->referrer();
+        }
+        /*
+        if (null !== $refer) {
+
+        $this->load->view('typing-test/test'); 
+        } else {
+            redirect('/typing-test');
+        } */
+        $this->load->view('typing-test/test'); 
+    }
+
+    public function typingTestResult() {
+         $this->load->library('user_agent');
+        $refer = null;
+        if ($this->agent->is_referral()) {
+            $refer =  $this->agent->referrer();
+        }
+
+        /*
+        if (null !== $refer) {
+
+        $this->load->view('typing-test/result'); 
+        } else {
+            redirect('/typing-test');
+        }*/
+        $this->load->view('typing-test/result'); 
+    }
+
+
+    public function checkcode() {
+
+      $this->load->view('log-in-with-code');
+
+    }
+
+
+    public function checklogin() {
+
+      $this->load->view('login-in-with-crediential');
+
+    }
+
+
+    
 }

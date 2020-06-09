@@ -53,12 +53,17 @@ if (!$mcq['mcq-details']->proctoredTest) {
          <input type="hidden" id="assessId" name="assessId"  />
           <div class="col-md-12">
             <h4>MCQs</h4>
-<!--             <div class="container"  id="detail">
+            <div class="container"  id="detail">
             <div class="row">
               <div class="column">
                 <label>User Count</label>
                 <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>&nbsp;&nbsp;<button onclick="deleteUsrPwd()">Delete IDs</button>&nbsp;&nbsp;<button onclick="printUsrPwd()">Print IDs</button>&nbsp;&nbsp;<button onclick="downloadResult()">Print Result</button>
-
+                  <select id = "resultFilter" onchange="setFilter()">
+                  <option value="0" > All </option>
+                  <option value="1" > Passed </option>
+                  <option value="2" > Failed </option>
+                </select>
+                <input type="hidden" id="student-result" value="0" />
               </div>
               <div class="column">
                 <input type="hidden" id="mcqTestId" value= "<?php echo $mcq['mcq-details']->id;?>">
@@ -72,7 +77,59 @@ if (!$mcq['mcq-details']->proctoredTest) {
                   <label for="lname">Fail Count : </label> <strong><?=$mcq['mcq-details']->failCount;?></strong><br/> 
               </div>
             </div>
-          </div> -->
+          </div>
+
+
+
+
+    <!-- for search filter start -->
+
+          <div class="container">
+                <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/view-mcq-data-search/$mcqId";?>>
+
+                    <div class="searchBox">
+
+                          <div class="row">
+
+                                <div class="col-md-2 ">
+                                  <label>Name</label>
+                                  <input type="text" id="searchname" name="searchname" class="form-control " placeholder="Search Name" value="<?php echo $searchname ?? ''; ?>" >
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>Email</label>
+                                  <input type="text" id="searchemail" name="searchemail" class="form-control" placeholder="Search Email" value="<?php echo $searchemail ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>Contact-no</label>
+                                  <input type="number" id="contactno" name="contactno" class="form-control" placeholder="Search Contact-no" value="<?php echo $contactno ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-2">
+                                  <label>Username</label>
+                                  <input type="text" id="searchusername" name="searchusername" class="form-control" placeholder="Search Username" value="<?php echo $searchusername ?? ''; ?>">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Search</label><br>
+                                    <button type="submit" value="Submit">
+                                      <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
+                                    </button>
+
+                                </div>
+
+                          </div>
+
+                    </div>
+                </form>
+            </div>
+
+          <!-- for search filter end -->
+
+
+
+
             <div class="container">
               <!-- <div class="searchBox"> -->
                 <!-- <div class="row">
@@ -155,7 +212,9 @@ if (!$mcq['mcq-details']->proctoredTest) {
 
         <?php 
         $mcqId = $mcq['mcq-details']->id;
-	$i = 0;
+	// $i = 0;
+        $i = $this->uri->segment(4);
+
         if (count($mcq['mcq-users']) > 0)
         foreach($mcq['mcq-users'] as $key => $value) {
 		$i++;
@@ -180,7 +239,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
             
           }
           
-            echo '<tr><td>'.$i.'</td><td>'.$value->first_name." ".$value->last_name.'</td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="Edit"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
+            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="Edit"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
     if ($proctoredTest) {
@@ -267,6 +326,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
     </tbody>
         
 </table>
+<p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
@@ -285,6 +345,35 @@ if (!$mcq['mcq-details']->proctoredTest) {
   </div>
 </div>
 
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" style="margin-top: -5%;
+
+margin-right: -29%;
+
+color: red;">&times;</button>
+          <h4 class="modal-title">Student Detail</h4>
+        </div>
+        <div class="modal-body">
+                  <table id="classTable" class="table table-bordered">
+          <thead>
+          </thead>
+          <tbody id="student">
+           
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
@@ -380,6 +469,39 @@ if (!$mcq['mcq-details']->proctoredTest) {
                 function setUserId(id) {
                   document.getElementById("assessId").value = id;                  
                 }
+                function showStudentDetails(userId) {
+    var baseUrl = document.getElementById("base_url").value;
+     $('#student').empty();
+    $.ajax({
+                    url: baseUrl+"admin/showStudentData",
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                  data: { "id":userId} ,
+                    success: function( data, textStatus, jQxhr ){
+
+                       $.each(data, function (index, item) {
+                        //console.log(item, index);
+                        if (null !== item) {
+                        var eachrow = 
+                               '<tr><td><strong>'+index+': </strong></td><td>'+item+ '</td></tr>';
+                   $('#student').append(eachrow);
+                }
+                  });
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        // document.getElementById("code").disabled = true;
+
+                        // document.getElementById("codeSubmit").disabled = true;
+                        //window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+  }
 
                function generateUsrPwd() {
                 
@@ -463,9 +585,10 @@ if (!$mcq['mcq-details']->proctoredTest) {
             }
 
             function downloadResult() {
+              var filter = document.getElementById("student-result").value;
               var mcqId = document.getElementById("mcqTestId").value;
               var baseUrl = document.getElementById("base_url").value;
-              var url = baseUrl+"admin/download-students/"+mcqId;
+              var url = baseUrl+"admin/download-students/"+mcqId+"/"+filter;
               window.open(url);
             }
 
@@ -545,5 +668,9 @@ function getHour(hour) {
                 });
 
 		document.getElementById("closebox").click();
+             }
+              function setFilter() {
+              var filterValue = document.getElementById("resultFilter").value;
+              document.getElementById("student-result").value = filterValue;
              }
 </script>
