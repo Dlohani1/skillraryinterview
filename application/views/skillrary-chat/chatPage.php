@@ -9,6 +9,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Chat screen</title>
+    <?php echo smiley_js(); ?>
     <style>
         .containerChat{
             background: #33A478;
@@ -315,8 +316,9 @@
     <div class="container-fluid containerChat">
         <img src="https://skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="logo">
         <a class="btn btn-primary pull-right" href="<?=base_url().'skillrary-chat/logout';?>">Logout</a>
-    </div>
-    <div class="charContent">
+    </div> 
+    
+    <div class="charContent" id="chatCont" >
     <div class="container-fluid commentBox">
         <div class="row" width="100%">
             <div class="col-md-12 titleBox">
@@ -325,9 +327,20 @@
                 <i class="fa fa-comment" aria-hidden="true"></i>
                 </span>
                 <span class="ChannelTitle">
-                	Welcome, <b><?php echo $trainer_name; ?></b>
-                Channel Title : <?php echo $channel_title;?> /
-                ChatRoom Id : <?php echo $code;?>
+                	Hi , <b>
+                    <?php 
+                    if(isset($_SESSION['trainerId'])){
+                        echo $trainer_name;
+                    }
+                    else if(isset($_SESSION['studentName'])){
+                        echo $_SESSION['studentName'];
+                    }
+
+                     
+                    ?></b>
+                    
+                Channel Title : <?php echo $_SESSION['channelTitle'] ;?> /
+                ChatRoom Id : <?php echo $_SESSION['chatCode'];?>
                 </span>
 
 
@@ -336,12 +349,12 @@
                 <div id="chatMessage">
 
                 		<?php
-							$fileName = $_SESSION['channelTitle'].".html";
+							$fileName = $_SESSION['channelTitle'].".php";
 							if (file_exists ( $fileName ) && filesize ( $fileName ) > 0) {
 								$handle = fopen ( $fileName, "r" );
 								$contents = fread ( $handle, filesize ( $fileName ) );
 								fclose ( $handle );
-								echo $contents;
+								echo strip_tags($contents);
 							}
 						?>
                     
@@ -376,32 +389,109 @@
                 <div class="well">
                     
                     <span class="inputBox">
-                        <textarea id="usermsg" rows="2" class="textareaInput"></textarea>
+                        <!-- <textarea  id="usermsg" rows="2" class="textareaInput"></textarea> -->
+                        <textarea class="textareaInput"  name="comments" id="comments" rows="4"></textarea>
+
+                        <input type="checkbox" id="enterkey" name="enterkey" value="1">
+                        <label for="enterkey"> Send On Enter </label>
+
+                        <input type="checkbox" id="mutenotific" name="mutenotific" value="1">
+                        <label for="mutenotific"> Mute Notifications </label>
+
+
+
+                        <div class="mt-2">
+                           <button id="submitmsg" class="btn btn-success">Send</button> 
+                        </div>
+                        
+                        
                     </span>
-                    <button id="submitmsg" class="btn btn-success">Send</button>
+                    <?php echo $smiley_table; ?>
+                    
+                        <audio style="display: none;" id="myAudio" controls>
+                            <source src="<?=base_url().'music/message.mp3';?>" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
                 </div>
             </div>
+
+            <?php if(isset($_SESSION['trainerId'])){ ?>
+
             <div class="panel-right">
                 <div class="chatUser">
-                    <img src="<?=base_url().'images/teacher.svg';?>" class="userImage"><span class="userName">Meena</span>
+                    <img src="<?=base_url().'images/teacher.svg';?>" class="userImage"><span class="userName">Admin</span>
                 </div>
                 <div class="online">
-                    <h5>Online Users</h5>
+                    <h5>Approved Users</h5>
+                </div>
+
+                <div class="onlineUsersList">
+                    <ul id="approved">
+                    </ul>
+                </div>
+
+                <div class="onlineUsersList">
+                    <div class="online">
+                        <h5>Waiting Users</h5>
+                    </div>
+                    <ul id="unapproved">
+                        <!-- <li class="active"><img src='<?=base_url().'images/teacher.svg';?>'><span class="onlineusername">Meena</span></li>
+                        <li><img src="<?=base_url().'images/teacher.svg';?>"><span class="onlineusername">John</span></li> -->
+                    </ul>
+                </div>
+
+            </div>
+
+
+            <?php } else { ?>
+
+
+            <div class="panel-right">
+
+                <div class="chatUser">
+                    <img src="<?=base_url().'images/teacher.svg';?>" class="userImage"><span class="userName">Admin</span>
+                </div>
+                <div class="online">
+                    <h5>Users</h5>
                 </div>
                 <div class="onlineUsersList">
-                    <ul>
-                        <li class="active"><img src="<?=base_url().'images/teacher.svg';?>"><span class="onlineusername">Meena</span></li>
-                        <li><img src="<?=base_url().'images/teacher.svg';?>"><span class="onlineusername">John</span></li>
+                    <ul id="approved">
                     </ul>
                 </div>
             </div>
+
+            <?php } ?>
+
+
+
+
         </div>
     </div>
     </div>
-
+    <div id="notapproved"> Please wait till Admin approves your request </div> 
     <script type="text/javascript">
-    			$("#submitmsg").click(function(){
-			var clientmsg = $("#usermsg").val();
+
+        $('.textareaInput').keypress(function (e) {
+
+            if($('#' + 'enterkey').is(":checked")){
+                if (e.which == 13) {
+                $("#submitmsg").click();
+                return false;    
+                }  
+            }
+            else{
+                console.log('not checked');
+            }
+
+          
+
+
+        });
+
+
+/*****************/
+    	$("#submitmsg").click(function(){
+			var clientmsg = $("#comments").val();
 			
 	        $.ajax({
 		        url : "save-mess", 
@@ -410,24 +500,133 @@
 				success:function(data) {
 				   
 					loadLog();
-				     $("#usermsg").val('');
+				     $("#comments").val('');
+
+                     if($('#' + 'mutenotific').is(":checked")){
+                        console.log('mute');
+                     }
+                     else{
+                        var x = document.getElementById("myAudio");
+                        x.play();
+                     }
+
+                     
 			    }
 		    });
 
 		});
-
-    		function loadLog(){	
+/***********************/
+    	function loadLog(){	
 			
 			$.ajax({
 				url: "show-message",
 				method:'get',
 				success: function(data){
+
 					$("#chatMessage").html(data);
 			  	},
 			});
 		}
+/**********************/
+        
+        function approvedUsers(){
 
-		setInterval (loadLog, 4000);
+            var chatCode = <?php echo $_SESSION['chatCode']; ?>;
+            //console.log(chatCode);
+
+            $.ajax({
+                url : "approved-users", 
+                data :{code: chatCode},
+                method:'POST',
+                success:function(data) {
+
+                    //console.log(data);
+                   // $('#approved').empty();
+                    var opts = $.parseJSON(data);
+                    
+                    var StringVar = '';
+                    $.each(opts, function(i, d) { 
+
+                        //console.log(d);
+                         StringVar += "<li><img src='<?=base_url().'images/teacher.svg';?>'><span class='onlineusername'>"+d.student_name+"</span></li>";
+                        
+                         $('#approved').html(StringVar);
+                        
+
+                     });
+                    
+                    
+                }
+
+            });
+
+
+        }
+
+
+/****************************/
+
+function waitingUsers(){
+
+            var chatCode = <?php echo $_SESSION['chatCode']; ?>;
+            
+            $.ajax({
+                url : "waiting-users", 
+                data :{code: chatCode},
+                method:'POST',
+                success:function(data) {
+                   
+                    var opts = $.parseJSON(data);
+                    $('#unapproved').empty();
+                    var StringVar = '';
+                    $.each(opts, function(i, d) { 
+                        console.log('dd',d)
+                        
+                         StringVar += "<li><img src='<?=base_url().'images/teacher.svg';?>'><span class='onlineusername'>"+d.student_name+"<button onclick='approvethisuser("+d.id+",1)' class='pull-right' >Approve</button><button onclick='approvethisuser("+d.id+",2)' class='pull-right'>Reject</button></span></li>";
+                        
+                         $('#unapproved').html(StringVar);
+                        
+
+                     });
+                    
+                    
+                }
+
+            });
+
+
+        }
+
+
+
+
+/*******************************/
+
+    function approvethisuser(id,action){
+            console.log('id',id, 'action', action)
+            $.ajax({
+                url : "approving-users", 
+                data :{student: id,action:action},
+                method:'POST',
+                success:function(data) {
+
+                    if(data){
+                        console.log(data);
+                    }
+                    
+                    
+                }
+
+            });
+
+    }
+
+/*************************************/
+
+
+		setInterval (loadLog, 2000);
+        setInterval (approvedUsers, 2000);
+        setInterval (waitingUsers, 2000);
 
     </script>
 </body>

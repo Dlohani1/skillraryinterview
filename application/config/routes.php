@@ -390,8 +390,9 @@ $route['save-mess']['POST'] = 'ChatController/saveMessageFun';
 $route['show-message'] = 'ChatController/showMessageFun';
 
 $route['joinChatStudent']['POST'] = 'ChatController/joinChatFun';
-
-
+$route['approved-users']['POST'] = 'ChatController/displayApprovedUsers';
+$route['waiting-users']['POST'] = 'ChatController/displayWaitingUsers';
+$route['approving-users']['POST'] = 'ChatController/approveWaitingUsers';
 
 $route['skillrary-chat/logout'] = 'ChatController/logout';
 // $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
