@@ -51,9 +51,12 @@
                         <a href="" class="site-logo col-sm-6">
                            <img src="uploads/images/f-sr-logo-195-50.png" alt="SkillRary" class="img-responsive" width="195" height="50" style="margin: 10px 0;" />
                         </a>
+                       <?php
+                        if (isset($images->logo_image_url) && strlen($images->logo_image_url) > 0){?>
                         <a href="" class="site-logo col-sm-6">
-                           <img src="uploads/images/dxc_logo.png" alt="SkillRary" class="img-responsive" width="195" height="50" style="margin: 10px 0;" />
+                           <img src="<?=$images->logo_image_url;?>" alt="SkillRary" class="img-responsive" width="195" height="50" style="margin: 10px 0;" />
                         </a>
+                     <?php } ?>
                      </div>
                   </div>
                   <div class="categ">
