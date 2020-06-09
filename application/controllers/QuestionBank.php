@@ -1660,22 +1660,21 @@ class QuestionBank extends MyController {
             }
             else
             {
-                // echo "dfafa"; die;
-                    // $data = array('upload_data' => $this->upload->data());
+                    // echo "dfafa"; die;
+                        // $data = array('upload_data' => $this->upload->data());
 
-                    // $this->load->view('upload_success', $data);
-                $userId = $this->session->id;
+                        // $this->load->view('upload_success', $data);
+                    $userId = $this->session->id;
 
             $userData = array();
 
             $userData['profile_image'] = "uploads/".$_FILES['profilePic']['name'];
-
-           
+          
             $this->db->where('id', $userId);
             $this->db->update('student_register',$userData);
 
             $this->session->set_flashdata('success', 'Updated successfully');
-                redirect('user/profile', 'refresh');
+            redirect('user/profile', 'refresh');
             }
         }
 

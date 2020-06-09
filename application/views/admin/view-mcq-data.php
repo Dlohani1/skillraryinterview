@@ -554,34 +554,34 @@ function showStudentDetails(userId) {
     var baseUrl = document.getElementById("base_url").value;
      $('#student').empty();
     $.ajax({
-                    url: baseUrl+"admin/showStudentData",
-                    type: 'post',
-                    
-                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                  data: { "id":userId} ,
-                    success: function( data, textStatus, jQxhr ){
+        url: baseUrl+"admin/showStudentData",
+        type: 'post',
+        
+        // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+      data: { "id":userId} ,
+        success: function( data, textStatus, jQxhr ){
 
-                       $.each(data, function (index, item) {
-                        //console.log(item, index);
-                        if (null !== item) {
-                        var eachrow = 
-                               '<tr><td><strong>'+index+': </strong></td><td>'+item+ '</td></tr>';
-                   $('#student').append(eachrow);
-                }
-                  });
-                        //window.location.reload(true);
-                       // window.location.href="admin/view-mcq";
-                        //$('#response pre').html( JSON.stringify( data ) );
-                        console.log('data', data);
-                        // document.getElementById("code").disabled = true;
+           $.each(data, function (index, item) {
+            //console.log(item, index);
+            if (null !== item) {
+            var eachrow = 
+                   '<tr><td><strong>'+index+': </strong></td><td>'+item+ '</td></tr>';
+       $('#student').append(eachrow);
+    }
+      });
+            //window.location.reload(true);
+           // window.location.href="admin/view-mcq";
+            //$('#response pre').html( JSON.stringify( data ) );
+            console.log('data', data);
+            // document.getElementById("code").disabled = true;
 
-                        // document.getElementById("codeSubmit").disabled = true;
-                        //window.location.reload();
-                    },
-                    error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
-                    }
-                });
+            // document.getElementById("codeSubmit").disabled = true;
+            //window.location.reload();
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+            console.log( errorThrown );
+        }
+    });
   }
      
 

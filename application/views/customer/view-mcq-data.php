@@ -58,7 +58,12 @@ if (!$mcq['mcq-details']->proctoredTest) {
               <div class="column">
                 <label>User Count</label>
                 <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>&nbsp;&nbsp;<button onclick="deleteUsrPwd()">Delete IDs</button>&nbsp;&nbsp;<button onclick="printUsrPwd()">Print IDs</button>&nbsp;&nbsp;<button onclick="downloadResult()">Print Result</button>
-
+                  <select id = "resultFilter" onchange="setFilter()">
+                  <option value="0" > All </option>
+                  <option value="1" > Passed </option>
+                  <option value="2" > Failed </option>
+                </select>
+                <input type="hidden" id="student-result" value="0" />
               </div>
               <div class="column">
                 <input type="hidden" id="mcqTestId" value= "<?php echo $mcq['mcq-details']->id;?>">
@@ -580,9 +585,10 @@ color: red;">&times;</button>
             }
 
             function downloadResult() {
+              var filter = document.getElementById("student-result").value;
               var mcqId = document.getElementById("mcqTestId").value;
               var baseUrl = document.getElementById("base_url").value;
-              var url = baseUrl+"admin/download-students/"+mcqId;
+              var url = baseUrl+"admin/download-students/"+mcqId+"/"+filter;
               window.open(url);
             }
 
@@ -662,5 +668,9 @@ function getHour(hour) {
                 });
 
 		document.getElementById("closebox").click();
+             }
+              function setFilter() {
+              var filterValue = document.getElementById("resultFilter").value;
+              document.getElementById("student-result").value = filterValue;
              }
 </script>
