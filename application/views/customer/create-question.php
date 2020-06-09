@@ -26,10 +26,14 @@
             
 
             <div class="container">
-
+                <?php
+                if (isset($_SESSION['success'])) {
+                    echo "<p class='text-primary'>".$_SESSION['success']."</p>";
+                }
+                ?>
                 <div align="left">
                  <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Upload Question</button>
-                 
+
                  <a href="<?=base_url()."download-format";?>"><i class="fa fa-download" aria-hidden="true"></i> Download Format</a>
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -41,7 +45,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" action="uploadQuestion" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
+                                        <form method="post" action="<?=base_url().'admin/uploadQuestion';?>" method="post" enctype="multipart/form-data">
                                              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                                             <div class="form-group">
                                                 

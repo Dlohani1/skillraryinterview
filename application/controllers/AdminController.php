@@ -16,10 +16,10 @@ class AdminController extends CI_Controller {
 
     $uri = $this->uri->segment(2);
     //echo $uri; die;
-    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin','updateToken','checkCode'))) {
+    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin','updateToken','checkCode','uploadQuestion','download-students'))) {
       redirect('admin/login');
-    }  
- 
+    }
+
     //$this->db2 = $this->load->database('database2', TRUE);
     // $client = new Vimeo("dfe4d40e1b610f1fc70286ddc017e53e039e7984", "0tyi2RmRxGpejcv3bcsnRFE/b3HT7Y9LOBYJnkODQlSOXuj/StlNqbevYWBThVZMeNd7qKH6Gkjb+AYfNuRJzHSTZimT3QYpj3ubkwFPM68q106nh3j/znAo26wGBMUq", "d598a2fbacd583051d3b80065915e95d");
     
@@ -53,14 +53,14 @@ class AdminController extends CI_Controller {
 
 // echo "Your video URI is: " . $uri;
 
-     $getUrl = $this->uri->segment(2);
-     $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'create-interview','logout');
+    //  $getUrl = $this->uri->segment(2);
+    //  $checkUrl = array('create-test','view-mcq', 'view-questions', 'view-results', 'view-students', 'download-students', 'add-question', 'edit-question', 'create-interview','logout');
 
-    if (in_array($getUrl, $checkUrl)) {
-      if (!isset($_SESSION['admin_id'])) {
-        redirect('admin/login');
-      }
-    }
+    // if (in_array($getUrl, $checkUrl)) {
+    //   if (!isset($_SESSION['admin_id'])) {
+    //     redirect('admin/login');
+    //   }
+    // }
 
   }
   public function testlogin() {
@@ -4868,8 +4868,8 @@ if (($h = fopen("{$filename}", "r")) !== FALSE)
   }
 
    $this->session->set_flashdata('success', 'Questions Uploaded successfully');
-                redirect('user/login', 'refresh');
-
+               // redirect('user/login', 'refresh');
+redirect($_SERVER['HTTP_REFERER']);  
 
 echo "success"; die;
 }
@@ -5225,8 +5225,6 @@ echo "success"; die;
             $i++;
             }
         }
-
-        
      
    $this->generateXls($studentData, $sectionDetails);
       }
