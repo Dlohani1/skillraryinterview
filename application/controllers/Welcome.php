@@ -29,8 +29,7 @@ class Welcome extends CI_Controller {
 
 
     
-	public function index()
-	{
+	public function index() {
 		//$this->load->view('welcome_message');
         if (null !== $this->session->id) {          
             redirect('user/home');
@@ -38,7 +37,11 @@ class Welcome extends CI_Controller {
             //$this->load->view('home');
             $sql = "SELECT logo_image_url, banner_image_url from site_images where is_active = 1";
             $result = $this->db->query($sql)->row();
-            $this->load->view('new-home',array("images"=>$result));
+            if (null !== $result) {
+                $this->load->view('new-home',array("images"=>$result));
+            } else {
+                $this->load->view('home');
+            }
         }
 	}
 
