@@ -486,6 +486,21 @@ $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentia
 
 $route['admin/result/:any'] = 'AdminController/updateResult';
 
+
+$route['skillrary-chat'] = 'ChatController/showJoinPage';
+$route['createChat']['POST'] = 'ChatController/createChatFun';
+$route['chat-room'] = 'ChatController/showChatPage';
+$route['save-mess']['POST'] = 'ChatController/saveMessageFun';
+$route['show-message'] = 'ChatController/showMessageFun';
+
+$route['joinChatStudent']['POST'] = 'ChatController/joinChatFun';
+$route['approved-users']['POST'] = 'ChatController/displayApprovedUsers';
+$route['waiting-users']['POST'] = 'ChatController/displayWaitingUsers';
+$route['approving-users']['POST'] = 'ChatController/approveWaitingUsers';
+
+$route['skillrary-chat/logout'] = 'ChatController/logout';
+// $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
+
 $route['admin/add-section'] = 'AdminController/createSection'; 
 
 $route['admin/add-section/:any'] = 'AdminController/createSection'; 
@@ -520,3 +535,4 @@ $route['checkcode'] = 'Welcome/checkcode';
 
 $route['checklogin'] = 'Welcome/checklogin';
 $route['download-format'] = 'AdminController/downloadFormat';
+
