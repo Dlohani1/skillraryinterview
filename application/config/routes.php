@@ -456,8 +456,8 @@ $route['customer/create-interview-group'] = 'CustomerController/createInteviewGr
 
 $route['customer/save-interview-group']['POST'] = 'CustomerController/saveInterviewGroup'; 
 
-$route['customer/add-section'] = 'CustomerController/addSection';
-$route['customer/save-section'] = 'CustomerController/saveSection';
+// $route['customer/add-section'] = 'CustomerController/addSection';
+// $route['customer/save-section'] = 'CustomerController/saveSection';
 
 $route['customer/upload-question'] = 'CustomerController/uploadQuestionView';
 
@@ -493,6 +493,26 @@ $route['admin/add-section/:any'] = 'AdminController/createSection';
 $route['admin/add-section-search'] = 'AdminController/createSectionSearch'; 
 
 $route['admin/add-section-search/:any'] = 'AdminController/createSectionSearch'; 
+
+$route['admin/add-sub-section/:any'] = 'AdminController/createSubSection'; 
+
+$route['admin/add-sub-section/:any/:any'] = 'AdminController/createSubSection'; 
+
+$route['admin/add-sub-section-search/:any'] = 'AdminController/createSubSectionSearch'; 
+
+$route['admin/add-sub-section-search/:any/:any'] = 'AdminController/createSubSectionSearch'; 
+
+$route['admin/saveSubSection'] ['POST']= 'AdminController/saveSubSection'; 
+
+$route['customer/add-sub-section/:any'] = 'CustomerController/createSubSection'; 
+
+$route['customer/add-sub-section/:any/:any'] = 'CustomerController/createSubSection'; 
+
+$route['customer/add-sub-section-search/:any'] = 'CustomerController/createSubSectionSearch'; 
+
+$route['customer/add-sub-section-search/:any/:any'] = 'CustomerController/createSubSectionSearch';
+
+$route['customer/saveSubSection'] ['POST']= 'CustomerController/saveSubSection'; 
 
 $route['admin/delete-section']['POST'] = 'AdminController/deleteSection'; 
 

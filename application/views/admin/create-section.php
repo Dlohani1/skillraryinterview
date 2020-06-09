@@ -11,7 +11,7 @@
   width: 0;
   height: 0;
 }
-
+ 
 .slider {
   position: absolute;
   cursor: pointer;
@@ -88,36 +88,30 @@ input:checked + .slider:before {
                         echo '<div class="alert alert-primary bg-success" >'.$this->session->flashdata('success').'</div>';
                     } 
 
-
                     if($this->session->flashdata('error'))
                     {
                         echo '<div class="alert alert-white bg-danger" >'.$this->session->flashdata('error').'</div>';
                     } 
                   ?>
 
-              <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/saveSection";?>>
+                  <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/saveSection";?>>
 
-                         <div class="row">
+                          <div class="row">
                             <div class="col-md-3 offset-md-1">
+                              <label>Create Section</label>
                               <input type="text" name="searchSection" required class="form-control" id="searchSection" placeholder="Enter section" autocomplete="off"><br/>
                               <button type="submit" value="Submit">Create section
-                          </button>
+                              </button>
                             </div>
-                         </div>
-
-               </form>
-
+                          </div>
+                  </form>
               </div>
 
               <br>
  
               <form  autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/add-section-search";?>>
-
                   <div class="searchBox">
-
-                        <div class="row">
-
-                             
+                          <div class="row">
                               <div class="col-md-6">
                                 <label>Search Section</label>
                                 <input type="text" id="" name="searchSection" class="form-control" placeholder="Search Section" value="<?php echo $searchSection; ?>">
@@ -128,24 +122,20 @@ input:checked + .slider:before {
                                   <button type="submit" value="Submit">
                                     <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
                                   </button>
-
                               </div>
-
-                        </div>
-
+                          </div>
                   </div>
-            </form>
-        
-        <div class="table-responsive">
-                
-              <table id="mytable" class="table table-bordred table-striped">
-                   
+              </form>
+               <h4 class="mt-4">Section Details</h4>
+
+              <div class="table-responsive">
+                <table id="mytable" class="table table-bordred table-striped">
                   <thead>
-                   
                     <th>Sl no.</th>
                     <th>Section</th>
                     <th>Change Status</th>
                     <th>Status</th>
+                    <th>Add Sub-Section</th>
                   </thead>
                   
                   <tbody>
@@ -170,40 +160,35 @@ input:checked + .slider:before {
                             }
 
 
-                      echo '<tr>
-                          <td>'.$i.'</td>
-                          <td>'.$value->section_name.'</td>
-                        
-                          <td>
-                            <label class="switch"> <input type="checkbox" '.$checked.'  class="activeinactive"  onclick="checkActive('.$value->id.','.$value->is_active.')">
+                          echo '<tr>
+                                  <td>'.$i.'</td>
+                                  <td>'.$value->section_name.'</td>
+                                
+                                  <td>
+                                    <label class="switch"> <input type="checkbox" '.$checked.'  class="activeinactive"  onclick="checkActive('.$value->id.','.$value->is_active.')">
 
-                                 <span class="slider round" title="Status" data-toggle="tooltip"></span>
-                            </label>
-                          </td>
+                                         <span class="slider round" title="Status" data-toggle="tooltip"></span>
+                                    </label>
+                                  </td>
 
-                          <td id="check_status">'.$status.'</td>
-                      </tr>';
-                    }
-                ?>
+                                  <td id="check_status">'.$status.'</td>
 
+                                  <td>
+                                   <a title="Add Interviewer"  href="'.base_url().'admin/add-sub-section/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-plus"></span></button></a>
+                                  </td>
 
-    
-              </tbody>
-
-            </table>
-
-            <p><?php echo $links; ?></p>
-            <div class="clearfix"></div>
-
+                             </tr>';
+                        }
+                    ?>
+                  </tbody>
+                </table>
+                <p><?php echo $links; ?></p>
+                <div class="clearfix"></div>
             </div>
             
         </div>
   </div>
 </div>
-
-
-
-    
 
                                 </div>
                             </div>
@@ -221,8 +206,6 @@ input:checked + .slider:before {
 
 
   function checkActive(id, value){
-
-
     var baseUrl = document.getElementById("base_url").value;
                 
       $.ajax({
@@ -231,29 +214,11 @@ input:checked + .slider:before {
         url: baseUrl+"admin/delete-section",
         success: function(response){
 
-          // response = (response['value'] == 1)? 'Active': 'Inactive';
-
           window.location.reload();
-            // $('#check_status').text(response);
-
-            // window.location.assign(window.location.href)
         }
       });
-
-      
   }
 
-
-
 </script>
-
-
-
-
-
-
-
-
-
 
 
