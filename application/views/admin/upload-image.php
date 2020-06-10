@@ -660,17 +660,15 @@ var base_url =  "<?php echo base_url();?>"
 
 
 function checkActive(id, value){
-
-      $.ajax({
-        method: "POST",
-        data: { "id" : id, "value" : value} ,
-        url: base_url+"admin/upload-image-delete",
-        success: function(response){
-          window.location.reload();
-      });
-
-      
-  }
+  $.ajax({
+    method: "POST",
+    data: { "id" : id, "value" : value} ,
+    url: base_url+"admin/upload-image-delete",
+    success: function(response){
+      window.location.reload();
+    }
+  });
+}
 
 function validateForm(event){
   let error = true;
