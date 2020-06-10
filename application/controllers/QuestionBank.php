@@ -348,6 +348,7 @@ class QuestionBank extends MyController {
             $this->session->sess_destroy();
            
             redirect('user/new-login');
+            redirect('user/new-login');
         } 
 
         public function register() {
@@ -1199,8 +1200,6 @@ class QuestionBank extends MyController {
                 $sectionId['id'][$i] = $row->section_id;
                 $sectionId['name'][$i] = $row->section_name;
                 $i++;
-
-                
             }
 
 
@@ -1329,7 +1328,7 @@ class QuestionBank extends MyController {
             }
            // echo "<pre>";
            // print_r($a); die;
-            $_SESSION['attempt'] = 2;
+            //$_SESSION['attempt'] = 2;
             $this->load->view('user-header');
             $this->load->view('results', array("results"=>$a, "codeTestResult" => $codeTest));
             $this->load->view('codefooter');

@@ -3961,10 +3961,10 @@ public function viewInterviewSearch() {
                 $title = $_POST['test-title'];
                 $type = $_POST['test-type'];
 
-                $check_mcq_test_id = $_POST['check_mcq_test_id'];
-
+                //$check_mcq_test_id = $_POST['check_mcq_test_id'];
+                $check_mcq_test_id = isset($_POST['check_mcq_test_id']) ? $_POST['check_mcq_test_id'] : 0 ;
                 $check_drive_id = $_POST['check_drive_id'];
-
+                //$check_drive_id = isset($_POST['check_drive_id']) ? $_POST['check_drive_id'] : 0;
 
                 $isProctored = $_POST['is-proctored'];
                 $customerCode = explode("-",$_POST['customer-code']); //change to customer id
@@ -4220,10 +4220,7 @@ public function viewInterviewSearch() {
                 $totalQuestion = explode(",",$_POST['totalQuestion']);
                 $totalTime = explode(",",$_POST['sectionTime']);
 
-                $check_exist_id = explode(",",$_POST['check_exist_id']);
-
-
-
+                //$check_exist_id = explode(",",$_POST['check_exist_id']);
 
                 $requiredQuestion = explode(",", $_POST['requiredQnos']);
                 $data = array();
@@ -5675,10 +5672,15 @@ foreach ($sectionDetails['section'] as $key => $value) {
         // header('Cache-Control: max-age=0'); 
         // $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
         // $objWriter->save('php://output'); 
-
+/*
        $object_writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
       header('Content-Type: application/vnd.ms-excel');
       header('Content-Disposition: attachment;filename="SkillRary Data.xlsx"');
+      $object_writer->save('php://output');
+*/
+      $object_writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="SkillraryReport.xls"');
       $object_writer->save('php://output');
  
     }
