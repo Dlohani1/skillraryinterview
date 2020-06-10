@@ -2106,31 +2106,32 @@ public function todaysInterview() {
 
   public function addNewSection() {
     $customerId = $_SESSION['customerId'];
-    $searchSection = $_POST['searchSection'];
+    $sectionName = trim($_POST['searchSection']);
 
-    if (empty($searchSection)) {
+    if (empty($sectionName)) {
         $this->session->set_flashdata('error', "Enter section name.");
         redirect('customer/add-section');
     }
 
-      $this->form_validation->set_rules('searchSection', 'Section','required|is_unique[section.section_name]');
-      if($this->form_validation->run()== FALSE){
-      
-        $this->session->set_flashdata('error', "$searchSection already exist.");
-        redirect('customer/add-section');
+    $sql = "select section_name from section 
+             where customer_id = $customerId and section_name = '".$sectionName."'";
 
-      }else{
-        $data  = array ('customer_id'=>$customerId,'section_name' => $_POST['searchSection']);
-        $this->db->insert('section', $data);
+    $query = $this->db->query($sql);
+    $result = $query->result();
 
-        // $sectionId = $this->db->insert_id();
-        // $data  = array ('section_id'=>$sectionId,'sub_section_name' => $_POST['subSection']);
-        // $this->db->insert('sub_section', $data);
+    if (null != $result) {
+    
+      $this->session->set_flashdata('error', "$sectionName already exist.");
+      redirect('customer/add-section');
 
-        $this->session->set_flashdata('success', "$searchSection added successfully.");
+    } else {
+      $data  = array ('customer_id'=>$customerId,'section_name' => $sectionName);
+      $this->db->insert('section', $data);
 
-        redirect('customer/add-section');
-      }
+      $this->session->set_flashdata('success', "$sectionName added successfully.");
+
+      redirect('customer/add-section');
+    }
   }
 
 
@@ -2478,27 +2479,24 @@ public function todaysInterview() {
   public function saveSubSection() {
     $customerId = $_SESSION['customerId'];
 
-    $section_id = $_POST['section_id'];
-    $sub_section_name = $_POST['sub_section_name'];
+    $section_id = trim($_POST['section_id']);
+    $sub_section_name = trim($_POST['sub_section_name']);
 
     if (empty($sub_section_name)) {
-        $this->session->set_flashdata('error', "Enter sub section name.");
-        redirect("customer/add-sub-section/$section_id");
+      $this->session->set_flashdata('error', "Enter sub section name.");
+      redirect("customer/add-sub-section/$section_id");
     }
 
-    $sqlQ = "select sub_section_name from sub_section inner join section on section.id = sub_section.section_id  
-             where section_id = '$section_id' 
-               AND customer_id = $customerId AND sub_section_name = '$sub_section_name' ";
+    $sql = "select sub_section_name from sub_section inner join section on section.id = sub_section.section_id  where section_id = '$section_id' AND customer_id = $customerId AND sub_section_name = '$sub_section_name' ";
 
-    $query = $this->db->query($sqlQ);
-    $original_value = $query->result();
+    $query = $this->db->query($sql);
+    $result = $query->result();
 
 
-      if (null != $original_value) {
-        $this->session->set_flashdata('error', "$sub_section_name already exist.");
-        redirect("customer/add-sub-section/$section_id");
-      } else {
-
+    if (null != $result) {
+      $this->session->set_flashdata('error', "$sub_section_name already exist.");
+      redirect("customer/add-sub-section/$section_id");
+    } else {
       $data  = array (
         'sub_section_name' => $sub_section_name,
         'section_id' => $section_id
@@ -2509,15 +2507,5 @@ public function todaysInterview() {
       $this->session->set_flashdata('success', "$sub_section_name added successfully.");
       redirect("customer/add-sub-section/$section_id");
     }
-
   }
-
-
-
-
-
-
-
 }
-
-

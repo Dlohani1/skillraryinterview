@@ -301,7 +301,7 @@
                     <td class="tdborder"><?php echo $totalAptitudeMarks; ?></td>
                     <td class="tdborder"><?php echo $totalAptitudeQualifyingMarks; ?></td>
                     <td class="tdborder"><?php echo $totalUserAptitudeMarks; ?></td>
-                    <td class="tdborder" rowspan="3">
+                    <td class="tdborder">
                         <?php
                             if ($totalUserAptitudeMarks >= $totalAptitudeQualifyingMarks) {
                                 echo "<b>PASS</b>";
