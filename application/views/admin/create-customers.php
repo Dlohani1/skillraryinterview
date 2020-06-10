@@ -29,6 +29,12 @@
               <div class="searchBox">
                 <div class="row">
                   <div class="col-md-3 offset-md-1">
+
+                    <input type="hidden" id="hidden_customer_id" name="hidden_customer_id" value=0>
+
+
+
+
                     <label>Name</label>
                     <input type="text" id="customer_name" name="customer_name" class="form-control inputBox">
                     <span id="nameError" style="color:red"></span>
@@ -57,7 +63,7 @@
           </div>
 
                 <div align="right">
-                    <button class="searchBtn" onclick="saveCustomer()">ADD</button>
+                    <button class="searchBtn" id="add_or_update" onclick="saveCustomer()">ADD</button>
                 </div>
             
 
@@ -136,28 +142,45 @@
               <table id="mytable" class="table table-bordred table-striped">
                    
                    <thead>
-                   
-                   <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                  <th>Sl.no</th>                    
-                  <th>Code</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Contact No</th>
-                  <th>Username</th>
-                  <th>Password</th>
+                    <th>Sl.no</th>                    
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact No</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Edit</th>
                   </thead>
-    <tbody>
+                  
+                  <tbody>
 
-        <?php 
-        $i = $this->uri->segment(3);
+                  <?php 
+                    $i = $this->uri->segment(3);
 
-        if (count($customers) > 0)
-        foreach($customers as $key => $value) { 
-          //print_r($value);
-            $i++;
-            echo '<tr><td>'.$i.'</td><td>'.$value->customer_code.'</td><td>'.$value->customer_name.'</td><td>'.$value->customer_email.'</td><td>'.$value->customer_contactno.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td></tr>';
-        }
-        ?>
+                    if (count($customers) > 0)
+                      foreach($customers as $key => $value) { 
+
+                        $i++;
+                        echo '<tr>
+                                <td>'.$i.'</td>
+                                <td>'.$value->customer_code.'</td>
+                                <td>'.$value->customer_name.'</td>
+                                <td>'.$value->customer_email.'</td>
+                                <td>'.$value->customer_contactno.'</td>
+                                <td>'.$value->username.'</td>
+                                <td>'.$value->password.'</td>
+
+                                <td>
+                                    <p data-placement="top"  data-toggle="tooltip" title="Edit">
+                                    <button class="btn btn-primary btn-xs edit_customer" data-title="Edit" data-id="'.$value->id.'" data-customer_name="'.$value->customer_name.'"  data-customer_email="'.$value->customer_email.'"  data-customer_contactno="'.$value->customer_contactno.'" data-customer_address="'.$value->customer_address.'" data-mcq="'.$value->mcq.'"  data-interview="'.$value->interview.'"  >
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                  </p>
+                                </td>
+                              </tr>';
+                      }
+                  ?>
+
 
 <!--    <td><a href="view-mcq/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td> <td><a href="view-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       <td><a href="download-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> -->
@@ -220,9 +243,6 @@
     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
     </tr> -->
     
-   
-    
-   
     
     </tbody>
         
@@ -329,6 +349,8 @@
                 var address = document.getElementById("customer_address").value;
                 var isMCQ =  document.getElementById("isMCQ").checked ? 1 : 0;
                 var isInterview =  document.getElementById("isInterview").checked ? 1 : 0;
+                var hidden_customer_id = document.getElementById("hidden_customer_id").value;
+
                 var isError = true;
 
                 if (name.trim().length == 0 ) {
@@ -368,17 +390,15 @@
                   if (isError) {
                   $.ajax({
                     url: baseUrl+"admin/save-customers",
-                   
                     type: 'post',
-                    
-                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
                     data: {
                       "customer_name":name,
                       "customer_email":email,
                       "customer_contactno":contact,
                       "customer_address": address,
                       "mcq": isMCQ,
-                      "interview": isInterview
+                      "interview": isInterview,
+                      "hidden_customer_id": hidden_customer_id
                     } ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
@@ -403,4 +423,42 @@
 
 
              }
+
+
+  $('.edit_customer').click(function () {
+
+      let id = $(this).data('id');
+      let customer_name = $(this).data('customer_name');
+      let customer_email = $(this).data('customer_email');
+      let customer_contactno = $(this).data('customer_contactno');
+      let customer_address = $(this).data('customer_address');
+      let mcq = $(this).data('mcq');
+      let interview = $(this).data('interview');
+
+      if (mcq) {
+        $('#isMCQ').prop('checked', true);
+      }
+
+      if (interview) {
+        $('#isInterview').prop('checked', true);
+      }
+
+      $('#hidden_customer_id').val(id);
+
+      $('#customer_name').val(customer_name);
+
+      $('#customer_email').val(customer_email);
+
+      $('#customer_contactno').val(customer_contactno);
+
+      $('#customer_address').val(customer_address);
+
+      $('#add_or_update').html('Update');
+
+
+  });
+
+
 </script>
+
+
