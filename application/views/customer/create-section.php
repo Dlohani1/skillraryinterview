@@ -5,7 +5,7 @@
   width: 60px;
   height: 34px;
 }
-
+ 
 .switch input { 
   opacity: 0;
   width: 0;
@@ -107,7 +107,7 @@ input:checked + .slider:before {
                             </div>
                             <div class="col-md-3 offset-md-1">
                               
-                               <input type="text" name="subSection" required class="form-control" id="subSection" placeholder="Enter sub section" autocomplete="off">
+                              <!--  <input type="text" name="subSection" required class="form-control" id="subSection" placeholder="Enter sub section" autocomplete="off"> -->
                           </button>
                             </div>
                          </div>
@@ -153,6 +153,7 @@ input:checked + .slider:before {
                     <th>Section</th>
                     <th>Change Status</th>
                     <th>Status</th>
+                         <th>Add Sub-Section</th>
                   </thead>
                   
                   <tbody>
@@ -189,6 +190,11 @@ input:checked + .slider:before {
                           </td>
 
                           <td id="check_status">'.$status.'</td>
+
+                              <td>
+                                   <a title="Add Interviewer"  href="'.base_url().'customer/add-sub-section/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-plus"></span></button></a>
+                                  </td>
+
                       </tr>';
                     }
                 ?>

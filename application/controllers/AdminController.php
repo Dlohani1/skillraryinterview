@@ -6617,32 +6617,184 @@ foreach ($sectionDetails['section'] as $key => $value) {
       }
   }
 
+  public function createSubSection() {
+    $section_id = $this->uri->segment(3);
+    $sql = "SELECT * FROM section where id = $section_id ";
+
+    $query = $this->db->query($sql);
+    $section_name = $query->result()[0]->section_name;
+
+    $sql = " SELECT * FROM sub_section where section_id = $section_id ";
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "admin/add-sub-section/$section_id";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $searchSubSection = '';
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-sub-section', array(
+      "subSection"=>$result,
+       "section_id" => $section_id,
+       "section_name" => $section_name,
+      "links"=>$links,
+      "searchSubSection" => $searchSubSection
+
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+  public function createSubSectionSearch() {
+
+    $section_id = $this->uri->segment(3);
+    $sqlQ = "SELECT * FROM section where id = $section_id ";
+
+    $query = $this->db->query($sqlQ);
+    $section_name = $query->result()[0]->section_name;
+
+    $searchSubSection = $_GET['searchSubSection'];
+   
+    $sql = " SELECT * FROM sub_section where section_id = $section_id ";
+
+    if(!empty($searchSubSection)){
+        $sql .= " AND  sub_section_name like '%$searchSubSection%' ";
+    }
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "admin/add-sub-section-search/$section_id";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 4;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/create-sub-section', array(
+      "subSection"=>$result,
+      "section_id" => $section_id,
+      "section_name" => $section_name,
+      "links"=>$links,
+      "searchSubSection" => $searchSubSection
+    ));
+    $this->load->view('admin/footer');
+  }
+
+  public function saveSubSection() {
+    $section_id = $_POST['section_id'];
+    $sub_section_name = $_POST['sub_section_name'];
+
+    if (empty($sub_section_name)) {
+        $this->session->set_flashdata('error', "Enter sub section name.");
+        redirect("admin/add-sub-section/$section_id");
+    }
+
+    $sqlQ = "select sub_section_name from sub_section where section_id = '$section_id' 
+               AND sub_section_name = '$sub_section_name'";
+
+    $query = $this->db->query($sqlQ);
+    $original_value = $query->result();
+
+
+      if (null != $original_value) {
+        $this->session->set_flashdata('error', "$sub_section_name already exist.");
+        redirect("admin/add-sub-section/$section_id");
+      } else {
+
+      $data  = array (
+        'sub_section_name' => $sub_section_name,
+        'section_id' => $section_id
+
+      );
+
+      $this->db->insert('sub_section', $data);
+      $this->session->set_flashdata('success', "$sub_section_name added successfully.");
+      redirect("admin/add-sub-section/$section_id");
+    }
+
+  }
 
   public function deleteSection() {
 
-      $status = ($_POST['value'] == 1) ? 0 : 1;
+    $status = ($_POST['value'] == 1) ? 0 : 1;
 
-       $data = array(
-          'is_active' => $status
-       );
+    $data = array(
+      'is_active' => $status
+    );
 
-       $this->db->where('id', $_POST['id']);
-       $this->db->update('section',$data);
+    $this->db->where('id', $_POST['id']);
+    $this->db->update('section',$data);
   }
 
 
   public function uploadImage() {
 
-      $sql = " SELECT * from `site_images` "; 
-      $query = $this->db->query($sql);
-      $images = $query->result();
-
+    $sql = " SELECT * from `site_images` "; 
+    $query = $this->db->query($sql);
+    $images = $query->result();
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
     $this->load->view('admin/upload-image', [
        'images' => $images,
-
     ]);
     $this->load->view('admin/footer');
   }
@@ -6723,3 +6875,5 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
   
 }
+
+
