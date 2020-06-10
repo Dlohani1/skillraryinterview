@@ -2152,7 +2152,7 @@ public function todaysInterview() {
     $customerId = $_SESSION['customerId'];
       $this->load->library("pagination");
 
-      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM `question_bank`
+      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM question_bank_Q8 as question_bank
       INNER JOIN section on section.id = question_bank.section_id
       INNER JOIN question_levels on question_levels.id = question_bank.level_id
       INNER JOIN sub_section on sub_section.id = question_bank.sub_section_id
@@ -2310,8 +2310,10 @@ public function todaysInterview() {
   public function editQuestion() {
     $questionId = $this->uri->segment(3);
 
-    $sql = "SELECT question_bank.*, answers.*  FROM question_bank 
-          LEFT JOIN answers 
+    $customer_code = $this->getCustomerCode();
+
+    $sql = "SELECT question_bank.*, answers.*  FROM question_bank_$customer_code question_bank
+          LEFT JOIN answers_$customer_code  answers
           ON answers.question_id = question_bank.id
           WHERE question_bank.id = '$questionId' ";
 
@@ -2512,12 +2514,344 @@ public function todaysInterview() {
 
   }
 
+  public function getCustomerCode()
+  {
+      $customerId = $_SESSION['customerId'];
+
+    $sql = " SELECT customer_code FROM customers where id = $customerId "; 
+    $query = $this->db->query($sql);
+    $customer_code = $query->result()[0]->customer_code;
+    return $customer_code;
+  }
 
 
+
+ public function saveWithCode() {
+  
+    $customerId = $_SESSION['customerId'];
+
+    // $sql = " SELECT customer_code FROM customers where id = $customerId "; 
+    // $query = $this->db->query($sql);
+    $customer_code = $this->getCustomerCode();
+
+
+$sectionId = $_POST['sectionId'];
+    $subSectionId = $_POST['subsection'];
+    $levelId = $_POST['levelId'];
+    $question = $_POST['question'];
+     $questionType = $_POST['questionType'];
+
+
+    if ($questionType == 1) {
+      $ans1 = $_POST['ans1'];
+      $ans2 = $_POST['ans2'];
+      $ans3 = $_POST['ans3'];
+      $ans4 = $_POST['ans4'];
+    }
+
+    $qdata = array(
+      'section_id' => $sectionId,
+      'sub_section_id' => $subSectionId,
+      'level_id' => $levelId,
+      'question' => $question,
+      'question_type' => $questionType
+    );
+
+    if (isset($_SESSION['customerId'])) {
+      // $qdata['customer_id'] = $_SESSION['customerId']; 
+
+
+    }
+
+
+    if (isset($_POST['questionId'])) {
+        $this->db->where('id', $_POST['questionId']);
+        $this->db->update("question_bank_$customer_code",$qdata);
+        $questionId = $_POST['questionId'];
+    } else {    
+      $this->db->insert("question_bank_$customer_code", $qdata);
+      $questionId = $this->db->insert_id();
+    }
+
+
+
+    if ($questionType == 3) {
+
+      if ($_POST['true_false'] == "1") {
+        $opt = array (
+          // 'id' => $_POST['answer_id'],
+        'question_id' => $questionId,
+        'answer' => "true",
+        'is_correct' => 1
+      );
+    
+
+      } else {
+
+        $opt = array (
+        // 'id' => $_POST['answer_id'],
+        'question_id' => $questionId,
+        'answer' => "false",
+        'is_correct' => 1
+      );
+
+      }
+
+      $data = array($opt); 
+
+    } else {
+      $is_correct = 0;
+    
+
+      if ($_POST['correct'] == 1) {
+              $is_correct = 1;
+      } else {
+       $is_correct = 0;
+      }
+
+      $opt1 = array (
+        'question_id' => $questionId,
+        'answer' => $ans1,
+        'is_correct' => $is_correct
+      );
+
+      if ($_POST['correct'] == 2) {
+              $is_correct = 1;
+      } else {
+       $is_correct = 0;
+      }
+
+      $opt2 = array (
+        'question_id' => $questionId,
+        'answer' => $ans2,
+        'is_correct' => $is_correct
+      );
+
+
+      if ($_POST['correct'] == 3) {
+              $is_correct = 1;
+      } else {
+       $is_correct = 0;
+      }
+      $opt3 = array (
+        'question_id' => $questionId,
+        'answer' => $ans3,
+        'is_correct' => $is_correct
+      );
+
+      if ($_POST['correct'] == 4) {
+              $is_correct = 1;
+      } else {
+       $is_correct = 0;
+      }
+      $opt4 = array (
+        'question_id' => $questionId,
+        'answer' => $ans4,
+        'is_correct' => $is_correct
+      );
+      $data = array(
+              $opt1, $opt2, $opt3, $opt4
+      ); 
+
+      if (isset($_POST['questionId'])) { 
+
+        $opt1['id'] = $_POST['ans1Id'];
+        $opt2['id'] = $_POST['ans2Id'];
+        $opt3['id'] = $_POST['ans3Id'];
+        $opt4['id'] = $_POST['ans4Id'];
+
+        $updateData = array(
+          $opt1, $opt2, $opt3, $opt4
+        ); 
+      }
+    }
+
+
+    if (isset($_POST['questionId'])) { 
+
+      if ($questionType == 3) {
+        $opt['id'] = $_POST['answer_id'];
+        $updateData = array($opt);
+      }
+      $this->db->update_batch("answers_$customer_code", $updateData, 'id');
+    } else {
+      $this->db->insert_batch("answers_$customer_code", $data);  
+    } 
+
+    redirect($_SERVER['HTTP_REFERER']);  
+
+
+  }
+
+
+
+ public function viewQuestionWithCode() {
+
+    $customerId = $_SESSION['customerId'];
+      $this->load->library("pagination");
+
+    $customer_code = $this->getCustomerCode();
+
+      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM question_bank_$customer_code as question_bank
+      INNER JOIN section on section.id = question_bank.section_id
+      INNER JOIN question_levels on question_levels.id = question_bank.level_id
+      INNER JOIN sub_section on sub_section.id = question_bank.sub_section_id ";
+
+      //      where question_bank.customer_id=$customerId";
+
+      $section = '';
+      $subsection = '';
+      $difficultylevel = '';
+
+            $config['full_tag_open'] = "<ul class='pagination'>";
+            $config['full_tag_close'] = '</ul>';
+            $config['num_tag_open'] = '<li>';
+            $config['num_tag_close'] = '</li>';
+            $config['cur_tag_open'] = '<li class="active"><a href="#">';
+            $config['cur_tag_close'] = '</a></li>';
+            $config['prev_tag_open'] = '<li>';
+            $config['prev_tag_close'] = '</li>';
+            $config['first_tag_open'] = '<li>';
+            $config['first_tag_close'] = '</li>';
+            $config['last_tag_open'] = '<li>';
+            $config['last_tag_close'] = '</li>';
+            $config['prev_link'] = '<i class=""></i>Previous Page';
+            $config['prev_tag_open'] = '<li>';
+            $config['prev_tag_close'] = '</li>';
+            $config['next_link'] = 'Next Page<i class=""></i>';
+            $config['next_tag_open'] = '<li>';
+            $config['next_tag_close'] = '</li>';
+            
+            $config['base_url'] = base_url() . 'customer/view-questions';
+            $config['total_rows'] = $this->getNumberOfRows($sql);
+            $config['per_page'] = 10;
+            $config["uri_segment"] = 3;
+             
+            $this->pagination->initialize($config);
+              $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+           
+         $links = $this->pagination->create_links();
+
+          $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+          $this->load->view('customer/header');
+          $this->load->view('customer/sidenav');
+
+
+          $this->load->view('customer/view-questions',array(
+            'questionData' => $questionData,
+            'links' => $links,
+            'section' => $section ,
+            'subsection' => $subsection,
+            'difficultylevel' => $difficultylevel,
+
+            ));
+
+
+      // $this->load->view('admin/view-questions', ($params));
+  
+    $this->load->view('customer/footer');
+  }
+
+
+
+public function viewQuestionWithCodeSearch() {
+    $customerId = $_SESSION['customerId'];
+    $this->load->library("pagination");
+
+    $customer_code = $this->getCustomerCode();
+
+    $section = '';
+    $subsection = '';
+    $difficultylevel = '';
+
+    if ( $_GET['section'] != 0) {
+      $section = $_GET['section'];
+      $sql = "SELECT * FROM section where id = $section ";
+
+      $query = $this->db->query($sql);
+
+      $result = $query->result();
+      $section  = $result[0]->section_name;
+    }
+
+    if ( $_GET['subsection'] != 0) {
+      $subsection = $_GET['subsection'];
+      $sql = "SELECT * FROM sub_section where id = $subsection";
+      $query = $this->db->query($sql);
+      $result = $query->result();
+      $subsection  = $result[0]->sub_section_name;
+    }
+
+    if (  $_GET['difficultylevel'] != 0) {
+      $difficultylevel = $_GET['difficultylevel'];
+      $sql = "SELECT * FROM question_levels where id = $difficultylevel";
+      $query = $this->db->query($sql);
+      $result = $query->result();
+      $difficultylevel  = $result[0]->level;
+    }
+
+
+    $sql = "SELECT question_bank.id, question_bank.question, section.section_name, 
+              question_levels.level,sub_section.sub_section_name 
+            FROM question_bank_$customer_code  question_bank
+                  INNER JOIN section 
+                on section.id = question_bank.section_id
+                  INNER JOIN question_levels
+                on question_levels.id = question_bank.level_id
+                  INNER JOIN sub_section
+                on sub_section.id = question_bank.sub_section_id
+                    
+                where section.section_name like '%$section%'
+                 and
+               sub_section.sub_section_name  like '%$subsection%'
+                and
+             question_levels.level like '%$difficultylevel%'";
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . 'customer/view-questionswithcode-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+    $links = $this->pagination->create_links();
+    $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+
+    $this->load->view('customer/view-questions',array(
+      'questionData' => $questionData,
+      'links' => $links,
+      'section' => $section ,
+      'subsection' => $subsection,
+      'difficultylevel' => $difficultylevel
+    ));
+    $this->load->view('customer/footer');
+  }
 
 
 
 
 }
-
-

@@ -164,7 +164,7 @@ $route['admin/interview-customers-list-search'] = 'AdminController/interviewCust
 
 $route['admin/interview-customers-list-search/:any'] = 'AdminController/interviewCustomersSearch';
  
-$route['admin/view-questions'] = 'AdminController/viewQuestion';
+// $route['admin/view-questions'] = 'AdminController/viewQuestion';
 
 $route['admin/view-questions/:any'] = 'AdminController/viewQuestion';
 
@@ -354,7 +354,7 @@ $route['user/join-meeting'] = 'AdminController/gotomeetingJoin';
 
 $route['deleteUsrPwd']['POST'] = 'AdminController/deleteUsrPwd';
 $route['printUsrPwd'] = 'welcome/printUsrPwd';
-
+ 
 $route['admin/create-customers'] = 'AdminController/createCustomer';
 
 $route['admin/create-customers-search'] = 'AdminController/createCustomerSearch';
@@ -555,4 +555,21 @@ $route['checkcode'] = 'Welcome/checkcode';
 
 $route['checklogin'] = 'Welcome/checklogin';
 $route['download-format'] = 'AdminController/downloadFormat';
+
+
+
+// for generating table based on customer_ode
+$route['admin/create-question-bank-table']['POST']= 'AdminController/createQuestionBankTable'; 
+
+$route['customer/save-with-code']['POST'] = 'CustomerController/saveWithCode'; 
+
+$route['customer/view-questions'] = 'CustomerController/viewQuestionWithCode';
+
+$route['customer/view-questions/:any'] = 'CustomerController/viewQuestionWithCode';
+
+$route['customer/view-questionswithcode-search'] = 'CustomerController/viewQuestionWithCodeSearch';
+
+$route['customer/view-questionswithcode-search/:any'] = 'CustomerController/viewQuestionWithCodeSearch';
+
+$route['customer/edit-question-with-code/:any'] = 'CustomerController/editQuestionWithCode';
 

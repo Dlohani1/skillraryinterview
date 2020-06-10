@@ -933,6 +933,7 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
    $data['customer_code'] = ucfirst(substr($data['customer_name'],0,1)).$customerId;
    $data['username'] = substr($data['customer_name'],0,2)."_".$customerId;
    $data['password'] = $this->generatePassword();
+
    $this->db->insert('customers', $data);
    echo "success";
   }
@@ -1294,7 +1295,7 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
     
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-
+ 
     $this->load->view('admin/create-customers', array(
       "customers"=>$result,
       "searchcode"=>$searchcode,
@@ -6872,6 +6873,39 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $this->load->helper('download');
     force_download($name, $data);
   }
+
+
+  public function createQuestionBankTable() {
+    $customer_code = $_POST['customer_code'];
+
+      $sql_question_bank = "CREATE TABLE question_bank_$customer_code (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `section_id` int(11) DEFAULT NULL,
+                `sub_section_id` int(11) DEFAULT NULL,
+                `level_id` int(11) DEFAULT NULL,
+                `question` text NOT NULL,
+                `question_image` text,
+                `question_type` int(11) NOT NULL DEFAULT '1',
+                `selection_code` int(11) NOT NULL DEFAULT '0',
+                PRIMARY KEY (`id`)
+              ) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=latin1";
+
+      $query = $this->db->query($sql_question_bank);
+
+        if($query){
+            $sql_answers = " CREATE TABLE answers_$customer_code(
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `question_id` int(11) NOT NULL,
+                  `answer` text NOT NULL,
+                  `is_correct` int(11) NOT NULL DEFAULT '0',
+                  PRIMARY KEY (`id`)
+                  ) ENGINE=InnoDB AUTO_INCREMENT=926 DEFAULT CHARSET=latin1";
+            $query = $this->db->query($sql_answers);
+            echo $query;
+        }
+  }
+
+ 
 
   
 }
