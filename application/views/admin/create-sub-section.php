@@ -18,7 +18,7 @@
             <h4>Sub Section</h4>
             <div class="container">
               <div class="searchBox">
-
+ 
                   <?php 
                     if($this->session->flashdata('success'))
                     {
@@ -84,7 +84,12 @@
 
                               echo '<tr>
                                     <td>'.$i.'</td>
-                                    <td>'.$value->sub_section_name.'</td>
+                                    <td>'.$value->sub_section_name.'
+                                      <p data-placement="top"  data-toggle="tooltip" title="Edit">
+                                      <button class="btn btn-primary btn-xs pop_up_edit_sub_section" data-title="Edit" data-toggle="modal"  data-id="'.$value->id.'"  data-sub_section_name="'.$value->sub_section_name.'"  >
+                                      <span class="glyphicon glyphicon-pencil"></span>
+                                      </button></p>
+                                    </td>
                                   </tr>';
                           }
                       ?>
@@ -96,6 +101,38 @@
             </div>
         </div>
 </div>
+
+
+<!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="subSectionmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+ <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/edit-sub-section";?>>
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Sub Section Name</h4>
+      </div>
+      <div class="modal-body">
+
+                        <label>Update Sub Section</label>
+                              <input type="hidden" id="section_id" name="section_id" value= "<?php echo $section_id;?>" />
+
+                        <input type="hidden" id="hidden_sub_section_id" name="hidden_sub_section_id">
+
+                        <input type="text" id="update_sub_section_name" name="update_sub_section_name" required class="form-control">
+                        <div id="error_update_sub_section_name" ></div>
+      </div>
+      <div class="modal-footer">
+           <button type="submit" value="Submit">Submit
+                          </button>
+      </div>
+    </div>
+      </form>
+  </div>
+</div>
+
 
                                 </div>
                             </div>
@@ -111,7 +148,19 @@
         }
     });
 
+
+$(".pop_up_edit_sub_section").on("click", function() {
+
+  let update_sub_section_name = $(this).data('sub_section_name')
+  let id = $(this).data('id');
+
+  $('#hidden_sub_section_id').val(id);
+  $('#update_sub_section_name').val(update_sub_section_name);
+
+  $('#subSectionmodal').modal('show');
+
+});
+
+
 </script>
-
-
 

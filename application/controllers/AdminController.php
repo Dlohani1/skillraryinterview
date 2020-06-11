@@ -6601,7 +6601,6 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
 
 
-
   public function saveSection() {
     $searchSection = $_POST['searchSection'];
 
@@ -6625,6 +6624,35 @@ foreach ($sectionDetails['section'] as $key => $value) {
         redirect('admin/add-section');
       }
   }
+
+ 
+
+  public function editSection() {
+    $update_section_name = $_POST['update_section_name'];
+
+    if (empty($update_section_name)) {
+        $this->session->set_flashdata('error', "Enter section name.");
+        redirect('admin/add-section');
+    }
+
+      $this->form_validation->set_rules('update_section_name', 'Section','required|is_unique[section.section_name]');
+      if($this->form_validation->run()== FALSE){
+      
+        $this->session->set_flashdata('error', "$update_section_name already exist.");
+        redirect('admin/add-section');
+
+      }else{
+        $data  = array ('section_name' => $_POST['update_section_name']);
+
+        $this->db->where('id', $_POST['hidden_section_id']);
+        $this->db->update('section',$data);
+
+        $this->session->set_flashdata('success', "$update_section_name updated successfully.");
+
+        redirect('admin/add-section');
+      }
+  }
+
 
   public function createSubSection() {
     $section_id = $this->uri->segment(3);
@@ -6670,6 +6698,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
     $searchSubSection = '';
+
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
@@ -6780,6 +6809,44 @@ foreach ($sectionDetails['section'] as $key => $value) {
     }
 
   }
+
+
+ public function editSubSection() {
+     $section_id = $_POST['section_id'];
+     $update_sub_section_name = $_POST['update_sub_section_name'];
+    if (empty($update_sub_section_name)) {
+        $this->session->set_flashdata('error', "Enter sub section name.");
+        redirect("admin/add-sub-section/$section_id");
+    }
+
+    $sqlQ = "select sub_section_name from sub_section where section_id = '$section_id' 
+               AND sub_section_name = '$update_sub_section_name'";
+
+
+    $query = $this->db->query($sqlQ);
+    $original_value = $query->result();
+
+
+      if (null != $original_value) {
+        $this->session->set_flashdata('error', "$update_sub_section_name already exist.");
+        redirect("admin/add-sub-section/$section_id");
+      } else {
+
+      $data  = array (
+        'sub_section_name' => $update_sub_section_name,
+        'section_id' => $section_id
+
+      );
+
+      $this->db->where('id', $_POST['hidden_sub_section_id']);
+      $this->db->update('sub_section',$data);
+
+      $this->session->set_flashdata('success', "$update_sub_section_name updated successfully.");
+      redirect("admin/add-sub-section/$section_id");
+    }
+
+  }
+
 
   public function deleteSection() {
 
