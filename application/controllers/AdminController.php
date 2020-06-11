@@ -5689,8 +5689,6 @@ foreach ($sectionDetails['section'] as $key => $value) {
         $code = trim($_POST['code']);
       }
 
-
-
       $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
 
       $query = $this->db->query($sql);
@@ -5731,7 +5729,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
           $userId = $this->db->insert_id();
 
-          $_SESSION['assess_id'] = $userId;
+          $_SESSION['assessId'] = $userId;
           
           redirect('user/create/profile');
 

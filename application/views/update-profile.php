@@ -1,471 +1,16 @@
-<script>
- $.ajaxSetup({
-        data: {
-            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
-        }
-    });
-
-
-function validateUpdateProfile(){
-
-        var error = true;
-
-        var emailpattern = /^([a-zA-Z0-9.-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z]{2,4})+$/;
-        var email = document.getElementById('emaillogin1').value;
-
-        var perPattern = /^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$/;
-        var highper = document.getElementById('highSPerU').value;
-        var schoolper = document.getElementById('schoolperU').value;
-        var udper = document.getElementById('udperU').value; 
-        var gper = document.getElementById('gperU').value;
-
-        var namepattern = /^[a-zA-Z]{0,50}$/;
-        var fname = document.getElementById('Fnameupdate').value;
-        var lname = document.getElementById('Lnameupdate').value;
-
-        var passing_year_pattern = /^([0-9]{4})+$/;
-        var tenpyear = document.getElementById('TPYUpdate').value;
-        var twlevthpyear = document.getElementById('HPYUpdate').value;
-        var degreepyear = document.getElementById('DPYUpdate').value;
-
-
-        if(document.regform.firstname.value.length == 0){
-            document.getElementById("errorFstName").innerHTML = "This field is required";
-            error = false;
-        }else if(!namepattern.test(fname)){
-            document.getElementById("errorFstName").innerHTML = "Enter valid name";
-            error = false;
-        }
-        else {
-            document.getElementById("errorFstName").innerHTML = "";
-        }
-        if(document.regform.lastname.value.length == '0'){
-            document.getElementById("errlstnm").innerHTML = "This field is required";
-            error = false;
-        }else if(!namepattern.test(lname)){
-            document.getElementById("errlstnm").innerHTML = "Enter valid name";
-            error = false;
-        } else {
-            document.getElementById("errlstnm").innerHTML = "";
-        }
-        if(document.regform.cno.value.length == '0'){
-            document.getElementById("errcno").innerHTML = "This field is required";
-            error = false;
-        } else if(document.regform.cno.value.length > '10' || document.regform.cno.value.length < '10'){
-            document.getElementById("errcno").innerHTML = "Enter valid number";
-            error = false;
-        } else {
-            document.getElementById("errcno").innerHTML = "";
-        }
-    
-        if(document.regform.email.value.length == '0') { 
-            document.getElementById("erremail").innerHTML = "This field is required";
-            error = false;
-           
-        }
-        else if(!emailpattern.test(email)) {
-            
-            document.getElementById("erremail").innerHTML = "Please enter valid email";
-            error = false;
-        } 
-
-        else {
-            document.getElementById("erremail").innerHTML = "";
-        }
-
-        if(document.regform.dob.value.length == '0'){
-            document.getElementById("errordob").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errordob").innerHTML = "";
-        }
-
-        if(document.regform.gender.selectedIndex == '0'){
-            document.getElementById("errorgender").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errorgender").innerHTML = "";
-        }
-
-        //tenth
-        if(document.regform.tenth_branch.value.length == '0'){
-            console.log('11college')
-            document.getElementById("errortenth_branch").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errortenth_branch").innerHTML = "";
-        }
-        if(document.regform.tenth_py.value.length == '0'){
-            document.getElementById("errortenth_py").innerHTML = "This field is required";
-            error = false;
-        } else if(!passing_year_pattern.test(tenpyear)){
-            document.getElementById("errortenth_py").innerHTML = "Enter valid year";
-            error = false;
-        }else  if(document.regform.tenth_py.value.length < '4'){
-            document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
-            error = false;
-        } else  if(document.regform.tenth_py.value.length > '4'){
-            document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
-            error = false;
-        } else {
-            document.getElementById("errortenth_py").innerHTML = "";
-        }
-        if(document.regform.tenth_per.value.length == '0'){
-            document.getElementById("errortenth_per").innerHTML = "This field is required";
-            error = false;
-        } else if(document.regform.tenth_per.value != "100"){
-             if(!perPattern.test(schoolper)){
-                document.getElementById("errortenth_per").innerHTML = "Please enter valid percentage";
-                error = false;
-             }
-        } else {
-            document.getElementById("errortenth_per").innerHTML = "";
-        }
-        // // twelveth
-        if(document.regform.twelveth_branch.value.length == '0'){
-            console.log('12branch')
-            document.getElementById("errortwelveth_branch").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errortwelveth_branch").innerHTML = "";
-        }
-        if(document.regform.twelveth_py.value.length == '0'){
-            document.getElementById("errortwelveth_py").innerHTML = "This field is required";
-            error = false;
-        } else if(!passing_year_pattern.test(twlevthpyear)){
-            document.getElementById("errortwelveth_py").innerHTML = "Enter valid year";
-            error = false;
-        }else if(document.regform.twelveth_py.value.length < '4'){
-            document.getElementById("errortwelveth_py").innerHTML = "Please enter valid year";
-            error = false;
-        } else  if(document.regform.twelveth_py.value.length > '4'){
-            document.getElementById("errortwelveth_py").innerHTML = "Please enter valid year";
-            error = false;
-        } else {
-            document.getElementById("errortwelveth_py").innerHTML = "";
-        }
-        if(document.regform.twelveth_per.value.length == '0'){
-            document.getElementById("errortwelveth_per").innerHTML = "This field is required";
-            error = false;
-
-        } else if(document.regform.twelveth_per.value != "100"){
-            if(!perPattern.test(highper)){
-                document.getElementById("errortwelveth_per").innerHTML = "Please enter valid percentage";
-                error = false;
-            }
-        } else {
-            document.getElementById("errortwelveth_per").innerHTML = "";
-        }
-        // under graduation
-        if(document.regform.college.value.length == '0'){
-            console.log('college')
-            document.getElementById("errorcollege").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errorcollege").innerHTML = "";
-        }
-        if(document.regform.degree_py.value.length == '0'){
-            document.getElementById("errordegree_py").innerHTML = "This field is required";
-            error = false;
-        } else if(!passing_year_pattern.test(degreepyear)){
-            document.getElementById("errordegree_py").innerHTML = "Enter valid year";
-            error = false;
-        }else  if(document.regform.degree_py.value.length < '4'){
-            document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
-            error = false;
-        } else if(document.regform.degree_py.value.length > '4'){
-            document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
-            error = false;
-        } else {
-            document.getElementById("errordegree_py").innerHTML = "";
-        }
-        if(document.regform.branch.value.length == '0'){
-            document.getElementById("errorbranch").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errorbranch").innerHTML = "";
-        }
-        if(document.regform.degree.value.length == '0'){
-            document.getElementById("errordegree").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errordegree").innerHTML = "";
-        }
-        if(document.regform.degree_per.value.length == '0'){
-            document.getElementById("errordegree_per").innerHTML = "This field is required";
-            error = false;
-        }else if(document.regform.degree_per.value != "100"){
-            if(!perPattern.test(udper)){
-                document.getElementById("errordegree_per").innerHTML = "Please enter valid percentage";
-                error = false;
-            }
-        } else {
-            document.getElementById("errordegree_per").innerHTML = "";
-        }
-        if(document.regform.university.value.length == '0'){
-            document.getElementById("erroruniversity").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("erroruniversity").innerHTML = "";
-        }
-        // graduation
-        // if(document.regform.collegem.value.length == '0'){
-        //     document.getElementById("errorcollegem").innerHTML = "This field is required";
-        // } else {
-        //     document.getElementById("errorcollegem").innerHTML = "";
-
-        // }
-
-        // if(document.regform.degree_pym.value.length == '0'){
-        //     document.getElementById("errordegree_pym").innerHTML = "This field is required";
-        // } else if(document.regform.degree_pym.value.length > '4'){
-        //     document.getElementById("errordegree_pym").innerHTML = "Please enter valid year";
-        //     error = false;
-        // } 
-        // if(document.regform.branchm.value.length == '0'){
-        //     document.getElementById("errorbranchm").innerHTML = "This field is required";
-        // }
-        // if(document.regform.degreem.value.length == '0'){
-        //     document.getElementById("errordegreem").innerHTML = "This field is required";
-        // }
-        // if(document.regform.degree_perm.value.length == '0'){
-        //     document.getElementById("errordegree_perm").innerHTML = "This field is required";
-        // }else  if(!perPattern.test(gper)){
-        //     document.getElementById("errordegree_perm").innerHTML = "Please enter valid percentage";
-        //     error = false;
-        // } 
-        // if(document.regform.universitym.value.length == '0'){
-        //     document.getElementById("erroruniversitym").innerHTML = "This field is required";
-        // }
-        if(document.regform.state.value.length == '0'){
-            document.getElementById("errorstate").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errorstate").innerHTML = "";
-        }
-        if(document.regform.city.value.length == '0'){
-            document.getElementById("errorcity").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errorcity").innerHTML = "";
-        }
-        if(document.regform.pwl.value.length == '0'){
-            document.getElementById("errorpwl").innerHTML = "This field is required";
-            error = false;
-        } else {
-            document.getElementById("errorpwl").innerHTML = "";
-        }
-
-        console.log('last')
-        return error;
-}
-
-// function validateUpdateProfile(){
-        
-//        var error = true;
-
-//         var emailpattern = /^[a-z0-9]+(\.[_a-z0-9]+)@[a-z0-9-]+(\.[a-z-]+)(\.[a-z]{2,15})$/;
-//         var email = document.getElementById('emaillogin1').value;
-//         var perPattern = /^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$/
-//         var highper = document.getElementById('highSPer').value;
-//         var schoolper = document.getElementById('schoolper').value;
-//         var udper = document.getElementById('udper').value; 
-//         var gper = document.getElementById('gper').value;
-
-//         if(document.regform.firstname.value.length == '0'){
-//             document.getElementById("errorFstName").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         if(document.regform.lastname.value.length == '0'){
-//             document.getElementById("errlstnm").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         if(document.regform.cno.value.length == '0'){
-//             document.getElementById("errcno").innerHTML = "This field is required";
-//             error = false;
-//         } else if(document.regform.cno.value.length > '10' || document.regform.cno.value.length < '10'){
-//             document.getElementById("errcno").innerHTML = "Enter valid number";
-//             error = false;
-//         }
-    
-//         if(document.regform.email.value.length == '0') { 
-//             document.getElementById("erremail").innerHTML = "This field is required";
-//             error = false;
-           
-//         } else if(!emailpattern.test(email)) {
-            
-//             document.getElementById("erremail").innerHTML = "Please enter valid email";
-//             error = false;
-//         } 
-//         if(document.regform.dob.value.length == '0'){
-//             document.getElementById("errordob").innerHTML = "This field is required";
-//             error = false;
-//         }
-
-//         if(document.regform.gender.selectedIndex == '0'){
-//             document.getElementById("errorgender").innerHTML = "This field is required";
-//             error = false;
-//         }
-
-//         if(document.regform.tenth_branch.value.length == '0'){
-//             document.getElementById("errortenth_branch").innerHTML = "This field is required";
-//         }
-//         // tenth
-//         if(document.regform.tenth_py.value.length == '0'){
-//             document.getElementById("errortenth_py").innerHTML = "This field is required";
-//             error = false;
-//         } else  if(document.regform.tenth_py.value.length > '4'){
-//             document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
-//             error = false;
-//         } 
-//         if(document.regform.tenth_per.value.length == '0'){
-//             document.getElementById("errortenth_per").innerHTML = "This field is required";
-//             error = false;
-//         } else if(!perPattern.test(schoolper)){
-//             document.getElementById("errortenth_per").innerHTML = "Please enter valid percentage";
-//             error = false;
-//         } 
-//         // twelveth
-//         if(document.regform.twelveth_branch.value.length == '0'){
-//             document.getElementById("errortwelveth_branch").innerHTML = "This field is required";
-//         }
-//         if(document.regform.twelveth_py.value.length == '0'){
-//             document.getElementById("errortwelveth_py").innerHTML = "This field is required";
-//         }
-//         if(document.regform.twelveth_per.value.length == '0'){
-
-//             document.getElementById("errortwelveth_per").innerHTML = "This field is required";
-
-//         } else if(!perPattern.test(highper)){
-//             document.getElementById("errortwelveth_per").innerHTML = "Please enter valid percentage";
-//             error = false;
-//         } 
-//         // under graduation
-//         if(document.regform.college.value.length == '0'){
-//             document.getElementById("errorcollege").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree_py.value.length == '0'){
-//             document.getElementById("errordegree_py").innerHTML = "This field is required";
-//         } else if(document.regform.degree_py.value.length > '4'){
-//             document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
-//             error = false;
-//         } 
-//         if(document.regform.branch.value.length == '0'){
-//             document.getElementById("errorbranch").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree.value.length == '0'){
-//             document.getElementById("errordegree").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree_per.value.length == '0'){
-//             document.getElementById("errordegree_per").innerHTML = "This field is required";
-//         }else  if(!perPattern.test(udper)){
-//             document.getElementById("errordegree_per").innerHTML = "Please enter valid percentage";
-//             error = false;
-//         } 
-//         if(document.regform.university.value.length == '0'){
-//             document.getElementById("erroruniversity").innerHTML = "This field is required";
-//         }
-//         // graduation
-//         if(document.regform.collegem.value.length == '0'){
-//             document.getElementById("errorcollegem").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree_pym.value.length == '0'){
-//             document.getElementById("errordegree_pym").innerHTML = "This field is required";
-//         } else if(document.regform.degree_pym.value.length > '4'){
-//             document.getElementById("errordegree_pym").innerHTML = "Please enter valid year";
-//             error = false;
-//         } 
-//         if(document.regform.branchm.value.length == '0'){
-//             document.getElementById("errorbranchm").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degreem.value.length == '0'){
-//             document.getElementById("errordegreem").innerHTML = "This field is required";
-//         }
-//         if(document.regform.degree_perm.value.length == '0'){
-//             document.getElementById("errordegree_perm").innerHTML = "This field is required";
-//         }else  if(!perPattern.test(gper)){
-//             document.getElementById("errordegree_perm").innerHTML = "Please enter valid percentage";
-//             error = false;
-//         } 
-//         if(document.regform.universitym.value.length == '0'){
-//             document.getElementById("erroruniversitym").innerHTML = "This field is required";
-//         }
-//         if(document.regform.state.value.length == '0'){
-//             document.getElementById("errorstate").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         if(document.regform.city.value.length == '0'){
-//             document.getElementById("errorcity").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         if(document.regform.pwl.value.length == '0'){
-//             document.getElementById("errorpwl").innerHTML = "This field is required";
-//             error = false;
-//         }
-//         return error;
-// }
-
-function Upload() {
-      
-      var fileUpload = document.getElementById("fileUpload");
-   
-      var regex = new RegExp("(.jpg|.png|.jpeg)$");
-      if (regex.test(fileUpload.value.toLowerCase())) {
-          if (typeof (fileUpload.files) != "undefined") {
-              var reader = new FileReader();
-              reader.readAsDataURL(fileUpload.files[0]);
-              reader.onload = function (e) {
-                  var image = new Image();
-                  image.src = e.target.result;
-                  image.onload = function () {
-                      var height = this.height;
-                      var width = this.width;
-                      if (height > 180 || width > 180) {
-                        // document.getElementById('demo').innerHTML = "Image height and width must not exceed 180px.";
-                        // e.preventDefault();
-                        return false;
-                      } else if(height < 180 || width <  180){
-                        document.getElementById('demo').innerHTML = "";
-                        $("#exampleModalCenter").modal("hide");
-                        document.getElementById("fileUpload").value = "";
-                          return false;
-                      }
-                  };
-              }
-          }
-      } else {
-          document.getElementById('demo').innerHTML = "Please select a valid Image file.";
-          return false;
-      }
-   
-  }
-  function closeButtonLogin(){
-      document.getElementById('demo').innerHTML = "";
-      document.getElementById("fileUpload").value = "";
-  }
-  function showField(isGap = 0){
-        
-    if (isGap > 0) {
-    
-        document.getElementById("hManyYears").style.display = "block";
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<?php
+    if (null !== $userData['profile-pic']) {
+        $img = $userData['profile-pic'];
     } else {
-        document.getElementById("hManyYears").style.display = "none";
-    }
-}   
-</script>
-
-    <?php
-
-        if (null !== $userData['profile-pic']) {
-            $img = $userData['profile-pic'];
-        } else {
-            $img = "images/boy.png";
-            if ($userData['gender'] == "2") {
-                $img = "images/girl.png";
-            }
+        $img = "images/boy.png";
+        if ($userData['gender'] == "2") {
+            $img = "images/girl.png";
         }
-       
-        ?>
+    }
+?>
 
         <div class="container" id="contentBox">
             <div class="row">
@@ -474,38 +19,39 @@ function Upload() {
                         <div align="center">
                          <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Edit</button>
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Your Profile</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="upload/do_upload" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
-                                             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-                                            <div class="form-group">
-                                                <button class="resume_upload" type="button">
-                                                    <span class="btn_lbl">Browse</span>
-                                                    <span class="btn_colorlayer"></span>
-                                                    <input type="file" name="profilePic" id="fileUpload" />
-                                                </button>
-                                                <p id="demo" class="errortag"></p>
-                                            </div>
-                                            <div>
-                                                <input type="submit" value="Upload" class="subbtn" >
-                                            </div>
-                                        </form>
-                                    </div>
-                                    </div>
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Update Your Profile</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="upload/do_upload" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
+                                         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
+                                        <div class="form-group">
+                                            <button class="resume_upload" type="button">
+                                                <span class="btn_lbl">Browse</span>
+                                                <span class="btn_colorlayer"></span>
+                                                <input type="file" name="profilePic" id="fileUpload" />
+                                            </button>
+                                            <p id="demo" class="errortag"></p>
+                                        </div>
+                                        <div>
+                                            <input type="submit" value="Upload" class="subbtn" >
+                                        </div>
+                                    </form>
+                                </div>
                                 </div>
                             </div>
+                        </div>
                             <img src=<?php echo base_url().$img;?> class="imgLogo"/>
                         </div><br/>
                         <p align="center"></p>
                     </div>
                 </div>
+
                 <div class="col-md-8">
                     <div class="LoginBox">
                         <h4 style="text-align: center;">Update Profile</h4>
@@ -783,9 +329,13 @@ function Upload() {
 
 
 <script type="text/javascript">
-    
-
+  
 $(document).ready(function(){
+    $.ajaxSetup({
+        data: {
+            '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
+        }
+    });
 
         let base_url = "<?php echo base_url();?>";
         let selected_state = "<?php echo $userData['state']; ?>" ;
@@ -866,6 +416,306 @@ $(document).ready(function(){
 
   });
 
+    function validateUpdateProfile(){
+
+        var error = true;
+
+        var emailpattern = /^([a-zA-Z0-9.-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z]{2,4})+$/;
+        var email = document.getElementById('emaillogin1').value;
+
+        var perPattern = /^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$/;
+        var highper = document.getElementById('highSPerU').value;
+        var schoolper = document.getElementById('schoolperU').value;
+        var udper = document.getElementById('udperU').value; 
+        var gper = document.getElementById('gperU').value;
+
+        var namepattern = /^[a-zA-Z]{0,50}$/;
+        var fname = document.getElementById('Fnameupdate').value;
+        var lname = document.getElementById('Lnameupdate').value;
+
+        var passing_year_pattern = /^([0-9]{4})+$/;
+        var tenpyear = document.getElementById('TPYUpdate').value;
+        var twlevthpyear = document.getElementById('HPYUpdate').value;
+        var degreepyear = document.getElementById('DPYUpdate').value;
 
 
+        if(document.regform.firstname.value.length == 0){
+            document.getElementById("errorFstName").innerHTML = "This field is required";
+            error = false;
+        }else if(!namepattern.test(fname)){
+            document.getElementById("errorFstName").innerHTML = "Enter valid name";
+            error = false;
+        }
+        else {
+            document.getElementById("errorFstName").innerHTML = "";
+        }
+        if(document.regform.lastname.value.length == '0'){
+            document.getElementById("errlstnm").innerHTML = "This field is required";
+            error = false;
+        }else if(!namepattern.test(lname)){
+            document.getElementById("errlstnm").innerHTML = "Enter valid name";
+            error = false;
+        } else {
+            document.getElementById("errlstnm").innerHTML = "";
+        }
+        if(document.regform.cno.value.length == '0'){
+            document.getElementById("errcno").innerHTML = "This field is required";
+            error = false;
+        } else if(document.regform.cno.value.length > '10' || document.regform.cno.value.length < '10'){
+            document.getElementById("errcno").innerHTML = "Enter valid number";
+            error = false;
+        } else {
+            document.getElementById("errcno").innerHTML = "";
+        }
+    
+        if(document.regform.email.value.length == '0') { 
+            document.getElementById("erremail").innerHTML = "This field is required";
+            error = false;
+           
+        }
+        else if(!emailpattern.test(email)) {
+            
+            document.getElementById("erremail").innerHTML = "Please enter valid email";
+            error = false;
+        } 
+
+        else {
+            document.getElementById("erremail").innerHTML = "";
+        }
+
+        if(document.regform.dob.value.length == '0'){
+            document.getElementById("errordob").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errordob").innerHTML = "";
+        }
+
+        if(document.regform.gender.selectedIndex == '0'){
+            document.getElementById("errorgender").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errorgender").innerHTML = "";
+        }
+
+        //tenth
+        if(document.regform.tenth_branch.value.length == '0'){
+            console.log('11college')
+            document.getElementById("errortenth_branch").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errortenth_branch").innerHTML = "";
+        }
+        if(document.regform.tenth_py.value.length == '0'){
+            document.getElementById("errortenth_py").innerHTML = "This field is required";
+            error = false;
+        } else if(!passing_year_pattern.test(tenpyear)){
+            document.getElementById("errortenth_py").innerHTML = "Enter valid year";
+            error = false;
+        }else  if(document.regform.tenth_py.value.length < '4'){
+            document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else  if(document.regform.tenth_py.value.length > '4'){
+            document.getElementById("errortenth_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else {
+            document.getElementById("errortenth_py").innerHTML = "";
+        }
+        if(document.regform.tenth_per.value.length == '0'){
+            document.getElementById("errortenth_per").innerHTML = "This field is required";
+            error = false;
+        } else if(document.regform.tenth_per.value != "100"){
+             if(!perPattern.test(schoolper)){
+                document.getElementById("errortenth_per").innerHTML = "Please enter valid percentage";
+                error = false;
+             }
+        } else {
+            document.getElementById("errortenth_per").innerHTML = "";
+        }
+        // // twelveth
+        if(document.regform.twelveth_branch.value.length == '0'){
+            console.log('12branch')
+            document.getElementById("errortwelveth_branch").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errortwelveth_branch").innerHTML = "";
+        }
+        if(document.regform.twelveth_py.value.length == '0'){
+            document.getElementById("errortwelveth_py").innerHTML = "This field is required";
+            error = false;
+        } else if(!passing_year_pattern.test(twlevthpyear)){
+            document.getElementById("errortwelveth_py").innerHTML = "Enter valid year";
+            error = false;
+        }else if(document.regform.twelveth_py.value.length < '4'){
+            document.getElementById("errortwelveth_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else  if(document.regform.twelveth_py.value.length > '4'){
+            document.getElementById("errortwelveth_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else {
+            document.getElementById("errortwelveth_py").innerHTML = "";
+        }
+        if(document.regform.twelveth_per.value.length == '0'){
+            document.getElementById("errortwelveth_per").innerHTML = "This field is required";
+            error = false;
+
+        } else if(document.regform.twelveth_per.value != "100"){
+            if(!perPattern.test(highper)){
+                document.getElementById("errortwelveth_per").innerHTML = "Please enter valid percentage";
+                error = false;
+            }
+        } else {
+            document.getElementById("errortwelveth_per").innerHTML = "";
+        }
+        // under graduation
+        if(document.regform.college.value.length == '0'){
+            console.log('college')
+            document.getElementById("errorcollege").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errorcollege").innerHTML = "";
+        }
+        if(document.regform.degree_py.value.length == '0'){
+            document.getElementById("errordegree_py").innerHTML = "This field is required";
+            error = false;
+        } else if(!passing_year_pattern.test(degreepyear)){
+            document.getElementById("errordegree_py").innerHTML = "Enter valid year";
+            error = false;
+        }else  if(document.regform.degree_py.value.length < '4'){
+            document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else if(document.regform.degree_py.value.length > '4'){
+            document.getElementById("errordegree_py").innerHTML = "Please enter valid year";
+            error = false;
+        } else {
+            document.getElementById("errordegree_py").innerHTML = "";
+        }
+        if(document.regform.branch.value.length == '0'){
+            document.getElementById("errorbranch").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errorbranch").innerHTML = "";
+        }
+        if(document.regform.degree.value.length == '0'){
+            document.getElementById("errordegree").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errordegree").innerHTML = "";
+        }
+        if(document.regform.degree_per.value.length == '0'){
+            document.getElementById("errordegree_per").innerHTML = "This field is required";
+            error = false;
+        }else if(document.regform.degree_per.value != "100"){
+            if(!perPattern.test(udper)){
+                document.getElementById("errordegree_per").innerHTML = "Please enter valid percentage";
+                error = false;
+            }
+        } else {
+            document.getElementById("errordegree_per").innerHTML = "";
+        }
+        if(document.regform.university.value.length == '0'){
+            document.getElementById("erroruniversity").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("erroruniversity").innerHTML = "";
+        }
+        // graduation
+        // if(document.regform.collegem.value.length == '0'){
+        //     document.getElementById("errorcollegem").innerHTML = "This field is required";
+        // } else {
+        //     document.getElementById("errorcollegem").innerHTML = "";
+
+        // }
+
+        // if(document.regform.degree_pym.value.length == '0'){
+        //     document.getElementById("errordegree_pym").innerHTML = "This field is required";
+        // } else if(document.regform.degree_pym.value.length > '4'){
+        //     document.getElementById("errordegree_pym").innerHTML = "Please enter valid year";
+        //     error = false;
+        // } 
+        // if(document.regform.branchm.value.length == '0'){
+        //     document.getElementById("errorbranchm").innerHTML = "This field is required";
+        // }
+        // if(document.regform.degreem.value.length == '0'){
+        //     document.getElementById("errordegreem").innerHTML = "This field is required";
+        // }
+        // if(document.regform.degree_perm.value.length == '0'){
+        //     document.getElementById("errordegree_perm").innerHTML = "This field is required";
+        // }else  if(!perPattern.test(gper)){
+        //     document.getElementById("errordegree_perm").innerHTML = "Please enter valid percentage";
+        //     error = false;
+        // } 
+        // if(document.regform.universitym.value.length == '0'){
+        //     document.getElementById("erroruniversitym").innerHTML = "This field is required";
+        // }
+        if(document.regform.state.value.length == '0'){
+            document.getElementById("errorstate").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errorstate").innerHTML = "";
+        }
+        if(document.regform.city.value.length == '0'){
+            document.getElementById("errorcity").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errorcity").innerHTML = "";
+        }
+        if(document.regform.pwl.value.length == '0'){
+            document.getElementById("errorpwl").innerHTML = "This field is required";
+            error = false;
+        } else {
+            document.getElementById("errorpwl").innerHTML = "";
+        }
+
+        console.log('last')
+        return error;
+    }
+
+
+    function Upload() {
+      
+        var fileUpload = document.getElementById("fileUpload");
+   
+        var regex = new RegExp("(.jpg|.png|.jpeg)$");
+        
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof (fileUpload.files) != "undefined") {
+                var reader = new FileReader();
+                reader.readAsDataURL(fileUpload.files[0]);
+                reader.onload = function (e) {
+                    var image = new Image();
+                    image.src = e.target.result;
+                    image.onload = function () {
+                        var height = this.height;
+                        var width = this.width;
+                      
+                        if (height > 180 || width > 180) {
+                            // document.getElementById('demo').innerHTML = "Image height and width must not exceed 180px.";
+                            // e.preventDefault();
+                            return false;
+                        } else if(height < 180 || width <  180){
+                            document.getElementById('demo').innerHTML = "";
+                            $("#exampleModalCenter").modal("hide");
+                            document.getElementById("fileUpload").value = "";
+                            return false;
+                        }
+                    };
+                }
+            }
+        } else {
+          document.getElementById('demo').innerHTML = "Please select a valid Image file.";
+          return false;
+        }   
+    }
+
+    function closeButtonLogin(){
+      document.getElementById('demo').innerHTML = "";
+      document.getElementById("fileUpload").value = "";
+    }
+    function showField(isGap = 0){        
+        if (isGap > 0) {
+            document.getElementById("hManyYears").style.display = "block";
+        } else {
+            document.getElementById("hManyYears").style.display = "none";
+        }
+    }
 </script>
