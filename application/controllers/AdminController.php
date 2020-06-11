@@ -3955,10 +3955,10 @@ public function viewInterviewSearch() {
                 $title = $_POST['test-title'];
                 $type = $_POST['test-type'];
 
-                $check_mcq_test_id = $_POST['check_mcq_test_id'];
-
+                //$check_mcq_test_id = $_POST['check_mcq_test_id'];
+                $check_mcq_test_id = isset($_POST['check_mcq_test_id']) ? $_POST['check_mcq_test_id'] : 0 ;
                 $check_drive_id = $_POST['check_drive_id'];
-
+                //$check_drive_id = isset($_POST['check_drive_id']) ? $_POST['check_drive_id'] : 0;
 
                 $isProctored = $_POST['is-proctored'];
                 $customerCode = explode("-",$_POST['customer-code']); //change to customer id
@@ -4214,10 +4214,7 @@ public function viewInterviewSearch() {
                 $totalQuestion = explode(",",$_POST['totalQuestion']);
                 $totalTime = explode(",",$_POST['sectionTime']);
 
-                $check_exist_id = explode(",",$_POST['check_exist_id']);
-
-
-
+                //$check_exist_id = explode(",",$_POST['check_exist_id']);
 
                 $requiredQuestion = explode(",", $_POST['requiredQnos']);
                 $data = array();
@@ -5669,10 +5666,15 @@ foreach ($sectionDetails['section'] as $key => $value) {
         // header('Cache-Control: max-age=0'); 
         // $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
         // $objWriter->save('php://output'); 
-
+/*
        $object_writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
       header('Content-Type: application/vnd.ms-excel');
       header('Content-Disposition: attachment;filename="SkillRary Data.xlsx"');
+      $object_writer->save('php://output');
+*/
+      $object_writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="SkillraryReport.xls"');
       $object_writer->save('php://output');
  
     }
@@ -5687,8 +5689,6 @@ foreach ($sectionDetails['section'] as $key => $value) {
       if (isset($_POST['code'])) {
         $code = trim($_POST['code']);
       }
-
-
 
       $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
 
@@ -5707,14 +5707,19 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
           //redirect('user/create/profile');
           if (!isset($_SESSION['username'])) {
+            $sql = "SELECT customer_code from customers where id = (SELECT customer_id from mcq_test where id = $mcqId)";
+            $result = $this->db->query($sql)->row();
+            $customerCode = $result->customer_code;
+            $instance = INSTANCE;
+
+            $username = $customerCode."_".$instance."_".$this->random_strings(4,"alphaNuMCaps");
             $data = array (
-              'username' => $this->generateUsernamePwd(4),
+              //'username' => $this->generateUsernamePwd(4),
+              'username' => $username,
               'password' => $this->generatePassword()
-           );  
-            $this->session->set_userdata('username', $data);
-  
-          }
-          
+            );  
+            $this->session->set_userdata('username', $data);  
+          }          
 
           $username = $_SESSION['username']['username'];
           $password = $_SESSION['username']['password'];
@@ -5725,7 +5730,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
           $userId = $this->db->insert_id();
 
-          $_SESSION['assess_id'] = $userId;
+          $_SESSION['assessId'] = $userId;
           
           redirect('user/create/profile');
 

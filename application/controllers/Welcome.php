@@ -21,13 +21,15 @@ class Welcome extends CI_Controller {
    
 	public function __construct()
     {
-            parent::__construct();
-            $this->load->helper('url');
-            $this->load->database();
-            $this->load->library(array('session'));
+        parent::__construct();
+        $this->load->helper('url');
+        $this->load->database();
+        $this->load->library(array('session'));
+        
+        if (count($_SESSION) > 1) {
+            redirect("user/home");
+        }
     }
-
-
     
 	public function index() {
 		//$this->load->view('welcome_message');
@@ -318,9 +320,9 @@ public function viewResult($mcqId, $sId) {
  
     }
 
-           public function printUsrPwd() {
-            $sql = "Select * from assess_usr_pwd where mcq_test_id =".$_GET['mcqId'];
-            $result = $this->db->query($sql)->result();
+    public function printUsrPwd() {
+        $sql = "Select * from assess_usr_pwd where mcq_test_id =".$_GET['mcqId'];
+        $result = $this->db->query($sql)->result();
 
             
         // create file name
@@ -354,12 +356,16 @@ public function viewResult($mcqId, $sId) {
         //     $rowCount++;
         // }
        // $filename = "tutsmake". date("Y-m-d-H-i-s").".csv";
-        header('Content-Type: application/vnd.ms-excel'); 
+        /*header('Content-Type: application/vnd.ms-excel'); 
         header('Content-Disposition: attachment;filename="'.$fileName.'"');
         header('Cache-Control: max-age=0'); 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
         $objWriter->save('php://output'); 
- 
+        */
+        $object_writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Skillrary.xls"');
+        $object_writer->save('php://output');
     }
 
     public function typingTest() {

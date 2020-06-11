@@ -348,6 +348,7 @@ class QuestionBank extends MyController {
             $this->session->sess_destroy();
            
             redirect('user/new-login');
+            redirect('user/new-login');
         } 
 
         public function register() {
@@ -393,7 +394,7 @@ class QuestionBank extends MyController {
             $mcqId = $_POST['mcq_id'];
             $questionId = $_POST['question_id'];
             $timeTaken = $_POST['time_taken'];
-
+            $comment = isset($_POST['comment']) ? $_POST['comment'] : "";
             $data = array(
                 'answer_id' => $_POST['answer_id'],
                 'section_id' => $_POST['section_id'],
@@ -402,6 +403,7 @@ class QuestionBank extends MyController {
                 'student_id' => $_POST['student_id'],
                 'correct_ans' => 0,
                 'time_taken' => "$timeTaken",
+                'comment' => $comment,
                 'test_attempt' => $this->session->attempt != null ? $this->session->attempt : 1
             );
 
@@ -1199,8 +1201,6 @@ class QuestionBank extends MyController {
                 $sectionId['id'][$i] = $row->section_id;
                 $sectionId['name'][$i] = $row->section_name;
                 $i++;
-
-                
             }
 
 
@@ -1329,7 +1329,7 @@ class QuestionBank extends MyController {
             }
            // echo "<pre>";
            // print_r($a); die;
-            $_SESSION['attempt'] = 2;
+            //$_SESSION['attempt'] = 2;
             $this->load->view('user-header');
             $this->load->view('results', array("results"=>$a, "codeTestResult" => $codeTest));
             $this->load->view('codefooter');

@@ -585,7 +585,7 @@
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <!-- Time Left: 20:00 -->
-                         <div id="showtime"></div>
+                         <div id="showtime" style="display:none"></div>
                     </div>
                 </div>
                 <hr>
@@ -713,6 +713,7 @@
                     <div>
                         <ul id="optionsList" class="optionList">
                         </ul>
+                        <textarea id="comment"></textarea>
                     </div>
 <!-- <div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
@@ -779,9 +780,10 @@
                 <span class="gender">Gender: <?php if ($_SESSION['userGender'] == "1") {echo "Male";} else { echo "Female";}?></span>
                 </div>
                 </div>
-                                <div>
-                                    <div class="row" style="margin:0px;padding:0px;">
+                <div>
+                    <div class="row" style="margin:0px;padding:0px;">
                 <div class="col-md-6">
+
                 <div>
                 <p class="icon"><span class="box1"><span class="countColor" id="ansCount" style="visibility: hidden;">0</span></span></p>
                 <p class="content">Answered</p>
@@ -826,7 +828,7 @@
                 </div>
                 <hr>
                 <div class="row"  style="margin:0px;padding:0px;">
-                    <p></p>
+                    <p><p><span id="showusertime"></span></p>
                 </div>
                 <hr>
                 <div>
@@ -1280,7 +1282,7 @@ function saveNext(isMarked, timeUp = false) {
         var student = document.getElementById("studentSessionId").value;
         var mcqId = document.getElementById("mcqSessionId").value;
         var timeTaken = document.getElementById("countdown").value;
-
+        var comment = document.getElementById("comment").value;
 
         var sectionIdValue = document.getElementById("sectionIdValue").value;
 
@@ -1288,7 +1290,7 @@ function saveNext(isMarked, timeUp = false) {
         $.ajax({
             type: "POST",
             url: "saveAnswer",
-            data:{"student_id":student, "answer_id":ansId, "section_id": sectionIdValue, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken},
+            data:{"student_id":student, "answer_id":ansId, "section_id": sectionIdValue, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken,"comment":comment},
 
             success: function(data){
                 console.log('ansr', data)
@@ -1296,7 +1298,7 @@ function saveNext(isMarked, timeUp = false) {
             }
         });
 
-
+        document.getElementById("comment").value="";
         // if (document.getElementById("sectionId").value < document.getElementById("sectionCount").value) {
         //     //alert('aad')
         //     var oldsectionId = document.getElementById("sectionId").value;
@@ -1470,7 +1472,7 @@ function lastSave() {
     var student = document.getElementById("studentSessionId").value;
     var mcqId = document.getElementById("mcqSessionId").value;
     var timeTaken = document.getElementById("countdown").value;
-
+    var comment = document.getElementById("comment").value;
     $.ajax({
         type: "POST",
         url: "saveAnswer",
@@ -1480,12 +1482,14 @@ function lastSave() {
             "section_id": sectionId,
             "mcq_id":mcqId,
             "question_id":questionId,
-            "time_taken":timeTaken
+            "time_taken":timeTaken,
+            "comment": comment
         },
         success: function(data) {
             console.log('ansrr', data)
         }
     });
+    document.getElementById("comment").value="";
 }
 
     function clearCount() {
@@ -1824,10 +1828,12 @@ window.onload = InitializeMap;
         
           if (parseInt(sec) > 0) {
             document.getElementById("showtime").innerHTML = "Your Left Time is :" + min + " Minutes :" + sec + " Seconds";
+            document.getElementById("showusertime").innerHTML = "Left Time is : <strong>" + min + " Minutes :" + sec + " Seconds</strong>";
             tim = setTimeout("showtime()", 1000);
           } else {
             if (parseInt(sec) == 0) {
               document.getElementById("showtime").innerHTML = "Your Left Time is :" + min + " Minutes :" + sec + " Seconds";
+               document.getElementById("showusertime").innerHTML = "Left Time is : <strong>" + min + " Minutes :" + sec + " Seconds</strong>";
               if (parseInt(min) == 0) {
                 document.getElementById("countdown").value = parseInt(document.getElementById("countdown").value ) + 1;
                 lastSave();
