@@ -5696,8 +5696,6 @@ foreach ($sectionDetails['section'] as $key => $value) {
         $code = trim($_POST['code']);
       }
 
-
-
       $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
 
       $query = $this->db->query($sql);
@@ -5715,14 +5713,19 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
           //redirect('user/create/profile');
           if (!isset($_SESSION['username'])) {
+            $sql = "SELECT customer_code from customers where id = (SELECT customer_id from mcq_test where id = $mcqId)";
+            $result = $this->db->query($sql)->row();
+            $customerCode = $result->customer_code;
+            $instance = INSTANCE;
+
+            $username = $customerCode."_".$instance."_".$this->random_strings(4,"alphaNuMCaps");
             $data = array (
-              'username' => $this->generateUsernamePwd(4),
+              //'username' => $this->generateUsernamePwd(4),
+              'username' => $username,
               'password' => $this->generatePassword()
-           );  
-            $this->session->set_userdata('username', $data);
-  
-          }
-          
+            );  
+            $this->session->set_userdata('username', $data);  
+          }          
 
           $username = $_SESSION['username']['username'];
           $password = $_SESSION['username']['password'];
@@ -5733,7 +5736,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
           $userId = $this->db->insert_id();
 
-          $_SESSION['assess_id'] = $userId;
+          $_SESSION['assessId'] = $userId;
           
           redirect('user/create/profile');
 

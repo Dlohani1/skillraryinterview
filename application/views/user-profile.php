@@ -1,9 +1,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 <script>
-     $.ajaxSetup({
+    $.ajaxSetup({
         data: {
             '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'
         }
@@ -38,14 +38,12 @@ function fillValue() {
     document.regform.branch.value = "CSE";    
     document.regform.degree.value = "BE";
     document.regform.university.value = "CSVTU";
-    document.regform.state.value = "2";
-    document.regform.state.click();
-    document.regform.city.value = "2";
+    document.regform.state.value = "17";
+    $('#state').trigger('change');
     document.regform.pwl.value = "Bengaluru";
 }
 
 function validateUpdateProfile(){
-        
           
         var error = true;
 
@@ -349,9 +347,9 @@ function Upload() {
        
         ?>
 
-        <div class="container" id="contentBox">
+        <div class="container" id="contentBox" style="margin-right: 0%">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4" style="display: none" >
                     <div class="profileBox">
                         <div align="center">
                          <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Edit</button>
@@ -365,7 +363,7 @@ function Upload() {
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="upload/do_upload" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
+                                        <form action="<?=base_url().'user/upload/do_upload';?>" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
                                              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                                             <div class="form-group">
                                                 <button class="resume_upload" type="button">
@@ -389,7 +387,14 @@ function Upload() {
     Open modal
   </button>
 
-  <!-- The Modal -->
+
+
+                            <img src=<?php echo base_url().$img;?> class="imgLogo"/>
+                        </div><br/>
+                        <p align="center"></p>
+                    </div>
+                </div>
+                  <!-- The Modal -->
   <div class="modal fade" id="userModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -420,12 +425,6 @@ function Upload() {
       </div>
     </div>
   </div>
-
-                            <img src=<?php echo base_url().$img;?> class="imgLogo"/>
-                        </div><br/>
-                        <p align="center"></p>
-                    </div>
-                </div>
                 <div class="col-md-8">
                     <div class="LoginBox">
                         <h4 style="text-align: center;">Create Profile</h4>
@@ -648,7 +647,8 @@ function Upload() {
                                             <div class="col-md-6">
                                                 <!-- <label>Residence City<sup><span style="color:red;font-size: 16px;">*</span></sup></label>
                                                 <input type="text" name="city" value="<?php echo set_value('city'); ?>"  class="form-control formControl"  autocomplete="off"> -->                                                                     <label class="" for="city">Residence City</label><br/>
-                                                  <select id="city"    name="city" >          </select>
+                                                  <select id="city"    name="city" >
+                                                </select>
 
                                                 <br/><br/>
                                                 <p id="errorcity" class="errMessage"></p>

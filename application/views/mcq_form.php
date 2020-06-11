@@ -713,6 +713,7 @@
                     <div>
                         <ul id="optionsList" class="optionList">
                         </ul>
+                        <textarea id="comment"></textarea>
                     </div>
 <!-- <div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>
@@ -1281,7 +1282,7 @@ function saveNext(isMarked, timeUp = false) {
         var student = document.getElementById("studentSessionId").value;
         var mcqId = document.getElementById("mcqSessionId").value;
         var timeTaken = document.getElementById("countdown").value;
-
+        var comment = document.getElementById("comment").value;
 
         var sectionIdValue = document.getElementById("sectionIdValue").value;
 
@@ -1289,7 +1290,7 @@ function saveNext(isMarked, timeUp = false) {
         $.ajax({
             type: "POST",
             url: "saveAnswer",
-            data:{"student_id":student, "answer_id":ansId, "section_id": sectionIdValue, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken},
+            data:{"student_id":student, "answer_id":ansId, "section_id": sectionIdValue, "mcq_id":mcqId, "question_id":questionId,"time_taken":timeTaken,"comment":comment},
 
             success: function(data){
                 console.log('ansr', data)
@@ -1297,7 +1298,7 @@ function saveNext(isMarked, timeUp = false) {
             }
         });
 
-
+        document.getElementById("comment").value="";
         // if (document.getElementById("sectionId").value < document.getElementById("sectionCount").value) {
         //     //alert('aad')
         //     var oldsectionId = document.getElementById("sectionId").value;
@@ -1471,7 +1472,7 @@ function lastSave() {
     var student = document.getElementById("studentSessionId").value;
     var mcqId = document.getElementById("mcqSessionId").value;
     var timeTaken = document.getElementById("countdown").value;
-
+    var comment = document.getElementById("comment").value;
     $.ajax({
         type: "POST",
         url: "saveAnswer",
@@ -1481,12 +1482,14 @@ function lastSave() {
             "section_id": sectionId,
             "mcq_id":mcqId,
             "question_id":questionId,
-            "time_taken":timeTaken
+            "time_taken":timeTaken,
+            "comment": comment
         },
         success: function(data) {
             console.log('ansrr', data)
         }
     });
+    document.getElementById("comment").value="";
 }
 
     function clearCount() {

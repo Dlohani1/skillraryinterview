@@ -394,7 +394,7 @@ class QuestionBank extends MyController {
             $mcqId = $_POST['mcq_id'];
             $questionId = $_POST['question_id'];
             $timeTaken = $_POST['time_taken'];
-
+            $comment = isset($_POST['comment']) ? $_POST['comment'] : "";
             $data = array(
                 'answer_id' => $_POST['answer_id'],
                 'section_id' => $_POST['section_id'],
@@ -403,6 +403,7 @@ class QuestionBank extends MyController {
                 'student_id' => $_POST['student_id'],
                 'correct_ans' => 0,
                 'time_taken' => "$timeTaken",
+                'comment' => $comment,
                 'test_attempt' => $this->session->attempt != null ? $this->session->attempt : 1
             );
 
