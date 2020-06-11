@@ -30,14 +30,15 @@
                     {
                         echo '<div class="alert alert-white bg-danger" >'.$this->session->flashdata('error').'</div>';
                     } 
-                  ?>
+                  ?> 
 
-                <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/saveSubSection";?>>
+                <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/saveSubSection";?> onsubmit="return validateSubSection()">
 
                       <div class="row">
                         <div class="col-md-3 offset-md-1">
                             <label>Create Sub Section</label>
                               <input type="text" name="sub_section_name" required class="form-control" id="sub_section_name" placeholder="Enter sub section" autocomplete="off"><br/>
+                              <div id="error_sub_section_name" ></div>
 
                               <input type="hidden" id="section_id" name="section_id" value= "<?php echo $section_id;?>" />
                               <button type="submit" value="Submit">Create Sub Section
@@ -107,7 +108,7 @@
 <div class="modal fade" id="subSectionmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
 
- <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/edit-sub-section";?>>
+ <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/edit-sub-section";?> onsubmit="return validateSubSectionUpdate()" >>
 
     <div class="modal-content">
       <div class="modal-header">
@@ -116,17 +117,16 @@
       </div>
       <div class="modal-body">
 
-                        <label>Update Sub Section</label>
-                              <input type="hidden" id="section_id" name="section_id" value= "<?php echo $section_id;?>" />
+          <label>Update Sub Section</label>
+                <input type="hidden" id="section_id" name="section_id" value= "<?php echo $section_id;?>" />
 
-                        <input type="hidden" id="hidden_sub_section_id" name="hidden_sub_section_id">
+          <input type="hidden" id="hidden_sub_section_id" name="hidden_sub_section_id">
 
-                        <input type="text" id="update_sub_section_name" name="update_sub_section_name" required class="form-control">
-                        <div id="error_update_sub_section_name" ></div>
+          <input type="text" id="update_sub_section_name" required name="update_sub_section_name"  class="form-control">
+          <div id="error_update_sub_section_name" ></div>
       </div>
       <div class="modal-footer">
-           <button type="submit" value="Submit">Submit
-                          </button>
+           <button type="submit" value="Submit">Submit</button>
       </div>
     </div>
       </form>
@@ -160,6 +160,35 @@ $(".pop_up_edit_sub_section").on("click", function() {
   $('#subSectionmodal').modal('show');
 
 });
+
+
+ function validateSubSectionUpdate() {
+    var update_sub_section_name = document.getElementById("update_sub_section_name").value;
+
+    var isError = true;
+
+    if (update_sub_section_name.trim().length == 0) {
+        isError = false;
+        $("#error_update_sub_section_name").text("Please enter Sub Section Name");
+        $("#error_update_sub_section_name").css('color','red');
+    } 
+
+    return isError;
+ }
+
+  function validateSubSection() {
+    var sub_section_name = document.getElementById("sub_section_name").value;
+
+    var isError = true;
+
+    if (sub_section_name.trim().length == 0) {
+        isError = false;
+        $("#error_sub_section_name").text("Please enter Sub Section Name");
+        $("#error_sub_section_name").css('color','red');
+    } 
+
+    return isError;
+ }
 
 
 </script>

@@ -6532,7 +6532,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
     $searchSection = '';
-
+ 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
     $this->load->view('admin/create-section', array(
@@ -6548,7 +6548,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
   public function createSectionSearch() {
 
-    $searchSection = $_GET['searchSection'];
+    $searchSection = trim($_GET['searchSection']);
 
     $sql = " SELECT * FROM section ";
 
@@ -6605,7 +6605,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
 
   public function saveSection() {
-    $searchSection = $_POST['searchSection'];
+    $searchSection = trim($_POST['searchSection']);
 
     if (empty($searchSection)) {
         $this->session->set_flashdata('error', "Enter section name.");
@@ -6632,6 +6632,8 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
   public function editSection() {
     $update_section_name = $_POST['update_section_name'];
+
+    $update_section_name = trim($update_section_name);
 
     if (empty($update_section_name)) {
         $this->session->set_flashdata('error', "Enter section name.");
@@ -6782,6 +6784,8 @@ foreach ($sectionDetails['section'] as $key => $value) {
   public function saveSubSection() {
     $section_id = $_POST['section_id'];
     $sub_section_name = $_POST['sub_section_name'];
+    $sub_section_name = trim($sub_section_name);
+
 
     if (empty($sub_section_name)) {
         $this->session->set_flashdata('error', "Enter sub section name.");
@@ -6817,6 +6821,8 @@ foreach ($sectionDetails['section'] as $key => $value) {
  public function editSubSection() {
      $section_id = $_POST['section_id'];
      $update_sub_section_name = $_POST['update_sub_section_name'];
+     $update_sub_section_name = trim($update_sub_section_name);
+
     if (empty($update_sub_section_name)) {
         $this->session->set_flashdata('error', "Enter sub section name.");
         redirect("admin/add-sub-section/$section_id");

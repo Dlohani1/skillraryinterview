@@ -60,8 +60,6 @@ input:checked + .slider:before {
 }
 </style>
 
-
-
 <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
 <div id="layoutSidenav_content">
   <main>
@@ -95,12 +93,14 @@ input:checked + .slider:before {
                     } 
                   ?>
 
-                  <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/saveSection";?>>
+                  <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/saveSection";?> onsubmit="return validateSection()">
 
                           <div class="row">
                             <div class="col-md-3 offset-md-1">
                               <label>Create Section</label>
                               <input type="text" name="searchSection" required class="form-control" id="searchSection" placeholder="Enter section" autocomplete="off"><br/>
+                              <div id="error_section_name" ></div>
+
                               <button type="submit" value="Submit">Create section
                               </button>
                             </div>
@@ -110,12 +110,12 @@ input:checked + .slider:before {
 
               <br>
  
-              <form  autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/add-section-search";?>>
+              <form  autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/add-section-search";?> >
                   <div class="searchBox">
                           <div class="row">
                               <div class="col-md-6">
                                 <label>Search Section</label>
-                                <input type="text" id="" name="searchSection" class="form-control" placeholder="Search Section" value="<?php echo $searchSection; ?>">
+                                <input type="text" id="" name="searchSection"  class="form-control" placeholder="Search Section" value="<?php echo $searchSection; ?>">
                               </div>
 
                               <div class="col-md-2">
@@ -202,7 +202,7 @@ input:checked + .slider:before {
 <div class="modal fade" id="sectionmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
 
- <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/edit-section";?> >
+ <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."admin/edit-section";?>  onsubmit="return validateSectionUpdate()" >
 
     <div class="modal-content">
       <div class="modal-header">
@@ -258,17 +258,47 @@ input:checked + .slider:before {
       });
   }
 
-$(".pop_up_edit_section").on("click", function() {
+  $(".pop_up_edit_section").on("click", function() {
 
-  let update_section_name = $(this).data('section_name')
-  let id = $(this).data('id');
+    let update_section_name = $(this).data('section_name')
+    let id = $(this).data('id');
 
-  $('#hidden_section_id').val(id);
-  $('#update_section_name').val(update_section_name);
+    $('#hidden_section_id').val(id);
+    $('#update_section_name').val(update_section_name);
 
-  $('#sectionmodal').modal('show');
+    $('#sectionmodal').modal('show');
 
-});
+  });
+
+
+ function validateSectionUpdate() {
+    var update_section_name = document.getElementById("update_section_name").value;
+
+    var isError = true;
+
+    if (update_section_name.trim().length == 0) {
+        isError = false;
+        $("#error_update_section_name").text("Please enter Section Name");
+        $("#error_update_section_name").css('color','red');
+    } 
+
+    return isError;
+ }
+
+  function validateSection() {
+    var section = document.getElementById("searchSection").value;
+
+    var isError = true;
+
+    if (section.trim().length == 0) {
+        isError = false;
+        $("#error_section_name").text("Please enter Section Name");
+        $("#error_section_name").css('color','red');
+    } 
+
+    return isError;
+ }
+
 
 
 

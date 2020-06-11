@@ -2033,7 +2033,7 @@ public function todaysInterview() {
     $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
     $searchSection = '';
-
+ 
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
     $this->load->view('customer/create-section', array(
@@ -2050,7 +2050,7 @@ public function todaysInterview() {
   public function createSectionSearch() {
 
     $customerId = $_SESSION['customerId'];
-    $searchSection = $_GET['searchSection'];
+    $searchSection = trim($_GET['searchSection']);
 
     $sql = " SELECT * FROM section where customer_id = $customerId";
 
@@ -2129,6 +2129,39 @@ public function todaysInterview() {
       $this->db->insert('section', $data);
 
       $this->session->set_flashdata('success', "$sectionName added successfully.");
+
+      redirect('customer/add-section');
+    }
+  }
+
+    public function editSection() {
+    $customerId = $_SESSION['customerId'];
+    $sectionName = trim($_POST['update_section_name']);
+
+    if (empty($sectionName)) {
+        $this->session->set_flashdata('error', "Enter section name.");
+        redirect('customer/add-section');
+    }
+
+    $sql = "select section_name from section 
+             where customer_id = $customerId and section_name = '".$sectionName."'";
+
+    $query = $this->db->query($sql);
+    $result = $query->result();
+
+    if (null != $result) {
+    
+      $this->session->set_flashdata('error', "$sectionName already exist.");
+      redirect('customer/add-section');
+
+    } else {
+      $data  = array ('section_name' => $sectionName);
+
+      $this->db->where('id', $_POST['hidden_section_id']);
+      $this->db->where('customer_id',$customerId);
+      $this->db->update('section',$data);
+
+      $this->session->set_flashdata('success', "$sectionName Updated successfully.");
 
       redirect('customer/add-section');
     }
@@ -2347,10 +2380,6 @@ public function todaysInterview() {
 
 
 
-
-
-
-
  public function createSubSection() {
 
    $customerId = $_SESSION['customerId'];
@@ -2361,7 +2390,8 @@ public function todaysInterview() {
     $query = $this->db->query($sql);
     $section_name = $query->result()[0]->section_name;
 
-    $sql = " SELECT * FROM sub_section inner join section on section.id = sub_section.section_id 
+    $sql = " SELECT sub_section.id, sub_section.section_id, sub_section.sub_section_name 
+              FROM sub_section inner join section on section.id = sub_section.section_id 
               where section_id =  $section_id AND customer_id = $customerId";
 
     $config['full_tag_open'] = "<ul class='pagination'>";
@@ -2423,7 +2453,7 @@ public function todaysInterview() {
     $query = $this->db->query($sqlQ);
     $section_name = $query->result()[0]->section_name;
 
-    $searchSubSection = $_GET['searchSubSection'];
+    $searchSubSection = trim($_GET['searchSubSection']);
 
     $sql = " SELECT * FROM sub_section  inner join section on section.id = sub_section.section_id 
               where section_id =  $section_id AND customer_id = $customerId";
@@ -2510,6 +2540,45 @@ public function todaysInterview() {
       redirect("customer/add-sub-section/$section_id");
     }
   }
+
+
+
+  public function editSubSection() {
+    $customerId = $_SESSION['customerId'];
+
+    $section_id = $_POST['section_id'];
+    $update_sub_section_name = trim($_POST['update_sub_section_name']);
+
+    if (empty($update_sub_section_name)) {
+      $this->session->set_flashdata('error', "Enter sub section name.");
+      redirect("customer/add-sub-section/$section_id");
+    }
+
+    $sql = "select sub_section_name from sub_section inner join section on section.id = sub_section.section_id  where section_id = '$section_id' AND customer_id = $customerId AND sub_section_name = '$update_sub_section_name' ";
+
+    $query = $this->db->query($sql);
+    $result = $query->result();
+
+
+    if (null != $result) {
+      $this->session->set_flashdata('error', "$update_sub_section_name already exist.");
+      redirect("customer/add-sub-section/$section_id");
+    } else {
+      $data  = array (
+        'sub_section_name' => $update_sub_section_name,
+        'section_id' => $section_id
+
+      );
+
+      $this->db->where('id', $_POST['hidden_sub_section_id']);
+      $this->db->update('sub_section',$data);
+
+      $this->session->set_flashdata('success', "$update_sub_section_name Updated successfully.");
+      redirect("customer/add-sub-section/$section_id");
+    }
+  }
+
+
 
   public function getCustomerCode()
   {

@@ -95,11 +95,14 @@ input:checked + .slider:before {
                     } 
                   ?>
 
-              <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."customer/saveSection";?>>
+              <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."customer/saveSection";?> onsubmit="return validateSection()">
 
                          <div class="row">
                             <div class="col-md-3 offset-md-1">
                               <input type="text" name="searchSection" required class="form-control" id="searchSection" placeholder="Enter section" autocomplete="off">
+
+                              <div id="error_section_name" ></div>
+
                                
                                <br/>
                               <button type="submit" value="Submit">Create section
@@ -180,7 +183,15 @@ input:checked + .slider:before {
 
                       echo '<tr>
                           <td>'.$i.'</td>
-                          <td>'.$value->section_name.'</td>
+                          <td>'.$value->section_name.'
+
+                          <p data-placement="top"  data-toggle="tooltip" title="Edit">
+                                      <button class="btn btn-primary btn-xs pop_up_edit_section" data-title="Edit" data-toggle="modal"  data-id="'.$value->id.'"  data-section_name="'.$value->section_name.'"  >
+                                      <span class="glyphicon glyphicon-pencil"></span>
+                                      </button></p>
+
+
+                          </td>
                         
                           <td>
                             <label class="switch"> <input type="checkbox" '.$checked.'  class="activeinactive"  onclick="checkActive('.$value->id.','.$value->is_active.')">
@@ -215,7 +226,34 @@ input:checked + .slider:before {
 </div>
 
 
+<!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="sectionmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
 
+ <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."customer/edit-section";?>  onsubmit="return validateSectionUpdate()" >
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Section Name</h4>
+      </div>
+      <div class="modal-body">
+
+                        <label>Update Section</label>
+
+                        <input type="hidden" id="hidden_section_id" name="hidden_section_id">
+
+                        <input type="text" id="update_section_name" name="update_section_name"  required class="form-control">
+                        <div id="error_update_section_name" ></div>
+      </div>
+      <div class="modal-footer">
+           <button type="submit" value="Submit">Submit
+                          </button>
+      </div>
+    </div>
+      </form>
+  </div>
+</div>
     
 
                                 </div>
@@ -234,7 +272,6 @@ input:checked + .slider:before {
 
 
   function checkActive(id, value){
-
 
     var baseUrl = document.getElementById("base_url").value;
                 
@@ -256,17 +293,48 @@ input:checked + .slider:before {
       
   }
 
+$(".pop_up_edit_section").on("click", function() {
+
+  let update_section_name = $(this).data('section_name')
+  let id = $(this).data('id');
+
+  $('#hidden_section_id').val(id);
+  $('#update_section_name').val(update_section_name);
+
+  $('#sectionmodal').modal('show');
+
+});
+
+
+
+ function validateSectionUpdate() {
+    var update_section_name = document.getElementById("update_section_name").value;
+
+    var isError = true;
+
+    if (update_section_name.trim().length == 0) {
+        isError = false;
+        $("#error_update_section_name").text("Please enter Section Name");
+        $("#error_update_section_name").css('color','red');
+    } 
+
+    return isError;
+ }
+
+  function validateSection() {
+    var section = document.getElementById("searchSection").value;
+
+    var isError = true;
+
+    if (section.trim().length == 0) {
+        isError = false;
+        $("#error_section_name").text("Please enter Section Name");
+        $("#error_section_name").css('color','red');
+    } 
+
+    return isError;
+ }
 
 
 </script>
-
-
-
-
-
-
-
-
-
-
 
