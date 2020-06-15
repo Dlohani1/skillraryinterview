@@ -135,6 +135,7 @@ class CustomerController extends CI_Controller {
         $p['level_id'] = "1";
         $p['sub_section_id'] = "1";
         $p['total_question'] = $requiredQuestion[$i];
+        $p['customer_id'] = $_SESSION['customerId'];
 
         $patternData[] = $p;
         $this->db->insert('mcq_time', $t);
@@ -166,7 +167,7 @@ class CustomerController extends CI_Controller {
        redirect('customer/login');
     }
   }
-
+  
   public function createTest() {
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
@@ -1407,6 +1408,7 @@ public function viewMcqListSearch() {
     $config['max_size']             = 100;
     $config['max_width']            = 1024;
     $config['max_height']           = 768;
+    $customer_code = $this->getCustomerCode();
 
     $this->load->library('upload', $config);
 
@@ -1436,8 +1438,9 @@ public function viewMcqListSearch() {
           "question" => $data[1],
           "level_id" => $data[9]
         );
-        
-        $this->db->insert('question_bank', $qdata);
+       
+
+        $this->db->insert("question_bank_$customer_code", $qdata);
         $questionId = $this->db->insert_id();
         $correct  = 0;
 
@@ -1475,7 +1478,7 @@ public function viewMcqListSearch() {
         $data = array(
           $a1, $a2, $a3, $a4
         );
-        $this->db->insert_batch('answers', $data);
+        $this->db->insert_batch("answers_$customer_code", $data);
       }
 
       $this->session->set_flashdata('success', 'Questions Uploaded successfully');
@@ -1654,29 +1657,6 @@ public function viewMcqListSearch() {
     ));
     $this->load->view('customer/footer');
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   public function random_strings($length_of_string, $type) { 
@@ -1902,7 +1882,6 @@ public function todaysInterview() {
   }
 
 
-
   public function todaysInterviewSearch() {
 
     $searchdate = $_GET['searchdate'];
@@ -1992,8 +1971,6 @@ public function todaysInterview() {
   }
 
 
-
-
  public function createSection() {
     $customerId = $_SESSION['customerId'];
     $sql = " SELECT * FROM section where customer_id = $customerId";
@@ -2044,8 +2021,6 @@ public function todaysInterview() {
     ));
     $this->load->view('customer/footer');
   }
-
-
 
   public function createSectionSearch() {
 
@@ -2181,12 +2156,14 @@ public function todaysInterview() {
   }
 
 
+
   public function viewQuestion() {
 
     $customerId = $_SESSION['customerId'];
       $this->load->library("pagination");
+      $customer_code = $this->getCustomerCode();
 
-      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM question_bank_Q8 as question_bank
+      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM question_bank_$customer_code as question_bank
       INNER JOIN section on section.id = question_bank.section_id
       INNER JOIN question_levels on question_levels.id = question_bank.level_id
       INNER JOIN sub_section on sub_section.id = question_bank.sub_section_id
@@ -2254,6 +2231,8 @@ public function todaysInterview() {
     $subsection = '';
     $difficultylevel = '';
 
+    $customer_code = $this->getCustomerCode();
+
     if ( $_GET['section'] != 0) {
       $section = $_GET['section'];
       $sql = "SELECT * FROM section where id = $section ";
@@ -2283,7 +2262,7 @@ public function todaysInterview() {
 
     $sql = "SELECT question_bank.id, question_bank.question, section.section_name, 
               question_levels.level,sub_section.sub_section_name 
-            FROM question_bank
+            FROM question_bank_$customer_code question_bank
                   INNER JOIN section 
                 on section.id = question_bank.section_id
                   INNER JOIN question_levels
@@ -2919,5 +2898,6 @@ public function viewQuestionWithCodeSearch() {
 
 
 
-
 }
+
+

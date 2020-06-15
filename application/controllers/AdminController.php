@@ -1710,7 +1710,7 @@ public function deleteUsrPwd() {
 
     return strtoupper(random_string('alnum',$size));
   }
-
+ 
 
   public function createTest() {
     $this->load->view('admin/header');
@@ -4644,7 +4644,16 @@ public function viewInterviewSearch() {
 
         public function getTotalQuestion() {
           $sectionId = $_POST['Id'];
-          $sql = "SELECT count(id) as total_question FROM `question_bank` where section_id=$sectionId";
+
+          $customer_code = $this->getCustomerCode();
+
+          if ($customer_code != 'no') {
+            $sql = "SELECT count(id) as total_question FROM question_bank_$customer_code question_bank where section_id=$sectionId";
+          }else{
+            $sql = "SELECT count(id) as total_question FROM `question_bank` where section_id=$sectionId";
+          }
+
+
           //$query = $this->db->query($sql);
             //$sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
 
@@ -6880,6 +6889,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
   }
 
 
+
   public function createQuestionBankTable() {
     $customer_code = $_POST['customer_code'];
 
@@ -6910,7 +6920,19 @@ foreach ($sectionDetails['section'] as $key => $value) {
         }
   }
 
- 
+
+  public function getCustomerCode()
+  {
+    $customerId = $_SESSION['customerId'];
+    $sql = " SELECT customer_code FROM customers where id = $customerId "; 
+    $query = $this->db->query($sql);
+    $customer_code = $query->result();
+    if($customer_code != null){
+        return $customer_code[0]->customer_code;
+    }
+    return 'no';
+  }
+
 
   
 }

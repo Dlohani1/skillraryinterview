@@ -177,16 +177,21 @@ class QuestionBank extends MyController {
 
                     $this->load->view('mcq_form', array('userData'=>$userData,'codeId'=>$codeId, 'sections' => $mcqSection, 'testData' => $testData));      
                 // }
-                
+                 
         }
 
         public function getMcqSection() {
 
-            $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
+            $customer_id = $this->getCustomerId();
+            if($customer_id != 'no'){
+                $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
+                    inner join section on mcq_test_pattern.section_id = section.id
+                    where mcq_test_pattern.customer_id = $customer_id AND section.customer_id = $customer_id AND mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
+            }else{
+                $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
                     inner join section on mcq_test_pattern.section_id = section.id
                     where mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
-
-            
+            }
 
             $query = $this->db->query($sql);
 
@@ -231,10 +236,7 @@ class QuestionBank extends MyController {
                     $sql = "SELECT * FROM `student_answers` WHERE student_id = '$studentId' AND mcq_test_id = '$mcqId' AND test_attempt =".$attemptNo;                    
                 }
 
-
-
-
-                 $isAttempted = $this->db->query($sql)->row();
+                $isAttempted = $this->db->query($sql)->row();
 
               if (null != $isAttempted) {
                 return $isAttempted->test_attempt;
@@ -301,45 +303,57 @@ class QuestionBank extends MyController {
         }
 
         public function fetchQuestion() {
-                $studentId = $_POST['id'];
-                $sectionId = $_POST['section_id'];
-                $mcqId = $_POST['mcq_id'];
+            $studentId = $_POST['id'];
+            $sectionId = $_POST['section_id'];
+            $mcqId = $_POST['mcq_id'];
 
-                $questionId = $_POST['question_id'];
+            $questionId = $_POST['question_id'];
 
-                $sql = "SELECT question_bank.question, answers.*  FROM question_bank 
-                LEFT JOIN answers 
-                ON answers.question_id = question_bank.id
-                WHERE question_bank.id = '$questionId' ";
-
-                $query = $this->db->query($sql);
-
-                $i = 0;
-
-                $questionData = array();
-                foreach ($query->result() as $row) {
-                        $questionData['question'] = $row->question;
-                        $questionData['options'][$i]['id'] = $row->id;
-                        $questionData['options'][$i]['option'] = $row->answer;
-                        $i++;
-                }
-
-                $questionData['userAnswer'] = array();
-
-                $answerAttempt = $this->session->attempt != null ? $this->session->attempt : 1;
-
-                $sql = "SELECT answer_id FROM `student_answers` WHERE student_id='$studentId' AND question_id = '$questionId' AND mcq_test_id='$mcqId' AND test_attempt = '$answerAttempt'";
-
-                //echo $sql ; die;
-
-                $answer = $this->db->query($sql)->row();
-
-              if (null != $answer) {
-                 $questionData['userAnswer']['id'] = $answer->answer_id;
-             }
+            $customer_code = $this->getCustomerCode();
 
 
-                print_r(json_encode($questionData));
+             if($customer_code != 'no'){
+                   $sql = "SELECT question_bank.question, answers.*  FROM question_bank_$customer_code question_bank
+            LEFT JOIN answers_$customer_code  answers 
+            ON answers.question_id = question_bank.id
+            WHERE question_bank.id = '$questionId' ";
+
+            }else{
+                   $sql = "SELECT question_bank.question, answers.*  FROM question_bank
+            LEFT JOIN answers
+            ON answers.question_id = question_bank.id
+            WHERE question_bank.id = '$questionId' ";
+                             
+            }
+
+            $query = $this->db->query($sql);
+
+            $i = 0;
+
+            $questionData = array();
+            foreach ($query->result() as $row) {
+                    $questionData['question'] = $row->question;
+                    $questionData['options'][$i]['id'] = $row->id;
+                    $questionData['options'][$i]['option'] = $row->answer;
+                    $i++;
+            }
+
+            $questionData['userAnswer'] = array();
+
+            $answerAttempt = $this->session->attempt != null ? $this->session->attempt : 1;
+
+            $sql = "SELECT answer_id FROM `student_answers` WHERE student_id='$studentId' AND question_id = '$questionId' AND mcq_test_id='$mcqId' AND test_attempt = '$answerAttempt'";
+
+            //echo $sql ; die;
+
+            $answer = $this->db->query($sql)->row();
+
+          if (null != $answer) {
+             $questionData['userAnswer']['id'] = $answer->answer_id;
+         }
+
+
+            print_r(json_encode($questionData));
         }
 
 
@@ -388,7 +402,9 @@ class QuestionBank extends MyController {
             
         }
 
+
         public function saveAnswer() {
+             $customer_code = $this->getCustomerCode();
 
             $studentId = $_POST['student_id'];
             $mcqId = $_POST['mcq_id'];
@@ -409,7 +425,12 @@ class QuestionBank extends MyController {
 
             $questionId = $_POST['question_id'];
 
-            $sql = "SELECT id FROM `answers` WHERE question_id = '$questionId' And is_correct=1";   
+            if($customer_code != 'no'){
+                $sql = "SELECT id FROM answers_$customer_code WHERE question_id = '$questionId' And is_correct=1"; 
+            }else{
+                $sql = "SELECT id FROM `answers` WHERE question_id = '$questionId' And is_correct=1"; 
+            }
+
 
             // echo $sql; die;
             $ansId = $this->db->query($sql);
@@ -429,8 +450,10 @@ class QuestionBank extends MyController {
 
             $attempt = $this->session->attempt;
 
-            $sql = "SELECT id FROM `student_answers` WHERE student_id='$studentId' AND mcq_test_id = '$mcqId' AND question_id='$questionId' AND test_attempt = '$attempt'";
+            // $customer_code = $this->getCustomerCode();
 
+            $sql = "SELECT id FROM `student_answers` WHERE student_id='$studentId' AND mcq_test_id = '$mcqId' AND question_id='$questionId' AND test_attempt = '$attempt'";
+            
             $alreadyAnswer = $this->db->query($sql)->row();
 
             if (null != $alreadyAnswer) {
@@ -553,7 +576,6 @@ class QuestionBank extends MyController {
 
         }
 
-        
 
         public function signin() {
 
@@ -915,8 +937,6 @@ class QuestionBank extends MyController {
         }  
 
 
-
-
         public function showUserProfile($user = false) {
 
             $userId = $this->session->id;
@@ -1016,6 +1036,7 @@ class QuestionBank extends MyController {
 
                 print_r( json_encode($result));
         }
+
 
 
 
@@ -1167,8 +1188,13 @@ class QuestionBank extends MyController {
 
             //$sql = "SELECT mcq_test_pattern.section_id , section.name FROM `mcq_test_pattern` where mcq_test_id = ". $mcqId. " join section on section.id = mcq_test_pattern.id ";
 
-             $sql = "SELECT mcq_test_pattern.section_id , section.section_name FROM `mcq_test_pattern` inner join section on section.id = mcq_test_pattern.section_id where mcq_test_id =".$mcqId;
-
+            $customer_id = $this->getCustomerId();
+            
+            if($customer_id != 'no'){
+               $sql = "SELECT mcq_test_pattern.section_id , section.section_name FROM `mcq_test_pattern` inner join section on section.id = mcq_test_pattern.section_id where section.customer_id = $customer_id AND mcq_test_pattern.customer_id = $customer_id AND mcq_test_id =".$mcqId;
+            }else{
+               $sql = "SELECT mcq_test_pattern.section_id , section.section_name FROM `mcq_test_pattern` inner join section on section.id = mcq_test_pattern.section_id where mcq_test_id =".$mcqId;
+            }
 
             $query = $this->db->query($sql);
             $sectionData = array();
@@ -1194,7 +1220,15 @@ class QuestionBank extends MyController {
                     $sqlTotal .= " UNION AlL ";
                     $sqlTime .= " UNION ALL ";
                 }
-                $sqlTotal .= "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = ". $row->section_id;
+
+
+           
+                if($customer_id != 'no'){
+                    $sqlTotal .= "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE customer_id = $customer_id AND mcq_test_id=".$mcqId." and section_id = ". $row->section_id;
+                }else{
+                    $sqlTotal .= "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id = ". $row->section_id;
+                }
+
 
                 $sqlTime .= "SELECT completion_time FROM `mcq_time` where mcq_test_id =".$mcqId." and section_id =".$row->section_id;
 
@@ -1356,11 +1390,7 @@ class QuestionBank extends MyController {
             // Receive server response ...
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-
-
             $server_output = curl_exec($ch);
-
-
             $result = json_decode($server_output);
 
             curl_close ($ch);
@@ -1449,20 +1479,18 @@ class QuestionBank extends MyController {
 
         public function addMcqCode() {
 
-                $mcqTestId = $_POST['mcqTestId'];
+            $mcqTestId = $_POST['mcqTestId'];
 
-                $code = $this->getCode();
+            $code = $this->getCode();
 
-                $data = array(
-                        'mcq_test_id' => $mcqTestId,
-                        'code' => $code
-                );
+            $data = array(
+                    'mcq_test_id' => $mcqTestId,
+                    'code' => $code
+            );
 
-                $this->db->insert('mcq_code', $data);
+            $this->db->insert('mcq_code', $data);
 
-                redirect('createMCQ', 'refresh');
-
-               
+            redirect('createMCQ', 'refresh');
         }
 
         public function fetchMcqCode($mcqId) {
@@ -1486,7 +1514,14 @@ class QuestionBank extends MyController {
 
 
         private function generateQuestion($code, $mcqId) {
-            $sql = "SELECT section_id FROM `mcq_test_pattern` where mcq_test_id = ". $mcqId;
+            $customer_id = $this->getCustomerId();
+            if($customer_id != 'no'){
+                $sql = "SELECT section_id FROM `mcq_test_pattern` where customer_id = $customer_id AND  mcq_test_id = ". $mcqId;
+            }else{
+              $sql = "SELECT section_id FROM `mcq_test_pattern` where mcq_test_id = ". $mcqId;
+            }
+
+
             $query = $this->db->query($sql);
             $sectionData = array();
             $sectionDetail = array();
@@ -1495,8 +1530,12 @@ class QuestionBank extends MyController {
                 $countSection = $countSection + 1;
 
                 $sql = "sql".$countSection;
-                $$sql = "SELECT * FROM `mcq_test_pattern` WHERE mcq_test_id= '$mcqId' AND section_id =".$row->section_id;
-                
+
+                if($customer_id != 'no'){
+                   $$sql = "SELECT * FROM `mcq_test_pattern` WHERE mcq_test_id= '$mcqId' AND  customer_id = $customer_id AND  section_id =".$row->section_id;
+                }else{
+                    $$sql = "SELECT * FROM `mcq_test_pattern` WHERE mcq_test_id= '$mcqId' AND section_id =".$row->section_id;
+                }
 
                 $sectionDetail[] = $row->section_id;
 
@@ -1520,7 +1559,17 @@ class QuestionBank extends MyController {
                             }
                             $levelId = $row->level_id;
                             $totalQ = $row->total_question;
-                            $$sqlCount .= "(SELECT id FROM `question_bank` WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
+
+                            $customer_code = $this->getCustomerCode();
+
+                            if($customer_code != 'no'){
+                                $$sqlCount .= "(SELECT id FROM question_bank_$customer_code WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
+                            }else{
+                                $$sqlCount .= "(SELECT id FROM `question_bank` WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
+                            }
+
+
+
 
                             $i++;
                             $j++;
@@ -1590,7 +1639,15 @@ class QuestionBank extends MyController {
 
                     $s = "sql".$a;
                     $r = "result".$a;
-                    $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
+
+
+                    if($customer_id != 'no'){
+                        $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE customer_id = $customer_id AND mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
+                    }else{
+                        $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
+                    }
+
+
                     $$r = $this->db->query($$s);
 
                     $b++;
@@ -1606,7 +1663,12 @@ class QuestionBank extends MyController {
                         // output data of each row
                         foreach ($$r->result() as $row)  {
 
-                            $sql = "SELECT section_name FROM `section` WHERE id=".$sectionDetail[$i];
+
+                            if($customer_id != 'no'){
+                                $sql = "SELECT section_name FROM `section` WHERE customer_id = $customer_id AND  id=".$sectionDetail[$i];
+                            }else{
+                                $sql = "SELECT section_name FROM `section` WHERE id=".$sectionDetail[$i];
+                            }
 
                             $sectionName = $this->db->query($sql)->row();
 
@@ -1626,10 +1688,6 @@ class QuestionBank extends MyController {
                    $data[$b]['time'] = $totalTime->completion_time;
                    $b++;
                 }
-
-
-               
-
 
                 $data['isCodeId'] = $this->getCodeTest();
 
@@ -1739,7 +1797,6 @@ class QuestionBank extends MyController {
         public function saveTestStatus() {
             //print_r(var_dump($_POST)); die;
 
-
             $userData = array(
                 'user_id' => $_POST['student_id'],
                 'mcq_test_id' => $_POST['mcq_id'],
@@ -1766,4 +1823,46 @@ class QuestionBank extends MyController {
 
             $this->startTest($_POST['student_id']);
         }
+
+
+  public function getCustomerCode()
+  {
+    $mcqCode = $_SESSION['mcqCode'];
+    $sql = " SELECT customer_code FROM mcq_code inner join mcq_test 
+                on mcq_code.mcq_test_id = mcq_test.id inner join customers 
+                on mcq_test.customer_id = customers.id 
+                where mcq_code.code='$mcqCode' "; 
+
+    $query = $this->db->query($sql);
+    $customer_code = $query->result();
+    if($customer_code != null){
+            return $customer_code[0]->customer_code;
+    }
+
+    
+    return 'no';
+  }
+
+
+      public function getCustomerId()
+    {
+    $mcqCode = $_SESSION['mcqCode'];
+     $sql = " SELECT customer_id FROM mcq_code inner join mcq_test 
+                on mcq_code.mcq_test_id = mcq_test.id inner join customers 
+                on mcq_test.customer_id = customers.id 
+                where mcq_code.code='$mcqCode' "; 
+
+    $query = $this->db->query($sql);
+    $customer_id = $query->result();
+    if($customer_id != null){
+            return $customer_id[0]->customer_id;
+    }
+
+    return 'no';
+  }
+
+
 }
+
+
+
