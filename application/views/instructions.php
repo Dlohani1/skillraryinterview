@@ -224,7 +224,7 @@
                         ;?></td>
                         <td class="tdborder"><?=$value['total']
                         ;?></td>
-                        <td class="tdborder"><?=$value['time']." Minutes"
+                        <td class="tdborder"><?=($value['time']/60)." Minutes"
                         ;?></td>
                     </tr>
                     <?php  $i++;
