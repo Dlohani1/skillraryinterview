@@ -14,7 +14,7 @@
  
  
   <div class="container">
-      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/view-questions-search";?>>
+      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/view-questionswithcode-search";?>>
 
           <div class="searchBox">
 
