@@ -1,4 +1,4 @@
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <style type="text/css">
         .MainHead{
@@ -219,12 +219,14 @@
                         <?php 
                         if ($i < 1) {?>
                         <td class="tdborder" rowspan=<?=$rowSpan;?> style="vertical-align: middle;">Aptitude</td>
-                    <?php } ?>
+                    <?php } 
+                        $testTime = $value['time']/60;
+                        ?>
                         <td class="tdborder"><?=$value['section']
                         ;?></td>
                         <td class="tdborder"><?=$value['total']
                         ;?></td>
-                        <td class="tdborder"><?=$value['time']." Minutes"
+                        <td class="tdborder"><?=$testTime." Minutes"
                         ;?></td>
                     </tr>
                     <?php  $i++;
@@ -338,11 +340,11 @@
             </div>
         </div><br/>
         <p id="demo" style="text-align:center;color:red;font-weight:600"></p>
-	<center><a style="text-decoration: none;" target="_blank" href="<?php echo base_url().'user/join-meeting';?>" ><button id="startTest" class="btn btn-success" style="display:none"> Join Test </button></a></center>
+	<center><a style="text-decoration: none;" target="_blank" href="<?php echo base_url().'user/join-meeting';?>" ><button id="startTest" class="btn btn-success" style="display:none"> Connect to Proctor </button></a></center>
         <?php 
         //if ($_SESSION['startTest']) {
 ?>
-        <div align="center" id="startAssessment" style="display: block">
+        <div align="center" id="startAssessment" style="display:block">
             <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
             <label for="checkbox-1" class="checkbox-custom-label">I agree and follow all the instructions mentioned by SkillRary</label>
             <!-- <input id="checkbox-1" name="checkbox-1" type="checkbox">
@@ -426,11 +428,11 @@ var x = setInterval(function() {
   if (distance < 0) {
     clearInterval(x);
     document.getElementById("demo").innerHTML = "";
-    var startBtn = document.getElementById("startTest");
-    var startAssessment = document.getElementById("startAssessment");
+    //var startBtn = document.getElementById("startTest");
+    //var startAssessment = document.getElementById("startAssessment");
     enterCode(true);
-	startBtn.style.display = "block";
-    startAssessment.style.display = "block";
+	//startBtn.style.display = "block";
+    //startAssessment.style.display = "block";
 	
 //startBtn.onclick = joinMeeting;
 
@@ -440,9 +442,8 @@ var x = setInterval(function() {
 }
 
 function joinMeeting() {
-	var meetingUrl = <?php if (isset($_SESSION['joinUrl'])) { echo "'".$_SESSION['joinUrl']."'";} else { echo "''";}   ?>;
-
-         window.open(meetingUrl);
+    var meetingUrl = <?php if (isset($_SESSION['joinUrl'])) { echo "'".$_SESSION['joinUrl']."'";} else { echo "''";}   ?>;
+    window.open(meetingUrl);
 }
 
         function enterCode(check = null) {
@@ -518,6 +519,14 @@ function joinMeeting() {
                             content: 'Test not ACTIVE, Please contact support.',
                         });
 				//alert("Test not ACTIVE, Please contact support.");
+                } else if (check && data == 1) {
+
+                    var startBtn = document.getElementById("startTest");
+                    var startAssessment = document.getElementById("startAssessment");
+
+                    startBtn.style.display = "block";
+                    startAssessment.style.display = "block";
+
                 }
 			}
                         // document.getElementById("code").disabled = true;
@@ -541,10 +550,9 @@ function joinMeeting() {
                     }*/ 
                 } else {
                     $.alert({
-                            title: 'SkillRary Alert',
-                            content: 'Please accept the instructions',
-                        });
-
+                        title: 'SkillRary Alert',
+                        content: 'Please accept the instructions',
+                    });
                 }
             }            
        // }

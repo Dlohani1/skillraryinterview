@@ -227,10 +227,13 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
           $viewResult = "disabled";
           $hrefLink = "javascript:void(0);";
           $linkColor = "btn btn-default btn-xs";
+          $viewLinkEmpty = "";
+
           if (isset($value->status)) {
             $viewResult = "";
             $linkColor = "btn btn-primary btn-xs";
             $hrefLink = base_url().'download-pdf/'.$mcqId.'/'.$value->studentId;
+            $viewLinkEmpty = "_blank";
             if ($value->status == "FAIL") {
               $status = "<span style='color:red;'>".$value->status."</span>";
             } else {
@@ -238,8 +241,9 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
             }
             
           }
+
           
-            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="Edit"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
+            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="View"><a target='.$viewLinkEmpty.' href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
     if ($proctoredTest) {
