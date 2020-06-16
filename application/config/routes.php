@@ -60,7 +60,6 @@ $route['question/getQuestionLevel']['POST'] = 'AdminController/getQuestionLevel'
 
 $route['question/getTotalQuestion']['POST'] = 'AdminController/getTotalQuestion';
 
-
 $route['question/uploadQuestion']['GET'] = 'AdminController/uploadQuestion';
 
 // $route['question/getSubSection']['POST'] = 'questionBank/getSubSection';
@@ -75,6 +74,7 @@ $route['mcq-question'] = 'questionBank/show';
 $route['code-test'] = 'questionBank/showCodeTest';
 
 $route['getQuestion'] = 'questionBank/getQuestion';
+
 $route['fetchQuestion'] = 'questionBank/fetchQuestion';
 
 $route['search/MCQ'] = 'questionBank/searchTest';
@@ -133,9 +133,6 @@ $route['user/home'] = 'questionBank/userHome';
 
 $route['user/home'] = 'questionBank/userHome';
 
-
-
-
 $route['user/test'] = 'questionBank/codeTestResult';
 
 $route['user/upload/do_upload'] = 'questionBank/uploadProfileImage';
@@ -172,7 +169,6 @@ $route['admin/view-questions-search'] = 'AdminController/viewQuestionSearch';
 
 $route['admin/view-questions-search/:any'] = 'AdminController/viewQuestionSearch';
 
-
 $route['customer/view-questions'] = 'CustomerController/viewQuestion';
 
 $route['customer/view-questions/:any'] = 'CustomerController/viewQuestion';
@@ -181,10 +177,15 @@ $route['customer/view-questions-search'] = 'CustomerController/viewQuestionSearc
 
 $route['customer/view-questions-search/:any'] = 'CustomerController/viewQuestionSearch';
 
-
 $route['admin/view-results'] = 'AdminController/viewResult';
-
+ 
 $route['admin/view-mcq-data/:any'] = 'AdminController/viewMcqData';
+
+$route['admin/view-student-result/:any/:any'] = 'AdminController/viewStudentResult';
+$route['admin/view-student-result/:any/:any/:any'] = 'AdminController/viewStudentResult';
+
+
+
 $route['admin/view-mcq-data/:any/:any'] = 'AdminController/viewMcqData';
 
 $route['admin/view-mcq-data-search/:any'] = 'AdminController/viewMcqDataSearch';
@@ -367,7 +368,6 @@ $route['admin/mcq-customers'] = 'AdminController/mcqCustomer';
 
 $route['admin/mcq-customers/:any'] = 'AdminController/mcqCustomer';
 
-  
 $route['admin/mcq-customers-search'] = 'AdminController/mcqCustomerSearch';
 
 $route['admin/mcq-customers-search/:any'] = 'AdminController/mcqCustomerSearch';
@@ -379,7 +379,6 @@ $route['admin/todays-interview/:any'] = 'AdminController/todaysInterview';
 $route['admin/todays-interview-search'] = 'AdminController/todaysInterviewSearch';
 
 $route['admin/todays-interview-search/:any'] = 'AdminController/todaysInterviewSearch';
-
 
 $route['admin/fetch-customers']['POST'] = 'AdminController/fetchCustomer'; 
 $route['admin/save-customers']['POST'] = 'AdminController/saveCustomer'; 
@@ -404,7 +403,7 @@ $route['customer/login'] = 'CustomerController/login';
 $route['customer/checklogin']['POST'] = 'CustomerController/checkLogin';
 $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
 $route['customer/dashboard'] = 'CustomerController/viewDashboard';
-
+ 
 $route['customer/create-test'] = 'CustomerController/createTest';
 $route['customer/addTest']['POST'] = 'CustomerController/addTest';
 $route['customer/addTestTime']['POST'] = 'CustomerController/addTestTime';
@@ -440,7 +439,6 @@ $route['customer/todays-interview/:any'] = 'CustomerController/todaysInterview';
 $route['customer/todays-interview-search'] = 'CustomerController/todaysInterviewSearch';
 
 $route['customer/todays-interview-search/:any'] = 'CustomerController/todaysInterviewSearch';
-
 
 $route['customer/interview-result/:any'] = 'CustomerController/interviewResult'; 
 
@@ -485,7 +483,6 @@ $route['admin/add-meeting-credentials-search/:any'] = 'AdminController/createMee
 $route['admin/save-meeting-credentials'] = 'AdminController/saveMeetingCredentials'; 
 
 $route['admin/result/:any'] = 'AdminController/updateResult';
-
 
 $route['skillrary-chat'] = 'ChatController/showJoinPage';
 $route['createChat']['POST'] = 'ChatController/createChatFun';
@@ -557,7 +554,6 @@ $route['checklogin'] = 'Welcome/checklogin';
 $route['download-format'] = 'AdminController/downloadFormat';
 
 
-
 // for generating table based on customer_ode
 $route['admin/create-question-bank-table']['POST']= 'AdminController/createQuestionBankTable'; 
 
@@ -572,4 +568,7 @@ $route['customer/view-questionswithcode-search'] = 'CustomerController/viewQuest
 $route['customer/view-questionswithcode-search/:any'] = 'CustomerController/viewQuestionWithCodeSearch';
 
 $route['customer/edit-question-with-code/:any'] = 'CustomerController/editQuestionWithCode';
+
+$route['admin/see-answer-option']['POST']= 'AdminController/seeAnswerOption'; 
+
 

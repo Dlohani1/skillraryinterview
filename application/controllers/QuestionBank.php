@@ -163,6 +163,7 @@ class QuestionBank extends MyController {
 
                     $mcqSection = $this->getMcqSection();
 
+
                     $this->session->set_userdata('codeTestId', $codeId);
 
                     $resumeTest = $this->isTestResume();
@@ -186,12 +187,13 @@ class QuestionBank extends MyController {
             if($customer_id != 'no'){
                 $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
                     inner join section on mcq_test_pattern.section_id = section.id
-                    where mcq_test_pattern.customer_id = $customer_id AND section.customer_id = $customer_id AND mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
+                    where mcq_test_pattern.customer_id = $customer_id AND mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
             }else{
                 $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
                     inner join section on mcq_test_pattern.section_id = section.id
                     where mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
             }
+
 
             $query = $this->db->query($sql);
 
@@ -281,6 +283,8 @@ class QuestionBank extends MyController {
 
                 $i = 0;
 
+             
+
                 $questionData = array();
                 foreach ($query->result() as $row) {
                         $questions = explode(",", $row->questions);
@@ -289,7 +293,7 @@ class QuestionBank extends MyController {
                         //$i++;
                 }
 
-//print_r($questionData); die;
+
                 $sql = "SELECT * FROM `mcq_time` WHERE mcq_test_id = '$mcqId' AND  section_id = '$sectionId'";
 
                 $query = $this->db->query($sql);
@@ -1515,6 +1519,7 @@ class QuestionBank extends MyController {
 
         private function generateQuestion($code, $mcqId) {
             $customer_id = $this->getCustomerId();
+
             if($customer_id != 'no'){
                 $sql = "SELECT section_id FROM `mcq_test_pattern` where customer_id = $customer_id AND  mcq_test_id = ". $mcqId;
             }else{
@@ -1543,6 +1548,8 @@ class QuestionBank extends MyController {
                 $$result =  $this->db->query($$sql);
                 
             }
+
+
                     $j = 0;
                 for($a = 1; $a <= $countSection; $a++) {
 
@@ -1577,6 +1584,10 @@ class QuestionBank extends MyController {
 
                     }    
                 }
+
+                 $customer_code = $this->getCustomerCode();
+
+
 
                 for($a = 1; $a <= $countSection; $a++) {
                     $result = "resultQ".$a;
@@ -1648,6 +1659,8 @@ class QuestionBank extends MyController {
                     }
 
 
+
+
                     $$r = $this->db->query($$s);
 
                     $b++;
@@ -1666,6 +1679,8 @@ class QuestionBank extends MyController {
 
                             if($customer_id != 'no'){
                                 $sql = "SELECT section_name FROM `section` WHERE customer_id = $customer_id AND  id=".$sectionDetail[$i];
+
+                                
                             }else{
                                 $sql = "SELECT section_name FROM `section` WHERE id=".$sectionDetail[$i];
                             }
@@ -1679,6 +1694,11 @@ class QuestionBank extends MyController {
 
                     }
                 }
+
+
+
+
+
 
                 $b = 0;
                 for($a = 1; $a <= $countSection; $a++) {
@@ -1844,7 +1864,7 @@ class QuestionBank extends MyController {
   }
 
 
-      public function getCustomerId()
+    public function getCustomerId()
     {
     $mcqCode = $_SESSION['mcqCode'];
      $sql = " SELECT customer_id FROM mcq_code inner join mcq_test 
