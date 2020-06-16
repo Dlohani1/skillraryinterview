@@ -152,7 +152,13 @@
         foreach($customers as $key => $value) { 
           //print_r($value);
             $i++;
-            echo '<tr><td>'.$i.'</td><td>'.$value->customer_code.'</td><td>'.$value->customer_name.'</td><td>'.$value->customer_email.'</td><td>'.$value->customer_contactno.'</td> <td><a href="view-mcq/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
+            echo '<tr><td>'.$i.'</td><td>'.$value->customer_code.'</td><td>'.$value->customer_name.'</td><td>'.$value->customer_email.'</td><td>'.$value->customer_contactno.'</td> <td><a href="view-mcq/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a> &nbsp;
+
+
+
+            <button data-code="'.$value->customer_code.'" class="btn  btn-primary btn-xs createTable" data-toggle="tooltip" title="Create table">
+                <span class="  glyphicon glyphicon-th-list"></span>
+            </button></td>
       
    </tr>';
         }
@@ -399,4 +405,34 @@
 
 
              }
+
+
+
+$('.createTable').click(function () {
+    var baseUrl = document.getElementById("base_url").value;
+    let customer_code = $(this).data('code');
+
+      $.ajax({
+          url: baseUrl+"admin/create-question-bank-table",
+          type: 'POST',
+          data: {
+            "customer_code":customer_code,
+          } ,
+          success: function( data, textStatus, jQxhr ){
+              console.log('data', data);
+              window.location.reload();
+          },
+          error: function( jqXhr, textStatus, errorThrown ){
+                 console.log( errorThrown );
+          }
+      });
+
+});
+
+
+
+
+
+
+
 </script> 

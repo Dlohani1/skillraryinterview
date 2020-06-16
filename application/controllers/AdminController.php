@@ -933,6 +933,7 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
    $data['customer_code'] = ucfirst(substr($data['customer_name'],0,1)).$customerId;
    $data['username'] = substr($data['customer_name'],0,2)."_".$customerId;
    $data['password'] = $this->generatePassword();
+
    $this->db->insert('customers', $data);
    echo "success";
   }
@@ -1294,7 +1295,7 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
     
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
-
+ 
     $this->load->view('admin/create-customers', array(
       "customers"=>$result,
       "searchcode"=>$searchcode,
@@ -1709,7 +1710,7 @@ public function deleteUsrPwd() {
 
     return strtoupper(random_string('alnum',$size));
   }
-
+ 
 
   public function createTest() {
     $this->load->view('admin/header');
@@ -2667,6 +2668,8 @@ public function generateInterviewUsrPwd($internalCall = false, $user=0, $custome
 
   public function viewMcqData() {
     $mcqId = $this->uri->segment(3);
+
+
     // $pageNo = 1;
     // if (isset($_GET['page'])) {
     //   $pageNo = $_GET['page'];
@@ -3956,8 +3959,8 @@ public function viewInterviewSearch() {
 
                 //$check_mcq_test_id = $_POST['check_mcq_test_id'];
                 $check_mcq_test_id = isset($_POST['check_mcq_test_id']) ? $_POST['check_mcq_test_id'] : 0 ;
-                $check_drive_id = $_POST['check_drive_id'];
-                //$check_drive_id = isset($_POST['check_drive_id']) ? $_POST['check_drive_id'] : 0;
+                // $check_drive_id = $_POST['check_drive_id'];
+                $check_drive_id = isset($_POST['check_drive_id']) ? $_POST['check_drive_id'] : 0;
 
                 $isProctored = $_POST['is-proctored'];
                 $customerCode = explode("-",$_POST['customer-code']); //change to customer id
@@ -4194,11 +4197,12 @@ public function viewInterviewSearch() {
  //        }
 
                 public function addTestTime() {
-                $mcqId = $_POST['mcqId'];
+                 $mcqId = $_POST['mcqId'];
 
+                $sql = " SELECT customer_id FROM mcq_test where id = $mcqId";
 
-
-
+                $query = $this->db->query($sql);
+                $customerId = $query->result()[0]->customer_id;
 
                 // $time1= $_POST['time1'];
                 // $time2= $_POST['time2'];
@@ -4234,6 +4238,8 @@ public function viewInterviewSearch() {
                     $p['level_id'] = "1";
                     $p['sub_section_id'] = "1";
                     $p['total_question'] = $requiredQuestion[$i];
+                    $p['customer_id'] = $customerId;
+
 
                     $patternData[] = $p;
 
@@ -4643,7 +4649,16 @@ public function viewInterviewSearch() {
 
         public function getTotalQuestion() {
           $sectionId = $_POST['Id'];
-          $sql = "SELECT count(id) as total_question FROM `question_bank` where section_id=$sectionId";
+
+          $customer_code = $this->getCustomerCode();
+
+          if ($customer_code != 'no') {
+            $sql = "SELECT count(id) as total_question FROM question_bank_$customer_code question_bank where section_id=$sectionId";
+          }else{
+            $sql = "SELECT count(id) as total_question FROM `question_bank` where section_id=$sectionId";
+          }
+
+
           //$query = $this->db->query($sql);
             //$sql = "SELECT * FROM `student_register` WHERE id=".$row->student_id;
 
@@ -6878,7 +6893,135 @@ foreach ($sectionDetails['section'] as $key => $value) {
     force_download($name, $data);
   }
 
+
+
+  public function createQuestionBankTable() {
+    $customer_code = $_POST['customer_code'];
+
+      $sql_question_bank = "CREATE TABLE question_bank_$customer_code (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `section_id` int(11) DEFAULT NULL,
+                `sub_section_id` int(11) DEFAULT NULL,
+                `level_id` int(11) DEFAULT NULL,
+                `question` text NOT NULL,
+                `question_image` text,
+                `question_type` int(11) NOT NULL DEFAULT '1',
+                `selection_code` int(11) NOT NULL DEFAULT '0',
+                PRIMARY KEY (`id`)
+              ) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=latin1";
+
+      $query = $this->db->query($sql_question_bank);
+
+        if($query){
+            $sql_answers = " CREATE TABLE answers_$customer_code(
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `question_id` int(11) NOT NULL,
+                  `answer` text NOT NULL,
+                  `is_correct` int(11) NOT NULL DEFAULT '0',
+                  PRIMARY KEY (`id`)
+                  ) ENGINE=InnoDB AUTO_INCREMENT=926 DEFAULT CHARSET=latin1";
+            $query = $this->db->query($sql_answers);
+            echo $query;
+        }
+  }
+
+
+  public function getCustomerCode()
+  {
+    $customerId = isset($_SESSION['customerId']) ? $_SESSION['customerId'] : 0;
+    if ($customerId > 0) {
+      $sql = " SELECT customer_code FROM customers where id = $customerId "; 
+      $query = $this->db->query($sql);
+      $customer_code = $query->result();
+      if($customer_code != null){
+          return $customer_code[0]->customer_code;
+      }
+    }
+    return 'no';
+  }
+
+
+
+  public function viewStudentResult()
+  {
+        $mcq_test_id = $this->uri->segment(3);
+        $studentId = $this->uri->segment(4);
+        $sql = " SELECT  first_name, last_name FROM student_register where id = $studentId";
+
+          $query = $this->db->query($sql);
+          $student_name_result = $query->result();
+          $student_name = $student_name_result[0]->first_name.' '.$student_name_result[0]->last_name;
+
+        $sql = " SELECT student_answers.student_id, student_answers.question_id, 
+        student_answers.answer_id, student_answers.correct_ans,
+         student_answers.mcq_test_id, student_answers.section_id,
+         question_bank.question, answers.answer,student_answers.comment
+         FROM student_answers
+         inner join question_bank
+         on student_answers.question_id = question_bank.id
+         inner join answers
+         on student_answers.answer_id = answers.id
+         where student_answers.student_id= $studentId";
+
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
+
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
+
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+
+    $config['base_url'] = base_url() . "admin/view-student-result/$mcq_test_id/$studentId";
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 5;
+             
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(5)) ? $this->uri->segment(5) :0 ;
+           
+    $links = $this->pagination->create_links();
+
+    $student = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/student-result-view', array(
+      "student"=>$student,
+      "student_name" => $student_name,
+      "links" => $links
+    ));
+    $this->load->view('admin/footer');
+  }
+
+
+
+  public function seeAnswerOption()
+  {
+    $question_id = $_POST['question_id'];
+
+    $sql = "SELECT answer FROM answers where question_id= $question_id";
+
+    $query = $this->db->query($sql);
+    $answwerOption = $query->result();
+    print_r(json_encode($answwerOption));
+
+  }
+
   
 }
-
-

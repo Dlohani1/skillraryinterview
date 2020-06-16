@@ -201,7 +201,7 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
                   <th>Password</th>
                   <th>Status</th>
                   <th>Result</th>
-                     <!--<th>Total Question</th> -->
+                  <th>Student result</th> 
                      <!-- <th>view</th>
                       <th>Download</th> -->
                       <?php 
@@ -218,6 +218,13 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
         if (count($mcq['mcq-users']) > 0)
         foreach($mcq['mcq-users'] as $key => $value) {
 		$i++;
+
+        $disabled = '';
+        if ($value->studentId == null) {
+          $disabled = 'onclick="return false;"';
+        }
+
+
           $sendInvite = 0;
 
           if (in_array($value->id, $mcq['proctoredIds'])) {
@@ -243,7 +250,27 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
           }
 
           
-            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="View"><a target='.$viewLinkEmpty.' href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
+            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td>
+
+            <td>
+              <p data-placement="top" data-toggle="tooltip" title="Edit">
+                <a target="_blank" href='.$hrefLink.'>
+                  <button class="'.$linkColor.'" >
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                  </button>
+                </a>
+              </p>
+            </td>
+
+        <td>
+            <a title="Student result"  href="'.base_url()."admin/view-student-result/$mcqId/".$value->studentId.'" '.$disabled .'>
+              <button class="btn btn-primary btn-xs" >
+                <span class="glyphicon glyphicon-eye-open"></span>
+              </button>
+            </a>
+
+        </td>';
+
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
     if ($proctoredTest) {
