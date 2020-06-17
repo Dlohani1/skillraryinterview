@@ -181,53 +181,53 @@ class QuestionBank extends MyController {
                  
         }
 
-        public function getMcqSection() {
+    public function getMcqSection() {
 
-            $customer_id = $this->getCustomerId();
+        // $customer_id = $this->getCustomerId();
 
-            if($customer_id != 'no'){
-                $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
-                    inner join section on mcq_test_pattern.section_id = section.id
-                    where mcq_test_pattern.customer_id = $customer_id AND mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
-            }else{
-                $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
-                    inner join section on mcq_test_pattern.section_id = section.id
-                    where mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
-            }
+        $customer_id = $this->getCustomerCode();
 
-
-            $query = $this->db->query($sql);
-
-                $i = 0;
-
-                $section = array();
-
-                foreach ($query->result() as $row) {
-                        
-                    $section['section'][$i]['id'] = $row->section_id;
-                    $section['section'][$i]['name'] = $row->section_name;
-                    $i++;
-                }
-
-            return $section;
-            
+        if($customer_id != 'no'){
+            $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
+                inner join section on mcq_test_pattern.section_id = section.id
+                where mcq_test_pattern.customer_id = $customer_id AND mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
+        }else{
+            $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
+                inner join section on mcq_test_pattern.section_id = section.id
+                where mcq_test_pattern.mcq_test_id =".$this->session->mcqId;
         }
 
-        public function getCodeTest() {
-           // $_SESSION['mcqId'] = "1";
-            $mcqId = $this->session->mcqId;
-            $sql = "SELECT * FROM `mcq_code_test` WHERE mcq_test_id =".$mcqId;
 
-            $codeId = $this->db->query($sql)->row();
+        $query = $this->db->query($sql);
 
-            if (null !== $codeId) {
-                return $codeId->code_id;    
-            } else {
-                return 0;
-            }
+        $i = 0;
 
-            
+        $section = array();
+
+        foreach ($query->result() as $row) {
+                
+            $section['section'][$i]['id'] = $row->section_id;
+            $section['section'][$i]['name'] = $row->section_name;
+            $i++;
         }
+
+        return $section;
+        
+    }
+
+    public function getCodeTest() {
+       // $_SESSION['mcqId'] = "1";
+        $mcqId = $this->session->mcqId;
+        $sql = "SELECT * FROM `mcq_code_test` WHERE mcq_test_id =".$mcqId;
+
+        $codeId = $this->db->query($sql)->row();
+
+        if (null !== $codeId) {
+            return $codeId->code_id;    
+        } else {
+            return 0;
+        }
+    }
 
         private function isMcqTaken($attemptCheck = false, $attemptNo = 0) {
                 $studentId = $this->session->id;
@@ -1229,7 +1229,7 @@ class QuestionBank extends MyController {
 
         //$sql = "SELECT mcq_test_pattern.section_id , section.name FROM `mcq_test_pattern` where mcq_test_id = ". $mcqId. " join section on section.id = mcq_test_pattern.id ";
 
-        $customer_id = $this->getCustomerId();
+        $customer_id = $this->getCustomerCode();
         //$customer_id = "no";
         // if($customer_id != 'no'){
         //    $sql = "SELECT mcq_test_pattern.section_id , section.section_name FROM `mcq_test_pattern` inner join section on section.id = mcq_test_pattern.section_id where section.customer_id = $customer_id AND mcq_test_pattern.customer_id = $customer_id AND mcq_test_id =".$mcqId;
@@ -1552,7 +1552,9 @@ class QuestionBank extends MyController {
 
 
     private function generateQuestion($code, $mcqId) {
-        $customer_id = $this->getCustomerId();
+        // $customer_id = $this->getCustomerId();
+
+          $customer_id = $this->getCustomerCode();
 
         if($customer_id != 'no'){
             $sql = "SELECT section_id FROM `mcq_test_pattern` where customer_id = $customer_id AND  mcq_test_id = ". $mcqId;
@@ -1889,7 +1891,7 @@ class QuestionBank extends MyController {
 
 
     public function getCustomerCode() {
-                $mcqCode = isset($_SESSION['mcqCode']) ? $_SESSION['mcqCode'] : 0;
+        $mcqCode = isset($_SESSION['mcqCode']) ? $_SESSION['mcqCode'] : 0;
         $mcqId = isset($_SESSION['mcqId']) ? $_SESSION['mcqId'] : 0;
         // $sql = " SELECT customer_id FROM mcq_code inner join mcq_test 
         //         on mcq_code.mcq_test_id = mcq_test.id inner join customers 
