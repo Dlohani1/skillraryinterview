@@ -1,10 +1,33 @@
 <style>
     .auto-customer {
-      position: absolute;
-   
-    list-style-type:none;
-    cursor: pointer;
-}
+        position: absolute;
+        list-style-type:none;
+        cursor: pointer;
+    }
+    #customerList ul{
+        height: 120px;
+        background: #ffffff;
+        z-index: 1;
+        margin: 0;
+        padding: 0;
+        width: 94%;
+        /* border: 1px solid #e0dada; */
+        border-radius: 5px;
+        /* border: #66afe9; */
+        outline: 0;
+        -webkit-box-shadow: inset 0 0 0 rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+        box-shadow: inset 0 0 0 rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    #customerList ul li{
+        line-height: 2;
+        padding-left: 12px;
+    }
+    #customerList ul li:hover{
+        background: #33A478;
+        color: white;
+    }
 </style>
             <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
             
@@ -48,7 +71,6 @@
                             <div class="col-md-8 offset-md-2">
                                 <label class="labelColor">Proctored </label>
                                  <select type="text" name="is_proctored" class="form-control" id="is_proctored" >
-                                    
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
                                 </select>
@@ -204,7 +226,7 @@
     </div>
                             </div>
                         </div>
-                        <div style="height: 100vh;"></div>
+                        <!-- <div style="height: 100vh;"></div> -->
                         <div class="card mb-4">
                             <!-- <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div> -->
                         </div>
@@ -301,11 +323,20 @@
         customerCode:query
       },
       function(data, status){
-        console.log('ds',data)
-        $('#customerList').fadeIn();  
-        $('#customerList').html(data);
+          if(data != '' && data.length > 31){
+            console.log('ds',data)
+            // $('#customerList').fadeIn();  
+            $('#customerList').html(data);
+          } else {
+            var content = "No data available"
+            $('#customerList').html(content);
+          }
+      
       });
+    } else {
+        $('#customerList').hide();
     }
+
 })
  $(document).on('click', 'li', function(){
     document.getElementById("validCode").value = 1;
