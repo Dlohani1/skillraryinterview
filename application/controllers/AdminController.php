@@ -918,7 +918,6 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
   }
 
 
-
   public function saveCustomer() {
     $sql = "SELECT MAX(id) as id FROM customers";
     $result = $this->db->query($sql)->row();
@@ -928,14 +927,27 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
       $customerId += $result->id;
     }
 
-   $data  = $this->input->post();
+   // $data  = $this->input->post();
+    $hidden_customer_id = $_POST['hidden_customer_id'];
 
-   $data['customer_code'] = ucfirst(substr($data['customer_name'],0,1)).$customerId;
-   $data['username'] = substr($data['customer_name'],0,2)."_".$customerId;
-   $data['password'] = $this->generatePassword();
+    $data['customer_name'] = $_POST['customer_name'];
+    $data ['customer_email'] = $_POST['customer_email'];
+    $data['customer_contactno'] = $_POST['customer_contactno'];
+    $data['customer_address'] = $_POST['customer_address'];
+    $data['mcq'] = $_POST['mcq'];
+    $data['interview'] = $_POST['interview'];
 
-   $this->db->insert('customers', $data);
-   echo "success";
+    if($hidden_customer_id){
+      $this->db->where('id', $hidden_customer_id);
+      $this->db->update('customers',$data);
+      echo "updated successfully";
+    }else{
+       $data['customer_code'] = ucfirst(substr($data['customer_name'],0,1)).$customerId;
+       $data['username'] = substr($data['customer_name'],0,2)."_".$customerId;
+       $data['password'] = $this->generatePassword();
+       $this->db->insert('customers', $data);
+       echo "success";
+    }
   }
  
   public function mcqCustomer() {
@@ -1244,12 +1256,6 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
 
   public function createCustomer() {
     $sql = "SELECT * FROM customers ";
-
-    // $query = $this->db->query($sql);
-
-    // $result = $query->result();
-
-   
 
     $searchcode = '';
     $searchname = '';
@@ -6540,7 +6546,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
     $searchSection = '';
-
+ 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
     $this->load->view('admin/create-section', array(
@@ -6556,7 +6562,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
   public function createSectionSearch() {
 
-    $searchSection = $_GET['searchSection'];
+    $searchSection = trim($_GET['searchSection']);
 
     $sql = " SELECT * FROM section ";
 
@@ -6612,9 +6618,8 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
 
 
-
   public function saveSection() {
-    $searchSection = $_POST['searchSection'];
+    $searchSection = trim($_POST['searchSection']);
 
     if (empty($searchSection)) {
         $this->session->set_flashdata('error', "Enter section name.");
@@ -6636,6 +6641,37 @@ foreach ($sectionDetails['section'] as $key => $value) {
         redirect('admin/add-section');
       }
   }
+
+ 
+
+  public function editSection() {
+    $update_section_name = $_POST['update_section_name'];
+
+    $update_section_name = trim($update_section_name);
+
+    if (empty($update_section_name)) {
+        $this->session->set_flashdata('error', "Enter section name.");
+        redirect('admin/add-section');
+    }
+
+      $this->form_validation->set_rules('update_section_name', 'Section','required|is_unique[section.section_name]');
+      if($this->form_validation->run()== FALSE){
+      
+        $this->session->set_flashdata('error', "$update_section_name already exist.");
+        redirect('admin/add-section');
+
+      }else{
+        $data  = array ('section_name' => $_POST['update_section_name']);
+
+        $this->db->where('id', $_POST['hidden_section_id']);
+        $this->db->update('section',$data);
+
+        $this->session->set_flashdata('success', "$update_section_name updated successfully.");
+
+        redirect('admin/add-section');
+      }
+  }
+
 
   public function createSubSection() {
     $section_id = $this->uri->segment(3);
@@ -6681,6 +6717,7 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $result = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
     $searchSubSection = '';
+
 
     $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
@@ -6761,6 +6798,8 @@ foreach ($sectionDetails['section'] as $key => $value) {
   public function saveSubSection() {
     $section_id = $_POST['section_id'];
     $sub_section_name = $_POST['sub_section_name'];
+    $sub_section_name = trim($sub_section_name);
+
 
     if (empty($sub_section_name)) {
         $this->session->set_flashdata('error', "Enter sub section name.");
@@ -6791,6 +6830,46 @@ foreach ($sectionDetails['section'] as $key => $value) {
     }
 
   }
+
+
+ public function editSubSection() {
+     $section_id = $_POST['section_id'];
+     $update_sub_section_name = $_POST['update_sub_section_name'];
+     $update_sub_section_name = trim($update_sub_section_name);
+
+    if (empty($update_sub_section_name)) {
+        $this->session->set_flashdata('error', "Enter sub section name.");
+        redirect("admin/add-sub-section/$section_id");
+    }
+
+    $sqlQ = "select sub_section_name from sub_section where section_id = '$section_id' 
+               AND sub_section_name = '$update_sub_section_name'";
+
+
+    $query = $this->db->query($sqlQ);
+    $original_value = $query->result();
+
+
+      if (null != $original_value) {
+        $this->session->set_flashdata('error', "$update_sub_section_name already exist.");
+        redirect("admin/add-sub-section/$section_id");
+      } else {
+
+      $data  = array (
+        'sub_section_name' => $update_sub_section_name,
+        'section_id' => $section_id
+
+      );
+
+      $this->db->where('id', $_POST['hidden_sub_section_id']);
+      $this->db->update('sub_section',$data);
+
+      $this->session->set_flashdata('success', "$update_sub_section_name updated successfully.");
+      redirect("admin/add-sub-section/$section_id");
+    }
+
+  }
+
 
   public function deleteSection() {
 

@@ -2895,9 +2895,4 @@ public function viewQuestionWithCodeSearch() {
     ));
     $this->load->view('customer/footer');
   }
-
-
-
 }
-
-
