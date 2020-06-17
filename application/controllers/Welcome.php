@@ -26,7 +26,12 @@ class Welcome extends CI_Controller {
         $this->load->database();
         $this->load->library(array('session'));
         
-        if (count($_SESSION) > 1) {
+        $uri = $this->uri->segment(1);
+       $openUri = array("typing-test","html-editor","download-pdf");
+
+        if (count($_SESSION) > 1 && !in_array($uri,$openUri)) {
+
+        //if (count($_SESSION) > 1) {
             redirect("user/home");
         }
     }

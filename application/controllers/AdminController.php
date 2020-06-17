@@ -3972,11 +3972,10 @@ public function viewInterviewSearch() {
                 $customerCode = explode("-",$_POST['customer-code']); //change to customer id
 
                 $data = array(
-                        'title' => $title,
-                        'type' => $type,
-                        'customer_id' => $customerCode[1],
-                        'is_proctored' => $isProctored,
-                        'created_by' => $_SESSION['admin_id']
+                  'title' => $title,
+                  'type' => $type,
+                  'customer_id' => $customerCode[1],
+                  'is_proctored' => $isProctored
                 );
 
 
