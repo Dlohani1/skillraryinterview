@@ -928,7 +928,7 @@ class QuestionBank extends MyController {
                     if (null !== $code) {
                         $_SESSION['mcqCode'] = $code;
                     }    
-                }   
+                }  
                // print_r($_SESSION); die;
                 if (isset($_SESSION['mcqCode'])) {
                     $this->checkCode($_SESSION['mcqCode']);
@@ -1418,6 +1418,9 @@ class QuestionBank extends MyController {
                 if (isset($_SESSION['loginType']) && $_SESSION['loginType'] == "interview") {
                     redirect('user/interview');
                 }
+                if (isset($_POST['code'])) {
+                    $code = trim($_POST['code']);
+                }
             }
 
 
@@ -1426,11 +1429,11 @@ class QuestionBank extends MyController {
 
             //     redirect('user/enter-code');
             // } else {
-                 if (NULL == $code) {
-                    if (isset($_POST['code'])) {
-                        $code = trim($_POST['code']);
-                    }
-                }
+                //  if (NULL == $code) {
+                //     if (isset($_POST['code'])) {
+                //         $code = trim($_POST['code']);
+                //     }
+                // }
 
                 $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
 
@@ -1445,9 +1448,8 @@ class QuestionBank extends MyController {
                     }
 
 
-
-                    $this->session->set_userdata('mcqId', $mcqId);
-
+                    //$this->session->set_userdata('mcqId', $mcqId);
+                    $_SESSION['mcqId'] = $mcqId;
                     //$this->isTestProctored();
                     
                     if ($attempt > 0) {
@@ -1468,8 +1470,8 @@ class QuestionBank extends MyController {
 
                         $attemptCount = $this->isMcqTaken() + 1;
 
-                        $this->session->set_userdata('attempt', $attemptCount);
-
+                        //$this->session->set_userdata('attempt', $attemptCount);
+                        $_SESSION['attempt'] = $attemptCount;
                         $this->generateQuestion($code, $mcqId);
                     }
                 } else {
@@ -1530,6 +1532,7 @@ class QuestionBank extends MyController {
             $sectionData = array();
             $sectionDetail = array();
             $countSection = 0;
+
             foreach ($query->result() as $row) {
                 $countSection = $countSection + 1;
 
@@ -1549,174 +1552,163 @@ class QuestionBank extends MyController {
             }
 
 
-                    $j = 0;
-                for($a = 1; $a <= $countSection; $a++) {
+            $j = 0;
+            for($a = 1; $a <= $countSection; $a++) {
 
-                    $sqlCount = "sqlQ".$a;
-                    $resultCount = "result".$a;
-                        
-                   if($$resultCount->num_rows() > 0)  {
-                        $i = 0;
-                        $$sqlCount = "";
-                        // output data of each row
-                        foreach ($$resultCount->result() as $row)  {
-                            if ($i > 0 ) {
-                                    $$sqlCount .= "UNION ALL";
-                            }
-                            $levelId = $row->level_id;
-                            $totalQ = $row->total_question;
-
-                            $customer_code = $this->getCustomerCode();
-
-                            //$customer_code = "no"; 
-                            if($customer_code != 'no'){
-                                $$sqlCount .= "(SELECT id FROM question_bank_$customer_code WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
-                            }else{
-                                $$sqlCount .= "(SELECT id FROM `question_bank` WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
-                            }
-
-
-
-
-                            $i++;
-                            $j++;
-                        }
-
-                    }    
-                }
-
-                 $customer_code = $this->getCustomerCode();
-
-
-
-                for($a = 1; $a <= $countSection; $a++) {
-                    $result = "resultQ".$a;
-                    $q = "sqlQ".$a;
-                    $$result = $this->db->query($$q);    
-                }
-
-                for($a = 1; $a <= $countSection; $a++) {
-                    $result = "resultQ".$a;
-                    $q = "q".$a;
-                    // $$result = $this->db->query($$q); 
-                    $$q = "";
-
-                    if($$result->num_rows() > 0)  {
-                        $i = 0;
-                        // output data of each row
-                        foreach ($$result->result() as $row)  {
-                            if ($i > 0 ) {
-                                    $$q .= ",";
-                            }
-                            $$q .= $row->id;
-                            $i++;
-                        }
-                    }
-                }
-
-                for($a = 1; $a <= $countSection; $a++) {
-                    $section = "section".$a;
-                    $q = "q".$a;
-                    $$section = explode(",", $$q);
-                    shuffle($$section);
-
-                    $sectionQ = "section".$a."Questions";
-                    $$sectionQ = implode(",",$$section);
-                }
-
-                $studentId = $this->session->id;
-
-                $data = array();
-                $b = 0;
-                for($a = 1; $a <= $countSection; $a++) {
+                $sqlCount = "sqlQ".$a;
+                $resultCount = "result".$a;
                     
-                    $q = "q".$a;
-                    $qn = "section".$a."Questions";
-                    $$q =  array(
-                        'student_id' => $studentId,
-                        'mcq_test_id' => $mcqId,
-                        'mcq_code' => $code,
-                        'section_id' => $sectionDetail[$b],
-                        'questions' => $$qn
-                    );
-                    $b++;
+               if($$resultCount->num_rows() > 0)  {
+                    $i = 0;
+                    $$sqlCount = "";
+                    // output data of each row
+                    foreach ($$resultCount->result() as $row)  {
+                        if ($i > 0 ) {
+                                $$sqlCount .= "UNION ALL";
+                        }
+                        $levelId = $row->level_id;
+                        $totalQ = $row->total_question;
 
-                    $data[] = $$q;
-                }
+                        $customer_code = $this->getCustomerCode();
 
-                $this->db->insert_batch('mcq_test_question', $data);
-                $b = 0;
-                for($a = 1; $a <= $countSection; $a++) {
-
-                    $s = "sql".$a;
-                    $r = "result".$a;
-
-
-                    if($customer_id != 'no'){
-                        $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE customer_id = $customer_id AND mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
-                    }else{
-                        $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
-                    }
-
-
-
-
-                    $$r = $this->db->query($$s);
-
-                    $b++;
-                }
-
-                $i = 0;
-
-                $data = array();
-
-                for($a = 1; $a <= $countSection; $a++) {
-                    $r = "result".$a;
-                    if($$r->num_rows() > 0)  {
-                        // output data of each row
-                        foreach ($$r->result() as $row)  {
-
-
-                            if($customer_id != 'no'){
-                                $sql = "SELECT section_name FROM `section` WHERE customer_id = $customer_id AND  id=".$sectionDetail[$i];
-
-                                
-                            }else{
-                                $sql = "SELECT section_name FROM `section` WHERE id=".$sectionDetail[$i];
-                            }
-
-                            $sectionName = $this->db->query($sql)->row();
-
-                           $data[$i]['section'] = $sectionName->section_name;
-                           $data[$i]['total'] = $row->total;
-                           $i++;
+                        //$customer_code = "no"; 
+                        if($customer_code != 'no') {
+                            $$sqlCount .= "(SELECT id FROM question_bank_$customer_code WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
+                        } else {
+                            $$sqlCount .= "(SELECT id FROM `question_bank` WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
                         }
 
+                        $i++;
+                        $j++;
+                    }
+
+                }    
+            }
+
+            $customer_code = $this->getCustomerCode();
+
+            for($a = 1; $a <= $countSection; $a++) {
+                $result = "resultQ".$a;
+                $q = "sqlQ".$a;
+                $$result = $this->db->query($$q);    
+            }
+
+            for($a = 1; $a <= $countSection; $a++) {
+                $result = "resultQ".$a;
+                $q = "q".$a;
+                // $$result = $this->db->query($$q); 
+                $$q = "";
+
+                if($$result->num_rows() > 0)  {
+                    $i = 0;
+                    // output data of each row
+                    foreach ($$result->result() as $row)  {
+                        if ($i > 0 ) {
+                                $$q .= ",";
+                        }
+                        $$q .= $row->id;
+                        $i++;
                     }
                 }
+            }
+
+            for($a = 1; $a <= $countSection; $a++) {
+                $section = "section".$a;
+                $q = "q".$a;
+                $$section = explode(",", $$q);
+                shuffle($$section);
+
+                $sectionQ = "section".$a."Questions";
+                $$sectionQ = implode(",",$$section);
+            }
+
+            $studentId = $this->session->id;
+
+            $data = array();
+            $b = 0;
+            for($a = 1; $a <= $countSection; $a++) {
+                
+                $q = "q".$a;
+                $qn = "section".$a."Questions";
+                $$q =  array(
+                    'student_id' => $studentId,
+                    'mcq_test_id' => $mcqId,
+                    'mcq_code' => $code,
+                    'section_id' => $sectionDetail[$b],
+                    'questions' => $$qn
+                );
+                $b++;
+
+                $data[] = $$q;
+            }
+
+            $this->db->insert_batch('mcq_test_question', $data);
+
+            $b = 0;
+            for($a = 1; $a <= $countSection; $a++) {
+
+                $s = "sql".$a;
+                $r = "result".$a;
 
 
-
-
-
-
-                $b = 0;
-                for($a = 1; $a <= $countSection; $a++) {
-                    $sql = "SELECT completion_time FROM `mcq_time` WHERE mcq_test_id='$mcqId' AND section_id = ".$sectionDetail[$b];
-
-                   $totalTime = $this->db->query($sql)->row();
-                   $data[$b]['time'] = $totalTime->completion_time;
-                   $b++;
+                if($customer_id != 'no'){
+                    $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE customer_id = $customer_id AND mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
+                }else{
+                    $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
                 }
 
-                $data['isCodeId'] = $this->getCodeTest();
+                $$r = $this->db->query($$s);
 
-                //print_r($data); die;
-                //$this->showInstructions($data);
-               $this->session->set_userdata('instructionData', $data); 
-                redirect('read-instructions');
-                //redirect('mcq-question', 'refresh');
-                //echo "ok";
+                $b++;
+            }
+
+            $i = 0;
+
+            $data = array();
+
+            for($a = 1; $a <= $countSection; $a++) {
+                $r = "result".$a;
+                if($$r->num_rows() > 0)  {
+                    // output data of each row
+                    foreach ($$r->result() as $row)  {
+
+
+                        if($customer_id != 'no'){
+                            $sql = "SELECT section_name FROM `section` WHERE customer_id = $customer_id AND  id=".$sectionDetail[$i];
+
+                            
+                        }else{
+                            $sql = "SELECT section_name FROM `section` WHERE id=".$sectionDetail[$i];
+                        }
+
+                        $sectionName = $this->db->query($sql)->row();
+
+                       $data[$i]['section'] = $sectionName->section_name;
+                       $data[$i]['total'] = $row->total;
+                       $i++;
+                    }
+
+                }
+            }
+
+
+            $b = 0;
+            for($a = 1; $a <= $countSection; $a++) {
+                $sql = "SELECT completion_time FROM `mcq_time` WHERE mcq_test_id='$mcqId' AND section_id = ".$sectionDetail[$b];
+
+               $totalTime = $this->db->query($sql)->row();
+               $data[$b]['time'] = $totalTime->completion_time;
+               $b++;
+            }
+
+            $data['isCodeId'] = $this->getCodeTest();
+
+            //print_r($data); die;
+            //$this->showInstructions($data);
+           $this->session->set_userdata('instructionData', $data); 
+            redirect('read-instructions');
+            //redirect('mcq-question', 'refresh');
+            //echo "ok";
         }
 
         public function uploadProfileImage() {

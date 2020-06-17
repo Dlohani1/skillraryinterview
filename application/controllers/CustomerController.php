@@ -272,6 +272,19 @@ class CustomerController extends CI_Controller {
     $this->load->view('customer/footer');
   }
 
+  public function viewInvigilatorList(){
+
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+
+    $sql = "SELECT assess_login.id,assess_login.first_name,mcq_test.title,mcq_test.id as mcqid FROM assess_login INNER JOIN customer_invigilator ON assess_login.id = customer_invigilator.invigilator_id inner join mcq_test on mcq_test.id = customer_invigilator.mcq_test_id WHERE customer_invigilator.customer_id =".$_SESSION['customerId'];
+
+    $result['data'] = $this->db->query($sql)->result();
+
+    $this->load->view('customer/invigilator-list',$result);
+    $this->load->view('customer/footer');
+  }
+
 
 
 public function viewMcqListSearch() {
@@ -2895,4 +2908,6 @@ public function viewQuestionWithCodeSearch() {
     ));
     $this->load->view('customer/footer');
   }
+
+ 
 }

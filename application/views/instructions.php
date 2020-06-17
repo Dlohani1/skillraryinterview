@@ -344,7 +344,7 @@
         <?php 
         //if ($_SESSION['startTest']) {
 ?>
-        <div align="center" id="startAssessment" style="display:block">
+        <div align="center" id="startAssessment" style="display:none">
             <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
             <label for="checkbox-1" class="checkbox-custom-label">I agree and follow all the instructions mentioned by SkillRary</label>
             <!-- <input id="checkbox-1" name="checkbox-1" type="checkbox">
@@ -428,10 +428,10 @@ var x = setInterval(function() {
   if (distance < 0) {
     clearInterval(x);
     document.getElementById("demo").innerHTML = "";
-    //var startBtn = document.getElementById("startTest");
+    var startBtn = document.getElementById("startTest");
     //var startAssessment = document.getElementById("startAssessment");
     enterCode(true);
-	//startBtn.style.display = "block";
+	startBtn.style.display = "block";
     //startAssessment.style.display = "block";
 	
 //startBtn.onclick = joinMeeting;

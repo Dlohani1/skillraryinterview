@@ -284,6 +284,11 @@ $route['proctor/assignedUsersSearch'] = 'AdminController/proctoredUsersSearch';
 
 $route['proctor/assignedUsersSearch/:any'] = 'AdminController/proctoredUsersSearch'; 
 
+//invigilator
+$route['invigilator/assignedMcqs'] = 'AdminController/assignedMcqsFun';
+
+$route['invigilator/view-mcq-data/:any'] = 'AdminController/invigilatorViewMcqData';
+$route['invigilator/view-mcq-data/:any/:any'] = 'AdminController/invigilatorViewMcqData';
 //email
 $route['admin/contact'] = 'AdminController/contact'; 
 
@@ -579,5 +584,8 @@ $route['customer/view-questionswithcode-search/:any'] = 'CustomerController/view
 $route['customer/edit-question-with-code/:any'] = 'CustomerController/editQuestionWithCode';
 
 $route['admin/see-answer-option']['POST']= 'AdminController/seeAnswerOption'; 
+
+$route['customer/invigilator-list'] = 'CustomerController/viewInvigilatorList';
+
 
 

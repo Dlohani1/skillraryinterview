@@ -98,6 +98,19 @@
                             <a class="nav-link" href=<?php //echo base_url()."admin/interview-customers-list";?>>View Customers</a>
                         </nav>
                     </div> -->
+                    <div class="sb-sidenav-menu-heading">Interface</div>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsQ1" aria-expanded="false" aria-controls="collapseLayoutsQ1"
+                        >
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+     
+                        Invigilator
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayoutsQ1" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href=<?php echo base_url()."customer/invigilator-list";?>>View</a>
+                        </nav>
+                    </div>
                 </div>
             </div>
                

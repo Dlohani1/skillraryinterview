@@ -1,3 +1,11 @@
+<style>
+    .auto-customer {
+      position: absolute;
+   
+    list-style-type:none;
+    cursor: pointer;
+}
+</style>
 <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
 <div id="layoutSidenav_content">
   <main>
@@ -73,6 +81,14 @@
                   <div class="col-md-3 offset-md-1">
                     <label>Contact No</label>
                     <input type="number" id="user-cno" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
+                  </div>
+                  
+                  <div id="custCode" class="col-md-3 offset-md-1" style="display: none;">
+                    <label class="labelColor">Customer Code </label>
+                    <span id = "codeError" style="color:red"></span>
+                    <input type="text" name="customer_code" class="form-control" id="customer_code" placeholder="Enter code">
+                    <div id="customerList"></div>
+                    <input type="hidden" id="validCode" value="0"/>
                   </div>
                   <!-- <div class="col-md-3 offset-md-1">
                     <label>Last Name</label>
@@ -370,6 +386,8 @@
                 var userEmail = document.getElementById("user-email").value.trim();
                 var userCno = document.getElementById("user-cno").value.trim();
 
+                var customerCode = document.getElementById("customer_code").value.trim();
+
                 if (roleId > 0 && username.length > 0 && password.length > 0) {
 
                   var baseUrl = document.getElementById("base-url").value;
@@ -379,7 +397,7 @@
                       type: 'post',
                       
                       // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                      data: { "first-name": firstName,"last-name": lastName,"user-email": userEmail,"user-cno": userCno,"roleId" : roleId, "username":username, "password":password} ,
+                      data: { "first-name": firstName,"last-name": lastName,"user-email": userEmail,"user-cno": userCno,"roleId" : roleId, "username":username, "password":password, "customer-code":customerCode} ,
                       success: function( data, textStatus, jQxhr ){
                           //window.location.reload(true);
                          // window.location.href="admin/view-mcq";
@@ -419,4 +437,47 @@
       window.location.href = url;
     });
 
+</script>
+
+
+<script type="text/javascript">
+  
+  $('#customer_code').keyup(function(){ 
+    var query = $(this).val();
+    let baseUrl = '<?php echo base_url(); ?>';
+    if(query != '')
+    {
+     $.post(baseUrl+"admin/fetch-customers",
+      {
+        customerCode:query
+      },
+      function(data, status){
+        console.log('ds',data)
+        $('#customerList').fadeIn();  
+        $('#customerList').html(data);
+      });
+    }
+    else{
+      $('#customerList').hide();
+    }
+})
+
+  $(document).on('click', 'li', function(){
+    document.getElementById("validCode").value = 1;
+    $('#customer_code').val($(this).text());  
+    $('#customerList').fadeOut();
+  });
+
+  $( "#roleId" ).change(function() {
+    
+    var d = $( "#roleId" ).val();
+    
+    if(d == 8){
+      $("#custCode").show();
+    }
+    else{
+      $("#custCode").hide();
+    }
+});
+  
 </script>
