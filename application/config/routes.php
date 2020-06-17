@@ -184,6 +184,8 @@ $route['admin/view-mcq-data/:any'] = 'AdminController/viewMcqData';
 $route['admin/view-student-result/:any/:any'] = 'AdminController/viewStudentResult';
 $route['admin/view-student-result/:any/:any/:any'] = 'AdminController/viewStudentResult';
 
+$route['customer/view-student-result/:any/:any'] = 'CustomerController/viewStudentResult';
+$route['customer/view-student-result/:any/:any/:any'] = 'CustomerController/viewStudentResult';
 
 
 $route['admin/view-mcq-data/:any/:any'] = 'AdminController/viewMcqData';

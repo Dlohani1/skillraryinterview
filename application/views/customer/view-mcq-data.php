@@ -200,6 +200,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
                   <th>Password</th>
                   <th>Status</th>
                   <th>Result</th>
+                  <th>Student result</th> 
                      <!--<th>Total Question</th> -->
                      <!-- <th>view</th>
                       <th>Download</th> -->
@@ -220,6 +221,14 @@ if (!$mcq['mcq-details']->proctoredTest) {
 		$i++;
           $sendInvite = 0;
 
+
+
+        $disabled = '';
+        if ($value->studentId == null) {
+          $disabled = 'onclick="return false;"';
+        }
+
+
           if (in_array($value->id, $mcq['proctoredIds'])) {
             $sendInvite = 1;
           }
@@ -239,7 +248,25 @@ if (!$mcq['mcq-details']->proctoredTest) {
             
           }
           
-            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="view"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>';
+            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td><td><p data-placement="top" data-toggle="tooltip" title="view"><a target="_blank" href='.$hrefLink.'><button class="'.$linkColor.'" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td>
+
+
+        <td> 
+            <a title="Student result"  href="'.base_url()."customer/view-student-result/$mcqId/".$value->studentId.'" '.$disabled .'>
+              <button class="btn btn-primary btn-xs" >
+                <span class="glyphicon glyphicon-eye-open"></span>
+              </button>
+            </a>
+
+        </td>';
+
+
+
+
+
+
+
+
      // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
       //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
     if ($proctoredTest) {
