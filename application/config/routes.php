@@ -182,10 +182,18 @@ $route['admin/view-results'] = 'AdminController/viewResult';
 $route['admin/view-mcq-data/:any'] = 'AdminController/viewMcqData';
 
 $route['admin/view-student-result/:any/:any'] = 'AdminController/viewStudentResult';
+
 $route['admin/view-student-result/:any/:any/:any'] = 'AdminController/viewStudentResult';
 
-$route['customer/view-student-result/:any/:any'] = 'CustomerController/viewStudentResult';
-$route['customer/view-student-result/:any/:any/:any'] = 'CustomerController/viewStudentResult';
+// $route['customer/view-student-result/:any/:any'] = 'CustomerController/viewStudentResult';
+// $route['customer/view-student-result/:any/:any/:any'] = 'CustomerController/viewStudentResult';
+
+
+
+
+$route['customer/view-student-result/:any/:any'] = 'AdminController/viewStudentResult';
+$route['customer/view-student-result/:any/:any/:any'] = 'AdminController/viewStudentResult';
+
 
 
 $route['admin/view-mcq-data/:any/:any'] = 'AdminController/viewMcqData';
@@ -581,5 +589,7 @@ $route['customer/view-questionswithcode-search/:any'] = 'CustomerController/view
 $route['customer/edit-question-with-code/:any'] = 'CustomerController/editQuestionWithCode';
 
 $route['admin/see-answer-option']['POST']= 'AdminController/seeAnswerOption'; 
+$route['customer/see-answer-option']['POST']= 'AdminController/seeAnswerOption'; 
+
 
 

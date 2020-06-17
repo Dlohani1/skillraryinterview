@@ -158,6 +158,7 @@ class CustomerController extends CI_Controller {
     if (null !== $result) {
       $customerId = $result->id;
       $_SESSION['customerId'] = $customerId;
+       $_SESSION['customerCode'] = $result->customer_code;
       $_SESSION['customerName'] = $result->customer_name;
       $_SESSION['isMCQAssigned'] = $result->mcq;
       $_SESSION['isInterviewAssigned'] = $result->interview;
@@ -2894,85 +2895,6 @@ public function viewQuestionWithCodeSearch() {
     $this->load->view('customer/footer');
   }
 
-  public function viewStudentResult()
-  {
-    $customer_code = $this->getCustomerCode();
-    $mcq_test_id = $this->uri->segment(3);
-    $studentId = $this->uri->segment(4);
-    $sql = " SELECT  first_name, last_name FROM student_register where id = $studentId";
-
-    $query = $this->db->query($sql);
-    $student_name_result = $query->result();
-    $student_name = $student_name_result[0]->first_name.' '.$student_name_result[0]->last_name;
-
-    $sql = " SELECT student_answers.student_id, student_answers.question_id, 
-    student_answers.answer_id, student_answers.correct_ans,
-      student_answers.mcq_test_id, student_answers.section_id,
-      question_bank.question, answers.answer,student_answers.comment
-      FROM student_answers
-      inner join question_bank_$customer_code question_bank
-      on student_answers.question_id = question_bank.id
-      inner join answers_$customer_code answers
-      on student_answers.answer_id = answers.id
-      where student_answers.student_id= $studentId";
-
-    $config['full_tag_open'] = "<ul class='pagination'>";
-    $config['full_tag_close'] = '</ul>';
-    $config['num_tag_open'] = '<li>';
-    $config['num_tag_close'] = '</li>';
-    $config['cur_tag_open'] = '<li class="active"><a href="#">';
-    $config['cur_tag_close'] = '</a></li>';
-    $config['prev_tag_open'] = '<li>';
-    $config['prev_tag_close'] = '</li>';
-    $config['first_tag_open'] = '<li>';
-    $config['first_tag_close'] = '</li>';
-    $config['last_tag_open'] = '<li>';
-    $config['last_tag_close'] = '</li>';
-    $config['prev_link'] = '<i class=""></i>Previous Page';
-        // $config['prev_link'] = '<i class="fa fa-long-arrow-left"></i>Previous Page';
-
-    $config['prev_tag_open'] = '<li>';
-    $config['prev_tag_close'] = '</li>';
-    $config['next_link'] = 'Next Page<i class=""></i>';
-        // $config['next_link'] = 'Next Page<i class="fa fa-long-arrow-right"></i>';
-
-    $config['next_tag_open'] = '<li>';
-    $config['next_tag_close'] = '</li>';
-
-    $config['base_url'] = base_url() . "customer/view-student-result/$mcq_test_id/$studentId";
-    $config['reuse_query_string'] = true;
-    $config['total_rows'] = $this->getNumberOfRows($sql);
-    $config['per_page'] = 10;
-    $config["uri_segment"] = 5;
-             
-    $this->pagination->initialize($config);
-    $start_index = ($this->uri->segment(5)) ? $this->uri->segment(5) :0 ;
-           
-    $links = $this->pagination->create_links();
-
-    $student = $this->getAllRowsData($sql,$config['per_page'], $start_index);
  
-    $this->load->view('customer/header');
-    $this->load->view('customer/sidenav');
-    $this->load->view('customer/student-result-view', array(
-      "student"=>$student,
-      "student_name" => $student_name,
-      "links" => $links
-    ));
-    $this->load->view('customer/footer');
-  }
 
-
-  public function seeAnswerOption()
-  { 
-    $customer_code = $this->getCustomerCode();
-    $question_id = $_POST['question_id'];
-
-    $sql = "SELECT answer FROM answers_$customer_code answers where question_id= $question_id";
-
-    $query = $this->db->query($sql);
-    $answwerOption = $query->result();
-    print_r(json_encode($answwerOption));
-
-  }
 }

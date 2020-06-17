@@ -1519,6 +1519,7 @@ class QuestionBank extends MyController {
         private function generateQuestion($code, $mcqId) {
             $customer_id = $this->getCustomerId();
 
+
             if($customer_id != 'no'){
                 $sql = "SELECT section_id FROM `mcq_test_pattern` where customer_id = $customer_id AND  mcq_test_id = ". $mcqId;
             }else{
@@ -1885,6 +1886,9 @@ class QuestionBank extends MyController {
         $creator_id = $query->result();
         if($creator_id != null){
             if ($creator_id[0]->created_by > 0) { // 0 means admin
+                if ($mcqCode > 0) {
+                    return $mcqCode;
+                }
                 return $creator_id[0]->created_by;    
             }            
         }

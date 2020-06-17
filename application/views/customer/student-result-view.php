@@ -84,7 +84,6 @@
       
           if (count($student) > 0)
             foreach($student as $key => $value) { 
-
                   $i ++;
             // echo $value->student_id;
             //    echo $value->question_id;
@@ -115,7 +114,7 @@
 
                         <td>
                           <p data-placement="top"  data-toggle="tooltip" title="See">
-                            <button class="btn btn-primary btn-xs answer_option" data-title="See" data-toggle="modal"  data-question_id="'.$value->question_id.'">
+                            <button class="btn btn-primary btn-xs answer_option" data-title="See" data-toggle="modal"  data-question_id="'.$value->question_id.'" data-mcq_test_id="'.$value->mcq_test_id.'">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                             </button>
                           </p>
@@ -185,15 +184,18 @@
   $(".answer_option").on("click", function() {
 
       let question_id = $(this).data('question_id');
+
+      let mcq_test_id = $(this).data('mcq_test_id');
+
+
+
       var baseUrl = document.getElementById("base_url").value;
 
           $.ajax({
             url: baseUrl+"customer/see-answer-option",
            
             type: 'post',
-            
-            // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-            data: { "question_id" : question_id} ,
+            data: { "question_id" : question_id, 'mcq_test_id':mcq_test_id},
             success: function( data, textStatus, jQxhr ){
 
                         let studentData = JSON.parse(data);
@@ -214,11 +216,9 @@
             }
         });
 
-
       $('#show_answer_option_modal').modal('show');
 
   });    
-
 
 
 </script> 
