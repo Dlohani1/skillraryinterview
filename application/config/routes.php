@@ -499,7 +499,7 @@ $route['approving-users']['POST'] = 'ChatController/approveWaitingUsers';
 
 $route['skillrary-chat/logout'] = 'ChatController/logout';
 // $route['customer/checkRoom']['POST'] = 'CustomerController/checkRoom';
-
+ 
 $route['admin/add-section'] = 'AdminController/createSection'; 
 
 $route['admin/add-section/:any'] = 'AdminController/createSection'; 
@@ -518,6 +518,8 @@ $route['admin/add-sub-section-search/:any/:any'] = 'AdminController/createSubSec
 
 $route['admin/saveSubSection'] ['POST']= 'AdminController/saveSubSection'; 
 
+$route['admin/edit-sub-section'] ['POST']= 'AdminController/editSubSection'; 
+ 
 $route['customer/add-sub-section/:any'] = 'CustomerController/createSubSection'; 
 
 $route['customer/add-sub-section/:any/:any'] = 'CustomerController/createSubSection'; 
@@ -528,10 +530,14 @@ $route['customer/add-sub-section-search/:any/:any'] = 'CustomerController/create
 
 $route['customer/saveSubSection'] ['POST']= 'CustomerController/saveSubSection'; 
 
+$route['customer/edit-sub-section'] ['POST']= 'CustomerController/editSubSection'; 
+
 $route['admin/delete-section']['POST'] = 'AdminController/deleteSection'; 
 
 $route['admin/saveSection'] ['POST']= 'AdminController/saveSection'; 
 
+$route['admin/edit-section'] ['POST']= 'AdminController/editSection'; 
+ 
 $route['customer/add-section'] = 'CustomerController/createSection'; 
 
 $route['customer/add-section/:any'] = 'CustomerController/createSection'; 
@@ -543,6 +549,9 @@ $route['customer/add-section-search/:any'] = 'CustomerController/createSectionSe
 $route['customer/delete-section']['POST'] = 'CustomerController/deleteSection'; 
 
 $route['customer/saveSection'] ['POST']= 'CustomerController/addNewSection';
+
+$route['customer/edit-section'] ['POST']= 'CustomerController/editSection'; 
+
 $route['customer/save']['POST'] = 'AdminController/save'; 
 
 $route['sql-editor'] = 'SqlController/getViewHere';

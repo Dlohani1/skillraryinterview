@@ -234,10 +234,13 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
           $viewResult = "disabled";
           $hrefLink = "javascript:void(0);";
           $linkColor = "btn btn-default btn-xs";
+          $viewLinkEmpty = "";
+
           if (isset($value->status)) {
             $viewResult = "";
             $linkColor = "btn btn-primary btn-xs";
             $hrefLink = base_url().'download-pdf/'.$mcqId.'/'.$value->studentId;
+            $viewLinkEmpty = "_blank";
             if ($value->status == "FAIL") {
               $status = "<span style='color:red;'>".$value->status."</span>";
             } else {
@@ -245,6 +248,7 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
             }
             
           }
+
           
             echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td>
 

@@ -2730,71 +2730,69 @@ $sectionId = $_POST['sectionId'];
 
 
 
- public function viewQuestionWithCode() {
+  public function viewQuestionWithCode() {
 
     $customerId = $_SESSION['customerId'];
-      $this->load->library("pagination");
+    $this->load->library("pagination");
 
     $customer_code = $this->getCustomerCode();
 
-      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM question_bank_$customer_code as question_bank
-      INNER JOIN section on section.id = question_bank.section_id
-      INNER JOIN question_levels on question_levels.id = question_bank.level_id
-      INNER JOIN sub_section on sub_section.id = question_bank.sub_section_id ";
+    $sql = "SELECT question_bank.id, question_bank.question, section.section_name, question_levels.level,sub_section.sub_section_name FROM question_bank_$customer_code as question_bank
+    INNER JOIN section on section.id = question_bank.section_id
+    INNER JOIN question_levels on question_levels.id = question_bank.level_id
+    INNER JOIN sub_section on sub_section.id = question_bank.sub_section_id ";
 
-      //      where question_bank.customer_id=$customerId";
+    //      where question_bank.customer_id=$customerId";
 
-      $section = '';
-      $subsection = '';
-      $difficultylevel = '';
+    $section = '';
+    $subsection = '';
+    $difficultylevel = '';
 
-            $config['full_tag_open'] = "<ul class='pagination'>";
-            $config['full_tag_close'] = '</ul>';
-            $config['num_tag_open'] = '<li>';
-            $config['num_tag_close'] = '</li>';
-            $config['cur_tag_open'] = '<li class="active"><a href="#">';
-            $config['cur_tag_close'] = '</a></li>';
-            $config['prev_tag_open'] = '<li>';
-            $config['prev_tag_close'] = '</li>';
-            $config['first_tag_open'] = '<li>';
-            $config['first_tag_close'] = '</li>';
-            $config['last_tag_open'] = '<li>';
-            $config['last_tag_close'] = '</li>';
-            $config['prev_link'] = '<i class=""></i>Previous Page';
-            $config['prev_tag_open'] = '<li>';
-            $config['prev_tag_close'] = '</li>';
-            $config['next_link'] = 'Next Page<i class=""></i>';
-            $config['next_tag_open'] = '<li>';
-            $config['next_tag_close'] = '</li>';
-            
-            $config['base_url'] = base_url() . 'customer/view-questions';
-            $config['total_rows'] = $this->getNumberOfRows($sql);
-            $config['per_page'] = 10;
-            $config["uri_segment"] = 3;
-             
-            $this->pagination->initialize($config);
-              $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
-           
-         $links = $this->pagination->create_links();
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
+    
+    $config['base_url'] = base_url() . 'customer/view-questions';
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
+      
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
+        
+    $links = $this->pagination->create_links();
 
-          $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+    $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
-          $this->load->view('customer/header');
-          $this->load->view('customer/sidenav');
-
-
-          $this->load->view('customer/view-questions',array(
-            'questionData' => $questionData,
-            'links' => $links,
-            'section' => $section ,
-            'subsection' => $subsection,
-            'difficultylevel' => $difficultylevel,
-
-            ));
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
 
 
-      // $this->load->view('admin/view-questions', ($params));
-  
+    $this->load->view('customer/view-questions',array(
+      'questionData' => $questionData,
+      'links' => $links,
+      'section' => $section ,
+      'subsection' => $subsection,
+      'difficultylevel' => $difficultylevel
+      )
+    );
+    // $this->load->view('admin/view-questions', ($params));
+
     $this->load->view('customer/footer');
   }
 
@@ -2896,30 +2894,27 @@ public function viewQuestionWithCodeSearch() {
     $this->load->view('customer/footer');
   }
 
-
-
-
   public function viewStudentResult()
   {
-       $customer_code = $this->getCustomerCode();
-        $mcq_test_id = $this->uri->segment(3);
-        $studentId = $this->uri->segment(4);
-        $sql = " SELECT  first_name, last_name FROM student_register where id = $studentId";
+    $customer_code = $this->getCustomerCode();
+    $mcq_test_id = $this->uri->segment(3);
+    $studentId = $this->uri->segment(4);
+    $sql = " SELECT  first_name, last_name FROM student_register where id = $studentId";
 
-          $query = $this->db->query($sql);
-          $student_name_result = $query->result();
-          $student_name = $student_name_result[0]->first_name.' '.$student_name_result[0]->last_name;
+    $query = $this->db->query($sql);
+    $student_name_result = $query->result();
+    $student_name = $student_name_result[0]->first_name.' '.$student_name_result[0]->last_name;
 
-        $sql = " SELECT student_answers.student_id, student_answers.question_id, 
-        student_answers.answer_id, student_answers.correct_ans,
-         student_answers.mcq_test_id, student_answers.section_id,
-         question_bank.question, answers.answer,student_answers.comment
-         FROM student_answers
-         inner join question_bank_$customer_code question_bank
-         on student_answers.question_id = question_bank.id
-         inner join answers_$customer_code answers
-         on student_answers.answer_id = answers.id
-         where student_answers.student_id= $studentId";
+    $sql = " SELECT student_answers.student_id, student_answers.question_id, 
+    student_answers.answer_id, student_answers.correct_ans,
+      student_answers.mcq_test_id, student_answers.section_id,
+      question_bank.question, answers.answer,student_answers.comment
+      FROM student_answers
+      inner join question_bank_$customer_code question_bank
+      on student_answers.question_id = question_bank.id
+      inner join answers_$customer_code answers
+      on student_answers.answer_id = answers.id
+      where student_answers.student_id= $studentId";
 
     $config['full_tag_open'] = "<ul class='pagination'>";
     $config['full_tag_close'] = '</ul>';
@@ -2980,10 +2975,4 @@ public function viewQuestionWithCodeSearch() {
     print_r(json_encode($answwerOption));
 
   }
-
-
-
-
 }
-
-

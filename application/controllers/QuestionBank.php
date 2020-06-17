@@ -184,6 +184,7 @@ class QuestionBank extends MyController {
         public function getMcqSection() {
 
             $customer_id = $this->getCustomerId();
+
             if($customer_id != 'no'){
                 $sql = "SELECT mcq_test_pattern.section_id, section.section_name FROM `mcq_test_pattern` 
                     inner join section on mcq_test_pattern.section_id = section.id
@@ -315,8 +316,8 @@ class QuestionBank extends MyController {
 
             $customer_code = $this->getCustomerCode();
 
-
-             if($customer_code != 'no'){
+            //$customer_code = "no"; //make it no when mcq created by admin for customer
+            if($customer_code != 'no'){
                    $sql = "SELECT question_bank.question, answers.*  FROM question_bank_$customer_code question_bank
             LEFT JOIN answers_$customer_code  answers 
             ON answers.question_id = question_bank.id
@@ -408,8 +409,8 @@ class QuestionBank extends MyController {
 
 
         public function saveAnswer() {
-             $customer_code = $this->getCustomerCode();
-
+            $customer_code = $this->getCustomerCode();
+           // $customer_code = "no"; 
             $studentId = $_POST['student_id'];
             $mcqId = $_POST['mcq_id'];
             $questionId = $_POST['question_id'];
@@ -1193,12 +1194,12 @@ class QuestionBank extends MyController {
             //$sql = "SELECT mcq_test_pattern.section_id , section.name FROM `mcq_test_pattern` where mcq_test_id = ". $mcqId. " join section on section.id = mcq_test_pattern.id ";
 
             $customer_id = $this->getCustomerId();
-            
-            if($customer_id != 'no'){
-               $sql = "SELECT mcq_test_pattern.section_id , section.section_name FROM `mcq_test_pattern` inner join section on section.id = mcq_test_pattern.section_id where section.customer_id = $customer_id AND mcq_test_pattern.customer_id = $customer_id AND mcq_test_id =".$mcqId;
-            }else{
+            //$customer_id = "no";
+            // if($customer_id != 'no'){
+            //    $sql = "SELECT mcq_test_pattern.section_id , section.section_name FROM `mcq_test_pattern` inner join section on section.id = mcq_test_pattern.section_id where section.customer_id = $customer_id AND mcq_test_pattern.customer_id = $customer_id AND mcq_test_id =".$mcqId;
+            // }else{
                $sql = "SELECT mcq_test_pattern.section_id , section.section_name FROM `mcq_test_pattern` inner join section on section.id = mcq_test_pattern.section_id where mcq_test_id =".$mcqId;
-            }
+           // }
 
             $query = $this->db->query($sql);
             $sectionData = array();
@@ -1224,7 +1225,6 @@ class QuestionBank extends MyController {
                     $sqlTotal .= " UNION AlL ";
                     $sqlTime .= " UNION ALL ";
                 }
-
 
            
                 if($customer_id != 'no'){
@@ -1272,7 +1272,6 @@ class QuestionBank extends MyController {
             $attempt = $this->session->attempt;
 
             $query = $this->db->query($sql);
-           
             $sqlAns = "";
             $i = 0;
 
@@ -1569,6 +1568,7 @@ class QuestionBank extends MyController {
 
                             $customer_code = $this->getCustomerCode();
 
+                            //$customer_code = "no"; 
                             if($customer_code != 'no'){
                                 $$sqlCount .= "(SELECT id FROM question_bank_$customer_code WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
                             }else{
@@ -1845,44 +1845,50 @@ class QuestionBank extends MyController {
         }
 
 
-  public function getCustomerCode()
+  public function getCustomerId()
   {
     $mcqCode = $_SESSION['mcqCode'];
-    $sql = " SELECT customer_code FROM mcq_code inner join mcq_test 
+    // $sql = " SELECT customer_code FROM mcq_code inner join mcq_test 
+    //             on mcq_code.mcq_test_id = mcq_test.id inner join customers 
+    //             on mcq_test.customer_id = customers.id 
+    //             where mcq_code.code='$mcqCode' ";
+    $sql = " SELECT customer_id FROM mcq_code inner join mcq_test 
                 on mcq_code.mcq_test_id = mcq_test.id inner join customers 
                 on mcq_test.customer_id = customers.id 
-                where mcq_code.code='$mcqCode' "; 
+                where mcq_code.code='$mcqCode' ";  
 
     $query = $this->db->query($sql);
-    $customer_code = $query->result();
-    if($customer_code != null){
-            return $customer_code[0]->customer_code;
-    }
-
-    
+    $customer = $query->result();
+    if($customer != null){
+            return $customer[0]->customer_id;
+    }    
     return 'no';
   }
 
 
-    public function getCustomerId()
-    {
-    $mcqCode = $_SESSION['mcqCode'];
-     $sql = " SELECT customer_id FROM mcq_code inner join mcq_test 
-                on mcq_code.mcq_test_id = mcq_test.id inner join customers 
-                on mcq_test.customer_id = customers.id 
-                where mcq_code.code='$mcqCode' "; 
+    public function getCustomerCode() {
+        $mcqCode = isset($_SESSION['mcqCode']) ? $_SESSION['mcqCode'] : 0;
+        $mcqId = isset($_SESSION['mcqId']) ? $_SESSION['mcqId'] : 0;
+        // $sql = " SELECT customer_id FROM mcq_code inner join mcq_test 
+        //         on mcq_code.mcq_test_id = mcq_test.id inner join customers 
+        //         on mcq_test.customer_id = customers.id 
+        //         where mcq_code.code='$mcqCode' "; 
+        if (!$mcqId) {
+            $mcqIdSql = "SELECT mcq_test_id FROM mcq_code where code = '".$mcqCode."'";
+            $mcqId = $this->db->query($mcqIdSql)->row()->mcq_test_id;
+        }
+        
+        $sql = "SELECT created_by from mcq_test where id = $mcqId";
 
-    $query = $this->db->query($sql);
-    $customer_id = $query->result();
-    if($customer_id != null){
-            return $customer_id[0]->customer_id;
+        $query = $this->db->query($sql);
+        //$customer_id = $query->result();
+        $creator_id = $query->result();
+        if($creator_id != null){
+            if ($creator_id[0]->created_by > 0) { // 0 means admin
+                return $creator_id[0]->created_by;    
+            }            
+        }
+
+        return 'no';
     }
-
-    return 'no';
-  }
-
-
 }
-
-
-
