@@ -299,6 +299,7 @@ $route['invigilator/assignedMcqs'] = 'AdminController/assignedMcqsFun';
 
 $route['invigilator/view-mcq-data/:any'] = 'AdminController/invigilatorViewMcqData';
 $route['invigilator/view-mcq-data/:any/:any'] = 'AdminController/invigilatorViewMcqData';
+$route['invigilator/joinInvigilatorMeeting/:any'] = 'AdminController/openinIframes';
 //email
 $route['admin/contact'] = 'AdminController/contact'; 
 
@@ -464,6 +465,11 @@ $route['customer/interview-result-search/:any'] = 'CustomerController/interviewR
 $route['customer/interview-result-search/:any/:any'] = 'CustomerController/interviewResultSearch'; 
 
 $route['customer/logout'] = 'CustomerController/logout';
+
+$route['customer/assign-mcq-invigilator'] = 'CustomerController/assignMcqToInvigilator';
+
+
+$route['customer/assignMcqs']['POST'] = 'CustomerController/assignMcqToInvigilatorFun';
 
 $route['customer/create-interview-group'] = 'CustomerController/createInteviewGroup';
 

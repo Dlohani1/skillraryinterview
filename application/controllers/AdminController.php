@@ -152,7 +152,7 @@ class AdminController extends CI_Controller {
   }
 
  public function createMeeting ($startDate, $startTime, $assessId , $call = NULL, $meetingId = 0, $duration = 3) {
-        //echo "test";
+
   //$sql = "SELECT * FROM `bse_citrix` limit 2";
 //
 //$time = date("m/d/Y h:i:s a", strtotime("+30 seconds"));
@@ -184,7 +184,7 @@ class AdminController extends CI_Controller {
   $endTestTime1 = $startDate.'T'.$endTime2.'.000Z';
 
   if ($call != "interview" || !$meetingId) {
-    $meetingEmail = "trainer111@qspiders.com";  
+    $meetingEmail = "trainer112@qspiders.com";  
   } else {
     $sql = "SELECT email from `gotomeeting_token_details` where id = $meetingId";
     $result = $this->db->query($sql)->row();
@@ -247,7 +247,7 @@ $fields['subject'] = "DXC Interview";
           if(isset($webinars->int_error_code) || isset($webinars->int_err_code)){
             continue;
           }else{
-//print_r($webinars); die;
+
 $data = array(
       'meeting_id' => $webinars[0]->meetingid,
       'user_join_url' => $webinars[0]->joinURL,
@@ -397,7 +397,7 @@ public function startMeetingIframe() {
 
     //$sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
 
-    $sql = "SELECT * FROM `gotomeeting_token_details` where email='trainer111@qspiders.com'";
+    $sql = "SELECT * FROM `gotomeeting_token_details` where email='trainer112@qspiders.com'";
 
     // $meeting = $this->db2->query($sql)->result();
     $meeting = $this->db->query($sql)->result();
@@ -1783,7 +1783,7 @@ public function deleteUsrPwd() {
 
   }
 
-public function viewResult($mcqId, $sId) {
+public function viewResult($mcqId, $sId) { 
 //echo $mcqId; echo $sId; die;
             // $mcqId = $this->session->mcqId;
             // $studentId = $this->session->id;
@@ -1802,6 +1802,8 @@ public function viewResult($mcqId, $sId) {
             $sqlTotal = "";
             $sqlTime = "";
             $i = 0;
+
+            
 
             $sectionId  = array();
             foreach ($query->result() as $row) {
@@ -1835,6 +1837,8 @@ public function viewResult($mcqId, $sId) {
                 }
             }
 
+
+
             $sql = $sqlTime;
 
             //$attempt = $this->session->attempt;
@@ -1843,6 +1847,7 @@ public function viewResult($mcqId, $sId) {
            
             $sqlAns = "";
             $i = 0;
+            
 
             if($query->num_rows() > 0)  {
 
@@ -1864,6 +1869,8 @@ public function viewResult($mcqId, $sId) {
             $sql = $sqlAns;           
 
             $query = $this->db->query($sql);
+
+
            
             if($query->num_rows() > 0)  {
 
@@ -3176,18 +3183,23 @@ public function viewMcqDataSearch() {
    public function invigilatorViewMcqData() {
       $mcqId = $this->uri->segment(3); 
       //echo $mcqId; die;
-      $sql = "SELECT mcq_test.id as id,title, mcq_test.is_proctored as proctoredTest,mcq_code.code FROM `mcq_test` 
-       LEFT JOIN mcq_code ON mcq_test.id=mcq_code.mcq_test_id
-       WHERE mcq_test.id=".$mcqId;
+      $sql = "SELECT mcq_test.id as id,title from mcq_test WHERE mcq_test.id=".$mcqId;
 
       $mcq = $this->db->query($sql)->row();
 
       $mcqData['mcq-details'] = $mcq;
 
-      $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no from `assess_usr_pwd` 
-        LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
-      where mcq_test_id= $mcqId
-      order by assess_usr_pwd.id asc";
+      // $sql = "SELECT  assess_usr_pwd.*, student_register.id as studentId,student_register.first_name, student_register.last_name, student_register.email, student_register.contact_no, proctored_mcq.user_join_url from `assess_usr_pwd` 
+      //   LEFT JOIN student_register ON assess_usr_pwd.id=student_register.assess_usr_pwd_id
+      //   LEFT JOIN proctored_mcq ON assess_usr_pwd.mcq_test_id=proctored_mcq.mcq_test_id
+      // where assess_usr_pwd.mcq_test_id= $mcqId
+      // order by assess_usr_pwd.id asc";
+
+      $sql = "SELECT distinct student_register.id as studentId,student_register.first_name,student_register.last_name,assess_usr_pwd.id as assessuserId,proctored_mcq.id as pid,proctored_mcq.mcq_test_id,student_register.email,assess_usr_pwd.username,assess_usr_pwd.password,assess_usr_pwd.is_used,proctored_mcq.user_join_url
+FROM student_register
+INNER JOIN assess_usr_pwd ON student_register.assess_usr_pwd_id = assess_usr_pwd.id
+INNER JOIN proctored_mcq ON proctored_mcq.assess_usr_pwd_id = assess_usr_pwd.id
+where proctored_mcq.mcq_test_id =".$mcqId;
 
     $config['full_tag_open'] = "<ul class='pagination'>";
     $config['full_tag_close'] = '</ul>';
@@ -3230,80 +3242,78 @@ public function viewMcqDataSearch() {
         // $query = $this->db->query($sql);
         // $mcqData['mcq-users'] = $query->result();
 //echo '<pre>'; print_r(var_dump($mcqData)); die;
-        $failCount = $passCount = 0;
-        foreach ($mcqData['mcq-users'] as $key => $value) {
+        // $failCount = $passCount = 0;
+        // foreach ($mcqData['mcq-users'] as $key => $value) {
           
-          if (null === $value->studentId) {
-            continue;
-          }
-          $result = $this->viewResult($mcqId,$value->studentId);
+        //   if (null === $value->studentId) {
+        //     continue;
+        //   }
+        //   $result = $this->viewResult($mcqId,$value->studentId);
 
-          $totalAptitudeMarks = 0;
-          $totalAptitudeQualifyingMarks = 0;
-          $totalUserAptitudeMarks = 0;
-          for ($i =0; $i < count($result['Aptitude']); $i++) {
+        //   $totalAptitudeMarks = 0;
+        //   $totalAptitudeQualifyingMarks = 0;
+        //   $totalUserAptitudeMarks = 0;
+        //   for ($i =0; $i < count($result['Aptitude']); $i++) {
           
             
-          $totalMarks = $result['Aptitude'][$i]['total_question'];                   
-          $minMarks =  $result['Aptitude'][$i]['total_question']/2;
-          $userMarks = $result['Aptitude'][$i]['user_ans'];
+        //   $totalMarks = $result['Aptitude'][$i]['total_question'];                   
+        //   $minMarks =  $result['Aptitude'][$i]['total_question']/2;
+        //   $userMarks = $result['Aptitude'][$i]['user_ans'];
 
-          if ($totalMarks < 10 ) {
-              $totalMarks *= 10;
-              $minMarks *= 10;    
-              $userMarks *= 10;
-          }
-          $totalAptitudeMarks += $totalMarks;
-          $totalAptitudeQualifyingMarks += $minMarks;
-          $totalUserAptitudeMarks += $userMarks;
-        }
-        //echo $totalAptitudeQualifyingMarks,",",$totalUserAptitudeMarks; die;
-        if ($totalAptitudeQualifyingMarks > $totalUserAptitudeMarks) {
-          $mcqData['mcq-users'][$key]->status = "FAIL";
-          ++$failCount;
-        } else {
-          $mcqData['mcq-users'][$key]->status = "PASS";
-          ++$passCount;
-        }
-        }
+        //   if ($totalMarks < 10 ) {
+        //       $totalMarks *= 10;
+        //       $minMarks *= 10;    
+        //       $userMarks *= 10;
+        //   }
+        //   $totalAptitudeMarks += $totalMarks;
+        //   $totalAptitudeQualifyingMarks += $minMarks;
+        //   $totalUserAptitudeMarks += $userMarks;
+        // }
+        // //echo $totalAptitudeQualifyingMarks,",",$totalUserAptitudeMarks; die;
+        // if ($totalAptitudeQualifyingMarks > $totalUserAptitudeMarks) {
+        //   $mcqData['mcq-users'][$key]->status = "FAIL";
+        //   ++$failCount;
+        // } else {
+        //   $mcqData['mcq-users'][$key]->status = "PASS";
+        //   ++$passCount;
+        // }
+        // }
        
-       $sql = "SELECT * from `assess_login` where role= 7"; //proctor role
+       // $sql = "SELECT * from `assess_login` where role= 7"; //proctor role
 
-        $query = $this->db->query($sql);
+       //  $query = $this->db->query($sql);
 
-        //   echo "<pre>";
-        //   print_r($query->result());
+       //  //   echo "<pre>";
+       //  //   print_r($query->result());
 
-        // print_r($mcq); die;
+       //  // print_r($mcq); die;
 
-        $mcqData['mcq-proctor'] = $query->result();
+       //  $mcqData['mcq-proctor'] = $query->result();
        
         //print_r($mcqData); die;
 
-        $sql = "SELECT count(DISTINCT(`student_id`)) as total FROM `mcq_test_question` where mcq_test_id = $mcqId";
+        // $sql = "SELECT count(DISTINCT(`student_id`)) as total FROM `mcq_test_question` where mcq_test_id = $mcqId";
 
 
-        $totalStudent = $this->db->query($sql)->row();
+        // $totalStudent = $this->db->query($sql)->row();
 
-        $mcqData['mcq-details']->totalStudent = $totalStudent->total;
+        // $mcqData['mcq-details']->totalStudent = $totalStudent->total;
 
-        $mcqData['mcq-details']->failCount = $failCount;
-        $mcqData['mcq-details']->passCount = $passCount;
+        // $mcqData['mcq-details']->failCount = $failCount;
+        // $mcqData['mcq-details']->passCount = $passCount;
 
-        $sql = "SELECT assess_usr_pwd_id as assessIds FROM `proctored_mcq` where mcq_test_id = $mcqId";
+        // $sql = "SELECT assess_usr_pwd_id as assessIds FROM `proctored_mcq` where mcq_test_id = $mcqId";
 
+        // $assessIds = $this->db->query($sql)->result();
+        // $proctoredIds = array();
 
-        $assessIds = $this->db->query($sql)->result();
-        $proctoredIds = array();
+        // foreach ($assessIds as $key => $value) {
+        //   $proctoredIds[] = $value->assessIds;
 
-        foreach ($assessIds as $key => $value) {
-          $proctoredIds[] = $value->assessIds;
+        // }
 
-        }
+        // $mcqData['proctoredIds'] = $proctoredIds;
 
-        $mcqData['proctoredIds'] = $proctoredIds;
-// echo "<pre>";
-//         print_r($mcqData); die;
 
 $this->load->view('admin/header');
     $this->load->view('admin/sidenav');
@@ -3313,6 +3323,16 @@ $this->load->view('admin/header');
         ));
         //$this->load->view('admin/view-mcq-data');
         $this->load->view('admin/footer');
+  }
+
+  public function openinIframes()
+  {
+    $join_id = $this->uri->segment('3');
+
+    $sql = "select user_join_url from proctored_mcq where id = ".$join_id;
+    $result = $this->db->query($sql)->row();
+    $_SESSION['startMeetingUrl'] = $result->user_join_url;
+    redirect('admin/view-meeting');
   }
 
 

@@ -107,7 +107,8 @@
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseLayoutsQ1" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
+                        <nav class="sb-sidenav-menu-nested nav">                            
+                            <a class="nav-link" href=<?php echo base_url()."customer/assign-mcq-invigilator";?>>Assign MCQ</a>
                             <a class="nav-link" href=<?php echo base_url()."customer/invigilator-list";?>>View</a>
                         </nav>
                     </div>

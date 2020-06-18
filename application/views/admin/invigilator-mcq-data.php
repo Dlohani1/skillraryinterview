@@ -1,9 +1,7 @@
 <?php 
-$proctoredTest = 1;
-
-if (!$mcq['mcq-details']->proctoredTest) {
-  $proctoredTest = 0;
-}  
+// echo"<pre>";
+// var_dump($mcq) ;
+// die;
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -53,31 +51,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
          <input type="hidden" id="assessId" name="assessId"  />
           <div class="col-md-12">
             <h4>MCQs</h4>
-            <!-- <div class="container"  id="detail">
-            <div class="row">
-              <div class="column">
-                <label>User Count</label>
-                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>&nbsp;&nbsp;<button onclick="deleteUsrPwd()">Delete IDs</button>&nbsp;&nbsp;<button onclick="printUsrPwd()">Print IDs</button>&nbsp;&nbsp;<button onclick="downloadResult()">Print Result</button>
-                  <select id = "resultFilter" onchange="setFilter()">
-                  <option value="0" > All </option>
-                  <option value="1" > Passed </option>
-                  <option value="2" > Failed </option>
-                </select>
-                <input type="hidden" id="student-result" value="0" />
-              </div>
-              <div class="column">
-                <input type="hidden" id="mcqTestId" value= "<?php echo $mcq['mcq-details']->id;?>">
-                 <label for="fname">Assessment : </label> <strong><?php echo $mcq['mcq-details']->title; if ($proctoredTest) {echo " (Proctored)";} else {echo " (Not Proctored)";}?></strong> <br/>
-                  <label for="fname">Assessment Code : </label> <strong><?php echo $mcq['mcq-details']->code;?></strong> <br/>
-
-                  <label for="fname">Student Appeared : </label> <strong><?php echo $mcq['mcq-details']->totalStudent?></strong><br/>
-           
-                  <label for="fname">Pass Count : </label> <strong><?=$mcq['mcq-details']->passCount;?></strong><br/>
-
-                  <label for="lname">Fail Count : </label> <strong><?=$mcq['mcq-details']->failCount;?></strong><br/> 
-              </div>
-            </div>
-          </div> -->
+            
 
 
 
@@ -131,59 +105,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
 
 
             <div class="container">
-              <!-- <div class="searchBox"> -->
-                <!-- <div class="row">
-                  <div class="col-md-3 offset-md-1">
-                    <label>MCQ Name</label>
-                    <input type="text" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
-                    <input type="hidden" id="mcqTestId" value= "<?php //echo $mcq['mcq-details']->id;?>">
-                  </div>
-                  <div class="col-md-3 offset-md-1">
-                    <label>Total Questions</label>
-                    <input type="text" class="form-control inputBox">
-                  </div>
-                  <div class="col-md-2 offset-md-1">
-                    <label>Code</label>
-                    <input type="text" class="form-control inputBox">
-                  </div>
-                <div>
-             </div>
-          </div> -->
-          <!-- <div class="row">
-                            <div class="col-md-3 offset-md-1">
-                                <label>User Count</label>
-                                <input type="number" name="generate" class="form-control" id="generate" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="generateUsrPwd()">Generate IDs</button>
-                            </div>
-
-                        </div> -->
-
-        <!-- </div> -->
-
-                           
-        <!-- <div class="container">
-        <div class="searchBox">
-            <div class="row">
-                <div class="col-md-3 offset-md-1">
-                    <label>MCQ Name</label>
-                    <input type="text" class="form-control inputBox">
-                </div>
-                <div class="col-md-3 offset-md-1">
-                    <label>Total Questions</label>
-                    <input type="text" class="form-control inputBox">
-                </div>
-                <div class="col-md-2 offset-md-1">
-                    <label>Code</label>
-                    <input type="text" class="form-control inputBox">
-                </div>
-            </div><br/>
-            <div>
-                <div align="right">
-                    <button class="searchBtn">Search</button>
-                </div>
-            </div>
-        </div><br/>
-        </div>
- -->
+  
         <div class="table-responsive">
 
                 
@@ -192,9 +114,13 @@ if (!$mcq['mcq-details']->proctoredTest) {
                   <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-                  <th>Sl.no</th>
-                  <th>Name</th>
+                  <!-- <th>Student Id</th>
+                  <th>Assess User Pwd</th> -->
+                  <th>Sl no </th>
+                  <!-- <th style="display: none;">Student Id</th> -->
+                  <th>Full Name</th>
                   <th>Email</th>
+                  <th>Join Link</th>  
                    </thead>
     <tbody>
 
@@ -202,6 +128,7 @@ if (!$mcq['mcq-details']->proctoredTest) {
         $mcqId = $mcq['mcq-details']->id;
 	
         $i = $this->uri->segment(4);
+        $baseurl = base_url();
 
         if (count($mcq['mcq-users']) > 0)
         foreach($mcq['mcq-users'] as $key => $value) {
@@ -210,8 +137,9 @@ if (!$mcq['mcq-details']->proctoredTest) {
           
           
           
-            echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td><td>'.$value->email.'</td></tr>';
-    
+            //echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td><td>'.$value->email.'</td></tr>';
+      //<td>'.$value->studentId.'</td>
+    echo '<tr><td>'.$i.'</td><td>'.$value->first_name.' '.$value->last_name.'</td><td>'.$value->email.'</td><td><a  target="_blank" class="info_link" href='.$baseurl.'invigilator/joinInvigilatorMeeting/'.$value->pid.'> Join </a></td></tr>';
    
    
         }
@@ -247,3 +175,27 @@ if (!$mcq['mcq-details']->proctoredTest) {
                     </div>
                 </main>
 
+<script type="text/javascript">
+
+  $('.info_link').click(function(){
+
+var baseUrl  = "<?php  echo base_url(); ?>";
+
+    $.ajax({
+              url: baseUrl+"invigilator/joinInvigilatorMeeting",
+              type: 'post',
+              data: { "join_url" : $(this).text()} ,
+                    success: function( data, textStatus, jQxhr ){
+                        console.log(data);
+                        
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+
+    
+  });
+  
+</script>
