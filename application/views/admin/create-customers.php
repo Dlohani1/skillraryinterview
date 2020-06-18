@@ -424,7 +424,9 @@
 
 
   $('.edit_customer').click(function () {
-
+      
+      $(window).scrollTop(0);
+      
       let id = $(this).data('id');
       let customer_name = $(this).data('customer_name');
       let customer_email = $(this).data('customer_email');
@@ -456,7 +458,5 @@
 
   });
 
-
 </script>
-
 

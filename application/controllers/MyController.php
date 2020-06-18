@@ -43,7 +43,7 @@ class MyController extends CI_Controller {
     public function logout() {
 
       $this->session->sess_destroy();
-      redirect('user/new-login');
+      redirect('/');
     } 
 
     public function loginOpt() {

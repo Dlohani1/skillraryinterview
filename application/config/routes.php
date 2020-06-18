@@ -161,7 +161,7 @@ $route['admin/interview-customers-list-search'] = 'AdminController/interviewCust
 
 $route['admin/interview-customers-list-search/:any'] = 'AdminController/interviewCustomersSearch';
  
-// $route['admin/view-questions'] = 'AdminController/viewQuestion';
+$route['admin/view-questions'] = 'AdminController/viewQuestion';
 
 $route['admin/view-questions/:any'] = 'AdminController/viewQuestion';
 
