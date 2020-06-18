@@ -371,7 +371,7 @@ class QuestionBank extends MyController {
 
             $answerAttempt = $this->session->attempt != null ? $this->session->attempt : 1;
 
-            $sql = "SELECT answer_id FROM `student_answers` WHERE student_id='$studentId' AND question_id = '$questionId' AND mcq_test_id='$mcqId' AND test_attempt = '$answerAttempt'";
+            $sql = "SELECT answer_id,comment FROM `student_answers` WHERE student_id='$studentId' AND question_id = '$questionId' AND mcq_test_id='$mcqId' AND test_attempt = '$answerAttempt'";
 
             //echo $sql ; die;
 
@@ -379,6 +379,7 @@ class QuestionBank extends MyController {
 
           if (null != $answer) {
              $questionData['userAnswer']['id'] = $answer->answer_id;
+             $questionData['userAnswer']['comment'] = $answer->comment;
          }
 
 
@@ -1830,12 +1831,12 @@ class QuestionBank extends MyController {
 
 
               // return  $result->start_test;
-                   header('Content-Type: application/json');
-    echo json_encode( $result->start_test );
+               header('Content-Type: application/json');
+                echo json_encode( $result->start_test );
                } else {
                 //return $id;
-                 header('Content-Type: application/json');
-    echo json_encode( $result->start_test );
+                header('Content-Type: application/json');
+                echo json_encode( $result->start_test );
                }
 
 }
@@ -1864,10 +1865,22 @@ class QuestionBank extends MyController {
 
             $this->db->insert('user_status', $userData);
         }
+        // if ($this->isMcqProctored($_POST['mcq_id'])) {
 
-        $this->startTest($_POST['student_id']);
+        //     $this->startTest($_POST['student_id']);    
+        // } else {
+            header('Content-Type: application/json');
+            $resultArray = array("isProctored" => 0);
+            echo json_encode( $resultArray);
+        //}
+        
     }
 
+    private function isMcqProctored($mcqId) {
+        $sql = "SELECT is_proctored from mcq_test where id = $mcqId";
+        $isProctored = $this->db->query($sql)->row()->is_proctored;
+        return $isProctored;
+    }
 
   public function getCustomerId()
   {

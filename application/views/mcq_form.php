@@ -1178,7 +1178,8 @@ console.log('colo')
                 // //     $('#section').append('<option value="' + d.id + '">' + d.name + '</option>');
                 // // });
                 $('#optionsList').empty()
-                $.each(opts.options, function(i, d) { console.log('d',d);
+                document.getElementById("comment").value = "";
+                $.each(opts.options, function(i, d) {
                     // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
                     var sel = "";
 
@@ -1191,7 +1192,8 @@ console.log('colo')
                             sel = "checked";
                             backColor = "radiBackground1";
                             console.log('acolor')
-                        } console.log('bcolor');
+                        }
+                        document.getElementById("comment").value = opts.userAnswer.comment;
                     }
                     $('#optionsList').append("<li class="+backColor+"><label class='radioButn'><input  "+sel+" name='answer' type='radio' onclick='saveAns(this)' value="+ d.id +"> <span class='checkmark'></span>"+ d.option+"</label></li>");
                 });
@@ -1298,7 +1300,7 @@ function saveNext(isMarked, timeUp = false) {
             }
         });
 
-        document.getElementById("comment").value="";
+        //document.getElementById("comment").value="";
         // if (document.getElementById("sectionId").value < document.getElementById("sectionCount").value) {
         //     //alert('aad')
         //     var oldsectionId = document.getElementById("sectionId").value;
@@ -1489,7 +1491,7 @@ function lastSave() {
             console.log('ansrr', data)
         }
     });
-    document.getElementById("comment").value="";
+    //document.getElementById("comment").value="";
 }
 
     function clearCount() {
@@ -1504,6 +1506,7 @@ function lastSave() {
         $(".radiBackground1").addClass("radiBackground");
         $(".radiBackground1").removeClass("radiBackground1");
         $('input[name="answer"]').prop('checked', false);
+        document.getElementById("comment").value = "";
 
     } 
 
