@@ -1,5 +1,13 @@
-          <script src='https://cdn.tiny.cloud/1/lnsezku8yem3815vbxl499zobwl7hiehkejxya4ajhlonxot/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
-             <script>
+<style>
+.customerAddContainer{
+    width: 100% !important;
+}
+.customerSubContainer{
+    width: 100% !important;
+}
+</style>
+<script src='https://cdn.tiny.cloud/1/lnsezku8yem3815vbxl499zobwl7hiehkejxya4ajhlonxot/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+<script>
   tinymce.init({
     selector: '#question'
   });
@@ -16,16 +24,16 @@
                             <div class="card-body">
                                <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
                                    <div class="container-fluid">
-        <div class="container">
+        <div class="container customerAddContainer">
             <!-- <h2 align="center" style="color: #33a478;font-weight: 600;">Create Test</h2> -->
             <div class="row">
-                <div class="col-md-10 offset-md-2 firstSection">
+                <div class="col-md-10 offset-md-1 firstSection">
                    
            
            
             
 
-            <div class="container">
+            <div class="container customerSubContainer">
                 <?php
                 if (isset($_SESSION['success'])) {
                     echo "<p class='text-primary'>".$_SESSION['success']."</p>";
@@ -245,7 +253,7 @@ $('#subsection').empty()
     </div>
                             </div>
                         </div>
-                        <div style="height: 100vh;"></div>
+                        <!-- <div style="height: 100vh;"></div> -->
                         <!-- <div class="card mb-4">
 
                             <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div>

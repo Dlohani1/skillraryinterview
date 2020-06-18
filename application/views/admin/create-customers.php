@@ -11,16 +11,16 @@
       <div class="card-body">
 
 
-
-
-
-
-
-
-
       <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
       <div class="container-fluid">
+          <?php 
+          if($this->session->flashdata('success'))
+          {
+            echo '<div class="alert alert-primary bg-success" >'.$this->session->flashdata('success').'</div>';
+          } 
+        ?>
       <div class="container">
+
       <div class="row">
          <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
           <div class="col-md-12">
@@ -31,8 +31,6 @@
                   <div class="col-md-3 offset-md-1">
 
                     <input type="hidden" id="hidden_customer_id" name="hidden_customer_id" value=0>
-
-
 
 
                     <label>Name</label>

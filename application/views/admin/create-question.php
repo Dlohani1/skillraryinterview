@@ -1,9 +1,17 @@
-          <script src='https://cdn.tiny.cloud/1/lnsezku8yem3815vbxl499zobwl7hiehkejxya4ajhlonxot/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
-             <script>
+<style>
+.addContainer{
+    width: 100% !important;
+}
+.addSubContainer{
+    width: 100% !important;
+}
+</style>
+<script src='https://cdn.tiny.cloud/1/lnsezku8yem3815vbxl499zobwl7hiehkejxya4ajhlonxot/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+<script>
   tinymce.init({
     selector: '#question'
   });
-  </script>
+</script>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
@@ -16,148 +24,148 @@
                             <div class="card-body">
                                <!--  <p class="mb-0">This page is an example of using static navigation. By removing the <code>.sb-nav-fixed</code> class from the <code>body</code>, the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.</p> -->
                                    <div class="container-fluid">
-        <div class="container">
-            <!-- <h2 align="center" style="color: #33a478;font-weight: 600;">Create Test</h2> -->
-            <div class="row">
-                <div class="col-md-8 offset-md-2 firstSection">
-                   
-           
-           
-            
+                                        <div class="container addContainer">
+                                            <!-- <h2 align="center" style="color: #33a478;font-weight: 600;">Create Test</h2> -->
+                                            <div class="row">
+                                                <div class="col-md-8 offset-md-2 firstSection">
+                                                
+                                        
+                                        
+                                            
 
-            <div class="container">
+                                            <div class="container addSubContainer">
 
                                         <div align="left">
-                         <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Upload Question</button>
+                                            <button class="editButton" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera" aria-hidden="true"></i> Upload Question</button>
                          
-                          <a href="<?=base_url()."download-format";?>"><i class="fa fa-download" aria-hidden="true"></i> Download Format</a>
+                                            <a href="<?=base_url()."download-format";?>"><i class="fa fa-download" aria-hidden="true"></i> Download Format</a>
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Questions</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form method="post" action="uploadQuestion" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
-                                             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-                                            <div class="form-group">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Update Questions</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeButtonLogin();">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="uploadQuestion" onsubmit="return Upload()" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
+                                                <div class="form-group">
+                                                    
+                                                        <span class="btn_lbl">Select Type</span>
+                                                        <select  id="sectionUpload" name="sectionUpload">
+                                                            <option> Select </option>
+                                                        </select>
+                                                    
                                                 
-                                                    <span class="btn_lbl">Select Type</span>
-                                                    <select  id="sectionUpload" name="sectionUpload">
-                                                        <option> Select </option>
-                                                    </select>
-                                                
-                                              
-                                            </div>
+                                                </div>
 
-                                            <div class="form-group">
-                                                <button class="resume_upload" type="button">
-                                                    <span class="btn_lbl">Browse</span>
-                                                    <span class="btn_colorlayer"></span>
-                                                    <input type="file" name="questionFile" id="fileUpload" />
-                                                </button>
-                                                <p id="demo" class="errortag"></p>
-                                            </div>
-                                            <div>
-                                                <input type="submit" value="Upload" class="subbtn" >
-                                            </div>
-                                        </form>
-                                    </div>
+                                                <div class="form-group">
+                                                    <button class="resume_upload" type="button">
+                                                        <span class="btn_lbl">Browse</span>
+                                                        <span class="btn_colorlayer"></span>
+                                                        <input type="file" name="questionFile" id="fileUpload" />
+                                                    </button>
+                                                    <p id="demo" class="errortag"></p>
+                                                </div>
+                                                <div>
+                                                    <input type="submit" value="Upload" class="subbtn" >
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                         </div><br/>
-  <h2>Question Bank</h2>
-  <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
-  <form class="form-horizontal" method="post" action="save" enctype="multipart/form-data">
-    <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-   <div class="form-group">
-      <label class="control-label col-sm-2" for="section">Section:</label>
-      <div class="col-md-8">
-        <select id="section" name="sectionId" onchange="getSubSection()"><option value="0">Select Section </option></select>
-      </div>
-    </div>
+                        <h2>Question Bank</h2>
+                        <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
+                            <form class="form-horizontal" method="post" action="save" enctype="multipart/form-data">
+                                <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="section">Section:</label>
+                                <div class="col-md-8">
+                                    <select id="section" name="sectionId" onchange="getSubSection()"><option value="0">Select Section </option></select>
+                                </div>
+                                </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="sub-section">Sub Section:</label>
-      <div class="col-md-8">
-        <select id="subsection" onclick="changeValue(this)"  name="subsection" ><option>NA</option></select>
-      </div>
-    </div>
+                                <div class="form-group">
+                                <label class="control-label col-sm-2" for="sub-section">Sub Section:</label>
+                                <div class="col-md-8">
+                                    <select id="subsection" onclick="changeValue(this)"  name="subsection" ><option>NA</option></select>
+                                </div>
+                                </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="sub-section">Difficulty Level:</label>
-      <div class="col-md-8">
-        <select id="level" name="levelId" >
-            <option value="0">Select level </option>
-            <option value="1">Easy</option>
-            <option value="2">Moderate</option>
-            <option value="3">Difficult</option>
-        </select>
-      </div>
-    </div>
+                                <div class="form-group">
+                                <label class="control-label col-sm-2" for="sub-section">Difficulty Level:</label>
+                                <div class="col-md-8">
+                                    <select id="level" name="levelId" >
+                                        <option value="0">Select level </option>
+                                        <option value="1">Easy</option>
+                                        <option value="2">Moderate</option>
+                                        <option value="3">Difficult</option>
+                                    </select>
+                                </div>
+                                </div>
 
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="question">Question:</label>
-      <div class="col-md-8" style="width:48%">          
-        <!-- <input type="text" class="form-control" id="question" placeholder="Enter Question" name="question"> -->
-        <!-- <textarea id="question" name="question"></textarea> -->
-         <div id="question" name="question"></div>
-       <!--  <textarea id="reading" name="reading" ></textarea> -->
-      </div>
-    </div>
+                                <div class="form-group">
+                                <label class="control-label col-sm-2" for="question">Question:</label>
+                                <div class="col-md-8" style="width:48%">          
+                                    <!-- <input type="text" class="form-control" id="question" placeholder="Enter Question" name="question"> -->
+                                    <!-- <textarea id="question" name="question"></textarea> -->
+                                    <div id="question" name="question"></div>
+                                <!--  <textarea id="reading" name="reading" ></textarea> -->
+                                </div>
+                                </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="question">Add Image:</label>
-      <div class="col-md-8">          
-        <!-- <input type="text" class="form-control" id="question" placeholder="Enter Question" name="question"> -->
-        <input type="file" id="qimg" name="qimg" />
-      </div>
-    </div>
+                                <div class="form-group">
+                                <label class="control-label col-sm-2" for="question">Add Image:</label>
+                                <div class="col-md-8">          
+                                    <!-- <input type="text" class="form-control" id="question" placeholder="Enter Question" name="question"> -->
+                                    <input type="file" id="qimg" name="qimg" />
+                                </div>
+                                </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="sub-section">Question Type:</label>
-      <div class="col-md-8">
-        <select id="questionType" name="questionType"  onchange="changeType()">
-            <option value="0" >Select </option>
-            <option value="1">Single Ans</option>
-            <option value="2" disabled>Multiple Ans</option>
-            <option value="3" >True/False</option>
-        </select>
-      </div>
-    </div>
+                                <div class="form-group">
+                                <label class="control-label col-sm-2" for="sub-section">Question Type:</label>
+                                <div class="col-md-8">
+                                    <select id="questionType" name="questionType"  onchange="changeType()">
+                                        <option value="0" >Select </option>
+                                        <option value="1">Single Ans</option>
+                                        <option value="2" disabled>Multiple Ans</option>
+                                        <option value="3" >True/False</option>
+                                    </select>
+                                </div>
+                                </div>
 
-<div class="form-group" id="singleOptions" style="display: none">
-    <label class="control-label col-sm-2" for="pwd">Answers:</label>
-    <div class="col-md-8">          
-        <input type="radio" name="correct" value="1"> Select if correct option<input type="text" class="form-control" id="option1" placeholder="Enter Answer" name="ans1">
-        <input type="radio" name="correct" value="2"> Select if correct option<input type="text" class="form-control" id="option2" placeholder="Enter Answer" name="ans2">
-        <input type="radio" name="correct" value="3"> Select if correct option<input type="text" class="form-control" id="option3" placeholder="Enter Answer" name="ans3">
-        <input type="radio" name="correct" value="4"> Select if correct option<input type="text" class="form-control" id="option4" placeholder="Enter Answer" name="ans4">
-    </div>
-</div>
+                            <div class="form-group" id="singleOptions" style="display: none">
+                                <label class="control-label col-sm-2" for="pwd">Answers:</label>
+                                <div class="col-md-8">          
+                                    <input type="radio" name="correct" value="1"> Select if correct option<input type="text" class="form-control" id="option1" placeholder="Enter Answer" name="ans1">
+                                    <input type="radio" name="correct" value="2"> Select if correct option<input type="text" class="form-control" id="option2" placeholder="Enter Answer" name="ans2">
+                                    <input type="radio" name="correct" value="3"> Select if correct option<input type="text" class="form-control" id="option3" placeholder="Enter Answer" name="ans3">
+                                    <input type="radio" name="correct" value="4"> Select if correct option<input type="text" class="form-control" id="option4" placeholder="Enter Answer" name="ans4">
+                                </div>
+                            </div>
 
-<div class="form-group" id="trueFalse" style="display: none">
-    <label class="control-label col-sm-2" for="pwd">Answers:</label>
-    <div class="col-md-8">          
-        <input type="radio" name="true_false" value="1"> True
-        <input type="radio" name="true_false" value="2"> False
+                            <div class="form-group" id="trueFalse" style="display: none">
+                                <label class="control-label col-sm-2" for="pwd">Answers:</label>
+                                <div class="col-md-8">          
+                                    <input type="radio" name="true_false" value="1"> True
+                                    <input type="radio" name="true_false" value="2"> False
 
-    </div>
-</div>
+                                </div>
+                            </div>
 
-    <div class="form-group">        
-      <div class="col-sm-offset-2 col-md-8">
-        <button type="submit" class="btn btn-default">Submit</button>
-      </div>
-    </div>
-  </form>
-</div>
+                                <div class="form-group">        
+                                <div class="col-sm-offset-2 col-md-8">
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                </div>
+                                </div>
+                            </form>
+                        </div>
 <script>
 $( document ).ready(function() {
      $.ajaxSetup({
@@ -241,7 +249,7 @@ $('#subsection').empty()
     </div>
                             </div>
                         </div>
-                        <div style="height: 100vh;"></div>
+                        <!-- <div style="height: 100vh;"></div> -->
                         <!-- <div class="card mb-4">
 
                             <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div>
