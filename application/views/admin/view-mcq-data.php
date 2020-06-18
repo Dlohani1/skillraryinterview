@@ -253,8 +253,8 @@ $search = isset($_GET['passed']) ? $_GET['passed'] : 0;
             echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td></td><td>'.$value->email.'</td><td>'.$value->contact_no.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td><td>'.$status.'</td>
 
             <td>
-              <p data-placement="top" data-toggle="tooltip" title="Edit">
-                <a target="_blank" href='.$hrefLink.'>
+              <p data-placement="top" data-toggle="tooltip" title="View">
+                <a target='.$viewLinkEmpty.' href='.$hrefLink.'>
                   <button class="'.$linkColor.'" >
                     <span class="glyphicon glyphicon-eye-open"></span>
                   </button>
