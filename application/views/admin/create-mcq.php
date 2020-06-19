@@ -95,6 +95,16 @@
                                 </select>
                             </div>
                         </div><br/>
+                         <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                <label class="labelColor">Answer Comment Required</label>
+                                <select type="text" name="comment-required" class="form-control" id="comment-required">
+                                    <option value="0" selected >Select</option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+                        </div><br/>
                         <div class="row" id="showSection" style="display:none">
                             <div class="col-md-8 offset-md-2">
                                 <label class="labelColor">Total Section</label>
@@ -201,7 +211,7 @@
                         <div class="row">
                             <div class="col-md-8 offset-md-2">
                                 <label class="labelColor">Add Code Test</label>
-                                <input type="checkbox" id="add-code-test" />
+              on addQuestion                  <input type="checkbox" id="add-code-test" />
                                <!--  <a href="https://code.skillrary.com/admin/login" target="_blank"> Click here to create code test </a> -->
                                 <input type="text" name="code" style="display:none" class="form-control" id="code" placeholder="Enter Code" autocomplete="off">
                             </div>
@@ -380,7 +390,7 @@
                     type: 'post',
                     
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: { "test-title": $('#title').val(), "test-type": 2, "drive-date": $('#drive-date').val(), "drive-time": $('#drive-time').val(), "drive-place": $('#drive-place').val(), "customer-code": $('#customer_code').val(), "is-proctored": $('#is_proctored').val() } ,
+                    data: { "test-title": $('#title').val(), "test-type": 2, "drive-date": $('#drive-date').val(), "drive-time": $('#drive-time').val(), "drive-place": $('#drive-place').val(), "customer-code": $('#customer_code').val(), "is-proctored": $('#is_proctored').val(), "comment-required": $('#comment-required').val() } ,
                     success: function( data, textStatus, jQxhr ){
                         //$('#response pre').html( JSON.stringify( data ) );
                         console.log('data', data);
@@ -397,6 +407,7 @@
                     document.getElementById("section").disabled = true;
                     document.getElementById("customer_code").disabled = true;
                     document.getElementById("is_proctored").disabled = true;
+                    document.getElementById("comment-required").disabled = true;
                     var no =  document.getElementById("section").value;
 
 

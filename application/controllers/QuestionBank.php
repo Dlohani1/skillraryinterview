@@ -1802,7 +1802,9 @@ class QuestionBank extends MyController {
             $sql = "SELECT is_completed from user_status where user_id = $studentId and mcq_test_id = $mcqId";
 
             $result = $this->db->query($sql)->row();
+
             if (null != $result) {
+                $_SESSION['resumeTest'] = 1;
                 return $result->is_completed;   
             } else {
                 return 0;

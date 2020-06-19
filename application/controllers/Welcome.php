@@ -27,7 +27,7 @@ class Welcome extends CI_Controller {
         $this->load->library(array('session'));
         
         $uri = $this->uri->segment(1);
-       $openUri = array("typing-test","html-editor","download-pdf");
+       $openUri = array("typing-test","html-editor","download-pdf","printUsrPwd");
 
         if (count($_SESSION) > 1 && !in_array($uri,$openUri)) {
 
@@ -339,16 +339,20 @@ public function viewResult($mcqId, $sId) {
         $objPHPExcel->setActiveSheetIndex(0);
         // set Header
         $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'sl.no');
-        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'username');
-        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'password');    
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'id');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'username');
+        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'password');
+        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'email');    
         // set Row
         $rowCount = 2;
         $i = 1;
         foreach ($result as $key => $value) {
             
             $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $i);
-            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $value->username);
-            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $value->password);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $value->id);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $value->username);
+            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $value->password);
+            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $value->email);
             $i++;
             $rowCount++;
             }
