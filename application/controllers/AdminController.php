@@ -14,9 +14,12 @@ class AdminController extends CI_Controller {
 
     $this->load->library("pagination");
 
+    $this->load->library("phpmailer_library");
+    $this->objMail = $this->phpmailer_library->load();
+
     $uri = $this->uri->segment(2);
     //echo $uri; die;
-    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin','updateToken','checkCode','uploadQuestion','download-students'))) {
+    if (count($_SESSION) == 1 && !in_array($uri,array('login','logout','checklogin','updateToken','checkCode','uploadQuestion','download-students','contact'))) {
       redirect('admin/login');
     }
 
@@ -918,8 +921,6 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
   }
 
 
-
-
   public function saveCustomer() {
     $sql = "SELECT MAX(id) as id FROM customers";
     $result = $this->db->query($sql)->row();
@@ -942,17 +943,13 @@ $sql = "SELECT proctor_meeting_url as joinUrl FROM `proctored_mcq` WHERE assess_
     if($hidden_customer_id){
       $this->db->where('id', $hidden_customer_id);
       $this->db->update('customers',$data);
-      $this->session->set_flashdata('success', $data['customer_name']." Updated successfully.");
       echo "updated successfully";
     }else{
        $data['customer_code'] = ucfirst(substr($data['customer_name'],0,1)).$customerId;
        $data['username'] = substr($data['customer_name'],0,2)."_".$customerId;
        $data['password'] = $this->generatePassword();
        $this->db->insert('customers', $data);
-
-      $this->session->set_flashdata('success', $data['customer_name']." Created successfully.");
-
-       echo "Created successfully";
+       echo "success";
     }
   }
  
@@ -1945,15 +1942,107 @@ public function viewResult($mcqId, $sId) {
     $this->load->view('admin/footer');
  }
 
- public function contact() {
-  $sql = "SELECT * FROM `bse_citrix` limit 2";
+ public function contact() { //echo "da";
 
-       // $mcq = $db2->query($sql)->row();
+ $email = "AKIAYIW6QO6GBPOUMZF7";
+ $password = "BBVGIp1TFl/W1B6RwWTHJUQSFbYsaE2XnTxnRMz37F16";
+  // initialize the object
+  $mail = $this->objMail;
+  $mail->isSMTP();
+  $mail->Host = 'email-smtp.eu-west-1.amazonaws.com';
+  $mail->Port = 587;
+  $mail->SMTPSecure = 'tls';
+  $mail->SMTPAuth = true;
+  $mail->CharSet = "UTF-8";
+  $mail->Username = $email;
+  $mail->Password = $password;
+  // enter your name to be shown
+
+$mail->setFrom('info@skillrary.com', 'SkillRary');
+  // $mail->FromName = "SkillRary";
+  // $mail->From = "info@skillrary.com";
+
+  // csv input
+  // if(!isset($argv[1])){
+  //   echo "Input Data list Not Specified";
+  //   die();
+  // }
+  //$toReadFile = trim($argv[1]);
+  $toReadFile = 'uploads/test-user.csv';
+  // mail template\content
+  // if(!isset($argv[2])){
+  //   echo "Input Mail template Not Specified";
+  //   die();
+  // }
+      
+//   $this->load->view('admin/emailbody');
+// die;
+ //        $mailTemplate = $this->load->view('admin/emailbody',$data,TRUE);
+ // $mailTemplate = 
+ // $mailTemplate = trim($argv[2]);
+  
+  // mail subject
+  // if(!isset($argv[3])){
+  //   echo "Subject for mail Not Specified";
+  //   die();
+  // }
+ // $subject = trim($argv[3]);
+  $subject ="SkillRary Test Credentials";
+  $fh = fopen($toReadFile,'r');
+  $user = array();
+  $i = 0;
+  while ($line = fgets($fh)) {
+  $line=trim($line);
+  $line = explode(',', $line);
+  // get the data from the csv
+  $toEmailId = $line[4];
+  $toName = "Candidate";
+  
+  $data = array(
+    'name'=> $toName,
+    'username' => $line[2],
+    'password' => $line[3],
+    'link' => base_url()."checklogin"
+  );
+  // sample template.html to be send
+  // $message = file_get_contents($mailTemplate);
+  // $message = trim($message);
+  // add custom details to the mail
+  //$message = str_replace('<!--name-->', $toName, $message);
+  $mail->Body = $this->load->view('admin/emailbody',$data,TRUE);
+  $message = $mail->Body;
+  $mail->clearAllRecipients();
+  $mail->addAddress($toEmailId, $toName);
+  $mail->Subject = $subject;
+  $mail->msgHTML($message);
+  // test whther the mail is send succesfully or not
+  if (!$mail->send()) {
+    $error = $toEmailId."\nMailer Error: " . $mail->ErrorInfo."\n\n";
+    echo  $error;
+  } else {
+    $user[$i]['id'] = $line[1];
+    $user[$i]['email'] = $line[4];
+    $user[$i]['sent_count'] = 1;
+    $i++;
+    //echo "To ".$toName."\nEmail: ".$toEmailId."\nRequest sent Successfully\n\n";
+  }
+   }
+ $this->db->update_batch('assess_usr_pwd', $user, 'id');
+
+   $response = array ('status' => "200", "mail_sent_to" => $user);
+//print_r($response);
+      header('Content-Type: application/json');
+      echo json_encode( $response); 
+//   $sql = "SELECT * FROM `bse_citrix` limit 2";
+
+//        // $mcq = $db2->query($sql)->row();
           
-print_r($mcq); die;
- $this->load->view('admin/testcontact');
+// print_r($mcq); die;
+//  $this->load->view('admin/testcontact');
   //$this->load->view('admin/emailbody');
  }
+ 
+
  public function sendMail($from, $to, $subject, $data) {
  // echo "a"; die;
         $this->load->config('email');
@@ -3964,7 +4053,8 @@ public function viewInterviewSearch() {
                   'title' => $title,
                   'type' => $type,
                   'customer_id' => $customerCode[1],
-                  'is_proctored' => $isProctored
+                  'is_proctored' => $isProctored,
+                  'comment_required' => isset($_POST['comment-required']) ? $_POST['comment-required'] : 0
                 );
 
 
@@ -6961,34 +7051,36 @@ foreach ($sectionDetails['section'] as $key => $value) {
     force_download($name, $data);
   }
 
+
+
   public function createQuestionBankTable() {
     $customer_code = $_POST['customer_code'];
 
-    $sql_question_bank = "CREATE TABLE question_bank_$customer_code (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `section_id` int(11) DEFAULT NULL,
-            `sub_section_id` int(11) DEFAULT NULL,
-            `level_id` int(11) DEFAULT NULL,
-            `question` text NOT NULL,
-            `question_image` text,
-            `question_type` int(11) NOT NULL DEFAULT '1',
-            `selection_code` int(11) NOT NULL DEFAULT '0',
-            PRIMARY KEY (`id`)
-          ) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=latin1";
+      $sql_question_bank = "CREATE TABLE question_bank_$customer_code (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `section_id` int(11) DEFAULT NULL,
+                `sub_section_id` int(11) DEFAULT NULL,
+                `level_id` int(11) DEFAULT NULL,
+                `question` text NOT NULL,
+                `question_image` text,
+                `question_type` int(11) NOT NULL DEFAULT '1',
+                `selection_code` int(11) NOT NULL DEFAULT '0',
+                PRIMARY KEY (`id`)
+              ) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=latin1";
 
-    $query = $this->db->query($sql_question_bank);
+      $query = $this->db->query($sql_question_bank);
 
-    if($query){
-        $sql_answers = " CREATE TABLE answers_$customer_code(
-              `id` int(11) NOT NULL AUTO_INCREMENT,
-              `question_id` int(11) NOT NULL,
-              `answer` text NOT NULL,
-              `is_correct` int(11) NOT NULL DEFAULT '0',
-              PRIMARY KEY (`id`)
-              ) ENGINE=InnoDB AUTO_INCREMENT=926 DEFAULT CHARSET=latin1";
-        $query = $this->db->query($sql_answers);
-        echo $query;
-    }
+        if($query){
+            $sql_answers = " CREATE TABLE answers_$customer_code(
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `question_id` int(11) NOT NULL,
+                  `answer` text NOT NULL,
+                  `is_correct` int(11) NOT NULL DEFAULT '0',
+                  PRIMARY KEY (`id`)
+                  ) ENGINE=InnoDB AUTO_INCREMENT=926 DEFAULT CHARSET=latin1";
+            $query = $this->db->query($sql_answers);
+            echo $query;
+        }
   }
 
 
@@ -7007,36 +7099,27 @@ foreach ($sectionDetails['section'] as $key => $value) {
   }
 
 
-  public function viewStudentResult() {
 
-    $mcq_test_id = $this->uri->segment(3);
+  public function viewStudentResult()
+  {
+        $mcq_test_id = $this->uri->segment(3);
+        $studentId = $this->uri->segment(4);
+        $sql = " SELECT  first_name, last_name FROM student_register where id = $studentId";
 
-    $isCreatorAdmin = $this->checkMcqCreator($mcq_test_id);
-    $questionTable = "question_bank";
-    $answerTable = "answers";
+          $query = $this->db->query($sql);
+          $student_name_result = $query->result();
+          $student_name = $student_name_result[0]->first_name.' '.$student_name_result[0]->last_name;
 
-    if ($isCreatorAdmin) {
-      $questionTable = "question_bank_".$_SESSION['customerCode'];
-      $answerTable = "answers_".$_SESSION['customerCode'];
-    }
-
-    $studentId = $this->uri->segment(4);
-    $sql = " SELECT  first_name, last_name FROM student_register where id = $studentId";
-
-    $query = $this->db->query($sql);
-    $student_name_result = $query->result();
-    $student_name = $student_name_result[0]->first_name.' '.$student_name_result[0]->last_name;
-
-    $sql = " SELECT student_answers.student_id, student_answers.question_id, 
-      student_answers.answer_id, student_answers.correct_ans,
-      student_answers.mcq_test_id, student_answers.section_id,
-      question_bank.question, answers.answer,student_answers.comment
-      FROM student_answers
-      inner join $questionTable as question_bank
-      on student_answers.question_id = question_bank.id
-      inner join  $answerTable as answers
-      on student_answers.answer_id = answers.id
-      where student_answers.student_id= $studentId";
+        $sql = " SELECT student_answers.student_id, student_answers.question_id, 
+        student_answers.answer_id, student_answers.correct_ans,
+         student_answers.mcq_test_id, student_answers.section_id,
+         question_bank.question, answers.answer,student_answers.comment
+         FROM student_answers
+         inner join question_bank
+         on student_answers.question_id = question_bank.id
+         inner join answers
+         on student_answers.answer_id = answers.id
+         where student_answers.student_id= $studentId";
 
     $config['full_tag_open'] = "<ul class='pagination'>";
     $config['full_tag_close'] = '</ul>';
@@ -7074,52 +7157,28 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
     $student = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
-    if (isset($_SESSION['customerId']) ) {
-      $this->load->view('customer/header');
-      $this->load->view('customer/sidenav'); 
-      $this->load->view('customer/student-result-view', array(
-        "student"=>$student,
-        "student_name" => $student_name,
-        "links" => $links
-      ));
-      $this->load->view('customer/footer');
-    } else {
-      $this->load->view('admin/header');
-      $this->load->view('admin/sidenav');  
-      $this->load->view('admin/student-result-view', array(
-        "student"=>$student,
-        "student_name" => $student_name,
-        "links" => $links
-      ));
-      $this->load->view('admin/footer');
-    }  
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
+    $this->load->view('admin/student-result-view', array(
+      "student"=>$student,
+      "student_name" => $student_name,
+      "links" => $links
+    ));
+    $this->load->view('admin/footer');
   }
+
+
 
   public function seeAnswerOption()
   {
     $question_id = $_POST['question_id'];
-    $mcq_test_id = $_POST['mcq_test_id'];
 
-    $isCreatorAdmin = $this->checkMcqCreator($mcq_test_id);
-    $answerTable = "answers";
-
-    if ($isCreatorAdmin) {
-      $answerTable = "answers_".$_SESSION['customerCode'];
-    }
-
-    $sql = "SELECT answer FROM $answerTable as answers where question_id= $question_id";
+    $sql = "SELECT answer FROM answers where question_id= $question_id";
 
     $query = $this->db->query($sql);
     $answwerOption = $query->result();
     print_r(json_encode($answwerOption));
 
-  }
-
-
-  public function checkMcqCreator($mcqId) {
-    $sql = "SELECT created_by from mcq_test where id = $mcqId";
-    $creator = $this->db->query($sql)->row()->created_by;
-    return $creator;
   }
 
   
