@@ -27,7 +27,7 @@ class Welcome extends CI_Controller {
         $this->load->library(array('session'));
         
         $uri = $this->uri->segment(1);
-       $openUri = array("typing-test","html-editor","download-pdf");
+       $openUri = array("typing-test","html-editor","download-pdf","checkcode", "checklogin");
 
         if (count($_SESSION) > 1 && !in_array($uri,$openUri)) {
 
@@ -409,7 +409,7 @@ public function viewResult($mcqId, $sId) {
         }*/
         $this->load->view('typing-test/result'); 
     }
-
+ 
 
     public function checkcode() {
         $sql = "SELECT logo_image_url from site_images where is_active = 1";
