@@ -3486,99 +3486,82 @@ echo "success";
 
 
   public function viewQuestionSearch() {
-      $this->load->library("pagination");
-      $section = '';
-      $subsection = '';
-      $difficultylevel = '';
+    $this->load->library("pagination");
+    $section = '';
+    $subsection = '';
+    $difficultylevel = '';
+
+    $sql = "SELECT question_bank.id, question_bank.question, section.section_name, 
+            question_levels.level,sub_section.sub_section_name 
+            FROM question_bank
+            INNER JOIN section 
+            on section.id = question_bank.section_id
+            INNER JOIN question_levels
+            on question_levels.id = question_bank.level_id
+            INNER JOIN sub_section
+            on sub_section.id = question_bank.sub_section_id where true";
 
     if ( $_GET['section'] != 0){
-      $section = $_GET['section'];
-      $sql = "SELECT * FROM section where id = $section ";
-
-      $query = $this->db->query($sql);
-
-      $result = $query->result();
-      $section  = $result[0]->section_name;
+        $section = $_GET['section'];
+        $sql .= "  AND section.id = $section  ";
     }
 
     if ( $_GET['subsection'] != 0)
     {
-      $subsection = $_GET['subsection'];
-      $sql = "SELECT * FROM sub_section where id = $subsection";
-      $query = $this->db->query($sql);
-      $result = $query->result();
-      $subsection  = $result[0]->sub_section_name;
+        $subsection = $_GET['subsection'];
+        $sql .= "  AND sub_section.id = $subsection  ";
     }
 
     if (  $_GET['difficultylevel'] != 0) 
     {
-      $difficultylevel = $_GET['difficultylevel'];
-      $sql = "SELECT * FROM question_levels where id = $difficultylevel";
-      $query = $this->db->query($sql);
-      $result = $query->result();
-      $difficultylevel  = $result[0]->level;
+        $difficultylevel = $_GET['difficultylevel'];
+        $sql .= "  AND question_levels.id = $difficultylevel  ";
     }
 
 
-      $sql = "SELECT question_bank.id, question_bank.question, section.section_name, 
-              question_levels.level,sub_section.sub_section_name 
-              FROM question_bank
-                    INNER JOIN section 
-                  on section.id = question_bank.section_id
-                    INNER JOIN question_levels
-                  on question_levels.id = question_bank.level_id
-                    INNER JOIN sub_section
-                  on sub_section.id = question_bank.sub_section_id
-                      
-                  where section.section_name like '%$section%'
-                   and
-                 sub_section.sub_section_name  like '%$subsection%'
-                  and
-               question_levels.level like '%$difficultylevel%'";
+    $config['full_tag_open'] = "<ul class='pagination'>";
+    $config['full_tag_close'] = '</ul>';
+    $config['num_tag_open'] = '<li>';
+    $config['num_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['first_tag_open'] = '<li>';
+    $config['first_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li>';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_link'] = '<i class=""></i>Previous Page';
+    $config['prev_tag_open'] = '<li>';
+    $config['prev_tag_close'] = '</li>';
+    $config['next_link'] = 'Next Page<i class=""></i>';
+    $config['next_tag_open'] = '<li>';
+    $config['next_tag_close'] = '</li>';
 
-            $config['full_tag_open'] = "<ul class='pagination'>";
-            $config['full_tag_close'] = '</ul>';
-            $config['num_tag_open'] = '<li>';
-            $config['num_tag_close'] = '</li>';
-            $config['cur_tag_open'] = '<li class="active"><a href="#">';
-            $config['cur_tag_close'] = '</a></li>';
-            $config['prev_tag_open'] = '<li>';
-            $config['prev_tag_close'] = '</li>';
-            $config['first_tag_open'] = '<li>';
-            $config['first_tag_close'] = '</li>';
-            $config['last_tag_open'] = '<li>';
-            $config['last_tag_close'] = '</li>';
-            $config['prev_link'] = '<i class=""></i>Previous Page';
-            $config['prev_tag_open'] = '<li>';
-            $config['prev_tag_close'] = '</li>';
-            $config['next_link'] = 'Next Page<i class=""></i>';
-            $config['next_tag_open'] = '<li>';
-            $config['next_tag_close'] = '</li>';
+    $config['base_url'] = base_url() . 'admin/view-questions-search';
+    $config['reuse_query_string'] = true;
+    $config['total_rows'] = $this->getNumberOfRows($sql);
+    $config['per_page'] = 10;
+    $config["uri_segment"] = 3;
 
-            $config['base_url'] = base_url() . 'admin/view-questions-search';
-            $config['reuse_query_string'] = true;
-            $config['total_rows'] = $this->getNumberOfRows($sql);
-            $config['per_page'] = 10;
-            $config["uri_segment"] = 3;
-             
-            $this->pagination->initialize($config);
-              $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
-           
-         $links = $this->pagination->create_links();
+    $this->pagination->initialize($config);
+    $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
 
-          $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+    $links = $this->pagination->create_links();
 
-          $this->load->view('admin/header');
-          $this->load->view('admin/sidenav');
+    $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
-          $this->load->view('admin/view-questions',array(
-            'questionData' => $questionData,
-            'links' => $links,
-            'section' => $section ,
-            'subsection' => $subsection,
-            'difficultylevel' => $difficultylevel,
+    $this->load->view('admin/header');
+    $this->load->view('admin/sidenav');
 
-            ));
+    $this->load->view('admin/view-questions',array(
+      'questionData' => $questionData,
+      'links' => $links,
+      'section' => $section ,
+      'subsection' => $subsection,
+      'difficultylevel' => $difficultylevel,
+
+    ));
   }
 
 
