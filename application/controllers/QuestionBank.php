@@ -166,6 +166,8 @@ class QuestionBank extends MyController {
 
                     $this->session->set_userdata('codeTestId', $codeId);
 
+                    $commentRequired  = $this->isCommentRequired();
+
                     $resumeTest = $this->isTestResume();
 
                     $testData = array();
@@ -176,9 +178,16 @@ class QuestionBank extends MyController {
                     $testData = (array)$this->db->query($sql)->row();
                     }
 
-                    $this->load->view('mcq_form', array('userData'=>$userData,'codeId'=>$codeId, 'sections' => $mcqSection, 'testData' => $testData));      
+                    $this->load->view('mcq_form', array('userData'=> $userData,'codeId'=>$codeId, 'sections' => $mcqSection, 'testData' => $testData, 'commentRequired' => $commentRequired));      
                 // }
                  
+        }
+
+        public function isCommentRequired() {
+            $mcqId = $_SESSION['mcqId'];
+            $sql = "SELECT comment_required from mcq_test where id = $mcqId";
+            $result = $this->db->query($sql)->row()->comment_required;
+            return $result;
         }
 
     public function getMcqSection() {
