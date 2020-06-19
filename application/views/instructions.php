@@ -201,7 +201,8 @@
                         <th class="thborder">Total Questions</th>
                         <th class="thborder">Total Time</th>
                     </tr>
-                    <?php 
+                    <?php
+                    $totalTime = 0; 
                     if (isset($_SESSION['instructionData'])) {
                         $instruction = $_SESSION['instructionData'];
                         $isCodeTest = $instruction['isCodeId'];
@@ -221,6 +222,7 @@
                         <td class="tdborder" rowspan=<?=$rowSpan;?> style="vertical-align: middle;">Aptitude</td>
                     <?php } 
                         $testTime = $value['time']/60;
+                        $totalTime += $testTime;
                         ?>
                         <td class="tdborder"><?=$value['section']
                         ;?></td>
@@ -281,7 +283,7 @@
         <div class="row">
             <div class="col-md-10 offset-md-1">
                 <h5 class="subHead">General Instructions:</h5> 
-                <p class="contentP">Total of 60 Minutes duration will be given to attempt all the questions.</p>
+                <p class="contentP">Total of <?=$totalTime;?> Minutes duration will be given to attempt all the questions.</p>
                 <!-- When the clock runs out the exam ends by default - you are not required to end or submit your exam. -->
                 <p class="contentP">The clock has been set at the server and the countdown timer at the top right corner of your screen will display the time remaining for you to complete the exam. </p> 
                 <p class="contentP">The question palette at the right of screen shows one of the following statuses of each of the questions numbered.</p>
@@ -351,7 +353,7 @@
             <label for="checkbox-1" >I agree and follow all the instructions mentioned by SkillRary</label> -->
         
             <br/>
-            <button style="color:green" class="startBtn" onclick="enterCode()"><?php if (isset($_SESSION['resumeTest']) && $_SESSION['resumeTest'] == 1) { echo "Resume Assessment";} else {echo "Start Assessment"; } ?></button>
+            <button style="color:green" class="startBtn" onclick="enterCode()" id="testBtn"><?php if (isset($_SESSION['resumeTest']) && $_SESSION['resumeTest'] == 1) { echo "Resume Assessment";} else {echo "Start Assessment"; } ?></button>
         </div><br/>
             <?php //}
  ?>
@@ -481,7 +483,7 @@ function joinMeeting() {
                  var win = window.open("mcq-question", "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
                     win.onbeforeunload = function(){
                         console.log('unload');
-                        window.location.href="user/view-results";
+                        //window.location.href="user/view-results";
                         var baseUrl = document.getElementById("base_url").value;
                           $.ajax({
                             url: baseUrl+"admin/startTest",
@@ -491,6 +493,7 @@ function joinMeeting() {
                             // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
                             data: { "assessId" : id} ,
                             success: function( data, textStatus, jQxhr ){
+                                console.log('daa',data)
                                 if (data == "2") {
                                     var startBtn = document.getElementById("startTest");
                                     var startAssessment = document.getElementById("startAssessment");
@@ -500,6 +503,10 @@ function joinMeeting() {
                                    document.getElementById("demo").innerHTML = "Test has HALTED, Please contact support";
                                 } else if (data == "3")  {
                                     window.location.href="user/view-results";
+                                } else {
+                                     var testBtn = document.getElementById("testBtn");
+
+                                    testBtn.innerHTML = "Resume";
                                 }
                             }
                         });
