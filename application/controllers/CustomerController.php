@@ -274,6 +274,7 @@ class CustomerController extends CI_Controller {
   }
 
   public function assignMcqToInvigilator() {
+    
     $customerId =  $_SESSION['customerId'];
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');
@@ -311,12 +312,42 @@ class CustomerController extends CI_Controller {
     //$sql = "SELECT id from customer_invigilator where mcq_test_id = $mcqId and "
     foreach ($invigilatorList as $key => $value) {
       $data[]  = array ('invigilator_id' => $value, 
-                        'customer_id' => $_SESSION['customerId'],
-                        'mcq_test_id' => $mcqId,
-                        'is_active' => 1
-                      );
+        'customer_id' => $_SESSION['customerId'],
+        'mcq_test_id' => $mcqId,
+        'is_active' => 1
+      );
     }
     $this->db->insert_batch("customer_invigilator", $data);
+
+
+
+/*********************/
+
+
+
+    // foreach ($invigilatorList as $key => $value) {
+
+    //   $sql = 'select id from customer_invigilator where mcq_test_id = 0 and customer_id = '.$_SESSION["customerId"].' and invigilator_id = '.$value;
+    //   $queryRun = $this->db->query($sql)->result();
+    //   if($queryRun[0]->id){
+
+    //     $this->db->set('mcq_test_id', $mcqId);
+    //     $this->db->where('id', $queryRun[0]->id);
+    //     $this->db->update('customer_invigilator');
+
+        
+    //   }
+      
+    // }
+
+
+
+/************************/
+
+
+
+
+
 
    /* $sql = "SELECT id from customer_invigilator where mcq_test_id = 0 and "
       $this->db->where_in('tagId', $data);  
