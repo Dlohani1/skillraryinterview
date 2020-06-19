@@ -27,7 +27,7 @@ class Welcome extends CI_Controller {
         $this->load->library(array('session'));
         
         $uri = $this->uri->segment(1);
-       $openUri = array("typing-test","html-editor","download-pdf");
+       $openUri = array("typing-test","html-editor","download-pdf","checkcode", "checklogin");
 
         if (count($_SESSION) > 1 && !in_array($uri,$openUri)) {
 
@@ -42,7 +42,9 @@ class Welcome extends CI_Controller {
             redirect('user/home');
         } else {
             //$this->load->view('home');
-            $sql = "SELECT logo_image_url, banner_image_url from site_images where is_active = 1";
+            //$sql = "SELECT logo_image_url, banner_image_url from site_images where is_active = 1";
+            $baseUrl = base_url();
+            $sql = "SELECT logo_image_url, banner_image_url from site_images where base_url ='".$baseUrl."'";
             $result = $this->db->query($sql)->row();
             if (null !== $result) {
                 $this->load->view('new-home',array("images"=>$result));
@@ -409,17 +411,21 @@ public function viewResult($mcqId, $sId) {
         }*/
         $this->load->view('typing-test/result'); 
     }
-
+ 
 
     public function checkcode() {
-        $sql = "SELECT logo_image_url from site_images where is_active = 1";
+        //$sql = "SELECT logo_image_url from site_images where is_active = 1";
+        $baseUrl = base_url();
+        $sql = "SELECT logo_image_url, banner_image_url from site_images where base_url ='".$baseUrl."'";
         $result = $this->db->query($sql)->row();
         $this->load->view('log-in-with-code',array("images"=>$result));
     }
 
 
     public function checklogin() {
-        $sql = "SELECT logo_image_url from site_images where is_active = 1";
+        //$sql = "SELECT logo_image_url from site_images where is_active = 1";
+        $baseUrl = base_url();
+        $sql = "SELECT logo_image_url, banner_image_url from site_images where base_url ='".$baseUrl."'";
         $result = $this->db->query($sql)->row();
         $this->load->view('login-in-with-crediential',array("images"=>$result));
     }
