@@ -5853,8 +5853,9 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
       } else {
        // echo "code is invalid";
-        $this->session->set_flashdata('error', 'Please enter valid code');
-                redirect('user/new-login', 'refresh');
+         $this->session->set_flashdata('error', 'Please enter valid code');
+               // redirect('user/new-login', 'refresh');
+                 redirect('checkcode');
       }
   }
 

@@ -745,7 +745,7 @@ class QuestionBank extends MyController {
                     // }
                   } else {
                     $this->session->set_flashdata('error', 'Invalid Credentials');
-                    redirect('user/new-login', 'refresh');
+                    redirect('checklogin', 'refresh');
                   }
                 } else {
                    // echo "test"; die;
@@ -843,7 +843,7 @@ class QuestionBank extends MyController {
                      
                    } else {
                     $this->session->set_flashdata('error', 'Invalid Credentials');
-                    redirect('user/new-login', 'refresh');
+                    redirect('checklogin', 'refresh');
                    }
                 }
                 

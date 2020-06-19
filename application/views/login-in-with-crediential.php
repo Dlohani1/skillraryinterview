@@ -177,6 +177,12 @@
                         <h3>Assessment Login</h3>
                         <ul class="parsley-error-list"> </ul>
                         <div class="left-s">
+                              <?php 
+                                if($this->session->flashdata('error'))
+                                {
+                                echo '<div class="alert alert-white bg-danger" >'.$this->session->flashdata('error').'</div>';
+                                } 
+                              ?>
                            <form method="POST" accept-charset="UTF-8" class="form-vertical" id="login-form" autocomplete="off" action=<?php echo base_url()."user/signin";?>>
                               
 
