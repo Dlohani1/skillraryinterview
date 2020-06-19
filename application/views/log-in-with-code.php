@@ -173,10 +173,18 @@
          <div id="wrapper">
             <div class="gray-bg " id="page-wrapper-full">
                <div class="container">
+
                   <div class="row">
                      <div class="register-b">
+
                         <div class="login-s animated fadeInDown delayp1 assessment_register" style="width: 20%;">
                            <h3>Register</h3>
+                           <?php
+                              if($this->session->flashdata('error'))
+                              {
+                                 echo '<div class="alert alert-white bg-danger" >'.$this->session->flashdata('error').'</div>';
+                              } 
+                           ?>
                            <form method="POST"  accept-charset="UTF-8" class="form-signup" id="register-form" action="<?php echo base_url().'admin/checkCode'; ?>">
                               <input name="_token" type="hidden" value="oSXqealvExa1iWuHHSNEmNtXhYS7K5fWsLwUglan"> 
                               <ul class="parsley-error-list"> </ul>
