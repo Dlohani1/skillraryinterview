@@ -273,6 +273,73 @@ class CustomerController extends CI_Controller {
     $this->load->view('customer/footer');
   }
 
+  public function assignMcqToInvigilator() {
+    
+    $customerId =  $_SESSION['customerId'];
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+
+    $sql = "select id, title from mcq_test where customer_id = $customerId and is_proctored = 1";
+    $mcqList = $this->db->query($sql)->result();
+   
+    $sql = "SELECT assess_login.id,assess_login.first_name FROM assess_login INNER JOIN customer_invigilator ON assess_login.id = customer_invigilator.invigilator_id  WHERE customer_invigilator.customer_id =".$customerId;
+
+     $sql = "SELECT distinct customer_invigilator.invigilator_id,assess_login.first_name, assess_login.last_name FROM customer_invigilator INNER JOIN assess_login ON assess_login.id = customer_invigilator.invigilator_id  WHERE customer_invigilator.customer_id =".$customerId;
+
+    $invigilatorList = $this->db->query($sql)->result();
+
+    $data = array ("mcqList" => $mcqList, "invigilatorList" => $invigilatorList);
+
+    $this->load->view('customer/invigilator-assign-mcq',$data);
+    $this->load->view('customer/footer');
+  }
+
+  public function assignMcqToInvigilatorFun() {
+    $mcqId = $_POST['mcq_id'];
+    $invigilatorList = $_POST['invigilator_list']; 
+    $sql = "SELECT invigilator_id from customer_invigilator where mcq_test_id = $mcqId";
+    $alreadyInvigilator = $this->db->query($sql)->result_array();
+    $alreadyAdded = array();
+
+    foreach ($alreadyInvigilator as $key => $value) {
+      $alreadyAdded[] = $value['invigilator_id'];
+    }
+    $data = array();
+
+    foreach ($invigilatorList as $key => $value) {
+      if (in_array($value, $alreadyAdded)) {
+        continue;
+      }
+      $data[]  = array ('invigilator_id' => $value, 
+      'customer_id' => $_SESSION['customerId'],
+      'mcq_test_id' => $mcqId,
+      'is_active' => 1
+      );
+    }
+    
+    if (count($data)) {
+      $this->db->where('mcq_test_id',0);
+      $this->db->where_in('invigilator_id', $invigilatorList );
+      $this->db->delete('customer_invigilator');
+      $this->db->insert_batch("customer_invigilator", $data);
+      echo "Success"; 
+    } else {
+      echo "Already added";
+    }
+  }
+  public function viewInvigilatorList(){
+
+    $this->load->view('customer/header');
+    $this->load->view('customer/sidenav');
+
+    $sql = "SELECT assess_login.id,assess_login.first_name,mcq_test.title,mcq_test.id as mcqid FROM assess_login INNER JOIN customer_invigilator ON assess_login.id = customer_invigilator.invigilator_id inner join mcq_test on mcq_test.id = customer_invigilator.mcq_test_id WHERE customer_invigilator.customer_id =".$_SESSION['customerId'];
+
+    $result['data'] = $this->db->query($sql)->result();
+
+    $this->load->view('customer/invigilator-list',$result);
+    $this->load->view('customer/footer');
+  }
+
 
 
 public function viewMcqListSearch() {
@@ -2878,7 +2945,4 @@ public function viewQuestionWithCodeSearch() {
     ));
     $this->load->view('customer/footer');
   }
-
- 
-
 }

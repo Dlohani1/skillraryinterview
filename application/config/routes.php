@@ -294,6 +294,12 @@ $route['proctor/assignedUsersSearch'] = 'AdminController/proctoredUsersSearch';
 
 $route['proctor/assignedUsersSearch/:any'] = 'AdminController/proctoredUsersSearch'; 
 
+//invigilator
+$route['invigilator/assignedMcqs'] = 'AdminController/assignedMcqsFun';
+
+$route['invigilator/view-mcq-data/:any'] = 'AdminController/invigilatorViewMcqData';
+$route['invigilator/view-mcq-data/:any/:any'] = 'AdminController/invigilatorViewMcqData';
+$route['invigilator/joinInvigilatorMeeting/:any'] = 'AdminController/openinIframes';
 //email
 $route['admin/contact'] = 'AdminController/contact'; 
 
@@ -460,6 +466,11 @@ $route['customer/interview-result-search/:any/:any'] = 'CustomerController/inter
 
 $route['customer/logout'] = 'CustomerController/logout';
 
+$route['customer/assign-mcq-invigilator'] = 'CustomerController/assignMcqToInvigilator';
+
+
+$route['customer/assignMcqs']['POST'] = 'CustomerController/assignMcqToInvigilatorFun';
+
 $route['customer/create-interview-group'] = 'CustomerController/createInteviewGroup';
 
 $route['customer/save-interview-group']['POST'] = 'CustomerController/saveInterviewGroup'; 
@@ -590,6 +601,9 @@ $route['customer/edit-question-with-code/:any'] = 'CustomerController/editQuesti
 
 $route['admin/see-answer-option']['POST']= 'AdminController/seeAnswerOption'; 
 $route['customer/see-answer-option']['POST']= 'AdminController/seeAnswerOption'; 
+
+
+$route['customer/invigilator-list'] = 'CustomerController/viewInvigilatorList';
 
 
 

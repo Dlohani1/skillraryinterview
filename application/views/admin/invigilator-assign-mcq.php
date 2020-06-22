@@ -1,11 +1,3 @@
-<style>
-    .auto-customer {
-      position: absolute;
-   
-    list-style-type:none;
-    cursor: pointer;
-}
-</style>
 <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
 <div id="layoutSidenav_content">
   <main>
@@ -21,98 +13,35 @@
       <div class="container-fluid">
       <div class="container">
       <div class="row">
+         <input type="hidden" id="base_url" name="base_url" value= "<?php echo base_url();?>" />
           <div class="col-md-12">
             <h4>MCQs Roles</h4>
             <div class="container">
               <div class="searchBox">
-                          <div class="row">
+<!--                 <div class="row">
                   <div class="col-md-3 offset-md-1">
-                    <label>First Name</label>
-                    <input type="text" id="first-name" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
+                    <label>MCQ Name</label>
+                    <input type="text" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
+                    <input type="hidden" id="mcqTestId" value= "<?php //echo $mcq['mcq-details']->id;?>">
                   </div>
                   <div class="col-md-3 offset-md-1">
-                    <label>Last Name</label>
-                    <input type="text" id="last-name" class="form-control inputBox">
+                    <label>Total Questions</label>
+                    <input type="text" class="form-control inputBox">
                   </div>
                   <div class="col-md-2 offset-md-1">
-                    <label>Email </label>
-                    <input type="text" id="user-email" class="form-control inputBox">
-                    
+                    <label>Code</label>
+                    <input type="text" class="form-control inputBox">
                   </div>
-                  <!-- <div class="col-md-2 offset-md-1">
-                    <br/>
-                   <button onclick="createUser()">Create User</button>
-                  </div> -->
                 <div>
              </div>
-          </div>
-                <div class="row">
-                  <div class="col-md-3 offset-md-1">
-                    <label>User Name</label>
-                    <input type="text" id="username" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
-                  </div>
-                  <div class="col-md-3 offset-md-1">
-                    <label>Password</label>
-                    <input type="text" id="password" class="form-control inputBox">
-                  </div>
-                  <div class="col-md-2 offset-md-1">
-                    <label>Roles</label>
-                    <select  class="form-control inputBox" id="roleId">
-                      <option value=0> Select </option>
-                      
-        <?php 
-
-        if (count($roles) > 0) {
-        foreach($roles as $key => $value) {?>
-        <option value=<?php echo $value->id; ?>> <?php echo $value->roles;?> </option>
-        <?php } }?>                       
-                    </select>
-                  </div>
-                  <!-- <div class="col-md-2 offset-md-1">
-                    <br/>
-                   <button onclick="createUser()">Create User</button>
-                  </div> -->
-                <div>
-             </div>
-          </div>
-
-
+          </div> -->
           <div class="row">
-                  <div class="col-md-3 offset-md-1">
-                    <label>Contact No</label>
-                    <input type="number" id="user-cno" class="form-control inputBox" value= "<?php //echo $mcq['mcq-details']->title;?>">
-                  </div>
-                  
-                  <div id="custCode" class="col-md-3 offset-md-1" style="display: none;">
-                    <label class="labelColor">Customer Code </label>
-                    <span id = "codeError" style="color:red"></span>
-                    <input type="text" name="customer_code" class="form-control" id="customer_code" placeholder="Enter code">
-                    <div id="customerList"></div>
-                    <input type="hidden" id="validCode" value="0"/>
-                  </div>
-                  <!-- <div class="col-md-3 offset-md-1">
-                    <label>Last Name</label>
-                    <input type="text" id="last-name" class="form-control inputBox">
-                  </div>
-                  <div class="col-md-2 offset-md-1">
-                    <label>Email </label>
-                    <input type="text" id="user-email" class="form-control inputBox">
-                    
-                  </div> -->
-                  <div class="col-md-2 offset-md-1">
-                    <br/>
-                   <button onclick="createUser()">Create User</button>
-                  </div>
-                <div>
-             </div>
-          </div>
-<!--           <div class="row">
                             <div class="col-md-3 offset-md-1">
                                 <label>Add Roles</label>
-                                <input type="text" name="role-name" class="form-control" id="role-name" placeholder="Enter Number to generate code" autocomplete="off"><br/><button onclick="createRole()">Create Role</button>
+                                <input type="text" name="role-name" class="form-control" id="role-name" placeholder="Enter Role" autocomplete="off"><br/><button onclick="createRole()">Create Role</button>
                             </div>
 
-                        </div> -->
+                        </div>
 
         </div>
 
@@ -142,21 +71,12 @@
         </div>
  -->
 
-
-
-
-<!-- <div class="container"> -->
-  <br>
-     <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/create-users-search";?>>
+ <br>
+     <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."admin/create-roles-search";?>>
 
           <div class="searchBox">
 
                 <div class="row">
-
-                      <div class="col-md-4 ">
-                        <label>Search Username</label>
-                        <input type="text" id="searchusername" name="searchusername" class="form-control " placeholder="Search Code" value="<?php echo $searchusername; ?>" >
-                      </div>
 
                       <div class="col-md-4">
                         <label>Search Role</label>
@@ -170,18 +90,10 @@
                           </button>
                       </div>
 
-                      <div class="col-md-1">
-                        <label></label>
-                         <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
-                      </div>
-
                 </div>
 
           </div>
       </form>
-  <!-- </div> -->
-
-
 
 
 
@@ -194,11 +106,10 @@
                    <thead>
                    
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-		  <th> Sl.no </th>
-                   <th>Username</th>
-                    <th>Password</th>
-                     <th>Role</th>
-                     <!-- <th>Total Question</th> -->
+                   <th>Id</th>
+                    <th>Role</th>
+                     <!-- <th>Total Section</th>
+                     <th>Total Question</th> -->
                     <!--  <th>Delete</th>
                       <th>Download</th> -->
                       
@@ -207,19 +118,19 @@
     <tbody>
 
         <?php 
-	
-          $i = $this->uri->segment(3);
-        if (count($user) > 0)
-        foreach($user as $key => $value) { 
+        $i = $this->uri->segment(3);
+
+        if (count($roles) > 0)
+        foreach($roles as $key => $value) { 
           //print_r($value);
-		$i++;
-            echo '<tr><td>'.$i.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td> <td>'.$value->roles.'</td> 
+            $i++;
+            echo '<tr><td>'.$i.'</td><td>'.$value->roles.'</td> 
       
    </tr>';
         }
         ?>
-<!--     <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
-      <td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> -->
+<!--     <td><a href="view-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
+      <td><a href="download-students/'.$value->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> -->
     <!-- <tr>
     <th><input type="checkbox" id="checkall" /></th>
     <td>Mohsin</td>
@@ -376,45 +287,33 @@
         }
     });
 
-               function createUser() {
+               function createRole() {
+                var baseUrl = document.getElementById("base_url").value;
                 
-                var roleId = document.getElementById("roleId").value;
-                var username = document.getElementById("username").value.trim();
-                var password = document.getElementById("password").value.trim();
-                var firstName = document.getElementById("first-name").value.trim();
-                var lastName = document.getElementById("last-name").value.trim();
-                var userEmail = document.getElementById("user-email").value.trim();
-                var userCno = document.getElementById("user-cno").value.trim();
+                var role = document.getElementById("role-name").value;
+                //var mcqId = document.getElementById("mcqTestId").value ;
+                var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"admin/saveRole",
+                   
+                    type: 'post',
+                    
+                    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                    data: { "role" : role} ,
+                    success: function( data, textStatus, jQxhr ){
+                        //window.location.reload(true);
+                       // window.location.href="admin/view-mcq";
+                        //$('#response pre').html( JSON.stringify( data ) );
+                        console.log('data', data);
+                        // document.getElementById("code").disabled = true;
 
-                var customerCode = document.getElementById("customer_code").value.trim();
-
-                if (roleId > 0 && username.length > 0 && password.length > 0) {
-
-                  var baseUrl = document.getElementById("base-url").value;
-                    $.ajax({
-                      url: baseUrl+"admin/saveUser",
-                     
-                      type: 'post',
-                      
-                      // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                      data: { "first-name": firstName,"last-name": lastName,"user-email": userEmail,"user-cno": userCno,"roleId" : roleId, "username":username, "password":password, "customer-code":customerCode} ,
-                      success: function( data, textStatus, jQxhr ){
-                          //window.location.reload(true);
-                         // window.location.href="admin/view-mcq";
-                          //$('#response pre').html( JSON.stringify( data ) );
-                          console.log('data', data);
-                          // document.getElementById("code").disabled = true;
-
-                          // document.getElementById("codeSubmit").disabled = true;
-                          window.location.reload();
-                      },
-                      error: function( jqXhr, textStatus, errorThrown ){
-                          console.log( errorThrown );
-                      }
-                  });
-                } else {
-                   alert("Username/Password/Roles is required");
-                }                    
+                        // document.getElementById("codeSubmit").disabled = true;
+                        window.location.reload();
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
 
 
                         // $.alert({
@@ -428,56 +327,3 @@
 
 
 
-<script type="text/javascript">
-  
-  $('#back').click(function () {
-
-      let baseUrl = '<?php echo base_url(); ?>';
-      let url =  baseUrl+"admin/create-users";
-      window.location.href = url;
-    });
-
-</script>
-
-
-<script type="text/javascript">
-  
-  $('#customer_code').keyup(function(){ 
-    var query = $(this).val();
-    let baseUrl = '<?php echo base_url(); ?>';
-    if(query != '')
-    {
-     $.post(baseUrl+"admin/fetch-customers",
-      {
-        customerCode:query
-      },
-      function(data, status){
-        console.log('ds',data)
-        $('#customerList').fadeIn();  
-        $('#customerList').html(data);
-      });
-    }
-    else{
-      $('#customerList').hide();
-    }
-})
-
-  $(document).on('click', 'li', function(){
-    document.getElementById("validCode").value = 1;
-    $('#customer_code').val($(this).text());  
-    $('#customerList').fadeOut();
-  });
-
-  $( "#roleId" ).change(function() {
-    
-    var d = $( "#roleId" ).val();
-    
-    if(d == 8){
-      $("#custCode").show();
-    }
-    else{
-      $("#custCode").hide();
-    }
-});
-  
-</script>
