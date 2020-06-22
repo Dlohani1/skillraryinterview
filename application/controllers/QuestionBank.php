@@ -950,6 +950,7 @@ class QuestionBank extends MyController {
 
                     $this->session->set_flashdata('success', 'Profile Created Successfully');
 
+
                     if (isset($_SESSION['mcqCode'])) {
                         $this->checkCode($_SESSION['mcqCode']);
                     } else {
@@ -974,8 +975,8 @@ class QuestionBank extends MyController {
                     if (null !== $code) {
                         $_SESSION['mcqCode'] = $code;
                     }    
-                }   
-               // print_r($_SESSION); die;
+                }  
+
                 if (isset($_SESSION['mcqCode'])) {
                     $this->checkCode($_SESSION['mcqCode']);
                 } else {
@@ -1454,29 +1455,45 @@ class QuestionBank extends MyController {
 
     public function checkCode($code = null) {
 
-        if ($this->checkProfile()) {
-            $this->session->set_flashdata('success', 'Update Profile to start test');
-
-            redirect('user/profile');
-        }
-
-        if (null == $code) {
-            if (isset($_SESSION['loginType']) && $_SESSION['loginType'] == "interview") {
-                redirect('user/interview');
+            if (null == $code) {
+                if (isset($_SESSION['loginType']) && $_SESSION['loginType'] == "interview") {
+                    redirect('user/interview');
+                }
+                if (isset($_POST['code'])) {
+                    $code = trim($_POST['code']);
+                }
+                if (isset($_SESSION['loginType']) && $_SESSION['loginType'] == "interview") {
+                    redirect('user/interview');
+                }
             }
-        }
 
+           // redirect('user/profile');
+        
+
+        // if (null == $code) {
+        //     if (isset($_SESSION['loginType']) && $_SESSION['loginType'] == "interview") {
+        //         redirect('user/interview');
+        //     }
+        // }
+
+            //     redirect('user/enter-code');
+            // } else {
+                //  if (NULL == $code) {
+                //     if (isset($_POST['code'])) {
+                //         $code = trim($_POST['code']);
+                //     }
+                // }
 
         // if ($this->isMcqTaken() > 0) {
         //     $this->session->set_flashdata('success', 'Invalid Code');
 
         //     redirect('user/enter-code');
         // } else {
-        if (NULL == $code) {
-            if (isset($_POST['code'])) {
-                $code = trim($_POST['code']);
-            }
-        }
+        // if (NULL == $code) {
+        //     if (isset($_POST['code'])) {
+        //         $code = trim($_POST['code']);
+        //     }
+        // }
 
         $sql = "SELECT * FROM `mcq_code` WHERE code='$code' AND is_active = 1";
 
@@ -1564,12 +1581,12 @@ class QuestionBank extends MyController {
     private function generateQuestion($code, $mcqId) {
         // $customer_id = $this->getCustomerId();
 
-          $customer_id = $this->getCustomerCode();
+        $customer_id = $this->getCustomerCode();
 
         if($customer_id != 'no'){
             $sql = "SELECT section_id FROM `mcq_test_pattern` where customer_id = $customer_id AND  mcq_test_id = ". $mcqId;
         }else{
-          $sql = "SELECT section_id FROM `mcq_test_pattern` where mcq_test_id = ". $mcqId;
+            $sql = "SELECT section_id FROM `mcq_test_pattern` where mcq_test_id = ". $mcqId;
         }
 
 
@@ -1629,6 +1646,8 @@ class QuestionBank extends MyController {
             }    
         }
 
+                
+            
 
         for($a = 1; $a <= $countSection; $a++) {
             $result = "resultQ".$a;
@@ -1692,19 +1711,19 @@ class QuestionBank extends MyController {
             $s = "sql".$a;
             $r = "result".$a;
 
+            $b = 0;
+            for($a = 1; $a <= $countSection; $a++) {
 
-            if($customer_id != 'no'){
-                $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE customer_id = $customer_id AND mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
-            }else{
-                $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
+                if($customer_id != 'no'){
+                    $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE customer_id = $customer_id AND mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
+                }else{
+                    $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
+                }
+
+                $$r = $this->db->query($$s);
+
+                $b++;
             }
-
-
-
-
-            $$r = $this->db->query($$s);
-
-            $b++;
         }
 
         $i = 0;
@@ -1828,29 +1847,28 @@ class QuestionBank extends MyController {
         }
 
         public function startTest($userId) {
-              $sql = "SELECT assess_usr_pwd_id FROM `student_register` WHERE id= ".$userId;
+            $sql = "SELECT assess_usr_pwd_id FROM `student_register` WHERE id= ".$userId;
 
-              $result = $this->db->query($sql)->row();
-
-
-               $id = $result->assess_usr_pwd_id;
-
-               if ($id > 0) {
-                     $sql = "SELECT start_test FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$id;
-
-              $result = $this->db->query($sql)->row();
+            $result = $this->db->query($sql)->row();
 
 
-              // return  $result->start_test;
-               header('Content-Type: application/json');
-                echo json_encode( $result->start_test );
-               } else {
-                //return $id;
-                header('Content-Type: application/json');
-                echo json_encode( $result->start_test );
-               }
+            $id = $result->assess_usr_pwd_id;
 
-}
+            if ($id > 0) {
+                    $sql = "SELECT start_test FROM `proctored_mcq` WHERE assess_usr_pwd_id= ".$id;
+
+            $result = $this->db->query($sql)->row();
+
+
+            // return  $result->start_test;
+            header('Content-Type: application/json');
+            echo json_encode( $result->start_test );
+            } else {
+            //return $id;
+            header('Content-Type: application/json');
+            echo json_encode( $result->start_test );
+            }
+        }
 
     public function saveTestStatus() {
 

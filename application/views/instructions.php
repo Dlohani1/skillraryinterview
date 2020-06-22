@@ -346,7 +346,7 @@
         <?php 
         //if ($_SESSION['startTest']) {
 ?>
-        <div align="center" id="startAssessment" style="display:block">
+        <div align="center" id="startAssessment" style="display:none">
             <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
             <label for="checkbox-1" class="checkbox-custom-label">I agree and follow all the instructions mentioned by SkillRary</label>
             <!-- <input id="checkbox-1" name="checkbox-1" type="checkbox">
@@ -430,10 +430,10 @@ var x = setInterval(function() {
   if (distance < 0) {
     clearInterval(x);
     document.getElementById("demo").innerHTML = "";
-    //var startBtn = document.getElementById("startTest");
+    var startBtn = document.getElementById("startTest");
     //var startAssessment = document.getElementById("startAssessment");
     enterCode(true);
-	//startBtn.style.display = "block";
+	startBtn.style.display = "block";
     //startAssessment.style.display = "block";
 	
 //startBtn.onclick = joinMeeting;
@@ -449,112 +449,112 @@ function joinMeeting() {
 }
 
         function enterCode(check = null) {
-	    var id = <?php echo $_SESSION['assessId']; ?>;
+    	    var id = <?php echo $_SESSION['assessId']; ?>;
             var isChrome = !!window.chrome; // "!!" converts the object to a boolean value
             console.log(isChrome); // Just to visualize what's happening
 
             /** Example: User uses Firefox, therefore isChrome is false; alert get's triggered */
-            //if (isChrome !== true) { 
-             //alert("Please use Google Chrome to access this site.\nSome key features do not work in browsers other than Chrome.");
-          // } else {
+            if (isChrome !== true) { 
+                 //alert("Please use Google Chrome to access this site.\nSome key features do not work in browsers other than Chrome.");
+                 $.alert({
+                    title: 'SkillRary Alert',
+                    content: 'Please use Google Chrome to access this site.\nSome key features do not work in browsers other than Chrome.',
+                });
+            } else {
 
                 var remember = document.getElementById("checkbox-1");
                 if (remember.checked || check) {
 
-	              var baseUrl = document.getElementById("base_url").value;
-                  $.ajax({
+                    var baseUrl = document.getElementById("base_url").value;
+                    $.ajax({
                     url: baseUrl+"admin/startTest",
 
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
                     data: { "assessId" : id} ,
-                    success: function( data, textStatus, jQxhr ){
-                        //window.location.reload(true);
+                    success: function( data, textStatus, jQxhr ) {
+                    //window.location.reload(true);
 
-                                      // window.location.href="admin/view-mcq";
-                        //$('#response pre').html( JSON.stringify( data ) );
-                        console.log('data', data);
-			//alert(data);
-//window.open(src, "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
-			if (data == "1" && null == check) {
-				 //var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+                                  // window.location.href="admin/view-mcq";
+                    //$('#response pre').html( JSON.stringify( data ) );
+                    console.log('data', data);
+                    //alert(data);
+                    //window.open(src, "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
+                    if (data == "1" && null == check) {
+                     //var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
 
-                 var win = window.open("mcq-question", "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
-                    win.onbeforeunload = function(){
-                        console.log('unload');
-                        //window.location.href="user/view-results";
-                        var baseUrl = document.getElementById("base_url").value;
-                          $.ajax({
-                            url: baseUrl+"admin/startTest",
+                        var win = window.open("mcq-question", "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
+                        win.onbeforeunload = function() {
+                            console.log('unload');
+                            //window.location.href="user/view-results";
+                            var baseUrl = document.getElementById("base_url").value;
+                            $.ajax({
+                                url: baseUrl+"admin/startTest",
 
-                            type: 'post',
+                                type: 'post',
 
-                            // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                            data: { "assessId" : id} ,
-                            success: function( data, textStatus, jQxhr ){
-                                console.log('daa',data)
-                                if (data == "2") {
-                                    var startBtn = document.getElementById("startTest");
-                                    var startAssessment = document.getElementById("startAssessment");
+                                // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+                                data: { "assessId" : id} ,
+                                success: function( data, textStatus, jQxhr ){
+                                    console.log('daa',data)
+                                    if (data == "2") {
+                                        var startBtn = document.getElementById("startTest");
+                                        var startAssessment = document.getElementById("startAssessment");
 
-                                    startBtn.style.display = "none";
-                                    startAssessment.style.display = "none";
-                                   document.getElementById("demo").innerHTML = "Test has HALTED, Please contact support";
-                                } else if (data == "3")  {
-                                    window.location.href="user/view-results";
-                                } else {
-                                     var testBtn = document.getElementById("testBtn");
+                                        startBtn.style.display = "none";
+                                        startAssessment.style.display = "none";
+                                       document.getElementById("demo").innerHTML = "Test has HALTED, Please contact support";
+                                    } else if (data == "3")  {
+                                        window.location.href="user/view-results";
+                                    } else {
+                                         var testBtn = document.getElementById("testBtn");
 
-                                    testBtn.innerHTML = "Resume";
+                                        testBtn.innerHTML = "Resume";
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                    } else if (data == "2") {
+                         document.getElementById("demo").innerHTML = "Test has HALTED, Please contact support";
+                        //alert("Test has HALTED, Please contact support to resume.");
+                    } else {
+                        if (!check) {
 
-                        //
+                               $.alert({
+                                    title: 'SkillRary Alert',
+                                    content: 'Test not ACTIVE, Please contact support.',
+                                });
+        				//alert("Test not ACTIVE, Please contact support.");
+                        } else if (check && data == 1) {
+
+                            var startBtn = document.getElementById("startTest");
+                            var startAssessment = document.getElementById("startAssessment");
+
+                            startBtn.style.display = "block";
+                            startAssessment.style.display = "block";
+
+                        }
                     }
+                // document.getElementById("code").disabled = true;
 
-
-			} else if (data == "2") {
-                 document.getElementById("demo").innerHTML = "Test has HALTED, Please contact support";
-                //alert("Test has HALTED, Please contact support to resume.");
-            } else {
-                if (!check) {
-
-                       $.alert({
-                            title: 'SkillRary Alert',
-                            content: 'Test not ACTIVE, Please contact support.',
-                        });
-				//alert("Test not ACTIVE, Please contact support.");
-                } else if (check && data == 1) {
-
-                    var startBtn = document.getElementById("startTest");
-                    var startAssessment = document.getElementById("startAssessment");
-
-                    startBtn.style.display = "block";
-                    startAssessment.style.display = "block";
-
-                }
-			}
-                        // document.getElementById("code").disabled = true;
-
-                        // document.getElementById("codeSubmit").disabled = true;
-                        //window.location.reload();
-                    },
+                // document.getElementById("codeSubmit").disabled = true;
+                //window.location.reload();
+                },
                     error: function( jqXhr, textStatus, errorThrown ){
                         console.log( errorThrown );
                     }
                 });
 
 
-                //window.location.href='mcq-question';
-               /* var win = window.open("mcq-question", "","toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=4000,height=4000");
+                    //window.location.href='mcq-question';
+                   /* var win = window.open("mcq-question", "","toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=4000,height=4000");
 
-                    // var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
-                    win.onbeforeunload = function(){
-                        console.log('unload');
-                        window.location.href="user/view-results";
-                    }*/ 
+                        // var win = window.open("mcq-question","", "fullscreen=1,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no");
+                        win.onbeforeunload = function(){
+                            console.log('unload');
+                            window.location.href="user/view-results";
+                        }*/ 
                 } else {
                     $.alert({
                         title: 'SkillRary Alert',
@@ -562,7 +562,7 @@ function joinMeeting() {
                     });
                 }
             }            
-       // }
+       }
     </script>
     
 </body>
