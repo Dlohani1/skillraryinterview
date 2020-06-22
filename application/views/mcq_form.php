@@ -713,7 +713,7 @@
                     <div>
                         <ul id="optionsList" class="optionList">
                         </ul>
-                        <textarea id="comment"></textarea>
+                        <textarea  style="<?php if (!$commentRequired) { echo "display:none";} ?>" id="comment"></textarea>
                     </div>
 <!-- <div id="save-next" style="margin-top: 10%">
 <button class="saveBtn" onclick="saveNext()">Save & Next</button>

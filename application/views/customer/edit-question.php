@@ -91,21 +91,30 @@ if ($questionType == 1) { ?>
 
 <div class="form-group" id="singleOptions" >
     <label class="control-label col-sm-2" for="pwd">Answers:</label>
+
+            <?php
+                  $options_0 = ($questionData['options'][0]['option']);
+                  $options_1 = ($questionData['options'][1]['option']);
+                  $options_2 = ($questionData['options'][2]['option']);
+                  $options_3 = ($questionData['options'][3]['option']);
+            ?>
+
+
     <div class="col-md-6">          
-        <input type="radio" <?php if ($questionData['options'][0]['correct']) {echo "checked";} ?> name="correct" value="1"> Select if correct option<input type="text" class="form-control" id="option1" value=<?php echo $questionData['options'][0]['option']; ?> name="ans1">
+        <input type="radio" <?php if ($questionData['options'][0]['correct']) {echo "checked";} ?> name="correct" value="1"> Select if correct option<input type="text" class="form-control" id="option1" value='<?php echo $options_0;?>' name="ans1">
            <input type="hidden" class="form-control" value=<?php echo $questionData['options'][0]['id']; ?> name="ans1Id"> 
 
-        <input type="radio" <?php if ($questionData['options'][1]['correct']) {echo "checked";} ?> name="correct" value="2"> Select if correct option<input type="text" class="form-control" id="option2" value=<?php echo $questionData['options'][1]['option']; ?> name="ans2">
+        <input type="radio" <?php if ($questionData['options'][1]['correct']) {echo "checked";} ?> name="correct" value="2"> Select if correct option<input type="text" class="form-control" id="option2" value='<?php echo $options_1;?>' name="ans2">
 
         <input type="hidden" class="form-control"  value=<?php echo $questionData['options'][1]['id']; ?> name="ans2Id">
 
 
-        <input type="radio" <?php if ($questionData['options'][2]['correct']) {echo "checked";} ?> name="correct" value="3"> Select if correct option<input type="text" class="form-control" id="option3" value=<?php echo $questionData['options'][2]['option']; ?> name="ans3">
+        <input type="radio" <?php if ($questionData['options'][2]['correct']) {echo "checked";} ?> name="correct" value="3"> Select if correct option<input type="text" class="form-control" id="option3" value='<?php echo $options_2;?>' name="ans3">
 
         <input type="hidden" class="form-control" value=<?php echo $questionData['options'][2]['id']; ?> name="ans3Id">
 
 
-        <input type="radio" <?php if ($questionData['options'][3]['correct']) {echo "checked";} ?> name="correct" value="4"> Select if correct option<input type="text" class="form-control" id="option4" value=<?php echo $questionData['options'][3]['option']; ?> name="ans4">
+        <input type="radio" <?php if ($questionData['options'][3]['correct']) {echo "checked";} ?> name="correct" value="4"> Select if correct option<input type="text" class="form-control" id="option4" value='<?php echo $options_3;?>' name="ans4">
 
         <input type="hidden" class="form-control" value=<?php echo $questionData['options'][3]['id']; ?> name="ans4Id">
     </div>

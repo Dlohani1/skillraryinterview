@@ -197,7 +197,7 @@ header .logo h1 {
 	line-height: 70px;
 	display: block;
 	text-decoration: none;
-	background: url(../images/pipe.png) left no-repeat
+	background: url(../../../images/pipe.png) left no-repeat
 }
 
 .browse_block a,
@@ -6730,7 +6730,7 @@ input[type=number]::-webkit-outer-spin-button {
 		padding-top: 0
 	}
 	body.home header.expert.nobackground .home_menu.list-unstyled.list-inline li a {
-		background: url(../images/pipe.png) left center no-repeat rgba(0, 0, 0, 0);
+		background: url(../../../images/pipe.png) left center no-repeat rgba(0, 0, 0, 0);
 		color: #000
 	}
 	body.home header.expert.nobackground {
@@ -7057,7 +7057,7 @@ input[type=number]::-webkit-outer-spin-button {
 		color: red
 	}
 	body.home header.expert.nobackground .home_menu.list-unstyled.list-inline li a {
-		background: url(../images/pipe.png) left center no-repeat rgba(0, 0, 0, 0)
+		background: url(../../../images/pipe.png) left center no-repeat rgba(0, 0, 0, 0)
 	}
 	.des_margin.price_settings,
 	.pricetab-block {
@@ -20139,7 +20139,7 @@ header .logo h1 {
 	line-height: 70px;
 	display: block;
 	text-decoration: none;
-	background: url(../images/pipe.png) left no-repeat
+	background: url(../../../images/pipe.png) left no-repeat
 }
 
 .browse_block a,
@@ -26657,7 +26657,7 @@ input[type=number]::-webkit-outer-spin-button {
 		padding-top: 0
 	}
 	body.home header.expert.nobackground .home_menu.list-unstyled.list-inline li a {
-		background: url(../images/pipe.png) left center no-repeat rgba(0, 0, 0, 0);
+		background: url(../../../images/pipe.png) left center no-repeat rgba(0, 0, 0, 0);
 		color: #000
 	}
 	body.home header.expert.nobackground {
@@ -26976,7 +26976,7 @@ input[type=number]::-webkit-outer-spin-button {
 	}
 	body.home header.expert.nobackground .home_menu.list-unstyled.list-inline li a {
 		font-size: 8px;
-		background: url(../images/pipe.png) left center no-repeat rgba(0, 0, 0, 0)
+		background: url(../../../images/pipe.png) left center no-repeat rgba(0, 0, 0, 0)
 	}
 	.expert-head-block .expert .container-fluid {
 		padding-left: 0;
@@ -43882,7 +43882,7 @@ section.banner_section .banner .tp-banner ul li .tp-bgimg.defaultimg {
 }
 
 section.banner_section .our_services_block .block4.section1 .block_img a {
-	background: url(../images/our-service-caret.png) 15px 15px no-repeat #00cc96;
+	background: url(../../../images/our-service-caret.png) 15px 15px no-repeat #00cc96;
 	border: 4px solid #00cc96;
 	border-radius: 50%;
 	display: table-cell;
@@ -43892,7 +43892,7 @@ section.banner_section .our_services_block .block4.section1 .block_img a {
 }
 
 section.banner_section .our_services_block .block4.section2 .block_img a {
-	background: url(../images/our-service-caret.png) -197px 15px no-repeat #00cc96;
+	background: url(../../../images/our-service-caret.png) -197px 15px no-repeat #00cc96;
 	border: 4px solid #00cc96;
 	border-radius: 50%;
 	display: table-cell;
@@ -43902,7 +43902,7 @@ section.banner_section .our_services_block .block4.section2 .block_img a {
 }
 
 section.banner_section .our_services_block .block4.section3 .block_img a {
-	background: url(../images/our-service-caret.png) -102px 15px no-repeat #00cc96;
+	background: url(../../../images/our-service-caret.png) -102px 15px no-repeat #00cc96;
 	border: 4px solid #00cc96;
 	border-radius: 50%;
 	display: table-cell;

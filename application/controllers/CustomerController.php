@@ -2872,52 +2872,32 @@ public function viewQuestionWithCodeSearch() {
 
     $customer_code = $this->getCustomerCode();
 
-    $section = '';
-    $subsection = '';
-    $difficultylevel = '';
-
-    if ( $_GET['section'] != 0) {
-      $section = $_GET['section'];
-      $sql = "SELECT * FROM section where id = $section ";
-
-      $query = $this->db->query($sql);
-
-      $result = $query->result();
-      $section  = $result[0]->section_name;
-    }
-
-    if ( $_GET['subsection'] != 0) {
-      $subsection = $_GET['subsection'];
-      $sql = "SELECT * FROM sub_section where id = $subsection";
-      $query = $this->db->query($sql);
-      $result = $query->result();
-      $subsection  = $result[0]->sub_section_name;
-    }
-
-    if (  $_GET['difficultylevel'] != 0) {
-      $difficultylevel = $_GET['difficultylevel'];
-      $sql = "SELECT * FROM question_levels where id = $difficultylevel";
-      $query = $this->db->query($sql);
-      $result = $query->result();
-      $difficultylevel  = $result[0]->level;
-    }
-
-
     $sql = "SELECT question_bank.id, question_bank.question, section.section_name, 
-              question_levels.level,sub_section.sub_section_name 
+            question_levels.level,sub_section.sub_section_name 
             FROM question_bank_$customer_code  question_bank
-                  INNER JOIN section 
-                on section.id = question_bank.section_id
-                  INNER JOIN question_levels
-                on question_levels.id = question_bank.level_id
-                  INNER JOIN sub_section
-                on sub_section.id = question_bank.sub_section_id
-                    
-                where section.section_name like '%$section%'
-                 and
-               sub_section.sub_section_name  like '%$subsection%'
-                and
-             question_levels.level like '%$difficultylevel%'";
+            INNER JOIN section 
+            on section.id = question_bank.section_id
+            INNER JOIN question_levels 
+            on question_levels.id = question_bank.level_id 
+            INNER JOIN sub_section 
+            on sub_section.id = question_bank.sub_section_id where true ";
+
+    if ( $_GET['section'] != 0){
+      $section = $_GET['section'];
+      $sql .= "  AND section.id = $section  ";
+    }
+
+    if ( $_GET['subsection'] != 0)
+    {
+      $subsection = $_GET['subsection'];
+      $sql .= "  AND sub_section.id = $subsection  ";
+    }
+
+    if (  $_GET['difficultylevel'] != 0) 
+    {
+      $difficultylevel = $_GET['difficultylevel'];
+      $sql .= "  AND question_levels.id = $difficultylevel  ";
+    }
 
     $config['full_tag_open'] = "<ul class='pagination'>";
     $config['full_tag_close'] = '</ul>';
@@ -2943,11 +2923,15 @@ public function viewQuestionWithCodeSearch() {
     $config['total_rows'] = $this->getNumberOfRows($sql);
     $config['per_page'] = 10;
     $config["uri_segment"] = 3;
-             
+
     $this->pagination->initialize($config);
     $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) :0 ;
     $links = $this->pagination->create_links();
     $questionData = $this->getAllRowsData($sql,$config['per_page'], $start_index);
+
+    $section = '';
+    $subsection = '';
+    $difficultylevel = '';
 
     $this->load->view('customer/header');
     $this->load->view('customer/sidenav');

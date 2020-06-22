@@ -172,22 +172,24 @@ div.footer a.Cbtn-danger:hover{
                         </div>
 
                         <div class="dates">
+                            <?php 
+                            if (isset($testDateTime)) {?>
                             <div class="start">
                                 <strong>STARTS</strong> 
                                 <?php 
-                                          $d = date_parse_from_format("Y-m-d", $testDateTime);
+                                $d = date_parse_from_format("Y-m-d", $testDateTime);
 
-                                          $day = $d['day'];
-                                          $year = $d['year'];
+                                $day = $d['day'];
+                                $year = $d['year'];
 
-                                          $month = date("F",strtotime($testDateTime));
+                                $month = date("F",strtotime($testDateTime));
 
-                                          $time = explode(" ",$testDateTime);
-
+                                $time = explode(" ",$testDateTime);
 
                                 echo $day," ",$month,",",$year, " at ", $testTime; ?>
                                 <span></span>
                             </div>
+                        <?php } ?>
                             <div class="ends">
                                 <strong>MODE</strong> ONLINE <br/>
                                 <strong>Link</strong> <?=$link;?>
