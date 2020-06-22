@@ -121,7 +121,7 @@
 								<div class="col-sm-4 animated fadeInLeft">
 									<div class="block4 section1">
 										<div class="block_img">
-											<a href="course"></a>
+											<a href="https://skillrary.com/course"></a>
 										</div>
 										<h3><a href="https://skillrary.com/course">LEARN ANYTHING ONLINE </a></h3> 
 										<p>Anywhere anytime! Study and learn your favorite courses online, as per your convenience. Check out the list of courses below and start learning all the basic and important concepts of extensive and advanced skills.</p>
@@ -139,7 +139,7 @@
 								<div class="col-sm-4 animated fadeInRight">
 									<div class="block4 section3">
 										<div class="block_img">
-											<a href="message?repage=home"></a>
+											<a href="https://skillrary.com/message?repage=home"></a>
 										</div>
 										<h3><a href="https://skillrary.com/message?repage=home">COMMUNICATE WITH PEOPLE</a></h3> 
 										<p>Knowledge spreads through communication. Join millions of people from around the world. Learn together to increase your knowledge. Make learning as easy and natural as chatting with a group of friends.</p>
