@@ -1706,24 +1706,25 @@ class QuestionBank extends MyController {
 
         $this->db->insert_batch('mcq_test_question', $data);
         $b = 0;
+
         for($a = 1; $a <= $countSection; $a++) {
 
             $s = "sql".$a;
             $r = "result".$a;
 
             $b = 0;
-            for($a = 1; $a <= $countSection; $a++) {
+            //for($a = 1; $a <= $countSection; $a++) {
 
-                if($customer_id != 'no'){
-                    $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE customer_id = $customer_id AND mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
-                }else{
+                // if($customer_id != 'no'){
+                //     $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE customer_id = $customer_id AND mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
+                // }else{
                     $$s = "SELECT sum(total_question) as total FROM `mcq_test_pattern` WHERE mcq_test_id=".$mcqId." and section_id =".$sectionDetail[$b];
-                }
+                //}
 
                 $$r = $this->db->query($$s);
 
                 $b++;
-            }
+            //}
         }
 
         $i = 0;
@@ -1732,8 +1733,10 @@ class QuestionBank extends MyController {
 
         for($a = 1; $a <= $countSection; $a++) {
             $r = "result".$a;
+
             if($$r->num_rows() > 0)  {
                 // output data of each row
+
                 foreach ($$r->result() as $row)  {
 
 
@@ -1766,8 +1769,8 @@ class QuestionBank extends MyController {
 
         $data['isCodeId'] = $this->getCodeTest();
 
-        //print_r($data); die;
         //$this->showInstructions($data);
+
        $this->session->set_userdata('instructionData', $data); 
         redirect('read-instructions');
             //redirect('mcq-question', 'refresh');
