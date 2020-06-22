@@ -7295,28 +7295,25 @@ foreach ($sectionDetails['section'] as $key => $value) {
     return 'no';
   }
 
+  public function viewStudentResult() {
+    $mcq_test_id = $this->uri->segment(3);
+    $studentId = $this->uri->segment(4);
+    $sql = " SELECT  first_name, last_name FROM student_register where id = $studentId";
 
+    $query = $this->db->query($sql);
+    $student_name_result = $query->result();
+    $student_name = $student_name_result[0]->first_name.' '.$student_name_result[0]->last_name;
 
-  public function viewStudentResult()
-  {
-        $mcq_test_id = $this->uri->segment(3);
-        $studentId = $this->uri->segment(4);
-        $sql = " SELECT  first_name, last_name FROM student_register where id = $studentId";
-
-          $query = $this->db->query($sql);
-          $student_name_result = $query->result();
-          $student_name = $student_name_result[0]->first_name.' '.$student_name_result[0]->last_name;
-
-        $sql = " SELECT student_answers.student_id, student_answers.question_id, 
-        student_answers.answer_id, student_answers.correct_ans,
-         student_answers.mcq_test_id, student_answers.section_id,
-         question_bank.question, answers.answer,student_answers.comment
-         FROM student_answers
-         inner join question_bank
-         on student_answers.question_id = question_bank.id
-         inner join answers
-         on student_answers.answer_id = answers.id
-         where student_answers.student_id= $studentId";
+    $sql = " SELECT student_answers.student_id, student_answers.question_id, 
+    student_answers.answer_id, student_answers.correct_ans,
+    student_answers.mcq_test_id, student_answers.section_id,
+    question_bank.question, answers.answer,student_answers.comment
+    FROM student_answers
+    inner join question_bank
+    on student_answers.question_id = question_bank.id
+    inner join answers
+    on student_answers.answer_id = answers.id
+    where student_answers.student_id= $studentId";
 
     $config['full_tag_open'] = "<ul class='pagination'>";
     $config['full_tag_close'] = '</ul>';
@@ -7354,20 +7351,28 @@ foreach ($sectionDetails['section'] as $key => $value) {
 
     $student = $this->getAllRowsData($sql,$config['per_page'], $start_index);
 
-    $this->load->view('admin/header');
-    $this->load->view('admin/sidenav');
-    $this->load->view('admin/student-result-view', array(
+    if (isset($_SESSION['customerId'])) {
+      $this->load->view('customer/header');
+      $this->load->view('customer/sidenav');
+      $this->load->view('customer/student-result-view', array(
       "student"=>$student,
       "student_name" => $student_name,
       "links" => $links
-    ));
-    $this->load->view('admin/footer');
+      ));
+      $this->load->view('customer/footer');
+    } else {
+      $this->load->view('admin/header');
+      $this->load->view('admin/sidenav');
+      $this->load->view('admin/student-result-view', array(
+      "student"=>$student,
+      "student_name" => $student_name,
+      "links" => $links
+      ));
+      $this->load->view('admin/footer');
+    }
   }
 
-
-
-  public function seeAnswerOption()
-  {
+  public function seeAnswerOption() {
     $question_id = $_POST['question_id'];
 
     $sql = "SELECT answer FROM answers where question_id= $question_id";
@@ -7375,8 +7380,5 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $query = $this->db->query($sql);
     $answwerOption = $query->result();
     print_r(json_encode($answwerOption));
-
-  }
-
-  
+  }  
 }
