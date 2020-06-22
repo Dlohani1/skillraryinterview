@@ -29,10 +29,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <title>MCQ Form</title>
     <style type="text/css">
-
+        #comment:focus{
+            outline: none;
+        }
+        #comment{
+            width: 90%;
+            height: 140px;
+            resize: none;
+            border: 1px solid black;
+        }
         .radioButn {
             display: block;
             position: relative;
@@ -87,7 +95,7 @@
             margin: 0;
             margin-bottom: 20px;
             border-radius: 7px;
-            width: 50%;
+            width: 100%;
         }
         .radiBackground1 {
             text-align: left; 
@@ -98,7 +106,7 @@
             margin: 0;
             margin-bottom: 20px;
             border-radius: 7px;
-            width: 50%;
+            width: 100%;
         }
 
         pre {
@@ -166,6 +174,12 @@
             margin-top: 12px;
             position: absolute;
         }
+        .content1{
+            margin-left: 40px;
+            margin-top: 3px;
+            position: absolute;
+        }
+
 
         #checkIcon{
             font-size: 10px;
@@ -263,34 +277,88 @@
             margin-bottom: 10px;
         }
         .box1{
-            padding: 6px 10px;
+            /* padding: 6px 10px;
             font-size: 22px;
             border-radius: 5px;
+            background: #28A745; */
+            font-size: 22px;
+            border-radius: 5px;
+            width: 37px;
             background: #28A745;
+            height: 100%;
+            min-height: 36px;
+            max-height: 36px;
+            text-align: center;
+            display: block;
+            margin-top: 6px;
         }
         .box2{
-            padding: 6px 10px;
+            /* padding: 6px 10px;
             font-size: 22px;
             border-radius: 5px;
+            background: #DC3545; */
+
+            font-size: 22px;
+            border-radius: 5px;
+            width: 37px;
             background: #DC3545;
+            height: 100%;
+            min-height: 36px;
+            max-height: 36px;
+            text-align: center;
+            display: block;
+            margin-top: 6px;
         }
         .box3{
-            padding: 6px 10px;
+            /* padding: 6px 10px;
             font-size: 22px;
             border-radius: 5px;
+            background: #6C757D; */
+
+            font-size: 22px;
+            border-radius: 5px;
+            width: 37px;
             background: #6C757D;
+            height: 100%;
+            min-height: 36px;
+            max-height: 36px;
+            text-align: center;
+            display: block;
+            margin-top: 6px;
         }
         .box4{
-            padding: 6px 10px;
+            /* padding: 6px 10px;
             font-size: 22px;
             border-radius: 5px;
+            background: purple; */
+
+            font-size: 22px;
+            border-radius: 5px;
+            width: 37px;
             background: purple;
+            height: 100%;
+            min-height: 36px;
+            max-height: 36px;
+            text-align: center;
+            display: block;
+            margin-top: 6px;
         }
         .box5{
-            padding: 6px 10px;
+            /* padding: 6px 10px;
             font-size: 22px;
             border-radius: 5px;
-            background: skyblue;   
+            background: skyblue;    */
+            
+            font-size: 22px;
+            border-radius: 5px;
+            width: 37px;
+            background: skyblue;
+            height: 100%;
+            min-height: 36px;
+            max-height: 36px;
+            text-align: center;
+            display: block;
+            margin-top: 6px;
         }
         .firstbox{
             margin: 20px 0px;
@@ -710,27 +778,32 @@
                             <div class="wellBg">
                             <p id="questionData"></p>
                         </div>
-                    <div>
-                        <ul id="optionsList" class="optionList">
-                        </ul>
-                        <textarea  style="<?php if (!$commentRequired) { echo "display:none";} ?>" id="comment"></textarea>
-                    </div>
-<!-- <div id="save-next" style="margin-top: 10%">
-<button class="saveBtn" onclick="saveNext()">Save & Next</button>
-</div> -->
-<div class="row buttonRow" style="margin-top: 10%;display: inline-flex;flex-wrap: nowrap;">
-    <div  id="save-next" >
-        <button class="saveBtn" id="saveNxt" onclick="saveNext(2)">Save & Next</button>
-    </div>
 
-    <div id="mark-btn">
-        <button class="saveBtn1" id="markReview" onclick="saveNext(1)">Mark for Review & Next</button>
-    </div>
-    <div id="clear-btn">
-        <button class="clearBtn" onclick="clearResponse()">Clear Response</button>
-    </div>
-    
-</div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul id="optionsList" class="optionList">
+                            </ul>
+                        </div>
+                        <div class="col-md-6" align="center">
+                            <p style="text-align:left;margin-left:20px;color:#33A478;font-weight:600">Additional Comments : </p>
+                            <textarea  style="<?php if (!$commentRequired) { echo "display:block";} ?>" id="comment"></textarea>
+                        </div>
+                    </div>
+                    <!-- <div id="save-next" style="margin-top: 10%">
+                    <button class="saveBtn" onclick="saveNext()">Save & Next</button>
+                    </div> -->
+                    <div class="row buttonRow" style="margin-top: 10%;display: inline-flex;flex-wrap: nowrap;">
+                        <div  id="save-next" >
+                            <button class="saveBtn" id="saveNxt" onclick="saveNext(2)">Save & Next</button>
+                        </div>
+
+                        <div id="mark-btn">
+                            <button class="saveBtn1" id="markReview" onclick="saveNext(1)">Mark for Review & Next</button>
+                        </div>
+                        <div id="clear-btn">
+                            <button class="clearBtn" onclick="clearResponse()">Clear Response</button>
+                        </div>
+                    </div>
                    <iframe id="myIframe" style="width:100%;height:100%; display: none"></iframe>
                         </div>
                     </div>
@@ -812,7 +885,7 @@
                 <div class="col-md-6">
                 <div>
                 <p class="icon"><span class="box4"><span class="countColor" id="markedCount" style="visibility: hidden;">0</span></span></p>
-                <p class="content">Marked For Review</p>
+                <p class="content1">Marked For Review</p>
                 </div>
                 </div>
                 </div><br/>
