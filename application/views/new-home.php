@@ -115,9 +115,6 @@
 			<div class="bannernewblock" style="position: relative;">
 				<!-- services dynamic contents -->
 				<section class="our_services_block">
-					<div class="our-service-title">
-						<h2>Our Services</h2>
-					</div>
 					<div class="learn_block">
 						<div class="container">
 							<div class="row">
@@ -126,16 +123,16 @@
 										<div class="block_img">
 											<a href="course"></a>
 										</div>
-										<h3><a href="course">LEARN ANYTHING ONLINE </a></h3> 
+										<h3><a href="https://skillrary.com/course">LEARN ANYTHING ONLINE </a></h3> 
 										<p>Anywhere anytime! Study and learn your favorite courses online, as per your convenience. Check out the list of courses below and start learning all the basic and important concepts of extensive and advanced skills.</p>
 									</div>
 								</div>
 								<div class="col-sm-4 animated fadeInDown">
 									<div class="block4 section2">
 										<div class="block_img">
-											<a href="user/instructors"></a>
+											<a href="https://skillrary.com/user/instructors"></a>
 										</div>
-										<h3><a href="user/instructors">TALK TO OUR EXPERTS</a></h3> 
+										<h3><a href="https://skillrary.com/user/instructors">TALK TO OUR EXPERTS</a></h3> 
 										<p>Do you like to be a confused and doubtful learner? Of course not. Our qualified trainers and expertise are here to clarify your doubts. They will provide you the accurate, clear and elaborate information for your better understanding.</p>
 									</div>
 								</div>
@@ -144,7 +141,7 @@
 										<div class="block_img">
 											<a href="message?repage=home"></a>
 										</div>
-										<h3><a href="message?repage=home">COMMUNICATE WITH PEOPLE</a></h3> 
+										<h3><a href="https://skillrary.com/message?repage=home">COMMUNICATE WITH PEOPLE</a></h3> 
 										<p>Knowledge spreads through communication. Join millions of people from around the world. Learn together to increase your knowledge. Make learning as easy and natural as chatting with a group of friends.</p>
 									</div>
 								</div>
@@ -216,7 +213,7 @@
             </div>
          </div>
       </footer>
-	<script src="assets/skillrary/js/homepage_opt.js" defer></script>
+	<!-- <script src="assets/skillrary/js/homepage_opt.js" defer></script> -->
 	<link href="assets/skillrary/fonts/awesome/css/font-awesome.min.css" rel="stylesheet">
 	<link href="assets/skillrary/js/plugins/all/common.css" rel="stylesheet">
 	<link href="assets/skillrary/static/css/front/common.css" rel="stylesheet">
