@@ -294,85 +294,38 @@ class CustomerController extends CI_Controller {
     $this->load->view('customer/footer');
   }
 
-  public function assignMcqToInvigilatorFun()
-  {
+  public function assignMcqToInvigilatorFun() {
     $mcqId = $_POST['mcq_id'];
     $invigilatorList = $_POST['invigilator_list']; 
-//     $arr_condition = array ("mcq_test_id" => $mcqId);
+    $sql = "SELECT invigilator_id from customer_invigilator where mcq_test_id = $mcqId";
+    $alreadyInvigilator = $this->db->query($sql)->result_array();
+    $alreadyAdded = array();
 
-        
-//        $this->db->where_in('invigilator_id',$invigilatorList);
-     
-//      $query = $this->db->get('customer_invigilator')->result_array();
-//      $list = array();
-//      foreach ($query as $key => $value) {
-//        $list[] = $value['invigilator_id'];
-//      }
-// print_r($list); die;
-    //$sql = "SELECT id from customer_invigilator where mcq_test_id = $mcqId and "
+    foreach ($alreadyInvigilator as $key => $value) {
+      $alreadyAdded[] = $value['invigilator_id'];
+    }
+    $data = array();
+
     foreach ($invigilatorList as $key => $value) {
+      if (in_array($value, $alreadyAdded)) {
+        continue;
+      }
       $data[]  = array ('invigilator_id' => $value, 
-        'customer_id' => $_SESSION['customerId'],
-        'mcq_test_id' => $mcqId,
-        'is_active' => 1
+      'customer_id' => $_SESSION['customerId'],
+      'mcq_test_id' => $mcqId,
+      'is_active' => 1
       );
     }
-    $this->db->insert_batch("customer_invigilator", $data);
-
-
-
-/*********************/
-
-
-
-    // foreach ($invigilatorList as $key => $value) {
-
-    //   $sql = 'select id from customer_invigilator where mcq_test_id = 0 and customer_id = '.$_SESSION["customerId"].' and invigilator_id = '.$value;
-    //   $queryRun = $this->db->query($sql)->result();
-    //   if($queryRun[0]->id){
-
-    //     $this->db->set('mcq_test_id', $mcqId);
-    //     $this->db->where('id', $queryRun[0]->id);
-    //     $this->db->update('customer_invigilator');
-
-        
-    //   }
-      
-    // }
-
-
-
-/************************/
-
-
-
-
-
-
-   /* $sql = "SELECT id from customer_invigilator where mcq_test_id = 0 and "
-      $this->db->where_in('tagId', $data);  
-  $this->db->delete('tags'); 
-
-  $this->db->select('id');
-$this->db->from('customer_invigilator');
-$this->db->where('mcq_test_id',0);
-$subQuery = $this->db->_compile_select();
-
-$this->db->_reset_select();
-// And now your main query
-$this->db->select("id");
-$this->db->where_in("$subQuery");
-$this->db->where('code !=', 'B');
-$this->db->get('myTable');*/
-
-
-    //  for ($i=1; $i<=$num; $i++) {
-    //   $username = $this->random_strings(4,"alphaNuMCaps");
-    //   $password = $this->random_strings(4,"numeric");
-    //   $data[]  = array ('username' => $username, 'password' => $password, 'mcq_test_id' => $mcqId, 'interview_code' => $group,'interview_customer_id' => $customerId);
-    // }
-        
-
+    
+    if (count($data)) {
+      $this->db->where('mcq_test_id',0);
+      $this->db->where_in('invigilator_id', $invigilatorList );
+      $this->db->delete('customer_invigilator');
+      $this->db->insert_batch("customer_invigilator", $data);
+      echo "Success"; 
+    } else {
+      echo "Already added";
+    }
   }
   public function viewInvigilatorList(){
 

@@ -132,14 +132,28 @@
 
         if (count($mcq['mcq-users']) > 0)
         foreach($mcq['mcq-users'] as $key => $value) {
-			$i++;
+			   $i++;
           
-          
-          
-          
-            //echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$value->first_name." ".$value->last_name.'</a></td><td>'.$value->email.'</td></tr>';
-      //<td>'.$value->studentId.'</td>
-    echo '<tr><td>'.$i.'</td><td>'.$value->first_name.' '.$value->last_name.'</td><td>'.$value->email.'</td><td><a  target="_blank" class="info_link" href='.$baseurl.'invigilator/joinInvigilatorMeeting/'.$value->pid.'> Join </a></td></tr>';
+          $today = date('Y-m-d');
+
+      if($value->start_test){
+
+        if($value->test_date > $today){
+
+          echo '<tr><td>'.$i.'</td><td>'.$value->first_name.' '.$value->last_name.'</td><td>'.$value->email.'</td><td><a  target="_blank" class="info_link" > Meeting Expired </a></td></tr>';
+
+        }
+        else{
+
+          echo '<tr><td>'.$i.'</td><td>'.$value->first_name.' '.$value->last_name.'</td><td>'.$value->email.'</td><td><a  target="_blank" class="info_link" href='.$baseurl.'invigilator/joinInvigilatorMeeting/'.$value->pid.'> Join </a></td></tr>';
+
+        }
+
+      }
+      else{
+        echo '<tr><td>'.$i.'</td><td>'.$value->first_name.' '.$value->last_name.'</td><td>'.$value->email.'</td><td><a  target="_blank" class="info_link" > Meeting Not Started </a></td></tr>';
+      }
+    // echo '<tr><td>'.$i.'</td><td>'.$value->first_name.' '.$value->last_name.'</td><td>'.$value->email.'</td><td><a  target="_blank" class="info_link" href='.$baseurl.'invigilator/joinInvigilatorMeeting/'.$value->pid.'> Join </a></td></tr>';
    
    
         }
