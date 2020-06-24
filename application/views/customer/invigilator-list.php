@@ -27,11 +27,11 @@
               	<table id="mytable" class="table table-bordred table-striped">
                    <thead>
                    		<th>Sl no</th>
-                        <th>User Id</th>
+                        <!-- <th>User Id</th> -->
 						<th>Invigilator</th>
 						<th>MCQ</th>
-						<th>MCQ ID</th>
-                        <th>Actions</th>
+						<!-- <th>MCQ ID</th>
+                        <th>Actions</th> -->
                         
                    </thead>
     			<tbody>
@@ -46,8 +46,7 @@
 		
     	 	
     
-            echo '<tr><td>'.$i.'</td><td>'.$temp->id.'</td><td>'.$temp->first_name.'</td><td>'.$temp->title.'</td><td>'.$temp->mcqid.'</td>
-      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="'.base_url().'customer/invigilator-view-mcq-data/'.$temp->id.'"><button class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></p></td></tr>';
+            echo '<tr><td>'.$i.'</td><td>'.$temp->first_name.'</td><td>'.$temp->title.'</td><td></tr>';
 
       	$i++;
          }

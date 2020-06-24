@@ -3284,7 +3284,7 @@ public function viewMcqDataSearch() {
       // where assess_usr_pwd.mcq_test_id= $mcqId
       // order by assess_usr_pwd.id asc";
 
-      $sql = "SELECT distinct student_register.id as studentId,student_register.first_name,student_register.last_name,assess_usr_pwd.id as assessuserId,proctored_mcq.id as pid,proctored_mcq.mcq_test_id,student_register.email,assess_usr_pwd.username,assess_usr_pwd.password,assess_usr_pwd.is_used,proctored_mcq.user_join_url
+      $sql = "SELECT distinct student_register.id as studentId,student_register.first_name,student_register.last_name,assess_usr_pwd.id as assessuserId,proctored_mcq.id as pid,proctored_mcq.mcq_test_id,student_register.email,assess_usr_pwd.username,assess_usr_pwd.password,assess_usr_pwd.is_used,proctored_mcq.user_join_url,proctored_mcq.start_test,proctored_mcq.test_date
 FROM student_register
 INNER JOIN assess_usr_pwd ON student_register.assess_usr_pwd_id = assess_usr_pwd.id
 INNER JOIN proctored_mcq ON proctored_mcq.assess_usr_pwd_id = assess_usr_pwd.id

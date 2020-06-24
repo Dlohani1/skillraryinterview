@@ -441,6 +441,9 @@ var x = setInterval(function() {
   }
 }, 1000);
 
+} else {
+ var startAssessment = document.getElementById("startAssessment");
+ startAssessment.style.display = "block";
 }
 
 function joinMeeting() {
@@ -487,7 +490,7 @@ function joinMeeting() {
                         var win = window.open("mcq-question", "newWin", "width="+screen.availWidth+",height="+screen.availHeight)
                         win.onbeforeunload = function() {
                             console.log('unload');
-                            //window.location.href="user/view-results";
+                            window.location.href="user/view-results";
                             var baseUrl = document.getElementById("base_url").value;
                             $.ajax({
                                 url: baseUrl+"admin/startTest",

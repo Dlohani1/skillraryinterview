@@ -784,9 +784,9 @@
                             <ul id="optionsList" class="optionList">
                             </ul>
                         </div>
-                        <div class="col-md-6" align="center">
+                        <div class="col-md-6" align="center" style="<?php if (!$commentRequired) { echo "display:none";} ?>" >
                             <p style="text-align:left;margin-left:20px;color:#33A478;font-weight:600">Additional Comments : </p>
-                            <textarea  style="<?php if (!$commentRequired) { echo "display:block";} ?>" id="comment"></textarea>
+                            <textarea id="comment"></textarea>
                         </div>
                     </div>
                     <!-- <div id="save-next" style="margin-top: 10%">

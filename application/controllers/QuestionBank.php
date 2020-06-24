@@ -748,7 +748,7 @@ class QuestionBank extends MyController {
                     redirect('checklogin', 'refresh');
                   }
                 } else {
-                   // echo "test"; die;
+                   //echo "test"; die;
                     if (isset($_POST['login-for'])) {
                         if ($_POST['login-for'] == "1") {
                             $userTable = "assess_usr_pwd";
@@ -786,7 +786,7 @@ class QuestionBank extends MyController {
                     $_SESSION['username'] = $user->username;
 
                     $assessId = $user->id;
-		            $_SESSION['assessId']= $assessId;
+		     $_SESSION['assessId']= $assessId;
 
                      $sql = "SELECT * FROM `student_register` WHERE assess_usr_pwd_id = $assessId";
 
@@ -816,8 +816,8 @@ class QuestionBank extends MyController {
                     //$this->session->set_userdata('mcqCode', $result->code); 
                     $_SESSION['mcqCode'] = $result->code;
                     //$this->checkCode($result->code);
-                    $this->enterCode();
-                     
+                   // $this->enterCode();
+
                     if ($this->checkProfile()) {
                         //echo "aa"; die;
                         ///$this->session->set_flashdata('success', 'Complete your profile');
@@ -978,7 +978,7 @@ class QuestionBank extends MyController {
                 }  
 
                 if (isset($_SESSION['mcqCode'])) {
-                    $this->checkCode($_SESSION['mcqCode']);
+                    $this->checkCode($_SESSION['mcqCode']); 
                 } else {
                     redirect('user/profile', 'refresh');    
                 }
@@ -1108,7 +1108,7 @@ class QuestionBank extends MyController {
 
             $this->checkCode($_SESSION['mcqCode']);
            
-            redirect('read-instructions');
+           // redirect('read-instructions');
 
         }
 
@@ -1509,7 +1509,7 @@ class QuestionBank extends MyController {
 
             $this->session->set_userdata('mcqId', $mcqId);
 
-            //$this->isTestProctored();
+            $this->isTestProctored();
             
             if ($attempt > 0) {
                 $attemptCount = $this->isMcqTaken(true,$attempt);
@@ -1580,14 +1580,13 @@ class QuestionBank extends MyController {
 
     private function generateQuestion($code, $mcqId) {
         // $customer_id = $this->getCustomerId();
-
         $customer_id = $this->getCustomerCode();
 
-        if($customer_id != 'no'){
-            $sql = "SELECT section_id FROM `mcq_test_pattern` where customer_id = $customer_id AND  mcq_test_id = ". $mcqId;
-        }else{
+       // if($customer_id != 'no'){
+          //  $sql = "SELECT section_id FROM `mcq_test_pattern` where customer_id = $customer_id AND  mcq_test_id = ". $mcqId;
+       // }else{
             $sql = "SELECT section_id FROM `mcq_test_pattern` where mcq_test_id = ". $mcqId;
-        }
+       // }
 
 
         $query = $this->db->query($sql);
@@ -1599,11 +1598,11 @@ class QuestionBank extends MyController {
 
             $sql = "sql".$countSection;
 
-            if($customer_id != 'no'){
+           // if($customer_id != 'no'){
                $$sql = "SELECT * FROM `mcq_test_pattern` WHERE mcq_test_id= '$mcqId' AND  customer_id = $customer_id AND  section_id =".$row->section_id;
-            }else{
+           // }else{
                 $$sql = "SELECT * FROM `mcq_test_pattern` WHERE mcq_test_id= '$mcqId' AND section_id =".$row->section_id;
-            }
+           // }
 
             $sectionDetail[] = $row->section_id;
 
@@ -1632,12 +1631,12 @@ class QuestionBank extends MyController {
                     $isAdmin = $this->getCustomerCode();
 
                     //$customer_code = "no"; 
-                    if($isAdmin != 'no'){
-                        $customer_code = $this->fetchCustomerCode($isAdmin);
-                        $$sqlCount .= "(SELECT id FROM question_bank_$customer_code WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
-                    }else{
+                  //  if($isAdmin != 'no'){
+                    //    $customer_code = $this->fetchCustomerCode($isAdmin);
+                      //  $$sqlCount .= "(SELECT id FROM question_bank_$customer_code WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
+                   // }else{
                         $$sqlCount .= "(SELECT id FROM `question_bank` WHERE section_id =".$sectionDetail[$j]." ORDER BY id LIMIT ".$totalQ.")";
-                    }
+                   // }
 
                     $i++;
                     $j++;
@@ -1651,14 +1650,14 @@ class QuestionBank extends MyController {
 
         for($a = 1; $a <= $countSection; $a++) {
             $result = "resultQ".$a;
-            $q = "sqlQ".$a;
+            $q = "sqlQ".$a; 
             $$result = $this->db->query($$q);    
         }
 
         for($a = 1; $a <= $countSection; $a++) {
             $result = "resultQ".$a;
             $q = "q".$a;
-            // $$result = $this->db->query($$q); 
+           // $$result = $this->db->query($$q); 
             $$q = "";
 
             if($$result->num_rows() > 0)  {
@@ -1688,8 +1687,9 @@ class QuestionBank extends MyController {
 
         $data = array();
         $b = 0;
+
         for($a = 1; $a <= $countSection; $a++) {
-            
+
             $q = "q".$a;
             $qn = "section".$a."Questions";
             $$q =  array(
@@ -1849,7 +1849,7 @@ class QuestionBank extends MyController {
             echo "hello"; die;
         }
 
-        public function startTest($userId) {
+        public function startTest($userId){
             $sql = "SELECT assess_usr_pwd_id FROM `student_register` WHERE id= ".$userId;
 
             $result = $this->db->query($sql)->row();
