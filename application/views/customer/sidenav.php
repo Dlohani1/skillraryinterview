@@ -98,6 +98,9 @@
                             <a class="nav-link" href=<?php //echo base_url()."admin/interview-customers-list";?>>View Customers</a>
                         </nav>
                     </div> -->
+ <?php 
+                            if ($_SESSION['isMCQAssigned'] > 0){?>
+
                     <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsQ1" aria-expanded="false" aria-controls="collapseLayoutsQ1"
                         >
@@ -112,6 +115,7 @@
                             <a class="nav-link" href=<?php echo base_url()."customer/invigilator-list";?>>View</a>
                         </nav>
                     </div>
+<?php } ?>
                 </div>
             </div>
                

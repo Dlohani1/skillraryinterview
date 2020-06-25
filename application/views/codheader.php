@@ -165,8 +165,8 @@
                     <img src="https://www.skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary Logo">
                     <div style="float:right">
                         <a class="btn registerBtn" href="/">HOME</a>&nbsp;&nbsp;
-                        <a class="btn registerBtn" href="new-login">SIGNIN</a>&nbsp;&nbsp;
-                        <a class="btn registerBtn" href="registration">SIGNUP</a>
+                        <!-- <a class="btn registerBtn" href="new-login">SIGNIN</a>&nbsp;&nbsp;
+                        <a class="btn registerBtn" href="registration">SIGNUP</a> -->
                     </div>
                 </div>
             </nav>

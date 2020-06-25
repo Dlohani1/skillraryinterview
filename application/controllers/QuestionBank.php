@@ -767,8 +767,10 @@ class QuestionBank extends MyController {
                     if (isset($_POST['login-for'])) {
                         if ($_POST['login-for'] == "1") {
                             $_SESSION['loginType'] = "test";
+			    $tableField = "assess_usr_pwd_id";
                         } else {
                             $_SESSION['loginType'] = "interview";
+			    $tableField = "interview_users_id";
                         }
                     }
 
@@ -781,14 +783,15 @@ class QuestionBank extends MyController {
                     $result = $this->db->query($sql)->row();
 
                     //$this->session->set_userdata('mcqCode', $result->code); 
-                    $_SESSION['mcqCode'] = $result->code;
+                    if (null !== $result) {
+			$_SESSION['mcqCode'] = $result->code;
 
-                    $_SESSION['username'] = $user->username;
-
+                         $_SESSION['username'] = $user->username;
+	             }
                     $assessId = $user->id;
-		     $_SESSION['assessId']= $assessId;
+		    $_SESSION['assessId']= $assessId;
 
-                     $sql = "SELECT * FROM `student_register` WHERE assess_usr_pwd_id = $assessId";
+                     $sql = "SELECT * FROM `student_register` WHERE $tableField = $assessId";
 
                      $user = $this->db->query($sql)->row();
 			//print_r($user); die;
@@ -797,7 +800,7 @@ class QuestionBank extends MyController {
                           //  redirect('user/profile');
                     //} else 
 
-	                $this->session->set_userdata('id', $user->id); 
+	            $this->session->set_userdata('id', $user->id); 
 
                     $this->session->set_userdata('email', $user->email); 
 
@@ -827,7 +830,7 @@ class QuestionBank extends MyController {
                         if (strlen(trim($_POST['enter-code'])) > 0) {
                             $this->session->set_userdata('code', trim($_POST['enter-code']));
                             redirect('user/enter-code');
-                        }
+                        }echo "dd";die;
                         //redirect('user/enter-code');
                         redirect('user/home');
                     }
@@ -842,8 +845,17 @@ class QuestionBank extends MyController {
 
                      
                    } else {
-                    $this->session->set_flashdata('error', 'Invalid Credentials');
-                    redirect('checklogin', 'refresh');
+       		     $this->session->set_flashdata('error', 'Invalid Credentials');
+
+                    if (isset($_POST['login-for'])) {
+                        if ($_POST['login-for'] == "1") {
+                             redirect('checklogin', 'refresh');
+                        } else {
+                             redirect('interview/login', 'refresh');
+                        }
+                    }
+                    //$this->session->set_flashdata('error', 'Invalid Credentials');
+                    //redirect('checklogin', 'refresh');
                    }
                 }
                 

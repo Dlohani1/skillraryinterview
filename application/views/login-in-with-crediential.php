@@ -199,7 +199,7 @@
 
                               <div class="form-group animated fadeInRight"> <i class="fa fa-lock"></i>
 
-                               <input type="text" name="pwd" class="pass_fields" placeholder="pwd" required> <i class="fa fa-eye-slash show_hide_pass" title="Show" aria-hidden="true"></i> 
+                               <input type="password" name="pwd" class="pass_fields" placeholder="Password" required> <i class="fa fa-eye-slash show_hide_pass" title="Show" aria-hidden="true"></i> 
 
                             </div>
                               <!-- <div class="fgt"> <a href="https://www.skillrary.com/user/forgot">Forgot Password</a> </div> --> 

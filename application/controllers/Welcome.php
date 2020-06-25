@@ -43,10 +43,11 @@ class Welcome extends CI_Controller {
             redirect('user/home');
         } else {
             //$this->load->view('home');
-            $sql = "SELECT logo_image_url, banner_image_url from site_images where is_active = 1";
+            //$sql = "SELECT logo_image_url, banner_image_url from site_images where is_active = 1";
             $baseUrl = base_url();
-            //$sql = "SELECT logo_image_url, banner_image_url from site_images where base_url ='".$baseUrl."'";
-            $result = $this->db->query($sql)->row();
+            $sql = "SELECT logo_image_url, banner_image_url from site_images where base_url ='".$baseUrl."'";
+            
+	    $result = $this->db->query($sql)->row();
             if (null !== $result) {
                 $this->load->view('new-home',array("images"=>$result));
             } else {
@@ -428,9 +429,9 @@ public function viewResult($mcqId, $sId) {
 
 
     public function checklogin() {
-        $sql = "SELECT logo_image_url from site_images where is_active = 1";
+        //$sql = "SELECT logo_image_url from site_images where is_active = 1";
         $baseUrl = base_url();
-        //$sql = "SELECT logo_image_url, banner_image_url from site_images where base_url ='".$baseUrl."'";
+        $sql = "SELECT logo_image_url, banner_image_url from site_images where base_url ='".$baseUrl."'";
         $result = $this->db->query($sql)->row();
         $this->load->view('login-in-with-crediential',array("images"=>$result));
     }

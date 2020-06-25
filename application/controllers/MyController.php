@@ -25,7 +25,7 @@ class MyController extends CI_Controller {
             redirect('user/create/profile');
             
           }        	
-        	redirect('user/login');
+        	$this->logout();
         } else if (!$u && (null !== $this->session->id)) {
 
           if (isset($_SESSION['username'])) {

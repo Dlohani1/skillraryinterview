@@ -1750,6 +1750,7 @@ public function viewMcqListSearch() {
     }
 
     $customerId = $_SESSION['customerId'];
+/*
     $sql = "SELECT * from `interview_users` where interview_code = '$group' and interview_customer_id = '$customerId'";
     $codeCheck = $this->db->query($sql)->result();
 
@@ -1760,7 +1761,7 @@ public function viewMcqListSearch() {
       $this->session->set_flashdata('message', "$group code already exist.");
       redirect('customer/create-interview-group');
     } 
-
+*/
     $mcqId = 0;
     
     for ($i=1; $i<=$num; $i++) {

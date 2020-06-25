@@ -109,7 +109,7 @@ class AdminController extends CI_Controller {
       $this->db->update('gotomeeting_token_details',$data);
     }
     
-    echo "success";
+    //echo "success";
   }
 
 
@@ -306,7 +306,7 @@ public function startMeeting() {
 
     //$sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
 
-    $sql = "SELECT * FROM `gotomeeting_token_details` where email='trainer111@qspiders.com'";
+    $sql = "SELECT * FROM `gotomeeting_token_details` where email='trainer112@qspiders.com'";
 
     // $meeting = $this->db2->query($sql)->result();
     $meeting = $this->db->query($sql)->result();
@@ -2172,7 +2172,7 @@ $mail->setFrom('info@skillrary.com', 'SkillRary');
         "password" => $result->password,
         "testDateTime" => $testDate." ". $testTime,
         "testTime" => $interviewTimeHour.":".$interviewTime[1]." ".$timeA,
-        "link" => "https://assess.skillrary.com/user/new-login"
+        "link" => base_link()."checklogin"
       );
 
       $this->updateAccessToken();
@@ -2299,7 +2299,8 @@ return $x;
     //   $this->db->update('student_register',$data);
     // }
 
-    $sql = "SELECT id FROM `student_register` where email = '".$email."'";
+//    $sql = "SELECT id FROM `student_register` where email = '".$email."'";
+      $sql = "SELECT id FROM `student_register` where interview_users_id = $userId";
     $result = $this->db->query($sql)->row();
 
     if (null == $result) {
@@ -2332,7 +2333,7 @@ return $x;
       "password" => $result->password,
       "testDateTime" => $testDate." ". $testTime,
       "testTime" => $interviewTimeHour.":".$interviewTime[1]." ".$timeA,
-      "link" => "https://assess.skillrary.com/interview/login"
+      "link" => base_url()."interview/login"
     );
 
       $this->updateAccessToken();
