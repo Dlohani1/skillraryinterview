@@ -827,10 +827,10 @@ class QuestionBank extends MyController {
                         redirect('user/profile');
                         return $this->showUserProfile();
                     } else {
-                        if (strlen(trim($_POST['enter-code'])) > 0) {
+                        if (isset($_POST['enter-code']) && strlen(trim($_POST['enter-code'])) > 0) {
                             $this->session->set_userdata('code', trim($_POST['enter-code']));
                             redirect('user/enter-code');
-                        }echo "dd";die;
+                        }
                         //redirect('user/enter-code');
                         redirect('user/home');
                     }
