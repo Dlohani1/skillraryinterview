@@ -2239,11 +2239,11 @@ return $x;
   $testDate = $testDate[2]."-".$testDate[0]."-".$testDate[1];
 
 
-  $sql = "SELECT * from `interview_details` where gotomeeting_id = $meetingId AND interview_date = '".$testDate."' AND duration_timestamp >='".$interviewTimeStamp."' order by duration_timestamp DESC";
+  // $sql = "SELECT * from `interview_details` where gotomeeting_id = $meetingId AND interview_date = '".$testDate."' AND duration_timestamp >='".$interviewTimeStamp."' order by duration_timestamp DESC";
 
-  $interviewSchedule = $this->db->query($sql)->row();
+  // $interviewSchedule = $this->db->query($sql)->row();
 
-  if (null == $interviewSchedule) {
+  // if (null == $interviewSchedule) {
     foreach ($interviewerId as $key => $value) {
       $data[]  = array (
         'customer_id' => $customerId,
@@ -2346,24 +2346,24 @@ return $x;
       print_r($response);
       //header('Content-Type: application/json');
       //echo json_encode( $response );
-    } else {
+    // } else {
 
-      $interviewTime = explode(":",$interviewSchedule->interview_time);
+    //   $interviewTime = explode(":",$interviewSchedule->interview_time);
 
-      $interviewTimeHour = $interviewTime[0] + ($interviewSchedule->duration*2);
+    //   $interviewTimeHour = $interviewTime[0] + ($interviewSchedule->duration*2);
 
-      $timeA = "am";
+    //   $timeA = "am";
 
-      if ($interviewTimeHour >= 12) {
-        $interviewTimeHour = $this->getTimein12Hour($interviewTimeHour);
-        $timeA = "pm";
-      }
-      //echo $interviewTimeHour; die;
+    //   if ($interviewTimeHour >= 12) {
+    //     $interviewTimeHour = $this->getTimein12Hour($interviewTimeHour);
+    //     $timeA = "pm";
+    //   }
+    //   //echo $interviewTimeHour; die;
 
-      $response = array ('status' => "400", "data" => "Interview slot free after ".$interviewTimeHour.":".$interviewTime[1]." ".$timeA );
-      header('Content-Type: application/json');
-      echo json_encode( $response );
-    }
+    //   $response = array ('status' => "400", "data" => "Interview slot free after ".$interviewTimeHour.":".$interviewTime[1]." ".$timeA );
+    //   header('Content-Type: application/json');
+    //   echo json_encode( $response );
+    // }
  }
 
  public function getTimein12Hour($hr) {

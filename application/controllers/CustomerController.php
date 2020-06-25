@@ -146,8 +146,8 @@ class CustomerController extends CI_Controller {
   }
 
   public function checkLogin() {
-    $login = $_POST['login'];
-    $password = $_POST['password'];
+    $login = trim($_POST['login']);
+    $password = trim($_POST['password']);
 
     $sql = "SELECT * FROM `customers` where username = '$login' and password='$password' and is_active='1'";
 
@@ -1800,7 +1800,9 @@ public function viewMcqListSearch() {
 
   //print_r($getIds); die;
 
-  $sql = "SELECT gotomeeting_id from `interview_details` where customer_id = $customerId AND interview_date = '".$testDate."' AND interview_timestamp <= '".$interviewTimeStamp."' AND  duration_timestamp >='".$interviewTimeStamp."'";
+  //$sql = "SELECT gotomeeting_id from `interview_details` where customer_id = $customerId AND interview_date = '".$testDate."' AND interview_timestamp <= '".$interviewTimeStamp."' AND  duration_timestamp >='".$interviewTimeStamp."'";
+
+  $sql = "SELECT gotomeeting_id from `interview_details` where customer_id = $customerId";
 
   $interviewSchedule = $this->db->query($sql)->result_object();
 

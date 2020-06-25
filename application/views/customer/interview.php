@@ -843,7 +843,7 @@
       <div class="modal-dialog">
     <div class="modal-content">
           <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top: -5%;
+        <button type="button" class="close" id="closeSchedule" data-dismiss="modal" aria-hidden="true" style="margin-top: -5%;
 
 margin-right: -30%;
 
@@ -1724,7 +1724,7 @@ function getHour(hour) {
 
   }
   testTime = hour+":"+timeSplit[1];
-
+  document.getElementById("closeSchedule").click();
   $.ajax({
     url: baseUrl+"admin/sendInterviewInvite",
     type: 'post',
@@ -1743,7 +1743,8 @@ function getHour(hour) {
         // document.getElementById("code").disabled = true;
         if (data.status == "400") {
             document.getElementById("error").innerHTML = data.data;
-        } else {
+        } 
+        else {
         //document.getElementById("codeSubmit").disabled = true;
        window.location.reload();
       }
