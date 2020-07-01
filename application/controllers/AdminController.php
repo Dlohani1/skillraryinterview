@@ -303,10 +303,18 @@ public function startMeeting() {
 
     $call = $_POST['call'];
     $this->updateAccessToken();
+    $gotoMeetingId = isset($_POST['gotomeetingId']) ? $_POST['gotomeetingId'] : 0;
+    if (!$gotoMeetingId) {
+	$email = "trainer111@qspiders.com";
+    } else {
+	$sql = "Select email from `gotomeeting_token_details` where id = $gotoMeetingId";
+	$email = $this->db->query($sql)->row()->email;
+	//$email = "trainer112@qspiders.com";
+    }
 
     //$sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
 
-    $sql = "SELECT * FROM `gotomeeting_token_details` where email='trainer112@qspiders.com'";
+    $sql = "SELECT * FROM `gotomeeting_token_details` where email='".$email."'";
 
     // $meeting = $this->db2->query($sql)->result();
     $meeting = $this->db->query($sql)->result();
@@ -7381,5 +7389,35 @@ foreach ($sectionDetails['section'] as $key => $value) {
     $query = $this->db->query($sql);
     $answwerOption = $query->result();
     print_r(json_encode($answwerOption));
+  }
+  public function addInterviewer() {
+    $id = $_POST['interviewerDetailId'];
+    $interviewerIds = $_POST['interviewerId'];
+   // $interviewer = explode(",",$interviewerIds);
+    $round = $_POST['round'];
+
+ // echo $id; die;
+  $sql = "SELECT * from interview_details where interview_users_id = $id and round = $round";
+  $result = $this->db->query($sql)->row();
+  foreach($interviewerIds as $key => $value) {
+    $data[]  = array (
+      'customer_id' => $result->customer_id,
+      'gotomeeting_id' => $result->gotomeeting_id,
+      'interview_users_id' => $result->interview_users_id,
+      'mcq_test_id' => $result->mcq_test_id,
+      'interviewer_id' => $value,
+      'user_email' => $result->user_email,
+      'interview_date' => $result->interview_date,
+      'interview_time' => $result->interview_time,
+      'interview_mode' => $result->interview_mode,
+      'interview_venue' => $result->interview_venue,
+      'round' => $result->round,
+      'duration' => $result->duration,
+      'interview_timestamp' => $result->interview_timestamp,
+      'duration_timestamp' => $result->duration_timestamp
+    );
+  }
+
+    $this->db->insert_batch('interview_details', $data);
   }  
 }

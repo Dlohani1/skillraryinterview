@@ -607,3 +607,4 @@ $route['customer/invigilator-list'] = 'CustomerController/viewInvigilatorList';
 
 
 
+$route['admin/addInterviewer'] ['POST']= 'AdminController/addInterviewer';

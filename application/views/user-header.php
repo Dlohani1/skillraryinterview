@@ -420,6 +420,13 @@
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                         <a class="btn mobileNavBtn" href=<?php echo base_url()."user/home";?>>Home</a>
                         <a class="btn mobileNavBtn" href=<?php echo base_url()."user/profile";?>>Profile</a>
+ <?php 
+
+                        if (isset($_SESSION['loginType']) && $_SESSION['loginType'] == "interview") {
+                            echo '<a class="btn registerBtn" href= '.base_url().'user/interview >Interview</a>'; 
+                        }
+                        ?>
+
                         <!-- <a class="btn mobileNavBtn" href=<?php //echo base_url()."user/enter-code";?>>Take Test</a> -->
                         <a class="btn mobileNavBtn" href=<?php echo base_url()."user/logout";?>>Logout</a>
                     </div>

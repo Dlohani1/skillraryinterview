@@ -1061,18 +1061,23 @@ class QuestionBank extends MyController {
                 $this->load->view('codefooter');
             }
         }
- 
 
         public function activeInterview() {
 
-              $sql = "SELECT * FROM interview_details where interview_users_id = ".$_SESSION['assessId'];
+		if (!$this->checkProfile()) {
+              $sql = "SELECT distinct meeting_id,interview_date,interview_time,interview_mode,user_join_url,is_active FROM interview_details where interview_users_id = ".$_SESSION['assessId'];
 
                 $query = $this->db->query($sql);
 
                 $result = $query->result();
+//echo "<pre>"; print_r($result); die;
             $this->load->view('user-header');
             $this->load->view('enter-code', array('interviewData' => $result));
             $this->load->view('codefooter');
+} else {
+$this->session->set_flashdata('error', 'Complete your profile');
+redirect('user/profile');
+}
         }
 
 
@@ -1573,7 +1578,11 @@ class QuestionBank extends MyController {
         $sql = "SELECT code FROM `mcq_code` WHERE mcq_test_id=$mcqId and is_active=1";
 
         $result = $this->db->query($sql)->row();
-        return $result->code;
+	if (null !== $result) {
+          return $result->code;
+	} else {
+	 return 0;
+	}
         //return $result->
 
     }

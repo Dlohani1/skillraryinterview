@@ -77,8 +77,8 @@
                 <div class="container">
                     <img src="https://www.skillrary.com/uploads/images/f-sr-logo-195-50.png" alt="SkillRary Logo">
                     <div style="float:right">
-                        <a class="btn registerBtn" href="user/new-login">SIGNIN</a>&nbsp;&nbsp;
-                        <a class="btn registerBtn" href="user/registration">SIGNUP</a>
+                       <a class="btn registerBtn" href="customer/login">Customer</a>&nbsp;&nbsp;
+                        <a class="btn registerBtn" href="interview/login">SIGNIN</a>
                     </div>
                 </div>
             </nav>
@@ -92,7 +92,7 @@
                     <div class="secondBox">
                         <img src="<?php echo base_url().'images/laptopimage.jpg';?>" alt="img" class="codeimg"/><br/><br/><br/>
                         <div>
-                            <h1 align="center" class="skillraryTest">Skillrary Assessment Portal</h1>
+                            <h1 align="center" class="skillraryTest">Skillrary Interview Portal</h1>
                         </div>
                     </div>
                 </div>

@@ -355,7 +355,7 @@
                       // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
                       data: { "first-name": firstName,"last-name": lastName,"user-email": userEmail,"user-cno": userCno,"roleId" : roleId, "username":username, "password":password} ,
                       success: function( data, textStatus, jQxhr ){
-                          //window.location.reload(true);
+                          window.location.reload();
                          // window.location.href="admin/view-mcq";
                           //$('#response pre').html( JSON.stringify( data ) );
                           console.log('data', data);

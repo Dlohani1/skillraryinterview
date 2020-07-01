@@ -57,7 +57,9 @@
                         <h4 style="text-align: center;">Update Profile</h4>
                         <hr/>
                         <p class="updatedText"> <?php if (isset($_SESSION['success'])) { echo $_SESSION['success'];} ?> </p>
-                        <form name="regform" method="post" action="update-profile"  onsubmit="return validateUpdateProfile();" >
+                         <p class="updatedText" style="color:red"> <?php if (isset($_SESSION['error'])) { echo $_SESSION['error'];} ?> </p>
+
+			<form name="regform" method="post" action="update-profile"  onsubmit="return validateUpdateProfile();" >
                              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                             <fieldset>
                                 <legend id="sectionHeading">Personal Details:</legend>

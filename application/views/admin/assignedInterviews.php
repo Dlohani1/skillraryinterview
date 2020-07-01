@@ -1,3 +1,45 @@
+<style>
+.gifModalDialog{
+    margin: 0 auto;
+    display: table;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 35%;
+    -webkit-transform: translateY(-35%);
+    -moz-transform: translateY(-35%);
+    -ms-transform: translateY(-35%);
+    -o-transform: translateY(-35%);
+    width: 500px;
+    transform: translateY(-35%);
+}
+.modal-content {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: white !important;
+    background-clip: padding-box;
+    border: 1px solid transparent !important;
+    border-radius: .3rem;
+    outline: 0;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    outline: 0;
+    background: #fffcfc8a !important;
+}
+</style>
 <input type="hidden" id="base-url" value="<?php echo base_url();?>"/>
 <div id="layoutSidenav_content">
   <main>
@@ -155,7 +197,7 @@ if ($value->is_active == "0") { echo '
  
  } else {
 echo '
-<button class= "btn btn-info"  onclick="startMeeting('.$value->id.')"> Start Interview </button>
+<button class= "btn btn-info"  onclick="startMeeting('.$value->id.",".$value->gotomeeting_id.')"> Start Interview </button>
 <button class="btn btn-success " onclick="setUser('.$value->id.')" data-title="Edit" data-toggle="modal" data-target="#myModal" >Add Feedback</button>
 <button  class="btn btn-danger" onclick="closeInterview('.$value->id.')"> Close Interview </button>';
 }
@@ -249,7 +291,22 @@ echo '</td> </tr>';
         </div>
   </div>
 </div>
+<!--loader-->
+  <button style="display:none" id="loadImg" type="button" class="btn btn-light" data-toggle="modal" data-target="#imgModal">
+    Open
+  </button>
+  <div class="modal" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog gifModalDialog">
+      <div class="modal-content">
 
+        <div class="modal-body" align="center">
+          <img src="https://thumbs.gfycat.com/IlliterateConfusedAmericancrayfish-small.gif">
+        </div>
+<button type="button" id="hideImg" style="display:none" class="btn btn-light" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
 
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
@@ -423,6 +480,14 @@ echo '</td> </tr>';
 
 <script>
 
+$(document).ready(function () {
+    $(document).ajaxStart(function () {
+        document.getElementById("loadImg").click();
+    }).ajaxStop(function () {
+        document.getElementById("hideImg").click();
+    });
+});
+//document.getElementById("loadImg").click();
 
 
   $('#back').click(function () {
@@ -446,7 +511,7 @@ echo '</td> </tr>';
 		//alert(id);
 		//}
 
- 		function startMeeting(id) {
+ 		function startMeeting(id,gotomeetingId) {
                 var baseUrl = document.getElementById("base_url").value;
 
                 //var role = document.getElementById("role-name").value;
@@ -458,7 +523,7 @@ echo '</td> </tr>';
                     type: 'post',
 
                     // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
-                    data: {"call":"interview", "assessId" : id} ,
+                    data: {"call":"interview", "assessId" : id,"gotomeetingId":gotomeetingId} ,
                     success: function( data, textStatus, jQxhr ){
                         //window.location.reload(true);
                        // window.location.href="admin/view-mcq";
@@ -468,9 +533,9 @@ echo '</td> </tr>';
 			//alert(data);
                          //document.getElementById("joinMeeting").style.display = "block";
 
-			var element = document.getElementById("joinMeeting");
-  			element.classList.add("btn-warning");
-			element.classList.remove("btn-default");
+			//var element = document.getElementById("joinMeeting");
+  			//element.classList.add("btn-warning");
+			//element.classList.remove("btn-default");
                         // document.getElementById("codeSubmit").disabled = true;
                         //window.location.reload();
                     },

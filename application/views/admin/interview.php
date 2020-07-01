@@ -459,7 +459,7 @@
            
           for($j=1;$j<=$value->totalRound;$j++) {
 
-            echo "<tr><td>Round $j</td><td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-envelope'></span></button></td><td><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#myModal1' onclick='showInterviewFeedback($j,$value->id)'><span class='glyphicon glyphicon-comment'></span></button></td><td><button class='btn btn-primary btn-xs' onclick='nextRound($j,$value->id)'><span class='glyphicon glyphicon-ok'></span></button></td>";
+            echo "<tr><td onclick='setInterviewId($value->id,$j)' data-toggle='modal' data-target='#interviewerModal' >Round $j</td><td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-envelope'></span></button></td><td><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#myModal1' onclick='showInterviewFeedback($j,$value->id)'><span class='glyphicon glyphicon-comment'></span></button></td><td><button class='btn btn-primary btn-xs' onclick='nextRound($j,$value->id)'><span class='glyphicon glyphicon-ok'></span></button></td>";
             //echo "<td>NA</td>";
             $field = "round_".$j;
             if ($value->$field == "1") {
@@ -1153,7 +1153,41 @@ color: red;">&times;</button>
                         </div>
                     </div>
                 </main>
+ <div class="modal fade" id="interviewerModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Add Interviewers</p>
+          <select id="newinterviewerId" multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100">
+                      <!-- <option value=0> Select</option> -->
+                      
+        <?php 
 
+        if (count($interviewData['interviewer-list']) > 0) {
+        foreach($interviewData['interviewer-list'] as $key => $value) { ?>
+        <option value=<?php echo $value->id; ?>> <?php echo $value->first_name." ".$value->last_name;?> </option>
+
+  <?php } }?>
+                           
+</select>
+        </div>
+        <div class="modal-footer">
+          <input type="text" hidden id="interviewDetailId" />
+          
+          <input type="text" hidden id="roundValue" />
+          <button onclick="addInterviewer()"> Add </button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 <script>
   var acc = document.getElementsByClassName("accordion");
 var i;
@@ -1717,4 +1751,47 @@ function getHour(hour) {
       $(this).children(".plusminus").text('-');
   }
         });
+
+function setInterviewId(id, round) {
+    document.getElementById("interviewDetailId").value = id;
+  document.getElementById("roundValue").value = round;
+}
+
+function addInterviewer() {
+  //var interviewerId = document.getElementById("newinterviewerId").value ;
+  var interview = document.getElementById("newinterviewerId");
+  var interviewerIds = getSelectValues(interview);
+  var round = document.getElementById("roundValue").value;
+  //alert(interviewerIds)
+  var baseUrl = "<?php echo base_url();?>"
+  var interviewerDetailId = document.getElementById("interviewDetailId").value;
+ $.ajax({
+    url: baseUrl+"admin/addInterviewer",
+    type: 'post',
+
+    // data: { "test-title": $('#testTitle').val(), "test-type": $('#testType').val() } ,
+
+    data: { "round":round,"interviewerId" : interviewerIds, "interviewerDetailId" : interviewerDetailId} ,
+    success: function( data, textStatus, jQxhr ){
+        //window.location.reload(true);
+       // window.location.href="admin/view-mcq";
+        //$('#response pre').html( JSON.stringify( data ) );
+        console.log('data', data);
+        console.log('dd', data.status);
+        console.log('de',JSON.stringify( data ))
+        // document.getElementById("code").disabled = true;
+        if (data.status == "400") {
+            document.getElementById("error").innerHTML = data.data;
+        } else {
+          alert("Interviewer Added");
+        //document.getElementById("codeSubmit").disabled = true;
+       //window.location.reload();
+      }
+    },
+    error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+    }
+  });
+
+}
 </script>

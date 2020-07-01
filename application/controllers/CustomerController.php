@@ -1022,7 +1022,7 @@ public function viewMcqListSearch() {
 
     $interview['meeting-id'] = $this->db->query($sql)->result_object();
 
-    $sql = "SELECT * from `assess_login` where role= 6"; //interviewer role
+    $sql = "SELECT * from `assess_login` where role= 6 and created_by = $customerId"; //interviewer role
 
     $query = $this->db->query($sql);
 
@@ -1800,10 +1800,9 @@ public function viewMcqListSearch() {
 
   //print_r($getIds); die;
 
-  //$sql = "SELECT gotomeeting_id from `interview_details` where customer_id = $customerId AND interview_date = '".$testDate."' AND interview_timestamp <= '".$interviewTimeStamp."' AND  duration_timestamp >='".$interviewTimeStamp."'";
-
-  $sql = "SELECT gotomeeting_id from `interview_details` where customer_id = $customerId";
-
+ // $sql = "SELECT gotomeeting_id from `interview_details` where customer_id = $customerId AND interview_date = '".$testDate."' AND interview_timestamp <= '".$interviewTimeStamp."' AND  duration_timestamp >='".$interviewTimeStamp."'";
+/*
+  $sql = "SELECT distinct gotomeeting_id from `interview_details` where customer_id = $customerId";
   $interviewSchedule = $this->db->query($sql)->result_object();
 
   $usedIds = array();
@@ -1813,7 +1812,7 @@ public function viewMcqListSearch() {
       $usedIds[] = $value->gotomeeting_id;
     }
   }
-
+*/
   $sql = "SELECT id , email from `gotomeeting_token_details` where customer_id = $customerId";
 
   $getIds = $this->db->query($sql)->result_object();
@@ -1821,9 +1820,9 @@ public function viewMcqListSearch() {
   $i = 0;
   foreach ($getIds as $key => $value) {
 
-    if (in_array($value->id, $usedIds)) {
+   /* if (in_array($value->id, $usedIds)) {
       continue;
-    }
+    }*/
     $gotomeetingIds[$i]['id'] = $value->id;
     $i++;
   }
@@ -1879,7 +1878,7 @@ public function todaysInterview() {
     $customerId = $_SESSION['customerId'];
 
     
-    $sql = "SELECT interview_details.gotomeeting_id, interview_details.user_email, interview_details.interview_date, 
+    $sql = "SELECT distinct interview_details.round,interview_details.gotomeeting_id, interview_details.user_email, interview_details.interview_date, 
               interview_details.interview_time, gtd.email , interview_details.endtime
               FROM interview_details 
               inner  join gotomeeting_token_details as gtd
@@ -1960,7 +1959,7 @@ public function todaysInterview() {
     $customerId = $_SESSION['customerId'];
 
     
-    $sql = "SELECT interview_details.gotomeeting_id, interview_details.user_email, interview_details.interview_date, 
+    $sql = "SELECT distinct interview_details.round, interview_details.gotomeeting_id, interview_details.user_email, interview_details.interview_date, 
               interview_details.interview_time, gtd.email, interview_details.endtime
               FROM interview_details 
               inner  join gotomeeting_token_details as gtd
