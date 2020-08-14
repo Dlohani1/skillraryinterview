@@ -796,7 +796,7 @@ public function viewMcqListSearch() {
     $sql  = "SELECT customer_name from customers where id = $customerId";
     $customerName = $this->db->query($sql)->row();
 
-    $sql = "SELECT DISTINCT(interview_code),count(DISTINCT(id)) as total_students FROM `interview_users` where interview_customer_id=$customerId and interview_code is not null GROUP BY interview_code";
+    $sql = "SELECT DISTINCT(interview_code),count(DISTINCT(id)) as total_students, id FROM `interview_users` where interview_customer_id=$customerId and interview_code is not null GROUP BY interview_code";
 
     // $result = $this->db->query($sql)->result_object();
 
@@ -2947,4 +2947,66 @@ public function viewQuestionWithCodeSearch() {
     ));
     $this->load->view('customer/footer');
   }
+
+
+
+  public function editInterviewGroupCode() {
+    $update_interview_code = $_POST['update_interview_code'];
+
+    $update_interview_code = trim($update_interview_code);
+
+    if (empty($update_interview_code)) {
+        $this->session->set_flashdata('error', "Enter update interview code.");
+        redirect('customer/view-interview');
+    }
+ 
+    $data  = array ('interview_code' => $_POST['update_interview_code']);
+    $hidden_old_interview_code = trim($_POST['hidden_old_interview_code']);
+
+    $this->db->where('interview_code', $hidden_old_interview_code);
+    $this->db->update('interview_users',$data);
+
+    $this->session->set_flashdata('success', "$update_interview_code updated successfully.");
+
+    redirect('customer/view-interview');
+      
+  }
+
+
+  public function updateDateTime() {
+    $update_date = trim($_POST['update_date']);
+    $update_time = trim($_POST['update_time']);
+    $customerId = trim($_POST['customerId']);
+    $userId = trim($_POST['userId']);
+
+    if (empty($update_date) && empty($update_time)) {
+      $response = array ('status' => "500", "data" => "Please select all fields" );
+      print_r(json_encode($response));
+    }else if (empty($update_time)) {
+      $response = array ('status' => "500", "data" => "Please select time" );
+      print_r(json_encode($response));
+    }else if (empty($update_date)) {
+      $response = array ('status' => "500", "data" => "Please select date" );
+      print_r(json_encode($response));
+    }else if (( empty($customerId) && empty($userId))) {
+      $response = array ('status' => "500", "data" => "Please Fill all details value" );
+      print_r(json_encode($response));
+    }else{
+      $data  = array (
+        'interview_date' => $update_date,
+        'interview_time' => $update_time,
+      );
+
+      $this->db->where('interview_users_id', $userId);
+      $this->db->where('customer_id', $customerId);
+      $this->db->update('interview_details',$data);
+
+      $response = array ('status' => "200", "data" => "Data submitted successfully." );
+      print_r(json_encode($response));
+
+    }  
+  }
+
+
 }
+

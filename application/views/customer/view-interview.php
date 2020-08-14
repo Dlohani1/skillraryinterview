@@ -39,6 +39,18 @@
 
                               <div class="container-fluid">
                                 <div class="container">
+
+                                    <?php 
+                    if($this->session->flashdata('success'))
+                    {
+                        echo '<div class="alert alert-primary bg-success" >'.$this->session->flashdata('success').'</div>';
+                    } 
+
+                    if($this->session->flashdata('error'))
+                    {
+                        echo '<div class="alert alert-white bg-danger" >'.$this->session->flashdata('error').'</div>';
+                    } 
+                  ?>
                                    <div class="row">
         <div class="col-md-12">
         <h4>Interview Group</h4>
@@ -91,7 +103,18 @@
 
                           foreach($interview as $key => $value) {
                             $i++;
-                            echo "<tr><td>$i</td><td>$value->interview_code</td><td>$value->total_students</td><td><a href=".base_url()."customer/interview-result/$value->interview_code><button class='btn btn-primary btn-xs' ><span class='glyphicon glyphicon-eye-open'></span></button></a></td></tr>";
+                            echo "<tr>
+                            <td>$i</td>
+
+                            <td>$value->interview_code
+                                      <p data-placement='top'  data-toggle='tooltip' title='Edit'>
+                                      <button class='btn btn-primary btn-xs edit_interview_group_code ' data-title='Edit' data-toggle='modal'  data-id='".$value->id."'  data-interview_code='".$value->interview_code."'  >
+                                      <span class='glyphicon glyphicon-pencil'></span>
+                                      </button></p>
+                                  </td>
+
+
+                            <td>$value->total_students</td><td><a href=".base_url()."customer/interview-result/$value->interview_code><button class='btn btn-primary btn-xs' ><span class='glyphicon glyphicon-eye-open'></span></button></a></td></tr>";
                           }
                         ?>
     
@@ -244,3 +267,65 @@
                     </div>
                 </main>
 
+<script type="text/javascript">
+  
+
+ $(".edit_interview_group_code").on("click", function() {
+
+    let interview_code = $(this).data('interview_code')
+    let id = $(this).data('id');
+
+    $('#hidden_interview_code_id').val(id);
+    $('#update_interview_code').val(interview_code);
+    $('#hidden_old_interview_code').val(interview_code);
+
+    $('#edit_interview_group_code_modal').modal('show');
+
+  });
+
+ function validatInterviewGroupCode() {
+    var update_interview_code = document.getElementById("update_interview_code").value;
+
+    var isError = true;
+
+    if (update_interview_code.trim().length == 0) {
+        isError = false;
+        $("#error_update_interview_code").text("Please enter interview code.");
+        $("#error_update_interview_code").css('color','red');
+    } 
+
+    return isError;
+ }
+
+</script>
+
+
+
+<!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="edit_interview_group_code_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+ <form autocomplete='off' enctype="multipart/form-data" method="POST" action=<?php echo base_url()."customer/edit-interview-group-code";?>  onsubmit="return validatInterviewGroupCode()" >
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Interview Group Code </h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+
+                        <label>Update Interview Group Code</label>
+
+                        <input type="hidden" id="hidden_interview_code_id" name="hidden_interview_code_id">
+                        <input type="hidden" id="hidden_old_interview_code" name="hidden_old_interview_code">
+
+                        <input type="text" id="update_interview_code" name="update_interview_code" required class="form-control">
+                        <div id="error_update_interview_code" ></div>
+      </div>
+      <div class="modal-footer">
+           <button type="submit" value="Submit">Update</button>
+      </div>
+    </div>
+      </form>
+  </div>
+</div>
