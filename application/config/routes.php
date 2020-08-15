@@ -333,6 +333,8 @@ $route['admin/generateInterviewUsrPwd']['POST'] = 'AdminController/generateInter
 
 $route['admin/sendInterviewInvite'] ['POST']= 'AdminController/sendInterviewInvite';
 
+$route['customer/updateDateTime'] ['POST']= 'CustomerController/updateDateTime';
+
 $route['interviewer/assignedInterviews'] = 'AdminController/assignedInterviews'; 
 
 $route['interviewer/assignedInterviews/:any'] = 'AdminController/assignedInterviews';
@@ -556,7 +558,9 @@ $route['admin/delete-section']['POST'] = 'AdminController/deleteSection';
 $route['admin/saveSection'] ['POST']= 'AdminController/saveSection'; 
 
 $route['admin/edit-section'] ['POST']= 'AdminController/editSection'; 
- 
+
+$route['customer/edit-interview-group-code'] ['POST']= 'CustomerController/editInterviewGroupCode'; 
+
 $route['customer/add-section'] = 'CustomerController/createSection'; 
 
 $route['customer/add-section/:any'] = 'CustomerController/createSection'; 

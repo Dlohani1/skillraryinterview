@@ -482,7 +482,7 @@
             <table width="100%" id="test_<?=$i;?>" border="1">
                 <thead>
                 <tr>
-                    <th colspan="2"><button onclick="addNewSection(<?=$i.','.$value->id;?>)"> Add Rounds</button>
+                    <th colspan="3"><button onclick="addNewSection(<?=$i.','.$value->id;?>)"> Add Rounds</button>
                     </th>
                     <th colspan="3"> <button onclick="saveStatus(<?=$value->id;?>)"> Add Final Status</button>
                     </th>                    
@@ -490,6 +490,7 @@
                 <tr>
                     <th width="30%">Round</th>
                     <th width="30%">Send</th>
+                    <th width="30%">Interview Date time</th>
                     <th width="30%">Result</th>
                     <th width="30%" colspan="2">Status</th>
                 </tr>
@@ -497,7 +498,16 @@
            
           for($j=1;$j<=$value->totalRound;$j++) {
 
-            echo "<tr><td onclick='setInterviewId($value->id,$j)' data-toggle='modal' data-target='#interviewerModal' >Round $j</td><td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-envelope'></span></button></td><td><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#myModal1' onclick='showInterviewFeedback($j,$value->id)'><span class='glyphicon glyphicon-comment'></span></button></td><td><button class='btn btn-primary btn-xs' onclick='nextRound($j,$value->id)'><span class='glyphicon glyphicon-ok'></span></button></td>";
+            echo "<tr><td onclick='setInterviewId($value->id,$j)' data-toggle='modal' data-target='#interviewerModal' >Round $j</td>
+
+              <td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-envelope'></span></button></td>
+
+
+
+            <td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#interview_date_time' ><span class='glyphicon glyphicon-envelope'></span></button></td>
+
+
+              <td><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#myModal1' onclick='showInterviewFeedback($j,$value->id)'><span class='glyphicon glyphicon-comment'></span></button></td><td><button class='btn btn-primary btn-xs' onclick='nextRound($j,$value->id)'><span class='glyphicon glyphicon-ok'></span></button></td>";
             //echo "<td>NA</td>";
             $field = "round_".$j;
             if ($value->$field == "1") {
@@ -993,6 +1003,64 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </div>
     
     
+
+
+
+
+
+
+
+
+<div class="modal fade" id="interview_date_time" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title custom_align" >Update Date and Time</h4>
+        <button type="button" class="close" id="UpdateDateandTime" data-dismiss="modal" aria-hidden="true">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+
+        <div class="form-group">
+          <label> Date </label>
+          <input type="date" id="update_date" name="update_date">
+        </div>
+
+        <div class="form-group">
+          <label> Time </label>
+          <input type="time" id="update_time" name="update_time">
+        </div>
+          
+
+      </div>
+
+      <div class="modal-footer ">
+        <button type="button" class="btn btn-success btn-lg" style="width: 100%;" onclick="updateDateTime()"><span class="glyphicon glyphicon-ok-sign"></span>Update</button>
+      </div>
+    </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+</div>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
@@ -1305,6 +1373,10 @@ function addNewSection(i,id) {
   html += '<td>Round '+rowCount+'</td>';
 
   html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
+
+
+html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#interview_date_time" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
+
 
   html += '&nbsp;<td> <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback('+rowCount+','+id+')"><span class="glyphicon glyphicon-comment"></span></button></td>';
   html +='<td><button class="btn btn-primary btn-xs" onclick="nextRound('+rowCount+','+id+')" ><span class="glyphicon glyphicon-ok"></span></button></td>';
@@ -1797,6 +1869,7 @@ function getHour(hour) {
   });
   }
 
+
  function sendInterviewInvite() {
  //alert('send');
   //var pathArray = window.location.pathname.split('/');
@@ -1861,6 +1934,52 @@ function getHour(hour) {
     }
   });
 }
+
+
+
+
+
+    function updateDateTime() {
+      var customerId = "<?php echo $_SESSION['customerId'];?>";
+
+      var userId = document.getElementById("assessId").value;
+
+      var update_date = document.getElementById("update_date").value;
+      var update_time = document.getElementById("update_time").value;
+      var baseUrl = document.getElementById("base_url").value;
+      document.getElementById("UpdateDateandTime").click();
+
+      $.ajax({
+        url: baseUrl+"customer/updateDateTime",
+        type: 'post',
+
+        data: { "update_date": update_date, "update_time": update_time,"customerId": customerId,"userId": userId } ,
+
+        success: function( data, textStatus, jQxhr ){
+           datas = JSON.parse( data )
+
+          if (datas.status == 500 ) {
+            document.getElementById("generate_error").innerHTML = datas.data;
+            document.getElementById("generate_error").style.color = 'red';
+          }
+
+          if (datas.status == 200 ) {
+            document.getElementById("generate_error").innerHTML = datas.data;
+            document.getElementById("generate_error").style.color = 'green';
+          }
+
+          document.getElementById("update_date").value = ''
+          document.getElementById("update_time").value = '';
+
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+          console.log( errorThrown );
+        }
+      });
+    }
+
+
+
  $(".accordion_head").click(function(){
   if ($('.accordion_body').is(':visible')) {
     $(".accordion_body").slideUp(300);
