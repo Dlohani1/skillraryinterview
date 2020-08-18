@@ -273,8 +273,8 @@ echo '</td> </tr>';
         
 </table>
 
-<p><?php echo $this->pagination->create_links(); ?></p>
 
+<p><?php echo $links; ?></p>
 <div class="clearfix"></div>
 <!-- <ul class="pagination pull-right">
   <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>

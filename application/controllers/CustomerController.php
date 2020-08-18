@@ -162,8 +162,14 @@ class CustomerController extends CI_Controller {
       $_SESSION['customerName'] = $result->customer_name;
       $_SESSION['isMCQAssigned'] = $result->mcq;
       $_SESSION['isInterviewAssigned'] = $result->interview;
+
+	if ($result->interview == 1) {
+		 redirect('customer/todays-interview');
+	} else {
+
       //redirect('customer/dashboard');
       redirect('customer/mcq-list');
+}
     } else {
        redirect('customer/login');
     }
@@ -789,7 +795,7 @@ public function viewMcqListSearch() {
 
 
 
-  public function viewInterview() {
+  public function viewInterview() { 
     $customerId = $_SESSION['customerId']; 
     $searchcode ='';
 
@@ -798,6 +804,7 @@ public function viewMcqListSearch() {
 
     $sql = "SELECT DISTINCT(interview_code),count(DISTINCT(id)) as total_students, id FROM `interview_users` where interview_customer_id=$customerId and interview_code is not null GROUP BY interview_code";
 
+	$sql  =  "SELECT DISTINCT(interview_code),count(DISTINCT(id)) as total_students FROM `interview_users` where interview_customer_id=$customerId and interview_code is not null GROUP BY interview_code";
     // $result = $this->db->query($sql)->result_object();
 
     $config['full_tag_open'] = "<ul class='pagination'>";

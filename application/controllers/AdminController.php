@@ -194,13 +194,19 @@ class AdminController extends CI_Controller {
     $meetingEmail = $result->email;
   }
 
-  $sql = "SELECT access_token FROM `gotomeeting_token_details` where email='".$meetingEmail."'";
+//  $sql = "SELECT access_token FROM `gotomeeting_token_details` where email='".$meetingEmail."'";
 
-  $meeting = $this->db->query($sql)->result();
+  //$meeting = $this->db->query($sql)->result();
+$this->db2 = $this->load->database('skillrary', TRUE);
+$sql = "SELECT id , access_token FROM `bse_citrix` where email='".$meetingEmail."' and type='gotomeeting'";
+ $result = $this->db2->query($sql)->row();
+
+$meeting =  array("token" => $result->access_token);
 
   foreach($meeting as $key => $value) {
 
-    $token = $value->access_token;
+	$token = $value;
+   // $token = $value->access_token;
    // $timeZone = "Asia/Calcutta";
     $timeZone = "";
     $headers = array(
@@ -302,8 +308,9 @@ public function startMeeting() {
     //$sql = "SELECT * FROM `bse_citrix` limit 3";
 
     $call = $_POST['call'];
-    $this->updateAccessToken();
+    //$this->updateAccessToken();
     $gotoMeetingId = isset($_POST['gotomeetingId']) ? $_POST['gotomeetingId'] : 0;
+    
     if (!$gotoMeetingId) {
 	$email = "trainer111@qspiders.com";
     } else {
@@ -314,14 +321,20 @@ public function startMeeting() {
 
     //$sql = "SELECT * FROM `bse_citrix` where email='trainer134@qspiders.com'";
 
-    $sql = "SELECT * FROM `gotomeeting_token_details` where email='".$email."'";
+  //  $sql = "SELECT * FROM `gotomeeting_token_details` where email='".$email."'";
 
     // $meeting = $this->db2->query($sql)->result();
-    $meeting = $this->db->query($sql)->result();
+    //$meeting = $this->db->query($sql)->result();
+
+$this->db2 = $this->load->database('skillrary', TRUE);
+$sql = "SELECT id , access_token FROM `bse_citrix` where email='".$email."' and type='gotomeeting'";
+ $result = $this->db2->query($sql)->row();
+$meeting = array("token" => $result->access_token);
 
     foreach($meeting as $key => $value) {
 
-    $token = $value->access_token;
+    //$token = $value->access_token;
+    $token = $value;
     $timeZone = "Asia/Calcutta";
     $headers = array(
       "Content-Type: application/json",
@@ -2344,7 +2357,7 @@ return $x;
       "link" => base_url()."interview/login"
     );
 
-      $this->updateAccessToken();
+      //$this->updateAccessToken();
       $call = "interview";
       $this->createMeeting($testDate, $testTime, $ids , $call, $meetingId, $duration);
       

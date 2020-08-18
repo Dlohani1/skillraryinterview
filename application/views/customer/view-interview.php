@@ -108,7 +108,7 @@
 
                             <td>$value->interview_code
                                       <p data-placement='top'  data-toggle='tooltip' title='Edit'>
-                                      <button class='btn btn-primary btn-xs edit_interview_group_code ' data-title='Edit' data-toggle='modal'  data-id='".$value->id."'  data-interview_code='".$value->interview_code."'  >
+                                      <button class='btn btn-primary btn-xs edit_interview_group_code ' data-title='Edit' data-toggle='modal'  data-id='".$value->interview_code."'  data-interview_code='".$value->interview_code."'  >
                                       <span class='glyphicon glyphicon-pencil'></span>
                                       </button></p>
                                   </td>
