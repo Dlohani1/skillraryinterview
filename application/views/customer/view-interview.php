@@ -55,32 +55,24 @@
         <div class="col-md-12">
         <h4>Interview Group</h4>
 
-
-<div class="container">
-      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/view-interview-search";?>>
-
-          <div class="searchBox">
-
-                <div class="row">
-
-                      <div class="col-md-6">
-                        <label>Code</label>
-                        <input type="text" id="searchcode" name="searchcode" class="form-control" placeholder="Search Code" value="<?php echo $searchcode; ?>">
-                      </div>
-
-                      <div class="col-md-2">
-                          <label>Search</label><br>
-                          <button type="submit" value="Submit">
-                            <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
-                          </button>
-
-                      </div>
-
+        <div class="container">
+          <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/view-interview-search";?>>
+            <div class="searchBox">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Code</label>
+                  <input type="text" id="searchcode" name="searchcode" class="form-control" placeholder="Search Code" value="<?php echo $searchcode; ?>">
                 </div>
-
-          </div>
-      </form>
-  </div>
+                <div class="col-md-2">
+                  <label>Search</label><br>
+                  <button type="submit" value="Submit" class="btn-primary">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
 
 
         <div class="table-responsive">
@@ -88,7 +80,6 @@
                    <thead>
                    <!-- <th><input type="checkbox" id="checkall" /></th> -->
                        <th>Sl.no</th>
-			
                         <th>Interview Code</th>
                         <th>Total Students</th>
                         <!-- <th>Total Question</th> -->
@@ -97,7 +88,6 @@
                         <th>Delete</th> -->
                    </thead>
                     <tbody>
-
                         <?php
                          $i = $this->uri->segment(3)+0;
 
@@ -107,100 +97,18 @@
                             <td>$i</td>
 
                             <td>$value->interview_code
-                                      <p data-placement='top'  data-toggle='tooltip' title='Edit'>
-                                      <button class='btn btn-primary btn-xs edit_interview_group_code ' data-title='Edit' data-toggle='modal'  data-id='".$value->interview_code."'  data-interview_code='".$value->interview_code."'  >
-                                      <span class='glyphicon glyphicon-pencil'></span>
-                                      </button></p>
-                                  </td>
-
-
+                              <span title='edit code' style='cursor: pointer;' class='glyphicon glyphicon-pencil edit_interview_group_code' data-title='Edit' data-toggle='modal'  data-id='".$value->interview_code."'  data-interview_code='".$value->interview_code."'  ></span>
+                            </td>
                             <td>$value->total_students</td><td><a href=".base_url()."customer/interview-result/$value->interview_code><button class='btn btn-primary btn-xs' ><span class='glyphicon glyphicon-eye-open'></span></button></a></td></tr>";
                           }
                         ?>
-    
-    <!-- <tr>
-    <th><input type="checkbox" id="checkall" /></th>
-    <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>
-    
- <tr> -->
-    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-    <!-- <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>
-    
-    
- <tr> -->
-    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-    <!-- <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>
-    
-    
-    
- <tr> -->
-    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-   <!--  <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>
-    
-    
- <tr> -->
-    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-<!--     <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr> -->
-    
-   
-    
-   
-    
-    </tbody>
-        
+  </tbody>       
 </table>
 <p><?php echo $links; ?></p>
-
 <div class="clearfix"></div>
-<!-- <ul class="pagination pull-right">
-  <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-  <li class="active"><a href="#">1</a></li>
-  <li><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#">4</a></li>
-  <li><a href="#">5</a></li>
-  <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-</ul> -->
-                
-            </div>
-            
-        </div>
-  </div>
+</div>            
+</div>
+</div>
 </div>
 
 

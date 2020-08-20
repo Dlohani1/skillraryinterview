@@ -15,39 +15,35 @@
                               <div class="container-fluid">
                                 <div class="container">
                                 <div class="row">
+                                <div class="col-md-12">
+                                <h4>Interview Group</h4>
+                                  <div class="container">
+                                      <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/todays-interview-search";?>>
+                                  <div class="searchBox">
 
-                               
-        <div class="col-md-12">
-        <h4>Interview Group</h4>
+                                    <div class="row">
 
+                                          <div class="col-md-6 ">
+                                            <label>Search Interview</label>
+                                            <input type="date" id="searchdate" name="searchdate" class="form-control " placeholder="Search Date" value="<?php echo $searchdate; ?>" >
+                                          </div>
 
-          <div class="container">
-              <form id="myForm" autocomplete='off' enctype="multipart/form-data" method="GET" action=<?php echo base_url()."customer/todays-interview-search";?>>
+                                          <div class="col-md-2 right" float='right'>
+                                              <label>Search</label><br>
+                                              <button type="submit" value="Submit" class="btn-primary">
+                                                <i   class="fa fa-search"></i>
+                                              </button>
+                                              <input type="button" id="back" class="btn-primary" value="Clear">
+                                          </div>
 
-                  <div class="searchBox">
-
-                        <div class="row">
-
-                              <div class="col-md-6 ">
-                                <label>Search Interview</label>
-                                <input type="date" id="searchdate" name="searchdate" class="form-control " placeholder="Search Date" value="<?php echo $searchdate; ?>" >
-                              </div>
-
-                              <div class="col-md-2 right" float='right'>
-                                  <label>Search</label><br>
-                                  <button type="submit" value="Submit">
-                                    <i  style="font-size:28px;color:lightblue" class="fa fa-search"></i>
-                                  </button>
-                              </div>
-
-                              <div class="col-md-1">
-                                 <label></label>
-                                 <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
-                              </div>
-                        </div>
-                  </div>
-              </form>
-          </div>
+                                          <!-- <div class="col-md-1">
+                                             <label></label>
+                                             <input type="button" id="back" class="btn btn-primary" name="" value="Clear">
+                                          </div> -->
+                                    </div>
+                                  </div>
+                                  </form>
+                                  </div>
 
 
         <div class="table-responsive">

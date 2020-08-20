@@ -2359,7 +2359,8 @@ return $x;
 
       //$this->updateAccessToken();
       $call = "interview";
-      $this->createMeeting($testDate, $testTime, $ids , $call, $meetingId, $duration);
+      
+      //$this->createMeeting($testDate, $testTime, $ids , $call, $meetingId, $duration);
       
       $this->sendMail($from,$email, "SkillRary Assessment Details", $data);
 

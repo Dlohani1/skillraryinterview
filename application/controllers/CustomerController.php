@@ -2985,36 +2985,65 @@ public function viewQuestionWithCodeSearch() {
     $update_time = trim($_POST['update_time']);
     $customerId = trim($_POST['customerId']);
     $userId = trim($_POST['userId']);
-        $interviewer_id = trim($_POST['interviewer_id']);
+    //$interviewer_id = trim($_POST['interviewer_id']);
 
+    $isAllFieldsEmpty = 0;
+    $data = array();
+    // $data  = array (
+    //     'interview_date' => $update_date,
+    //     'interview_time' => $update_time,
+    //     'interviewer_id' => $interviewer_id
+    //     );
+    if (!empty($update_date)) {
+      $isAllFieldsEmpty = 1;
+      $data['interview_date'] = $update_date;
+    }
 
-    if (empty($update_date) && empty($update_time)) {
-      $response = array ('status' => "500", "data" => "Please select all fields" );
-      print_r(json_encode($response));
-    }else if (empty($update_time)) {
-      $response = array ('status' => "500", "data" => "Please select time" );
-      print_r(json_encode($response));
-    }else if (empty($update_date)) {
-      $response = array ('status' => "500", "data" => "Please select date" );
-      print_r(json_encode($response));
-    }else if (( empty($customerId) && empty($userId))) {
-      $response = array ('status' => "500", "data" => "Please Fill all details value" );
-      print_r(json_encode($response));
-    }else{
-      $data  = array (
-        'interview_date' => $update_date,
-        'interview_time' => $update_time,
-        'interviewer_id' => $interviewer_id
-        );
+    if (!empty($update_time)) {
+      $isAllFieldsEmpty = 1;
+      $data['interview_time'] = $update_time;
+    }
 
+    if ($isAllFieldsEmpty) {
       $this->db->where('interview_users_id', $userId);
       $this->db->where('customer_id', $customerId);
       $this->db->update('interview_details',$data);
+      echo 1;
+      //$response = array ('status' => "200", "data" => "Data submitted successfully." );
+    } else {
+      echo 0;
+    }
 
-      $response = array ('status' => "200", "data" => "Data submitted successfully." );
-      print_r(json_encode($response));
+    // if (!empty($update_time) && $interviewer_id > 0) {
+    //   $isAllFieldsEmpty = 1;
+    // }
 
-    }  
+    // if (empty($update_date) && empty($update_time)) {
+    //   // $response = array ('status' => "500", "data" => "Please select all fields" );
+    //   // print_r(json_encode($response));
+    // } else if (empty($update_time)) {
+    //   // $response = array ('status' => "500", "data" => "Please select time" );
+    //   // print_r(json_encode($response));
+    // } else if (empty($update_date)) {
+    //   // $response = array ('status' => "500", "data" => "Please select date" );
+    //   // print_r(json_encode($response));
+    // } else if (( empty($customerId) && empty($userId))) {
+    //   // $response = array ('status' => "500", "data" => "Please Fill all details value" );
+    //   // print_r(json_encode($response));
+    // } else{
+      
+
+    // }  
+
+    // $data  = array (
+    //     'interview_date' => $update_date,
+    //     'interview_time' => $update_time,
+    //     'interviewer_id' => $interviewer_id
+    //     );
+
+      
+      //print_r(json_encode($response));
+
   }
 
   public function viewInterviewerDateTime() {
@@ -3051,6 +3080,101 @@ public function viewQuestionWithCodeSearch() {
       print_r($data);
   }
 
+  public function createInterviewMeeting() {
+    // print_r($_POST); die;
+    // echo 0;
+    $interview_users_id = $_POST['id'];
+
+    $sql = "SELECT id,interview_date,interview_time,gotomeeting_id FROM `interview_details` WHERE interview_users_id = $interview_users_id";
+
+    $result = $this->db->query($sql)->row();
+    $gotomeetingId = $result->gotomeeting_id;
+
+    $startDate = $result->interview_date;
+    $startTime = $result->interview_time;
+
+    $duration = 1;
+    $timestamp = strtotime($startTime);
+    $startTime1 = date('H:i:s', $timestamp);
+
+    $timestamp = strtotime("-6 hours 30 minutes", $timestamp); 
+    $startTime = date('H:i:s', $timestamp);
+
+    $startTestTime = $startDate.'T'.$startTime.'.000Z';
+
+    $startTestTime1 = $startDate.'T'.$startTime1.'.000Z';
+
+    $duration = $duration * 3600;
+
+    $timestamp = strtotime($startTime) + $duration; 
+    $timestamp2 = strtotime($startTime1) + $duration; 
+
+    $endTime = date('H:i:s', $timestamp);
+    $endTime2 = date('H:i:s', $timestamp2);
+    
+    $endTestTime = $startDate.'T'.$endTime.'.000Z';
+    $endTestTime1 = $startDate.'T'.$endTime2.'.000Z';
+
+    $sql = "Select email from `gotomeeting_token_details` where id = $gotomeetingId";
+    $email = $this->db->query($sql)->row()->email;
+
+    $this->db2 = $this->load->database('skillrary', TRUE);
+    
+    $sql = "SELECT id , access_token FROM `bse_citrix` where email='".$email."' and type='gotomeeting'";
+    $result = $this->db2->query($sql)->row();
+
+    $token = $result->access_token;
+    $timeZone = "";
+
+    $headers = array(
+      "Content-Type: application/json",
+      "accept: application/json",
+      "Authorization: ".$token,
+    );
+
+    $url = 'https://api.getgo.com/G2M/rest/meetings';
+
+    $fields = array(
+      'subject' => "test",
+      'starttime'=> $startTestTime1,
+      'endtime' => $endTestTime1,
+      'conferencecallinfo'=>'Free',
+      'timezonekey'=> $timeZone,
+      "passwordrequired" => FALSE,
+      "meetingtype" =>  "scheduled",
+    );
+   // print_r($fields); die;
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_HTTPHEADER, $headers );
+    curl_setopt($ch,CURLOPT_URL, $url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch,CURLOPT_POST, true);
+    curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($fields));
+
+    $result = curl_exec($ch);
+
+    curl_close($ch);
+    $webinars = json_decode($result);
+//print_r($webinars); die;
+    $data = array();
+
+    if($webinars!=''){
+      if(isset($webinars->int_error_code) || isset($webinars->int_err_code)){
+        //echo $webinars->int_error_code;
+        echo 0 ; die;
+      } else {
+        $data = array(
+          'meeting_id' => $webinars[0]->meetingid,
+          'user_join_url' => $webinars[0]->joinURL,
+          'interview_users_id' => $interview_users_id,
+          // 'starttime'=> $startTestTime1,
+          // 'endtime' => $endTestTime1,
+          //'meeting_status' => 1
+        );
+      }    
+    }
+    $this->db->updateBatch('interview_details',$data, 'interview_users_id');
+    echo 1;
+  }
 
 }
-

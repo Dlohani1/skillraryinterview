@@ -489,9 +489,9 @@
                 </tr>
                 <tr>
                     <th width="30%">Round</th>
-                    <th width="30%">Send</th>
-                    <th width="30%">Interview Date time</th>
-                    <th width="30%">View Interview Date time</th>
+                    <th width="90%">Schedule</th>
+                    <!-- <th width="30%">Update Schedule</th>
+                    <th width="30%">View Schedule</th> -->
                     <th width="30%">Result</th>
                     <th width="30%" colspan="2">Status</th>
                 </tr>
@@ -501,16 +501,13 @@
 
             echo "<tr><td onclick='setInterviewId($value->id,$j)' data-toggle='modal' data-target='#interviewerModal' >Round $j</td>
 
-              <td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-envelope'></span></button></td>
+              <td>
+                <button title='Schedule' disabled onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-envelope'></span></button>
+                <button title='View Schedule' onclick='viewDateTime($j,$value->id)' class='btn btn-primary btn-xs' data-title='View Schedule' data-toggle='modal' data-target='#view_date_time' ><span title='View Schedule' class='glyphicon glyphicon-check'></span></button>
+                <button title='Update Schedule' onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Update Schedule' data-toggle='modal' data-target='#interview_date_time' ><span class='glyphicon glyphicon-edit'></span></button>
 
-
-
-            <td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Update Date time' data-toggle='modal' data-target='#interview_date_time' ><span class='glyphicon glyphicon-envelope'></span></button></td>
-
-
-            <td><button onclick='viewDateTime($j,$value->id)' class='btn btn-primary btn-xs' data-title='View date time' data-toggle='modal' data-target='#view_date_time' ><span class='glyphicon glyphicon-envelope'></span></button></td>
-
-
+                <button title='Create Meeting' onclick='setUserId($j,$value->id,true)' class='btn btn-primary btn-xs' ><span title='Create Meeting' class='glyphicon glyphicon-phone'></span></button>
+              </td>
               <td><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#myModal1' onclick='showInterviewFeedback($j,$value->id)'><span class='glyphicon glyphicon-comment'></span></button></td><td><button class='btn btn-primary btn-xs' onclick='nextRound($j,$value->id)'><span class='glyphicon glyphicon-ok'></span></button></td>";
             //echo "<td>NA</td>";
             $field = "round_".$j;
@@ -537,359 +534,17 @@
        <?php } }?>
     </tbody>
   </table>
-<!-- test -->
-        <!-- <div class="table-responsive">
-
-                
-              <table id="mytable" class="table table-bordred table-striped">
-                   
-                   <thead> -->
-                   
-                   <!-- <th><input type="checkbox" id="checkall" /></th> -->
-		               <!--  <th>Sl. no </th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Contact-no</th>
-                    <th>Username</th>
-                    <th>Password</th> -->
-                     <!-- <th>Total Section</th>
-                     <th>Total Question</th> -->
-                     <!-- <th>view</th>
-                      <th>Download</th> -->
-                      
-                       <!-- <th  colspan = 4>Interview actions</th>
-                   </thead>
-    <tbody>
-  <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><strong>Round1</strong></td><td><strong>Round2</strong></td><td><strong>Round3</strong></td><td><strong>Status</strong></td></tr> -->
 
         <?php 
 
-	// $i = 0;
-
- //        if (count($interviewData['users']) > 0)
- //        foreach($interviewData['users'] as $key => $value) {
-	//   $i++;
- //          $sendInvite = 0;
-
-          // if (in_array($value->id, $mcq['proctoredIds'])) {
-          //   $sendInvite = 1;
-          // }
-
-          // $firstname = "";
-          // if (isset($value->first_name)) {
-          //   $firstname = $value->first_name;
-          // }
-          // $lastname = "";
-          // if (isset($value->last_name)) {
-          //   $lastname = $value->last_name;
-          // }
-          // $email = "";
-          // if (isset($value->email)) {
-          //   $email = $value->email;
-          // }
-          // $contactNo = "";
-          // if (isset($value->contact_no)) {
-          //   $contactNo = $value->contact_no;
-          // }
-
-
-          // echo '<tr><td>'.$i.'</td><td><a  href="#" data-toggle="modal" data-target="#myModal" onclick="showStudentDetails('.$value->studentId.')">'.$firstname." ".$lastname.'</a></td><td>'.$email.'</td><td>'.$contactNo.'</td><td>'.$value->username.'</td><td>'.$value->password.'</td>';
-          	 // echo '<tr><td>'.$value->username.'</td><td>'.$value->password.'</td>';
-     // <td><a href="view-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
-      //<td><a href="download-students/'.$value->id.'"><button disabled class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-download-alt"></span></button></a></td> ';
-
-      /*if ($sendInvite) {
-        echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
-
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button><span class="glyphicon glyphicon-ok"></span>
-
-      </p></td>';
-    } else {
-      echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
-
-      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button></span>
-
-      </p></td>';
-    }*/
-    // $intervieweeId = $value->id;
-    // $round1 = "";
-    // $round1Status = "";
-    // $round2Status = "";
-    // $round3Status = "";
-    // $round2 = "disabled";
-    // $round3 = "disabled";
-    // $textClass1 ="text-success";
-    // $textClass2 ="text-success";
-    // $textClass3 ="text-success";
-
-    // if ($interviewData['round-result'][$intervieweeId]['round1']) {
-    //   $round1 = "";
-    // }
-
-    // if ($interviewData['round-result'][$intervieweeId]['round2']) {
-    //   $round2 = "";
-    // }
-
-    // if ($interviewData['round-result'][$intervieweeId]['round3']) {
-    //   $round3 = "";
-    // }
-
-    // if ($value->active_round == "1") {
-    //   $round1 = "";
-    //   $round2 = "disabled";
-    //   $round3 = "disabled";
-
-    //   $round1Status = "";
-    //   $round2Status = "";
-    //   $round3Status = "";
-    // }
-
-    // if ($value->active_round == "2") {
-    //   $round1 = "disabled";
-    //   $round2 = "";
-    //   $round3 = "disabled";
-
-    //   $round1Status = "PASSED";
-
-    //   $round2Status = "";
-    //   $round3Status = "";
-    // }
-
-    // if ($value->active_round == "3") {
-    //   $round2 = "disabled";
-    //   $round1 = "disabled";
-    //   $round3="";
-    //   $round1Status = "PASSED";      
-    //   $round2Status = "PASSED";
-    //   $round3Status = "";
-    // }
-
-    // if ($value->interview_status == "1") {
-        
-    //   $round2 = "disabled";
-    //   $round1 = "disabled";
-    //   $round3 = "disabled";
-    //   $round1Status = "PASSED";      
-    //   $round2Status = "PASSED";
-    //   $round3Status = "PASSED";
-
-    //   // if ($value->active_round == "1") {
-    //   //   $round1Status = "PASSED";      
-    //   //   $round2Status = "";
-    //   //   $round3Status = "";
-    //   // } else if ($value->active_round == "2") {
-    //   //   $round1Status = "PASSED";      
-    //   //   $round2Status = "PASSED";
-    //   //   $round3Status = "";
-    //   // } else if ($value->active_round == "3") {
-    //   //   $round1Status = "PASSED";      
-    //   //   $round2Status = "";
-    //   //   $round3Status = "";
-    //   // }
-
-    // } else if ($value->interview_status == "2") {
-    
-    //   $round2 = "disabled";
-    //   $round1 = "disabled";
-    //   $round3 = "disabled";
-    //   $round1Status = "PASSED";      
-    //   $round2Status = "PASSED";
-    //   $round3Status = "PASSED";
-
-     
-    //   if ($value->active_round == "1") {
-    //     $round1Status = "REJECTED";      
-    //     $round2Status = "";
-    //     $round3Status = "";
-    //     $textClass1 ="text-danger";
-    //   } else if ($value->active_round == "2") {
-    //     $round1Status = "PASSED";      
-    //     $round2Status = "REJECTED";
-    //     $round3Status = "";
-    //     $textClass2 ="text-danger";
-    //   } else if ($value->active_round == "3") {
-    //     $round1Status = "PASSED";      
-    //     $round2Status = "PASSED";
-    //     $round3Status = "REJECTED";
-    //     $textClass3 ="text-danger";
-    //   }
-
-    // } else if ($value->interview_status == "3") {
-     
-    //   $round1 = "disabled";
-    //   $round2 = "disabled";
-    //   $round3 = "disabled";
-    //   $round1Status = "PASSED";      
-    //   $round2Status = "PASSED";
-    //   $round3Status = "On HOLD";
-
-      
-    //   if ($value->active_round == "1") {
-    //     $round1Status = "ON HOLD";      
-    //     $round2Status = "";
-    //     $round3Status = "";
-    //     $textClass1 ="text-warning";
-    //   } else if ($value->active_round == "2") {
-    //     $round1Status = "PASSED";      
-    //     $round2Status = "ON HOLD";
-    //     $round3Status = "";
-    //     $textClass2 ="text-warning";
-    //   } else if ($value->active_round == "3") {
-    //     $round1Status = "PASSED";      
-    //     $round2Status = "PASSED";
-    //     $round3Status = "ON HOLD";
-    //     $textClass3 ="text-warning";
-    //   }
-    // }
-    // if ($value->active_round == "4") {
-    //   $round3 =  "disabled";
-    //   $round2 =  "disabled";
-    //   $round1 = "disabled";
-    //   $round1Status = "PASSED";
-    //   $round2Status = "PASSED";
-    //   $round3Status = "PASSED";
-    // }
-
-      
-
-// if ($sendInvite) {
-//         echo '<td><p data-placement="top" data-toggle="tooltip" title="Invite">
-
-//       <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId('.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button><span class="glyphicon glyphicon-ok"></span>
-
-//       </p></td>';
-//     } else {
-//       echo '<td><span data-placement="top" data-toggle="tooltip" title="Invite">
-
-//       <button '.$round1.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(1,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;</span>
-// <span data-placement="top" data-toggle="tooltip" title="Comment">
-
-//       <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(1,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
-//       </span>
-//       <span data-placement="top" data-toggle="tooltip" title="Round">
-//       <button '.$round1.' class="btn btn-primary btn-xs" onclick="nextRound(2,'.$value->id.')"><span class="glyphicon glyphicon-ok">
-//       </span></button> <p class="'.$textClass1.'">'.$round1Status.'</p></td>
-
-//       <td>
-
-//       <button '.$round2.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(2,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
-
-//       <button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(2,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>      &nbsp;
-
-      
-//       <button '.$round2.' class="btn btn-primary btn-xs" onclick="nextRound(3,'.$value->id.')"><span class="glyphicon glyphicon-ok">
-
-//       </button><p class="'.$textClass2.'">'.$round2Status.'</p></td>
-
-
-//       <td>
-
-//       <button '.$round3.' class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="setUserId(3,'.$value->id.')"><span class="glyphicon glyphicon-envelope"></span></button>&nbsp;
-
-      
-//       <button  class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback(3,'.$value->id.')"><span class="glyphicon glyphicon-comment"></span></button>
-//       &nbsp;
-
-      
-//       <button '.$round3.' class="btn btn-primary btn-xs" onclick="nextRound(4,'.$value->id.')"><span class="glyphicon glyphicon-ok"></span></button>
-//       <p class="'.$textClass3.'">'.$round3Status.'</p></td>';
-
-//       if ($value->interview_status == "1") {
-//         echo '<td><strong>PASSED</strong></td>';
-//       } else if ($value->interview_status == "2") {
-//         echo '<td><strong>REJECTED</strong></td>';
-//       } else if ($value->interview_status == "3") {
-//         echo '<td><strong>ON HOLD</strong></td>';
-//       } else {
-//         echo '<td>NA</td>';  
-//       }
-      
-//     }
-//     echo '</tr>';
-//         }
+	
         ?>
     
-    <!-- <tr>
-    <th><input type="checkbox" id="checkall" /></th>
-    <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>
     
- <tr> -->
-    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-    <!-- <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>
-    
-    
- <tr> -->
-    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-    <!-- <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>
-    
-    
-    
- <tr> -->
-    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-   <!--  <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr>
-    
-    
- <tr> -->
-    <!-- <th><input type="checkbox" id="checkall" /></th> -->
-<!--     <td>Mohsin</td>
-    <td>Irshad</td>
-    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-    <td>isometric.mohsin@gmail.com</td>
-    <td>+923335586757</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-    </tr> -->
-    
-   
-    
-   
-    
-    <!-- </tbody>
-        
-</table> -->
   <p><?php echo $links; ?></p>
 
 <div class="clearfix"></div>
-<!-- <ul class="pagination pull-right">
-  <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-  <li class="active"><a href="#">1</a></li>
-  <li><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#">4</a></li>
-  <li><a href="#">5</a></li>
-  <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-</ul> -->
-                
-            <!-- </div> -->
-            
+
         </div>
   </div>
 </div>
@@ -1040,7 +695,7 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         </div>
           
 
-        <div class="form-group">
+       <!--  <div class="form-group">
           <label>Interviewer</label>
           <select id="interviewer_id" class="form-control" >
             <option value="0">Select</option>
@@ -1056,7 +711,7 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           ?>
 
           </select>
-        </div>
+        </div> -->
 
 
       </div>
@@ -1453,13 +1108,15 @@ function addNewSection(i,id) {
   var html = '';
   html += '<tr>';
   html += '<td>Round '+rowCount+'</td>';
+  var createMeeting = true;
+  html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-envelope"></span></button>';
 
-  html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
 
+  html += '&nbsp;<button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Update Schedule" data-toggle="modal" data-target="#interview_date_time" ><span class="glyphicon glyphicon-edit"></span></button>';
 
-  html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#interview_date_time" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
-
-  html += '&nbsp;<td><button onclick="viewDateTime('+rowCount+','+id+')"  class="btn btn-primary btn-xs" data-title="View date time" data-toggle="modal" data-target="#view_date_time" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
+  html += '&nbsp;<button onclick="viewDateTime('+rowCount+','+id+')"  class="btn btn-primary btn-xs" data-title="View Schedule" data-toggle="modal" data-target="#view_date_time" ><span class="glyphicon glyphicon-check"></span></button>';
+  html += '&nbsp;<button onclick="setUserId('+rowCount+','+id+','+
+  createMeeting+')" class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-phone" ></span></button></td>';
 
   html += '&nbsp;<td> <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback('+rowCount+','+id+')"><span class="glyphicon glyphicon-comment"></span></button></td>';
   html +='<td><button class="btn btn-primary btn-xs" onclick="nextRound('+rowCount+','+id+')" ><span class="glyphicon glyphicon-ok"></span></button></td>';
@@ -1794,9 +1451,34 @@ function saveInterviewStatus(userId, status) {
                 }
 
 
-                function setUserId(round,id) {
+                function setUserId(round,id,createMeeting=false) {
                   document.getElementById("assessId").value = id;
-                  document.getElementById("round").value = round;                  
+                  document.getElementById("round").value = round;
+                  if (createMeeting) {
+                    createGotoMeeting(id,round);
+                  }                  
+                }
+
+                function createGotoMeeting(id,round) {
+                  var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"customer/createInterviewMeeting",
+
+                    type: 'post',   
+                    data: { "id": id ,"round": round} ,
+                    success: function( data, textStatus, jQxhr ){
+                      if (data == 0 ) {
+                        alert("Something Went Wrong. Please Try Again !!");
+                      }
+                      if (data == 1 ) {
+                        alert("Meeting Created Successfully.");
+                      }
+                      //$('#viewDateandTimeDiv').html(data);
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                      console.log( errorThrown );
+                    }
+                  });
                 }
 
                 function viewDateTime(round,id) {
@@ -2043,34 +1725,37 @@ function getHour(hour) {
       var customerId = "<?php echo $_SESSION['customerId'];?>";
 
       var userId = document.getElementById("assessId").value;
-      var interviewer_id = document.getElementById("interviewer_id").value;
+      //var interviewer_id = document.getElementById("interviewer_id").value;
 
       var update_date = document.getElementById("update_date").value;
       var update_time = document.getElementById("update_time").value;
       var baseUrl = document.getElementById("base_url").value;
       document.getElementById("UpdateDateandTime").click();
 
-
-
       $.ajax({
         url: baseUrl+"customer/updateDateTime",
         type: 'post',
 
-        data: { "update_date": update_date, "update_time": update_time,"customerId": customerId,"userId": userId, "interviewer_id":interviewer_id } ,
+        // data: { "update_date": update_date, "update_time": update_time,"customerId": customerId,"userId": userId, "interviewer_id":interviewer_id } ,
+        data: { "update_date": update_date, "update_time": update_time,"customerId": customerId,"userId": userId } ,
 
         success: function( data, textStatus, jQxhr ){
-           datas = JSON.parse( data )
+          //  datas = JSON.parse( data )
 
-          if (datas.status == 500 ) {
-            document.getElementById("generate_error").innerHTML = datas.data;
-            document.getElementById("generate_error").style.color = 'red';
+          // if (datas.status == 500 ) {
+          //   document.getElementById("generate_error").innerHTML = datas.data;
+          //   document.getElementById("generate_error").style.color = 'red';
+          // }
+
+          // if (datas.status == 200 ) {
+          //   document.getElementById("generate_error").innerHTML = datas.data;
+          //   document.getElementById("generate_error").style.color = 'green';
+          // }
+          if (data == "1") {
+            alert("Interview Schedule Updated Successfully")
+          } else {
+            alert("Something Went Wrong. Please check")
           }
-
-          if (datas.status == 200 ) {
-            document.getElementById("generate_error").innerHTML = datas.data;
-            document.getElementById("generate_error").style.color = 'green';
-          }
-
           document.getElementById("update_date").value = ''
           document.getElementById("update_time").value = '';
 

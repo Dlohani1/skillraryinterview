@@ -464,7 +464,11 @@ $route['customer/interview-result/:any/:any'] = 'CustomerController/interviewRes
 
 $route['customer/interview-result-search/:any'] = 'CustomerController/interviewResultSearch'; 
 
-$route['customer/interview-result-search/:any/:any'] = 'CustomerController/interviewResultSearch'; 
+$route['customer/interview-result-search/:any/:any'] = 'CustomerController/interviewResultSearch';
+
+
+
+$route['customer/createInterviewMeeting']['POST'] = 'CustomerController/createInterviewMeeting';
 
 $route['customer/logout'] = 'CustomerController/logout';
 
