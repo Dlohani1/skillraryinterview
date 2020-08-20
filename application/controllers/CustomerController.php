@@ -2985,6 +2985,8 @@ public function viewQuestionWithCodeSearch() {
     $update_time = trim($_POST['update_time']);
     $customerId = trim($_POST['customerId']);
     $userId = trim($_POST['userId']);
+        $interviewer_id = trim($_POST['interviewer_id']);
+
 
     if (empty($update_date) && empty($update_time)) {
       $response = array ('status' => "500", "data" => "Please select all fields" );
@@ -3002,7 +3004,8 @@ public function viewQuestionWithCodeSearch() {
       $data  = array (
         'interview_date' => $update_date,
         'interview_time' => $update_time,
-      );
+        'interviewer_id' => $interviewer_id
+        );
 
       $this->db->where('interview_users_id', $userId);
       $this->db->where('customer_id', $customerId);
@@ -3012,6 +3015,40 @@ public function viewQuestionWithCodeSearch() {
       print_r(json_encode($response));
 
     }  
+  }
+
+  public function viewInterviewerDateTime() {
+    $interview_users_id = $_POST['id'];
+
+    $sql = "SELECT interview_date, interview_time, assess_login.first_name, assess_login.last_name FROM `interview_details` JOIN `assess_login` on assess_login.id = interview_details.interviewer_id WHERE interview_users_id = $interview_users_id";
+
+    $results = $this->db->query($sql)->result_object();
+
+    $data = '<div class="table-responsive">
+                
+              <table id="mytable" class="table table-bordred table-striped">
+                   
+                  <thead>                   
+                    <th>Interview Date</th>
+                    <th>Interview Time</th>
+                    <th>Interviewer First Name</th>
+                    <th>Interviewer Last Name</th>
+                  </thead>
+                  <tbody>';
+
+                      foreach ($results as $key => $value) {
+                        $data .= '<tr>
+                                    <td>'.$value->interview_date.'</td>
+                                    <td>'.$value->interview_time.'</td>
+                                    <td>'.$value->first_name.'</td>
+                                    <td>'.$value->last_name.'</td>
+                                  </tr>';
+                      }
+
+                      $data .='</tbody>
+              </table>
+            </div>';
+      print_r($data);
   }
 
 

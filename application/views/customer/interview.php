@@ -482,7 +482,7 @@
             <table width="100%" id="test_<?=$i;?>" border="1">
                 <thead>
                 <tr>
-                    <th colspan="3"><button onclick="addNewSection(<?=$i.','.$value->id;?>)"> Add Rounds</button>
+                    <th colspan="4"><button onclick="addNewSection(<?=$i.','.$value->id;?>)"> Add Rounds</button>
                     </th>
                     <th colspan="3"> <button onclick="saveStatus(<?=$value->id;?>)"> Add Final Status</button>
                     </th>                    
@@ -491,6 +491,7 @@
                     <th width="30%">Round</th>
                     <th width="30%">Send</th>
                     <th width="30%">Interview Date time</th>
+                    <th width="30%">View Interview Date time</th>
                     <th width="30%">Result</th>
                     <th width="30%" colspan="2">Status</th>
                 </tr>
@@ -504,7 +505,10 @@
 
 
 
-            <td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#interview_date_time' ><span class='glyphicon glyphicon-envelope'></span></button></td>
+            <td><button onclick='setUserId($j,$value->id)' class='btn btn-primary btn-xs' data-title='Update Date time' data-toggle='modal' data-target='#interview_date_time' ><span class='glyphicon glyphicon-envelope'></span></button></td>
+
+
+            <td><button onclick='viewDateTime($j,$value->id)' class='btn btn-primary btn-xs' data-title='View date time' data-toggle='modal' data-target='#view_date_time' ><span class='glyphicon glyphicon-envelope'></span></button></td>
 
 
               <td><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#myModal1' onclick='showInterviewFeedback($j,$value->id)'><span class='glyphicon glyphicon-comment'></span></button></td><td><button class='btn btn-primary btn-xs' onclick='nextRound($j,$value->id)'><span class='glyphicon glyphicon-ok'></span></button></td>";
@@ -1036,6 +1040,25 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         </div>
           
 
+        <div class="form-group">
+          <label>Interviewer</label>
+          <select id="interviewer_id" class="form-control" >
+            <option value="0">Select</option>
+          <?php 
+
+            if (count($interviewData['interviewer-list']) > 0) {
+              foreach($interviewData['interviewer-list'] as $key => $value) { ?>
+                <option value=<?php echo $value->id; ?>> <?php echo $value->first_name." ".$value->last_name;?> </option>
+
+          <?php
+              }
+            }
+          ?>
+
+          </select>
+        </div>
+
+
       </div>
 
       <div class="modal-footer ">
@@ -1047,6 +1070,65 @@ color: red;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
       <!-- /.modal-dialog --> 
 </div>
     
+
+
+
+
+
+
+<div class="modal fade" id="view_date_time" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title custom_align" >View Date and Time</h4>
+        <button type="button" class="close" id="viewDateandTime" data-dismiss="modal" aria-hidden="true">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div id="viewDateandTimeDiv"></div>
+
+      <!--   <div class="form-group">
+          <label> Date </label>
+          <p name="view_date" id="view_date"> </p>
+        </div>
+
+        <div class="form-group">
+          <label> Time </label>
+          <p name="view_time" id="view_time"> </p>
+        </div>
+          
+        <div class="form-group">
+          <label>Interviewer</label>
+          <p name="view_interviewer" id="view_interviewer"> </p>
+        </div>
+      </div>
+ -->
+      <div class="modal-footer ">
+      </div>
+
+    </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+</div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 
@@ -1375,8 +1457,9 @@ function addNewSection(i,id) {
   html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
 
 
-html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#interview_date_time" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
+  html += '&nbsp;<td><button onclick="setUserId('+rowCount+','+id+')" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#interview_date_time" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
 
+  html += '&nbsp;<td><button onclick="viewDateTime('+rowCount+','+id+')"  class="btn btn-primary btn-xs" data-title="View date time" data-toggle="modal" data-target="#view_date_time" ><span class="glyphicon glyphicon-envelope"></span></button></td>';
 
   html += '&nbsp;<td> <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#myModal1" onclick="showInterviewFeedback('+rowCount+','+id+')"><span class="glyphicon glyphicon-comment"></span></button></td>';
   html +='<td><button class="btn btn-primary btn-xs" onclick="nextRound('+rowCount+','+id+')" ><span class="glyphicon glyphicon-ok"></span></button></td>';
@@ -1712,9 +1795,26 @@ function saveInterviewStatus(userId, status) {
 
 
                 function setUserId(round,id) {
-                  //alert(round);
                   document.getElementById("assessId").value = id;
                   document.getElementById("round").value = round;                  
+                }
+
+                function viewDateTime(round,id) {
+                  var baseUrl = document.getElementById("base_url").value;
+                  $.ajax({
+                    url: baseUrl+"customer/viewInterviewerDateTime",
+
+                    type: 'post',   
+                    data: { "id": id } ,
+                    success: function( data, textStatus, jQxhr ){
+
+                      $('#viewDateandTimeDiv').html(data);
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                      console.log( errorThrown );
+                    }
+                  });
+
                 }
 
 
@@ -1943,17 +2043,20 @@ function getHour(hour) {
       var customerId = "<?php echo $_SESSION['customerId'];?>";
 
       var userId = document.getElementById("assessId").value;
+      var interviewer_id = document.getElementById("interviewer_id").value;
 
       var update_date = document.getElementById("update_date").value;
       var update_time = document.getElementById("update_time").value;
       var baseUrl = document.getElementById("base_url").value;
       document.getElementById("UpdateDateandTime").click();
 
+
+
       $.ajax({
         url: baseUrl+"customer/updateDateTime",
         type: 'post',
 
-        data: { "update_date": update_date, "update_time": update_time,"customerId": customerId,"userId": userId } ,
+        data: { "update_date": update_date, "update_time": update_time,"customerId": customerId,"userId": userId, "interviewer_id":interviewer_id } ,
 
         success: function( data, textStatus, jQxhr ){
            datas = JSON.parse( data )

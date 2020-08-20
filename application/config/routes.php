@@ -606,9 +606,8 @@ $route['customer/edit-question-with-code/:any'] = 'CustomerController/editQuesti
 $route['admin/see-answer-option']['POST']= 'AdminController/seeAnswerOption'; 
 $route['customer/see-answer-option']['POST']= 'AdminController/seeAnswerOption'; 
 
-
 $route['customer/invigilator-list'] = 'CustomerController/viewInvigilatorList';
 
-
-
 $route['admin/addInterviewer'] ['POST']= 'AdminController/addInterviewer';
+
+$route['customer/viewInterviewerDateTime']['POST'] = 'CustomerController/viewInterviewerDateTime'; 
